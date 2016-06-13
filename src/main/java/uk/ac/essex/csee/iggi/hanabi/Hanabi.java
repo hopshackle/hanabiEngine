@@ -11,7 +11,7 @@ public class Hanabi {
 	private int handSize;
 	private Map<Integer, List<Card>> players;
 	private int lives = 3;
-	private int infomation = 8;
+	private int information = 8;
 	private Map<CardColour, Integer> table;
 	
 	public Hanabi(int numPlayers, int handSize) {
@@ -19,7 +19,7 @@ public class Hanabi {
 		this.players = new TreeMap<>();
 		this.table = new TreeMap<>();
 		this.lives = 3;
-		this.infomation = 8;
+		this.information = 8;
 		this.handSize = handSize;
 		
 		for (int i=0; i<numPlayers; i++) {
@@ -41,7 +41,7 @@ public class Hanabi {
 		this.players = new TreeMap<>(hanabi.players);
 		this.table = new TreeMap<>(hanabi.table);
 		this.lives = hanabi.lives;
-		this.infomation = hanabi.infomation;
+		this.information = hanabi.information;
 	}
 
 	public boolean isOver() {
@@ -49,7 +49,7 @@ public class Hanabi {
 	}
 	
 	public List<Integer> getAllInteger(Integer whoIsBeingTold, Integer number) {
-		if (infomation < 0) {
+		if (information < 0) {
 			return null; //nope
 		}
 		
@@ -65,13 +65,13 @@ public class Hanabi {
 			}
 		}
 		
-		infomation--;
+		information--;
 		
 		return cardPos;
 	}
 	
 	public List<Integer> getAllColour(Integer whoIsBeingTold, CardColour colour) {
-		if (infomation < 0) {
+		if (information < 0) {
 			return null; //nope
 		}
 		
@@ -87,7 +87,7 @@ public class Hanabi {
 			}
 		}
 		
-		infomation--;
+		information--;
 		
 		return cardPos;
 	}
@@ -104,8 +104,8 @@ public class Hanabi {
 	public Card discard(Integer player, Card card) {
 		Card nextCard = getNextCard(player, card);
 		
-		if (infomation < 8) {
-			infomation++;
+		if (information < 8) {
+			information++;
 		}
 		
 		return nextCard;
