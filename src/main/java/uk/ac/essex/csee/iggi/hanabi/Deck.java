@@ -57,4 +57,13 @@ public class Deck {
 		return cards.isEmpty();
 	}
 
+	/**
+	 * Add a new card to the deck.
+	 * 
+	 * @param card the card to add
+	 */
+	public void add(Card card) {
+		cards.push(card);
+	}
+
 }
