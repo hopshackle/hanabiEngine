@@ -20,11 +20,7 @@ public class GameEngine {
                 Move move = player.getMove(percepts.get(player));
                 // Clear out the information in the percepts list for this player
                 percepts.get(player).clear();
-                switch (move.getType()) {
-                    case DISCARD:
-                    case PLAY:
-                    case TELL:
-                }
+                doMove(move);
 
                 for(Player other : players){
                     // TODO Decide if we should exclude our own move?
