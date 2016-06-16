@@ -1,8 +1,13 @@
 package uk.ac.essex.csee.iggi.hanabi;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Represents a deck of Hanabi cards.
+ *
+ */
 public class Deck {
 	private Stack<Card> cards;
 	
@@ -20,8 +25,12 @@ public class Deck {
 		this.cards = (Stack<Card>)deck.cards.clone();
 	}
 	
+	/**
+	 * shuffle this deck of cards.
+	 * 
+	 */
 	public void shuffle() {
-		
+		Collections.shuffle(cards);
 	}
 
     /**
@@ -46,6 +55,15 @@ public class Deck {
      */
 	public boolean hasCardsLeft() {
 		return cards.isEmpty();
+	}
+
+	/**
+	 * Add a new card to the deck.
+	 * 
+	 * @param card the card to add
+	 */
+	public void add(Card card) {
+		cards.push(card);
 	}
 
 }

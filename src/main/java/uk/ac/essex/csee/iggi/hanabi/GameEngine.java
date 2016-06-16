@@ -34,5 +34,13 @@ public class GameEngine {
             }
         }
 	}
+	
+	private void doMove(Move move) {
+		switch(move.type) {
+			case PLAY:
+			case DISCARD:
+			case TELL: 
+		}
+	}
 
 }

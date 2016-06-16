@@ -2,6 +2,7 @@ package uk.ac.essex.csee.iggi.hanabi;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,8 +12,9 @@ public class Hanabi {
 	private int handSize;
     // Player number to list of cards in their hand
 	private Map<Integer, List<Card>> players;
-	private int lives = 3;
-	private int information = 8;
+	private int lives;
+	private int information;
+	private int numPlayers;
 	private Map<CardColour, Integer> table;
 
     /**
@@ -22,12 +24,36 @@ public class Hanabi {
      */
 	public Hanabi(int numPlayers, int handSize) {
 		this.deck = new Deck();
-		this.players = new TreeMap<>();
-		this.table = new TreeMap<>();
+		this.players = new HashMap<>();
+		this.table = new HashMap<>();
 		this.lives = 3;
 		this.information = 8;
+		this.numPlayers = numPlayers;
 		this.handSize = handSize;
 		
+		initDeck();
+		initHands();
+	}
+	
+	private void initDeck() {
+		for (CardColour c : CardColour.values()) {
+			for (int i=1; i<=5; i++) {
+				deck.add(new Card(i, c));
+				
+				// there are at least 2 of every non-5 card
+				if ( i < 4 ) {
+					deck.add(new Card(i, c));
+				}
+				
+				// there are are 3 ones
+				if (i == 1) {
+					deck.add(new Card(i, c));
+				}
+			}
+		}
+	}
+	
+	private void initHands() {
 		for (int i=0; i<numPlayers; i++) {
 			players.put(i, drawHand(handSize));
 		}
@@ -200,7 +226,7 @@ public class Hanabi {
      * @param colour The colour that we are asking about
      * @return The number of the highest card
      */
-	public Integer getCurrentTable(CardColour colour) {
+	public int getCurrentTable(CardColour colour) {
 		Integer currentScore = table.get(colour);
 		currentScore = currentScore == null ? 0 : currentScore;
 		return currentScore;
