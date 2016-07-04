@@ -1,5 +1,5 @@
 # An implemtantion of Hanabi in Java
 
 ## Authors
-Joseph Walton-Rivers
-Piers Williams
+* Joseph Walton-Rivers
+* Piers Williams
