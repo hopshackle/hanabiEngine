@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 @RunWith(JUnitParamsRunner.class)
 //TODO these should really be permaterised tests - You mean like this?
 public class CardTest {
-	
+
 	@Test
 	@Parameters(method = "parametersForEqualsAndHashCode")
 	public void testEqualsAndHashCode(CardColour fc, int fv, CardColour sc, int sv, boolean expected) {
@@ -30,5 +30,17 @@ public class CardTest {
 				$(CardColour.BLUE, 0, CardColour.BLUE, 1, false)
 		);
 	}
+
+	@Test
+	public void testEqualsEdgeCases(){
+		Card card = new Card(0, CardColour.BLUE);
+		Card c2 = new Card(null, CardColour.BLUE);
+		assertEquals(true, card.equals(card));
+		assertEquals(false, card.equals(null));
+		assertEquals(false, card.equals(new Object()));
+		assertEquals(true, c2.equals(c2));
+		assertEquals(false, c2.equals(card));
+	}
+
 
 }

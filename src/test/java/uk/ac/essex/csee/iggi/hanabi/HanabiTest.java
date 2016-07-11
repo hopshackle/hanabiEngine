@@ -1,25 +1,31 @@
 package uk.ac.essex.csee.iggi.hanabi;
 
+import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.*;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(JUnitParamsRunner.class)
 public class HanabiTest {
 
 	@Test
-	public void test() {
-		int handSize = 5;
-		
-		Hanabi h = new Hanabi(1, handSize);
-		int zero = 0;
-		int startingLives = 3;
-		
-		assertEquals(zero, h.getCurrentTable(CardColour.BLUE));
-		assertEquals(zero, h.getCurrentTable(CardColour.RED));
-		assertEquals(zero, h.getCurrentTable(CardColour.GREEN));
-		assertEquals(zero, h.getCurrentTable(CardColour.ORANGE));
-		assertEquals(zero, h.getCurrentTable(CardColour.WHITE));
-		assertEquals(startingLives, h.getLives());
+	@Parameters(method="parametersForStartingValues")
+	public void testStartingValues(int value, CardColour colour) {
+		Hanabi h = new Hanabi(1, 5);
+		assertEquals(value, h.getCurrentTable(colour));
+	}
+
+	public Object[] parametersForStartingValues(){
+		return $(
+				$(0, CardColour.BLUE),
+				$(0, CardColour.RED),
+				$(0, CardColour.GREEN),
+				$(0, CardColour.ORANGE),
+				$(0, CardColour.WHITE)
+		);
 	}
 
 }
