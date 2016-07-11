@@ -79,9 +79,14 @@ public class Hanabi {
      */
 	public Hanabi(Hanabi hanabi) {
 		this.deck = new Deck(hanabi.deck);
-        //TODO  This will be a possible issue - players will be a deep clone but the list of cards in each hand will be the same - in one game a discard will affect another
-		this.players = new TreeMap<>(hanabi.players);
+        //TODO  -  Check that this is a proper deep clone now
+		this.players = new TreeMap<>();
+		for(Integer index : hanabi.players.keySet()){
+			this.players.put(index, new ArrayList<>(hanabi.players.get(index)));
+		}
+
 		this.table = new TreeMap<>(hanabi.table);
+
 		this.lives = hanabi.lives;
 		this.information = hanabi.information;
 	}
