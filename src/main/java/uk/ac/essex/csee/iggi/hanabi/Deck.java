@@ -24,7 +24,28 @@ public class Deck {
 	public Deck(Deck deck) {
 		this.cards = (Stack<Card>)deck.cards.clone();
 	}
-	
+
+	/**
+	 * Initialises the deck of cards with a complete set for the game
+     */
+	public void init(){
+		for (CardColour c : CardColour.values()) {
+			for (int i=1; i<=5; i++) {
+				cards.add(new Card(i, c));
+
+				// there are at least 2 of every non-5 card
+				if ( i <= 4 ) {
+					cards.add(new Card(i, c));
+				}
+
+				// there are are 3 ones
+				if (i == 1) {
+					cards.add(new Card(i, c));
+				}
+			}
+		}
+	}
+
 	/**
 	 * shuffle this deck of cards.
 	 * 

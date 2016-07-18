@@ -31,26 +31,8 @@ public class Hanabi {
 		this.numPlayers = numPlayers;
 		this.handSize = handSize;
 		
-		initDeck();
+		deck.init();
 		initHands();
-	}
-	
-	private void initDeck() {
-		for (CardColour c : CardColour.values()) {
-			for (int i=1; i<=5; i++) {
-				deck.add(new Card(i, c));
-				
-				// there are at least 2 of every non-5 card
-				if ( i < 4 ) {
-					deck.add(new Card(i, c));
-				}
-				
-				// there are are 3 ones
-				if (i == 1) {
-					deck.add(new Card(i, c));
-				}
-			}
-		}
 	}
 	
 	private void initHands() {
