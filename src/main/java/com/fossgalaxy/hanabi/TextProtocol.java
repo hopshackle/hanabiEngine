@@ -3,6 +3,7 @@ package com.fossgalaxy.hanabi;
 import java.util.Collection;
 import java.util.Iterator;
 
+import uk.ac.essex.csee.iggi.hanabi.Card;
 import uk.ac.essex.csee.iggi.hanabi.CardColour;
 
 //Server -> Client Action Descriptions
@@ -22,13 +23,15 @@ public class TextProtocol {
 	
 	public static String EFFECT_DRAW = "draw";
 	
+	public static String PROTOCOL_REQ_MOVE = "DOMOVE";
+	
 
-	public static String playCard(int player, int slot){
-		return buildMessage(player, ACTION_PLAY, ""+slot);
+	public static String playCard(int player, int slot, Card card){
+		return buildMessage(player, ACTION_PLAY, ""+slot+" "+card.colour+" "+card.value);
 	}
 	
-	public static String discardCard(int player, int slot) {
-		return buildMessage(player, ACTION_DISCARD, ""+slot);
+	public static String discardCard(int player, int slot, Card card) {
+		return buildMessage(player, ACTION_DISCARD, ""+slot+" "+card.colour+" "+card.value);
 	}
 	
 	public static String tellPlayer(int player, int who, CardColour colour, Collection<Integer> slots) {

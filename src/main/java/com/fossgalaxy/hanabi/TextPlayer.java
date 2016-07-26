@@ -20,6 +20,7 @@ public class TextPlayer {
 	}
 	
 	public String getAction() {
+		sendMessage(TextProtocol.buildMessage(-1, TextProtocol.PROTOCOL_REQ_MOVE, ""));
 		return in.nextLine();
 	}
 	

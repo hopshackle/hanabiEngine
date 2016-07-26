@@ -1,10 +1,7 @@
 package com.fossgalaxy.hanabi;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -47,24 +44,22 @@ public class App
         }
         
         //Phase 2: play the game until the game is over
-        int nextPlayer = 0;
+        int playerID = 0;
         while(!game.isOver()) {
         	
-        	int playerID = 0; //TODO track current player
-        	String move = scanner.nextLine();
+        	TextPlayer playerInput = players.get(playerID);
+        	String move = playerInput.getAction();
         	String[] moveArgs = move.split(" ");
-        	
-        	List<String> playerInfo = new ArrayList<String>();
-        	List<String> groupInfo = new ArrayList<String>();
         	
         	switch (moveArgs[0]) {
         		case "PLAY": {
         			//PLAY $SLOT
         			int slot = Integer.parseInt(moveArgs[1]);
         			
+        			Card oldCard = game.getCard(playerID, slot);
         			Card newCard = game.play(playerID, slot);
         			
-        			sendToAll(TextProtocol.playCard(playerID, slot), players.values());
+        			sendToAll(TextProtocol.playCard(playerID, slot, oldCard), players.values());
                 	sendToAllBut(playerID, TextProtocol.drawMessage(playerID, slot, newCard.colour, newCard.value), players);
         			break;
         		}
@@ -72,9 +67,10 @@ public class App
         			//DISCARD $SLOT
         			int slot = Integer.parseInt(moveArgs[1]);
         			
+        			Card oldCard = game.getCard(playerID, slot);
         			Card newCard = game.discard(playerID, slot);
         			
-        			sendToAll(TextProtocol.discardCard(playerID, slot), players.values());
+        			sendToAll(TextProtocol.discardCard(playerID, slot, oldCard), players.values());
                 	sendToAllBut(playerID, TextProtocol.drawMessage(playerID, slot, newCard.colour, newCard.value), players);
         			break;
         		}
@@ -114,6 +110,7 @@ public class App
         	//Result of drawing a card (happens after play or discard)
         	//System.out.println("$WHO DRAW SLOT COLOUR VALUE");
         	
+        	playerID++;
         }
         
         //Phase 3: tell players the final score
