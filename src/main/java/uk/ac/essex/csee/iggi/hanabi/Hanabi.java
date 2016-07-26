@@ -1,8 +1,10 @@
 package uk.ac.essex.csee.iggi.hanabi;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,7 +13,7 @@ public class Hanabi {
 	private Deck deck;
 	private int handSize;
     // Player number to list of cards in their hand
-	private Map<Integer, List<Card>> players;
+	private Hand[] players;
 	private int lives;
 	private int information;
 	private int numPlayers;
@@ -24,7 +26,7 @@ public class Hanabi {
      */
 	public Hanabi(int numPlayers, int handSize) {
 		this.deck = new Deck();
-		this.players = new HashMap<>();
+		this.players = new Hand[numPlayers];
 		this.table = new HashMap<>();
 		this.lives = 3;
 		this.information = 8;
@@ -37,22 +39,15 @@ public class Hanabi {
 	
 	private void initHands() {
 		for (int i=0; i<numPlayers; i++) {
-			players.put(i, drawHand(handSize));
+			Hand hand = new Hand(handSize);
+			
+			for (int slot=0; slot<handSize; slot++) {
+				Card card = deck.getTopCard();
+				hand.setCard(slot, card);
+			}
+			
+			players[i] = hand;
 		}
-	}
-
-    /**
-     * Draws a hand of given size from the deck
-     * @param size The size of the hand
-     * @return The list of cards retrieved from the deck
-     */
-	public List<Card> drawHand(int size) {
-		List<Card> cards = new ArrayList<Card>();
-		for (int i=0; i<size;i++) {
-			cards.add(deck.getTopCard());
-		}
-		
-		return cards;
 	}
 
     /**
@@ -61,10 +56,10 @@ public class Hanabi {
      */
 	public Hanabi(Hanabi hanabi) {
 		this.deck = new Deck(hanabi.deck);
-        //TODO  -  Check that this is a proper deep clone now
-		this.players = new TreeMap<>();
-		for(Integer index : hanabi.players.keySet()){
-			this.players.put(index, new ArrayList<>(hanabi.players.get(index)));
+		
+		this.players = new Hand[hanabi.players.length];
+		for (int i=0; i<players.length; i++) {
+			this.players[i] = new Hand(hanabi.players[i]);
 		}
 
 		this.table = new TreeMap<>(hanabi.table);
@@ -82,93 +77,19 @@ public class Hanabi {
 	}
 
     /**
-     * Gets the indices of every card that matches the ineger provided
-     *
-     * For example getting the index of each card that is a 2
-     * @param whoIsBeingTold The player that is being told the information about
-     * @param number The number that is in the query
-     * @return The list of indices of each card that matches the query. Will be null if the query isn't allowed
-     * and empty if there were no cards matching the query
-     */
-	public List<Integer> getAllInteger(Integer whoIsBeingTold, Integer number) {
-		if (information < 0) {
-			return null; //nope
-		}
-		
-		List<Integer> cardPos = new ArrayList<Integer>();
-		
-		assert players.containsKey(whoIsBeingTold);
-		
-		List<Card> playerBeingToldCards = players.get(whoIsBeingTold);
-		for (int i = 0; i<playerBeingToldCards.size(); i++){
-			Card card = playerBeingToldCards.get(i);
-			if (card.value == number) {
-				cardPos.add(i);
-			}
-		}
-		
-		information--;
-		
-		return cardPos;
-	}
-
-    /**
-     * Gets the indices of every card that matches the CardColour provided
-     *
-     * For example getting the index of each card that is a White
-     * @param whoIsBeingTold The player that is being told the information about
-     * @param colour The CardColour that is in the query
-     * @return The list of indices of each card that matches the query. Will be null if the query isn't allowed
-     * and empty if there were no cards matching the query
-     */
-	public List<Integer> getAllColour(Integer whoIsBeingTold, CardColour colour) {
-		if (information < 0) {
-			return null; //nope
-		}
-		
-		List<Integer> cardPos = new ArrayList<Integer>();
-		
-		assert players.containsKey(whoIsBeingTold);
-		
-		List<Card> playerBeingToldCards = players.get(whoIsBeingTold);
-		for (int i = 0; i<playerBeingToldCards.size(); i++){
-			Card card = playerBeingToldCards.get(i);
-			if (card.colour == colour) {
-				cardPos.add(i);
-			}
-		}
-		
-		information--;
-		
-		return cardPos;
-	}
-
-    /**
-     * Gets the next card
-     *
-     * TODO what was this function for?
-     * @param player
-     * @param card
-     * @return
-     */
-	public Card getNextCard(Integer player, Card card) {
-		List<Card> cards = players.get(player);
-		assert players.containsKey(player) : "player does not exist";
-		assert cards.contains(card) : "Player is cheating!";
-		cards.remove(card);
-		
-		return deck.getTopCard();
-	}
-
-    /**
      * Discard a given card
      * @param player The player that is discarding the card
      * @param card The card that the player is discarding
      * @return The card that was taken from the deck after the discard. TODO Why are we doing this?
      * TODO Why not place this directly in the hand
      */
-	public Card discard(Integer player, Card card) {
-		Card nextCard = getNextCard(player, card);
+	public Card discard(Integer player, Integer slot) {
+		Hand hand = players[slot];
+		
+		Card nextCard = deck.getTopCard();
+		hand.setCard(slot, nextCard);
+		
+		//TODO should we keep track of discards?
 		
 		if (information < 8) {
 			information++;
@@ -183,29 +104,37 @@ public class Hanabi {
      * @param card The card that the player is playing
      * @return The card that is going back into the hand of the player
      */
-	public Card play(Integer player, Card card) {
-		Card nextCard = getNextCard(player, card);
+	public Card play(Integer player, int slot) {
+		Hand hand = players[player];
+		Card cardInSlot = hand.getCard(slot);
+		assert cardInSlot != null : "played empy slot?!";
 		
-		Integer currentScore = table.get(card.colour);
-		currentScore = currentScore == null ? 0 : currentScore;
+		//find out if this was a legal move
+		//Integer topCard = table.getOrDefault(cardInSlot.colour, 0);
+		Integer topCard = table.get(cardInSlot.colour);
+		topCard = topCard==null ? 0 : topCard;
 		
-		if (currentScore + 1 == card.value) {
-			table.put(card.colour, card.value);
+		
+		if ( cardInSlot.value == topCard + 1 ) {
+			table.put(cardInSlot.colour, cardInSlot.value);
 		} else {
 			lives--;
 			//TODO play exploding sound
 		}
 		
-		return nextCard;
+		//draw a new card and put it in the player's hand
+		Card newCard = deck.getTopCard();
+		hand.setCard(slot, newCard);
+		return newCard;
 	}
 
     /**
      * Gets a view of the provided player's cards
      * @param player The player that we want to look at the cards of
-     * @return The cards - an unmodifiableList
+     * @return The requested card
      */
-	public List<Card> getCards(Integer player) {
-		return Collections.unmodifiableList(players.get(player));
+	public Card getCard(Integer player, Integer slot) {
+		return players[player].getCard(slot);
 	}
 
     /**
@@ -233,5 +162,41 @@ public class Hanabi {
      */
 	public int getLives() {
 		return lives;
+	}
+	
+	public Collection<Integer> tell(int teller, int told, CardColour colour) {
+		Hand hand = players[told];
+		
+		Collection<Integer> slotsToTell = new HashSet<Integer>();
+		for (int slot=0; slot<hand.getSize(); slot++) {
+			Card card = hand.getCard(slot);
+			if (colour.equals(card.colour)) {
+				slotsToTell.add(slot);
+				hand.setKnownColour(slot, colour);
+			}
+		}
+		
+		information--;
+		return slotsToTell;
+	}
+	
+	public Collection<Integer> tell(int teller, int told, Integer cardValue) {
+		Hand hand = players[told];
+		
+		Collection<Integer> slotsToTell = new HashSet<Integer>();
+		for (int slot=0; slot<hand.getSize(); slot++) {
+			Card card = hand.getCard(slot);
+			if (cardValue.equals(card.value)) {
+				slotsToTell.add(slot);
+				hand.setKnownValue(slot, cardValue);
+			}
+		}
+		
+		information--;
+		return slotsToTell;
+	}
+
+	public Hand getHand(int player) {
+		return players[player];
 	}
 }
