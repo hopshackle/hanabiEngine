@@ -25,10 +25,10 @@ public class App
         Scanner scanner = new Scanner(System.in);
         
         //this could be MUCH better, but it should work for testing
-        Map<Integer, TextPlayer> players = new HashMap<Integer, TextPlayer>();
-        players.put(0, new TextPlayer("bob", scanner, System.out));
-        players.put(1, new TextPlayer("ed", scanner, System.out));
-        players.put(2, new TextPlayer("dave", scanner, System.out));
+        Map<Integer, Player> players = new HashMap<Integer, Player>();
+        players.put(0, new InteractivePlayer(scanner));
+        players.put(1, new DummyPlayer());
+        players.put(2, new DummyPlayer());
         
         //build the game
         Hanabi game = new Hanabi(players.size(), HAND_SIZE);
@@ -47,7 +47,7 @@ public class App
         int playerID = 0;
         while(!game.isOver()) {
         	
-        	TextPlayer playerInput = players.get(playerID);
+        	Player playerInput = players.get(playerID);
         	String move = playerInput.getAction();
         	String[] moveArgs = move.split(" ");
         	
@@ -110,7 +110,7 @@ public class App
         	//Result of drawing a card (happens after play or discard)
         	//System.out.println("$WHO DRAW SLOT COLOUR VALUE");
         	
-        	playerID++;
+        	playerID = (playerID + 1) % players.size();
         }
         
         //Phase 3: tell players the final score
@@ -119,17 +119,17 @@ public class App
         scanner.close();
     }
     
-    private static void sendToAll(String msg, Collection<TextPlayer> players) {
-    	for (TextPlayer player : players) {
+    private static void sendToAll(String msg, Collection<Player> players) {
+    	for (Player player : players) {
     		player.sendMessage(msg);
     	}
     }
     
-    public static void sendToAllBut(int pid, String msg, Map<Integer, TextPlayer> players) {
-    	for (Map.Entry<Integer, TextPlayer> entry : players.entrySet()) {
+    public static void sendToAllBut(int pid, String msg, Map<Integer, Player> players) {
+    	for (Map.Entry<Integer, Player> entry : players.entrySet()) {
     		Integer id = entry.getKey();
     		if (id != pid) {
-    			TextPlayer p = entry.getValue();
+    			Player p = entry.getValue();
     			p.sendMessage(msg);
     		}
     	}

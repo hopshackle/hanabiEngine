@@ -28,11 +28,11 @@ public class Hand implements Iterable<Card> {
 	public CardColour getKnownColour(int slot) { return colours[slot]; }
 	public Integer getKnownValue(int slot) { return values[slot]; }
 	
-	void setKnownColour(int slot, CardColour colour){
+	public void setKnownColour(int slot, CardColour colour){
 		colours[slot] = colour;
 	}
 	
-	void setKnownValue(int slot, Integer value){
+	public void setKnownValue(int slot, Integer value){
 		values[slot] = value;
 	}
 	
@@ -59,6 +59,22 @@ public class Hand implements Iterable<Card> {
 
 	public int getSize() {
 		return size;
+	}
+	
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		
+		for (int i=0; i<size; i++) {
+			buf.append(colours[i]);
+			buf.append(" ");
+			buf.append(values[i]);
+			
+			if (i < size-1 ){
+				buf.append(", ");
+			}
+		}
+		
+		return buf.toString();
 	}
 
 }
