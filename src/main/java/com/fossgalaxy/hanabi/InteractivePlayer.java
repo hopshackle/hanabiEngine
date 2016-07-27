@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import uk.ac.essex.csee.iggi.hanabi.CardColour;
-import uk.ac.essex.csee.iggi.hanabi.Hand;
+import com.fossgalaxy.hanabi.engine.CardColour;
+import com.fossgalaxy.hanabi.engine.Hand;
 
 public class InteractivePlayer implements Player {
 	private Map<Integer, Hand> hands;

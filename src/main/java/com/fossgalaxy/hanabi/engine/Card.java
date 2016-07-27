@@ -1,4 +1,4 @@
-package uk.ac.essex.csee.iggi.hanabi;
+package com.fossgalaxy.hanabi.engine;
 
 /**
  * A card for the Hanabi card game

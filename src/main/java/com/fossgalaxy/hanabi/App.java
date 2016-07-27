@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import uk.ac.essex.csee.iggi.hanabi.Card;
-import uk.ac.essex.csee.iggi.hanabi.CardColour;
-import uk.ac.essex.csee.iggi.hanabi.Hanabi;
-import uk.ac.essex.csee.iggi.hanabi.Hand;
+import com.fossgalaxy.hanabi.engine.Card;
+import com.fossgalaxy.hanabi.engine.CardColour;
+import com.fossgalaxy.hanabi.engine.Hanabi;
+import com.fossgalaxy.hanabi.engine.Hand;
 
 /**
  * Hello world!

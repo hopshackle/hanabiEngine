@@ -1,4 +1,4 @@
-package uk.ac.essex.csee.iggi.hanabi;
+package com.fossgalaxy.hanabi.engine;
 
 /**
  * Created by Piers on 11/07/2016.

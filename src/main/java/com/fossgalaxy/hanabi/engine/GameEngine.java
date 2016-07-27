@@ -1,4 +1,4 @@
-package uk.ac.essex.csee.iggi.hanabi;
+package com.fossgalaxy.hanabi.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;

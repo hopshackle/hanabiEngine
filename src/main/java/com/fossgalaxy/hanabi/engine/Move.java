@@ -1,4 +1,4 @@
-package uk.ac.essex.csee.iggi.hanabi;
+package com.fossgalaxy.hanabi.engine;
 
 /**
  * A move object - contains all the information needed to execute a move

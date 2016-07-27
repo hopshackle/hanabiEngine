@@ -1,4 +1,4 @@
-package uk.ac.essex.csee.iggi.hanabi;
+package com.fossgalaxy.hanabi.engine;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.*;
@@ -7,6 +7,9 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.fossgalaxy.hanabi.engine.Card;
+import com.fossgalaxy.hanabi.engine.CardColour;
 
 @RunWith(JUnitParamsRunner.class)
 //TODO these should really be permaterised tests - You mean like this?

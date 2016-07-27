@@ -3,8 +3,8 @@ package com.fossgalaxy.hanabi;
 import java.util.Collection;
 import java.util.Iterator;
 
-import uk.ac.essex.csee.iggi.hanabi.Card;
-import uk.ac.essex.csee.iggi.hanabi.CardColour;
+import com.fossgalaxy.hanabi.engine.Card;
+import com.fossgalaxy.hanabi.engine.CardColour;
 
 //Server -> Client Action Descriptions
 //System.out.println("$WHO PLAY $SLOT");
