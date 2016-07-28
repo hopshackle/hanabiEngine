@@ -70,10 +70,20 @@ public class Hanabi {
 
     /**
      * Is the game over?
-     * @return boolean wether the game is over or not
+     * @return boolean whether the game is over or not
      */
 	public boolean isOver() {
-		return lives <= 0 && deck.hasCardsLeft();
+		if (lives <= 0) {
+			System.out.println("no move lives");
+			return true;
+		}
+		
+		if (!deck.hasCardsLeft()) {
+			System.out.println("no cards left");
+			return true;
+		}
+		
+		return lives <= 0 || !deck.hasCardsLeft();
 	}
 
     /**
@@ -84,7 +94,7 @@ public class Hanabi {
      * TODO Why not place this directly in the hand
      */
 	public Card discard(Integer player, Integer slot) {
-		Hand hand = players[slot];
+		Hand hand = players[player];
 		
 		Card nextCard = deck.getTopCard();
 		hand.setCard(slot, nextCard);
@@ -198,5 +208,13 @@ public class Hanabi {
 
 	public Hand getHand(int player) {
 		return players[player];
+	}
+	
+	public int getScore() {
+		int score = 0;
+		for (Map.Entry<CardColour, Integer> slot : table.entrySet()) {
+			score += slot.getValue();
+		}
+		return score;
 	}
 }

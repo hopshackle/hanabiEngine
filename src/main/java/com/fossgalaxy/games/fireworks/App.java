@@ -1,10 +1,13 @@
 package com.fossgalaxy.games.fireworks;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
+import com.fossgalaxy.games.fireworks.ai.RandomAgent;
 import com.fossgalaxy.games.fireworks.engine.Card;
 import com.fossgalaxy.games.fireworks.engine.CardColour;
 import com.fossgalaxy.games.fireworks.engine.Hanabi;
@@ -20,15 +23,13 @@ public class App
 	
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        
         Scanner scanner = new Scanner(System.in);
         
         //this could be MUCH better, but it should work for testing
         Map<Integer, Player> players = new HashMap<Integer, Player>();
         players.put(0, new InteractivePlayer(scanner));
-        players.put(1, new DummyPlayer());
-        players.put(2, new DummyPlayer());
+        players.put(1, new AgentPlayer(new RandomAgent()));
+        players.put(2, new AgentPlayer(new RandomAgent()));
         
         //build the game
         Hanabi game = new Hanabi(players.size(), HAND_SIZE);
@@ -52,6 +53,7 @@ public class App
         	String[] moveArgs = move.split(" ");
         	
         	switch (moveArgs[0]) {
+        		case "play":
         		case "PLAY": {
         			//PLAY $SLOT
         			int slot = Integer.parseInt(moveArgs[1]);
@@ -63,6 +65,7 @@ public class App
                 	sendToAllBut(playerID, TextProtocol.drawMessage(playerID, slot, newCard.colour, newCard.value), players);
         			break;
         		}
+        		case "discard":
         		case "DISCARD": {
         			//DISCARD $SLOT
         			int slot = Integer.parseInt(moveArgs[1]);
@@ -74,10 +77,9 @@ public class App
                 	sendToAllBut(playerID, TextProtocol.drawMessage(playerID, slot, newCard.colour, newCard.value), players);
         			break;
         		}
+        		case "tell_colour":
         		case "TELL_COLOUR": {
         			//TELL_COLOUR $PLAYER $COLOUR
-        			
-        			//tell all players about information
         			
         			int player = Integer.parseInt(moveArgs[1]);
         			CardColour colour = CardColour.valueOf(moveArgs[2]);
@@ -86,17 +88,18 @@ public class App
         			sendToAll(TextProtocol.tellPlayer(playerID, player, colour, slots), players.values());
         			break;
         		}
-        		
+        		case "tell_value":
         		case "TELL_VALUE": {
         			//TELL_VALUE $PLAYER $VALUE
-        			
-        			//TODO
-        			//tell all players about information
         			
         			int player = Integer.parseInt(moveArgs[1]);
         			int value = Integer.parseInt(moveArgs[2]);
         			Collection<Integer> slots = game.tell(playerID, player, value);
         			sendToAll(TextProtocol.tellPlayer(playerID, player, value, slots), players.values());
+        			break;
+        		}
+        		default: {
+    				System.err.println("unknown action "+move+" for "+playerID+" parts: "+Arrays.toString(moveArgs));
         			break;
         		}
         	}
@@ -114,7 +117,7 @@ public class App
         }
         
         //Phase 3: tell players the final score
-        //TODO write game logic
+        System.out.println("final score: "+game.getScore());
         
         scanner.close();
     }

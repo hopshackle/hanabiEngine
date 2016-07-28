@@ -35,11 +35,11 @@ public class TextProtocol {
 	}
 	
 	public static String tellPlayer(int player, int who, CardColour colour, Collection<Integer> slots) {
-		return buildMessage(player, ACTION_TELL_COLOUR, colour+" "+join(slots));
+		return buildMessage(player, ACTION_TELL_COLOUR, who+" "+colour+" "+join(slots));
 	}
 	
 	public static String tellPlayer(int player, int who, Integer value, Collection<Integer> slots) {
-		return buildMessage(player, ACTION_TELL_VALUE, value+" "+join(slots));
+		return buildMessage(player, ACTION_TELL_VALUE, who+" "+value+" "+join(slots));
 	}
 	
 	public static String drawMessage(int player, int slot, CardColour colour, int value) {

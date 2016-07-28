@@ -75,7 +75,7 @@ public class Deck {
      * @return boolean are there any cards left?
      */
 	public boolean hasCardsLeft() {
-		return cards.isEmpty();
+		return !cards.isEmpty();
 	}
 
 	/**
