@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi;
+package com.fossgalaxy.games.fireworks;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

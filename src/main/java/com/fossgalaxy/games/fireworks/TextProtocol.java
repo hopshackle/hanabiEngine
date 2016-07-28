@@ -1,10 +1,10 @@
-package com.fossgalaxy.hanabi;
+package com.fossgalaxy.games.fireworks;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.fossgalaxy.hanabi.engine.Card;
-import com.fossgalaxy.hanabi.engine.CardColour;
+import com.fossgalaxy.games.fireworks.engine.Card;
+import com.fossgalaxy.games.fireworks.engine.CardColour;
 
 //Server -> Client Action Descriptions
 //System.out.println("$WHO PLAY $SLOT");

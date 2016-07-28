@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi.engine;
+package com.fossgalaxy.games.fireworks.engine;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.*;
@@ -8,8 +8,8 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.fossgalaxy.hanabi.engine.CardColour;
-import com.fossgalaxy.hanabi.engine.Hanabi;
+import com.fossgalaxy.games.fireworks.engine.CardColour;
+import com.fossgalaxy.games.fireworks.engine.Hanabi;
 
 @RunWith(JUnitParamsRunner.class)
 public class HanabiTest {

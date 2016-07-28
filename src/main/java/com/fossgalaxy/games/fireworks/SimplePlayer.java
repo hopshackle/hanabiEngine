@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi;
+package com.fossgalaxy.games.fireworks;
 
 import java.io.PrintStream;
 import java.util.Scanner;

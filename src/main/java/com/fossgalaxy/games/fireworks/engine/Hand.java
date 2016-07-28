@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi.engine;
+package com.fossgalaxy.games.fireworks.engine;
 
 import java.util.Arrays;
 import java.util.Iterator;

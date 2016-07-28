@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi;
+package com.fossgalaxy.games.fireworks;
 
 public class DummyPlayer implements Player {
 

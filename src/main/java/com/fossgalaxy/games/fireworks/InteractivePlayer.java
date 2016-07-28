@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi;
+package com.fossgalaxy.games.fireworks;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.fossgalaxy.hanabi.engine.CardColour;
-import com.fossgalaxy.hanabi.engine.Hand;
+import com.fossgalaxy.games.fireworks.engine.CardColour;
+import com.fossgalaxy.games.fireworks.engine.Hand;
 
 public class InteractivePlayer implements Player {
 	private Map<Integer, Hand> hands;

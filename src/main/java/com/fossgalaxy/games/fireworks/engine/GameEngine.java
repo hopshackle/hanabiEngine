@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi.engine;
+package com.fossgalaxy.games.fireworks.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;

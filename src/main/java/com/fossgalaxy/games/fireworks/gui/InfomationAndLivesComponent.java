@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi.gui;
+package com.fossgalaxy.games.fireworks.gui;
 
 import javax.swing.JComponent;
 

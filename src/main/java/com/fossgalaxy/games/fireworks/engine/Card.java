@@ -1,4 +1,4 @@
-package com.fossgalaxy.hanabi.engine;
+package com.fossgalaxy.games.fireworks.engine;
 
 /**
  * A card for the Hanabi card game

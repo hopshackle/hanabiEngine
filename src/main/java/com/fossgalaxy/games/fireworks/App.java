@@ -1,14 +1,14 @@
-package com.fossgalaxy.hanabi;
+package com.fossgalaxy.games.fireworks;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.fossgalaxy.hanabi.engine.Card;
-import com.fossgalaxy.hanabi.engine.CardColour;
-import com.fossgalaxy.hanabi.engine.Hanabi;
-import com.fossgalaxy.hanabi.engine.Hand;
+import com.fossgalaxy.games.fireworks.engine.Card;
+import com.fossgalaxy.games.fireworks.engine.CardColour;
+import com.fossgalaxy.games.fireworks.engine.Hanabi;
+import com.fossgalaxy.games.fireworks.engine.Hand;
 
 /**
  * Hello world!
