@@ -119,7 +119,7 @@ public class TestRules {
 		
 		//setup
 		GameState state = new BasicState(2, 5);
-		state.setCardAt(player, slot, new Card(4, colour));
+		state.setCardAt(player, slot, new Card(1, colour));
 			
 		//checks for invariants
 		int lives = state.getLives();
@@ -133,7 +133,7 @@ public class TestRules {
 		play.apply(player, state);
 		
 		//check the result is as expected
-		assertEquals(0, state.getTableValue(colour));
+		assertEquals(1, state.getTableValue(colour));
 		assertEquals(lives, state.getLives());
 		assertEquals(infomation, state.getInfomation());
 		assertEquals(null, state.getCardAt(player, slot));

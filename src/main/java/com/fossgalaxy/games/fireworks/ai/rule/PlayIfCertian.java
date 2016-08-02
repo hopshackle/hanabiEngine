@@ -21,7 +21,7 @@ public class PlayIfCertian implements Rule {
 			Integer value = myHand.getKnownValue(slot);
 
 			if (c != null) {
-				int nextValue = StateUtils.getTableValue(state, c);
+				int nextValue = state.getTableValue(c);
 				if (nextValue + 1 == value) {
 					return new PlayCard(slot);
 				}

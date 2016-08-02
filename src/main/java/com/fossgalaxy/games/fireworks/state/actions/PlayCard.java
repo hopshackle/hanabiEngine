@@ -55,6 +55,8 @@ public class PlayCard implements Action {
 			Card newCard = game.drawFromDeck();
 			game.setCardAt(playerID, slot, newCard);
 			events.add(new CardDrawn(playerID, slot, newCard.colour, newCard.value));
+		} else {
+			game.setCardAt(playerID, slot, null);
 		}
 		
 		return events;

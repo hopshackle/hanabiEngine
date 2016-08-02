@@ -3,7 +3,6 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
-import com.fossgalaxy.games.fireworks.state.StateUtils;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 
@@ -21,7 +20,7 @@ public class DiscardIfUseless implements Rule {
 			Integer value = myHand.getKnownValue(slot);
 
 			if (c != null) {
-				int currValue = StateUtils.getTableValue(state, c);
+				int currValue = state.getTableValue(c);
 				if (currValue >= value) {
 					return new DiscardCard(slot);
 				}
