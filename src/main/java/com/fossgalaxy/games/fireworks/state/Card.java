@@ -1,4 +1,4 @@
-package com.fossgalaxy.games.fireworks.engine;
+package com.fossgalaxy.games.fireworks.state;
 
 /**
  * A card for the Hanabi card game
@@ -6,19 +6,10 @@ package com.fossgalaxy.games.fireworks.engine;
 public class Card {
 	public final Integer value;
 	public final CardColour colour;
-	
+
 	public Card(Integer value, CardColour colour) {
 		this.value = value;
 		this.colour = colour;
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((colour == null) ? 0 : colour.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
 	}
 
 	@Override
@@ -40,8 +31,17 @@ public class Card {
 		return true;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((colour == null) ? 0 : colour.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
 
+	@Override
 	public String toString() {
-		return colour+" "+value;
+		return colour + " " + value;
 	}
 }

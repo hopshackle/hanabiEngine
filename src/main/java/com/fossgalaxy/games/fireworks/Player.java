@@ -1,9 +1,12 @@
 package com.fossgalaxy.games.fireworks;
 
+import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+
 public interface Player {
 
-	void sendMessage(String msg);
+	Action getAction();
 
-	String getAction();
+	void sendMessage(GameEvent msg);
 
 }

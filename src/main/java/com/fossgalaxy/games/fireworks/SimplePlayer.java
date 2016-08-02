@@ -3,33 +3,40 @@ package com.fossgalaxy.games.fireworks;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+
 public class SimplePlayer implements Player {
 
 	private String name;
 	private Scanner in;
 	private PrintStream out;
-	
+
 	public SimplePlayer(String name, Scanner in, PrintStream out) {
 		this.name = name;
 		this.in = in;
 		this.out = out;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.fossgalaxy.hanabi.Player#sendMessage(java.lang.String)
-	 */
-	@Override
-	public void sendMessage(String msg) {
-		out.println("["+name+"] "+msg);
-	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fossgalaxy.hanabi.Player#getAction()
 	 */
 	@Override
-	public String getAction() {
-		sendMessage(TextProtocol.buildMessage(-1, TextProtocol.PROTOCOL_REQ_MOVE, ""));
-		return in.nextLine();
+	public Action getAction() {
+		out.println("your move");
+		return TextProtocol.stringToAction(in.nextLine());
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fossgalaxy.hanabi.Player#sendMessage(java.lang.String)
+	 */
+	@Override
+	public void sendMessage(GameEvent msg) {
+		out.println("[" + name + "] " + msg);
+	}
+
 }
