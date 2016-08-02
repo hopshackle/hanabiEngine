@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import com.fossgalaxy.games.fireworks.state.BasicState;
+import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
@@ -30,7 +31,7 @@ public class InteractivePlayer implements Player {
 		}
 		out.println("  You have " + state.getLives() + " lives");
 		out.println("  You have " + state.getInfomation() + " infomation token(s)");
-		out.println("  The table is: " + state.getTable());
+		out.println("  The table is: " + state.getTableValue(CardColour.BLUE));
 		out.println();
 		out.println("  What would you like to do? ");
 		return TextProtocol.stringToAction(in.nextLine());

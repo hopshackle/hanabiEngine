@@ -21,7 +21,7 @@ public interface GameState {
 	int getLives();
 	int getInfomation();
 	Hand getHand(int player);
-	Map<CardColour, Integer> getTable();
+	int getTableValue(CardColour colour);
 	Collection<Card> getDiscards();
 
 	//update the state
@@ -32,4 +32,7 @@ public interface GameState {
 	Card drawFromDeck();
 	void setCardAt(int player, int slot, Card newCard);
 	void setTableValue(CardColour c, int nextValue);
+	
+	//injector
+	Deck getDeck();
 }

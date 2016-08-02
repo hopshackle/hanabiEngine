@@ -1,12 +1,10 @@
 package com.fossgalaxy.games.fireworks.state.actions;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.CardPlayed;
@@ -27,14 +25,11 @@ public class PlayCard implements Action {
 		assert oldCard != null : "old card was unknown or did not exist";
 		
 		//figure out the next value
-		Map<CardColour, Integer> table = game.getTable();
-		Integer tableVal = table.get(oldCard.colour);
-		int nextValue = (tableVal==null?0:tableVal) + 1;
+		int nextValue = game.getTableValue(oldCard.colour) + 1;
 		
 		//check if the card was valid
 		if (nextValue == oldCard.value) {
 			game.setTableValue(oldCard.colour, nextValue);
-			
 			
 			//if you complete a firework, you get an information back
 			if (nextValue == 5) {
@@ -51,13 +46,18 @@ public class PlayCard implements Action {
 			game.setLives(game.getLives() - 1);
 		}
 		
+		ArrayList<GameEvent> events = new ArrayList<>();
+		events.add(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value));
+		
 		//deal with the new card
 		//XXX null pointer exception if next card was null.
-		Card newCard = game.drawFromDeck();
-		game.setCardAt(playerID, slot, newCard);
-
-		return Arrays.asList(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value),
-				new CardDrawn(playerID, slot, newCard.colour, newCard.value));
+		if (game.getDeck().hasCardsLeft()) {
+			Card newCard = game.drawFromDeck();
+			game.setCardAt(playerID, slot, newCard);
+			events.add(new CardDrawn(playerID, slot, newCard.colour, newCard.value));
+		}
+		
+		return events;
 	}
 
 	@Override

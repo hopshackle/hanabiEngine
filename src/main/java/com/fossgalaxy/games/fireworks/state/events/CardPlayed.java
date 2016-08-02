@@ -29,9 +29,7 @@ public class CardPlayed extends GameEvent {
 		Card oldCard = new Card(value, colour);
 		
 		//figure out next number
-		Map<CardColour, Integer> table = state.getTable();
-		Integer tableVal = table.get(oldCard.colour);
-		int nextValue = (tableVal==null?0:tableVal) + 1;
+		int nextValue = state.getTableValue(oldCard.colour) + 1;
 		
 		if (nextValue != oldCard.value) {
 			state.setLives(state.getLives() - 1);

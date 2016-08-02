@@ -28,11 +28,6 @@ public class StateUtils {
 		return slots;
 	}
 	
-	public static int getTableValue(GameState state, CardColour c){
-		Integer currVal = state.getTable().get(c);
-		return currVal==null?0:currVal;
-	}
-	
 	public static int getDiscardedCount(GameState state, CardColour colour, int value) {
 		Collection<Card> discard = state.getDiscards();
 		

@@ -31,6 +31,10 @@ public class BasicState implements GameState {
 		
 		this.infomation = MAX_INFOMATION;
 		this.lives = MAX_LIVES;
+		
+		for (int i=0; i<playerCount; i++) {
+			hands[i] = new Hand(handSize); 
+		}
 	}
 	
 	public BasicState(BasicState state) {
@@ -95,8 +99,9 @@ public class BasicState implements GameState {
 	}
 
 	@Override
-	public Map<CardColour, Integer> getTable() {
-		return Collections.unmodifiableMap(table);
+	public int getTableValue(CardColour colour) {
+		Integer curr = table.get(colour);
+		return curr==null?0:curr;
 	}
 
 	@Override
@@ -171,6 +176,10 @@ public class BasicState implements GameState {
 			total += val;
 		}
 		return total;
+	}
+	
+	public Deck getDeck() {
+		return deck;
 	}
 
 }
