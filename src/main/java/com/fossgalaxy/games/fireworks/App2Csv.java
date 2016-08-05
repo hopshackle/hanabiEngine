@@ -16,7 +16,7 @@ public class App2Csv {
 
 		
 		
-		System.out.println("players,infomation,lives,moves,score");
+		System.out.println("name,players,information,lives,moves,score");
 		for (int run=0; run<500; run++) {
 			playGame("random", new RandomAgent(), new RandomAgent(), new RandomAgent());
 			playGame("productionRule1", ProductionRuleAgent.buildTest1(), ProductionRuleAgent.buildTest1(), ProductionRuleAgent.buildTest1());
