@@ -1,4 +1,5 @@
 target/
+.*
 
 # Intellij
 .idea/
