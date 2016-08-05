@@ -40,4 +40,10 @@ public class SimplePlayer implements Player {
 		out.println("[" + name + "] " + msg);
 	}
 
+	@Override
+	public void setID(int id, int nPlayers) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

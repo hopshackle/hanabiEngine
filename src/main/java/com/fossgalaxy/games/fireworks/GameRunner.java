@@ -85,11 +85,24 @@ public class GameRunner {
 		assert nPlayers == players.length;
 		init();
 		
+		int strikes = 3;
 		while (!state.isGameOver()) {
 			try {
 				nextMove();
 			} catch (RulesViolation rv) {
-				System.err.println("user broke rules by prompting again "+rv);
+				
+				//House rule: mess up 3 times and you lose a life (and your go)
+				if (strikes == 0) {
+					state.setLives(state.getLives()-1);
+					nextPlayer = (nextPlayer + 1) % players.length;
+					
+					System.err.println("player "+nextPlayer+" got 3 strikes - lose a life");
+					continue;
+				}
+				
+				//decrement strikes and last player gets another go
+				strikes--;
+				//System.err.println("user broke rules by prompting again "+rv);
 			}
 			state.tick();
 		}

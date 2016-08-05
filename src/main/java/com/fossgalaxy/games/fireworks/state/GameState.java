@@ -3,9 +3,9 @@ package com.fossgalaxy.games.fireworks.state;
 import java.util.Collection;
 
 public interface GameState {
-
-	int STARTING_LIVES = 3;
-	int STARTING_INFO = 8;
+	final int[] HAND_SIZE = { -1, -1, 5, 5, 4, 4 };
+	final int STARTING_LIVES = 3;
+	final int STARTING_INFO = 8;
 
 	void init();
 	

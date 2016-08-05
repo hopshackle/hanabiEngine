@@ -38,4 +38,10 @@ public class RandomPlayer implements Player {
 
 	}
 
+	@Override
+	public void setID(int id, int nPlayers) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

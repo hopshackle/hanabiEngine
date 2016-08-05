@@ -17,4 +17,10 @@ public class DummyPlayer implements Player {
 
 	}
 
+	@Override
+	public void setID(int id, int nPlayers) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

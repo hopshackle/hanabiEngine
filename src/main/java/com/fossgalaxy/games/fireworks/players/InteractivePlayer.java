@@ -43,4 +43,10 @@ public class InteractivePlayer implements Player {
 		msg.apply(state);
 	}
 
+	@Override
+	public void setID(int id, int nPlayers) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

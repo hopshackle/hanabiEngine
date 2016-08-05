@@ -9,4 +9,6 @@ public interface Player {
 
 	void sendMessage(GameEvent msg);
 
+	void setID(int id, int nPlayers);
+
 }

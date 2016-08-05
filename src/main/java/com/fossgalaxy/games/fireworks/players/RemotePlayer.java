@@ -34,4 +34,10 @@ public class RemotePlayer implements Player {
 
 	}
 
+	@Override
+	public void setID(int id, int nPlayers) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

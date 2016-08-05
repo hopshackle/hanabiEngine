@@ -124,7 +124,6 @@ public class BasicState implements GameState {
 	@Override
 	public int getScore() {
 		int total = 0;
-		System.out.println(table);
 		
 		for (Integer val : table.values()) {
 			total += val;
@@ -151,12 +150,10 @@ public class BasicState implements GameState {
 	@Override
 	public boolean isGameOver() {
 		if (lives <= 0) {
-			System.out.println("no move lives");
 			return true;
 		}
 
 		if (!deck.hasCardsLeft() && movesLeft != 0) {
-			System.out.println("no cards left");
 			return true;
 		}
 		
