@@ -9,15 +9,17 @@ import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 public class AgentPlayer implements Player {
 	private GameState state;
 	private Agent agent;
+	private int playerID;
 
-	public AgentPlayer(Agent agent) {
+	public AgentPlayer(int playerID, Agent agent) {
+		this.playerID = playerID;
 		this.agent = agent;
-		this.state = new BasicState(5, 3);
+		this.state = new BasicState(4, 4);
 	}
 
 	@Override
 	public Action getAction() {
-		return agent.doMove(state);
+		return agent.doMove(playerID, state);
 	}
 
 	@Override

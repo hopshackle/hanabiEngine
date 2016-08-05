@@ -9,6 +9,7 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
+import com.fossgalaxy.games.fireworks.state.RulesViolation;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
@@ -24,7 +25,7 @@ public class TellColour implements Action {
 	@Override
 	public List<GameEvent> apply(int playerID, GameState game) {
 
-		Hand hand = game.getHand(playerID);
+		Hand hand = game.getHand(player);
 		List<Integer> slots = new ArrayList<Integer>();
 		for (int i = 0; i < hand.getSize(); i++) {
 			Card card = hand.getCard(i);
@@ -34,12 +35,12 @@ public class TellColour implements Action {
 		}
 
 		if (slots.isEmpty()) {
-			throw new RuntimeException("you cannot tell a player about a lack of cards");
+			throw new RulesViolation("you cannot tell a player about a lack of cards", this);
 		}
 
 		int infomation = game.getInfomation();
 		if (infomation <= 0) {
-			throw new RuntimeException("you have no infomation left");
+			throw new RulesViolation("you have no infomation left", this);
 		}
 
 		game.setInfomation(infomation - 1);
@@ -50,7 +51,7 @@ public class TellColour implements Action {
 
 	@Override
 	public boolean isLegal(int playerId, GameState state) {
-		return state.getInfomation() < 0;
+		return state.getInfomation() > 0;
 	}
 
 	@Override
@@ -58,4 +59,8 @@ public class TellColour implements Action {
 		return String.format("%s %d %s", TextProtocol.ACTION_TELL_COLOUR, player, colour);
 	}
 
+	public String toString() {
+		return String.format("tell %d about their %ss", player, colour);
+	}
+	
 }

@@ -7,13 +7,15 @@ public interface GameState {
 	int STARTING_LIVES = 3;
 	int STARTING_INFO = 8;
 
+	void init();
+	
 	void addToDiscard(Card card);
 
 	Card drawFromDeck();
 
 	// query the state (primatives)
 	Card getCardAt(int player, int slot);
-
+	
 	// injector
 	Deck getDeck();
 
@@ -50,4 +52,6 @@ public interface GameState {
 	void setLives(int newValue);
 
 	void setTableValue(CardColour c, int nextValue);
+
+	void tick();
 }

@@ -21,7 +21,7 @@ public class RandomAgent implements Agent {
 	}
 
 	@Override
-	public Action doMove(GameState state) {
+	public Action doMove(int agentID, GameState state) {
 		int moveType = random.nextInt(4);
 
 		if (moveType == 0) {
@@ -29,7 +29,7 @@ public class RandomAgent implements Agent {
 		} else if (moveType == 1) {
 			return new DiscardCard(random.nextInt(state.getHandSize()));
 		} else if (moveType == 2) {
-			return new TellValue(random.nextInt(state.getPlayerCount()), random.nextInt(5));
+			return new TellValue(random.nextInt(state.getPlayerCount()), random.nextInt(5)+1);
 		} else {
 			CardColour[] possible = CardColour.values();
 			int selected = random.nextInt(possible.length);

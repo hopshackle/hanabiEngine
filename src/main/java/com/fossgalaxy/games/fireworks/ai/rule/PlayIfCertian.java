@@ -9,7 +9,7 @@ import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 /**
  * Play a card we know is 100% safe based on provided information.
  */
-public class PlayIfCertian implements Rule {
+public class PlayIfCertian extends AbstractRule {
 
 	@Override
 	public Action execute(int playerID, GameState state) {
@@ -21,7 +21,7 @@ public class PlayIfCertian implements Rule {
 
 			if (c != null) {
 				int nextValue = state.getTableValue(c);
-				if (nextValue + 1 == value) {
+				if (value != null && nextValue + 1 == value) {
 					return new PlayCard(slot);
 				}
 			}

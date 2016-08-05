@@ -9,10 +9,14 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 /**
  * Play a card we know is 100% safe based on provided information.
  */
-public class DiscardIfUseless implements Rule {
-
+public class DiscardIfUseless extends AbstractRule {
+	
 	@Override
 	public Action execute(int playerID, GameState state) {
+		if (state.getInfomation() == state.getStartingInfomation()) {
+			return null;
+		}
+		
 
 		Hand myHand = state.getHand(playerID);
 		for (int slot = 0; slot < state.getHandSize(); slot++) {
@@ -21,7 +25,7 @@ public class DiscardIfUseless implements Rule {
 
 			if (c != null) {
 				int currValue = state.getTableValue(c);
-				if (currValue >= value) {
+				if (value != null && currValue >= value) {
 					return new DiscardCard(slot);
 				}
 			}

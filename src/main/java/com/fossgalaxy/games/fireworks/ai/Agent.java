@@ -5,6 +5,6 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 public interface Agent {
 
-	Action doMove(GameState state);
+	Action doMove(int agentID, GameState state);
 
 }

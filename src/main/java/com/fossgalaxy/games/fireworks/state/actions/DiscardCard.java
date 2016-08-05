@@ -58,4 +58,8 @@ public class DiscardCard implements Action {
 		return String.format("%s %d", TextProtocol.ACTION_DISCARD, slot);
 	}
 
+	public String toString() {
+		return String.format("Discard %d", slot);
+	}
+	
 }

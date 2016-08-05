@@ -19,7 +19,10 @@ public class PlayCard implements Action {
 
 	@Override
 	public List<GameEvent> apply(int playerID, GameState game) {
-
+		if (!isLegal(playerID, game)) {
+			throw new RuntimeException("this is a voilation of the game rules!");
+		}
+		
 		// deal with the old card first
 		Card oldCard = game.getCardAt(playerID, slot);
 		assert oldCard != null : "old card was unknown or did not exist";

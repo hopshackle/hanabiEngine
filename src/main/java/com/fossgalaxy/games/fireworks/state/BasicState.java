@@ -20,6 +20,7 @@ public class BasicState implements GameState {
 
 	private int infomation;
 	private int lives;
+	private int movesLeft;
 
 	public BasicState(BasicState state) {
 		this.handSize = state.handSize;
@@ -27,6 +28,7 @@ public class BasicState implements GameState {
 		this.discard = new ArrayList<>(state.discard);
 		this.infomation = state.infomation;
 		this.lives = state.lives;
+		this.movesLeft = state.movesLeft;
 
 		this.table = null; // TODO find a way to copy this safely
 
@@ -42,6 +44,7 @@ public class BasicState implements GameState {
 		this.deck = new Deck();
 		this.table = new EnumMap<>(CardColour.class);
 		this.discard = new ArrayList<Card>();
+		this.movesLeft = playerCount;
 
 		this.infomation = MAX_INFOMATION;
 		this.lives = MAX_LIVES;
@@ -51,6 +54,17 @@ public class BasicState implements GameState {
 		}
 	}
 
+	public void init(){
+		deck.init();
+		deck.shuffle();
+		
+		for (int hand=0; hand<hands.length; hand++) {
+			for (int slot=0; slot<handSize; slot++) {
+				hands[hand].setCard(slot, deck.getTopCard());
+			}
+		}
+	}
+	
 	@Override
 	public void addToDiscard(Card card) {
 		discard.add(card);
@@ -110,6 +124,8 @@ public class BasicState implements GameState {
 	@Override
 	public int getScore() {
 		int total = 0;
+		System.out.println(table);
+		
 		for (Integer val : table.values()) {
 			total += val;
 		}
@@ -139,11 +155,11 @@ public class BasicState implements GameState {
 			return true;
 		}
 
-		if (!deck.hasCardsLeft()) {
+		if (!deck.hasCardsLeft() && movesLeft != 0) {
 			System.out.println("no cards left");
 			return true;
 		}
-
+		
 		return lives <= 0 || !deck.hasCardsLeft();
 	}
 
@@ -168,7 +184,6 @@ public class BasicState implements GameState {
 		Hand hand = hands[player];
 		hand.setCard(slot, new Card(value, colour));
 		hand.setKnownValue(slot, value);
-
 	}
 
 	@Override
@@ -181,6 +196,13 @@ public class BasicState implements GameState {
 	@Override
 	public void setTableValue(CardColour colour, int value) {
 		table.put(colour, value);
+	}
+
+	@Override
+	public void tick() {
+		if (!deck.hasCardsLeft()) {
+			movesLeft--;
+		}
 	}
 
 }
