@@ -23,10 +23,10 @@ public class TellColour implements Action {
 
 	@Override
 	public List<GameEvent> apply(int playerID, GameState game) {
-		
+
 		Hand hand = game.getHand(playerID);
 		List<Integer> slots = new ArrayList<Integer>();
-		for (int i=0; i<hand.getSize(); i++) {
+		for (int i = 0; i < hand.getSize(); i++) {
 			Card card = hand.getCard(i);
 			if (card != null && colour.equals(card.colour)) {
 				slots.add(i);
@@ -36,14 +36,14 @@ public class TellColour implements Action {
 		if (slots.isEmpty()) {
 			throw new RuntimeException("you cannot tell a player about a lack of cards");
 		}
-		
+
 		int infomation = game.getInfomation();
 		if (infomation <= 0) {
 			throw new RuntimeException("you have no infomation left");
 		}
-		
-		game.setInfomation(infomation-1);
-		
+
+		game.setInfomation(infomation - 1);
+
 		GameEvent cardInfomation = new CardInfoColour(playerID, player, colour, slots);
 		return Arrays.asList(cardInfomation);
 	}

@@ -27,7 +27,7 @@ public class App {
 	public static void main(String[] args) {
 		List<GameEvent> log = new ArrayList<GameEvent>();
 		List<Action> actionLog = new ArrayList<Action>();
-		
+
 		// this could be MUCH better, but it should work for testing
 		Map<Integer, Player> players = new HashMap<Integer, Player>();
 		players.put(0, new InteractivePlayer(new Scanner(System.in), System.out));

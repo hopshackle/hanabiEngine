@@ -3,7 +3,6 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
-import com.fossgalaxy.games.fireworks.state.StateUtils;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 

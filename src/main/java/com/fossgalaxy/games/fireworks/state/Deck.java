@@ -18,7 +18,7 @@ public class Deck {
 	 * Provides a clone of the given deck
 	 *
 	 * A shallow copy - but the cards themselves are immutable so no problem.
-	 * 
+	 *
 	 * @param deck
 	 *            The given deck to be cloned
 	 */
@@ -38,7 +38,7 @@ public class Deck {
 
 	/**
 	 * Gets the number of cards left in the deck
-	 * 
+	 *
 	 * @return int number of cards left
 	 */
 	public int getCardsLeft() {
@@ -47,7 +47,7 @@ public class Deck {
 
 	/**
 	 * Gets and removes the top card from the deck
-	 * 
+	 *
 	 * @return The card that was on top of the deck
 	 */
 	public Card getTopCard() {
@@ -56,7 +56,7 @@ public class Deck {
 
 	/**
 	 * Are there any cards left in the deck?
-	 * 
+	 *
 	 * @return boolean are there any cards left?
 	 */
 	public boolean hasCardsLeft() {

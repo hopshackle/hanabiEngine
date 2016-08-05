@@ -20,18 +20,18 @@ public class PlayCard implements Action {
 	@Override
 	public List<GameEvent> apply(int playerID, GameState game) {
 
-		//deal with the old card first
+		// deal with the old card first
 		Card oldCard = game.getCardAt(playerID, slot);
 		assert oldCard != null : "old card was unknown or did not exist";
-		
-		//figure out the next value
+
+		// figure out the next value
 		int nextValue = game.getTableValue(oldCard.colour) + 1;
-		
-		//check if the card was valid
+
+		// check if the card was valid
 		if (nextValue == oldCard.value) {
 			game.setTableValue(oldCard.colour, nextValue);
-			
-			//if you complete a firework, you get an information back
+
+			// if you complete a firework, you get an information back
 			if (nextValue == 5) {
 				int currentInfo = game.getInfomation();
 				int maxInfo = game.getStartingInfomation();
@@ -39,18 +39,18 @@ public class PlayCard implements Action {
 					game.setInfomation(currentInfo + 1);
 				}
 			}
-			
+
 		} else {
-			//if this card wasn't valid, discard it and lose a life.
+			// if this card wasn't valid, discard it and lose a life.
 			game.addToDiscard(oldCard);
 			game.setLives(game.getLives() - 1);
 		}
-		
+
 		ArrayList<GameEvent> events = new ArrayList<>();
 		events.add(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value));
-		
-		//deal with the new card
-		//XXX null pointer exception if next card was null.
+
+		// deal with the new card
+		// XXX null pointer exception if next card was null.
 		if (game.getDeck().hasCardsLeft()) {
 			Card newCard = game.drawFromDeck();
 			game.setCardAt(playerID, slot, newCard);
@@ -58,7 +58,7 @@ public class PlayCard implements Action {
 		} else {
 			game.setCardAt(playerID, slot, null);
 		}
-		
+
 		return events;
 	}
 

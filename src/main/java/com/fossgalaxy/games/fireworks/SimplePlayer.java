@@ -20,7 +20,7 @@ public class SimplePlayer implements Player {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.fossgalaxy.hanabi.Player#getAction()
 	 */
 	@Override
@@ -31,7 +31,7 @@ public class SimplePlayer implements Player {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.fossgalaxy.hanabi.Player#sendMessage(java.lang.String)
 	 */
 	@Override

@@ -41,15 +41,15 @@ public class CardInfoColour extends GameEvent {
 	@Override
 	public void apply(GameState state) {
 		assert state.getInfomation() > 0 : "got told infomation with no infomation left?!";
-		
+
 		Hand playerHand = state.getHand(playerId);
-		
+
 		for (int slot : slots) {
 			playerHand.setKnownColour(slot, colour);
 		}
-		
+
 		state.setInfomation(state.getInfomation() - 1);
-		
+
 		assert state.getInfomation() >= 0 : "negative infomation happend?!";
 	}
 

@@ -1,7 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
-import java.util.Map;
-
 import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
@@ -25,30 +23,30 @@ public class CardPlayed extends GameEvent {
 
 	@Override
 	public void apply(GameState state) {
-		
+
 		Card oldCard = new Card(value, colour);
-		
-		//figure out next number
+
+		// figure out next number
 		int nextValue = state.getTableValue(oldCard.colour) + 1;
-		
+
 		if (nextValue != oldCard.value) {
 			state.setLives(state.getLives() - 1);
 			state.addToDiscard(oldCard);
 		} else {
 			state.setTableValue(oldCard.colour, nextValue);
 			state.setCardAt(playerId, slotId, null);
-			
-			//next value is 5, get free infomations
+
+			// next value is 5, get free infomations
 			if (nextValue == 5) {
 				int currInfo = state.getInfomation();
 				int maxInfo = state.getStartingInfomation();
-				
+
 				if (maxInfo != currInfo) {
 					state.setInfomation(currInfo + 1);
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
