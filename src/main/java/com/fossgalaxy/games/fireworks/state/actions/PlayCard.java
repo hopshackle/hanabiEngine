@@ -63,7 +63,7 @@ public class PlayCard implements Action {
 	}
 
 	@Override
-	public boolean isLegal(GameState state) {
+	public boolean isLegal(int playerID, GameState state) {
 		return true;
 	}
 

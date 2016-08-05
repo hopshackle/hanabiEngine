@@ -10,7 +10,7 @@ import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 /**
  * High level game-play tests for play action.
  */
-public class TestRules {
+public class PlayActionRules {
 
 	@Test
 	public void testPlayCardValid() {
