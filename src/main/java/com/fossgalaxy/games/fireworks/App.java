@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
+import com.fossgalaxy.games.fireworks.players.InteractivePlayer;
+import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;

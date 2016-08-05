@@ -1,6 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai;
 
-import com.fossgalaxy.games.fireworks.Player;
+import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;

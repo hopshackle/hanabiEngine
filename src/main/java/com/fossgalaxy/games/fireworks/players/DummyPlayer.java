@@ -1,4 +1,4 @@
-package com.fossgalaxy.games.fireworks;
+package com.fossgalaxy.games.fireworks.players;
 
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;

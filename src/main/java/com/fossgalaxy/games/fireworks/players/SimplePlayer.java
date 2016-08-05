@@ -1,8 +1,9 @@
-package com.fossgalaxy.games.fireworks;
+package com.fossgalaxy.games.fireworks.players;
 
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
