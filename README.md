@@ -6,8 +6,9 @@ This is designed to allow the development of bots which play the board game [han
 * Piers Williams
 
 ## Directories
-src/ - Source Code
-research/ - Materials for research purposes
-target/ - Maven compiled artifacts
+* src/ - Source Code
+* research/ - Materials for research purposes
+* target/ - Maven compiled artifacts
+
 
 [hanabi]: https://boardgamegeek.com/boardgame/98778/hanabi
