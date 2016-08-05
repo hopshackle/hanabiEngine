@@ -9,7 +9,7 @@ public interface Action {
 
 	List<GameEvent> apply(int playerID, GameState state);
 
-	boolean isLegal(GameState state);
+	boolean isLegal(int playerID, GameState state);
 
 	String toProtocol();
 

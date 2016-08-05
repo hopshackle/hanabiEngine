@@ -48,7 +48,7 @@ public class TellValue implements Action {
 	}
 
 	@Override
-	public boolean isLegal(GameState state) {
+	public boolean isLegal(int playerId, GameState state) {
 		return state.getInfomation() < 0;
 	}
 
