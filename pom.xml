@@ -47,7 +47,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.fossgalaxy.games.fireworks.App2Csv</mainClass>
+							<mainClass>com.fossgalaxy.games.fireworks.App2CsvMulti</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
