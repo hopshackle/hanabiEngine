@@ -20,19 +20,24 @@ fi
 # work out important values
 GIT_COMMIT=$(git rev-parse HEAD)
 GIT_MESSAGE=$(git log -1 HEAD --pretty=format:%s)
-MVN_VERSION="0.1-SNAPSHOT"
+MVN_VERSION="0.1-SNAPSHOT" # TODO automate this
 
 ## Result Variables
-RESULT_DIR=results/$GIT_COMMIT
+BASE_DIR=`pwd`/results
+RESULT_DIR=$BASE_DIR/$GIT_COMMIT
 RESULT_FILE=$RESULT_DIR/result.csv
 RESULT_LOG=$RESULT_DIR/error.log
-RESEARCH_LOG=results/runs.log
+RESEARCH_LOG=$BASE_DIR/runs.log
 
+echo this is commit $GIT_COMMIT - starting run
+
+# make sure stuff exists
 mkdir -p $RESULT_DIR
+touch $RESEARCH_LOG
 
+# the actual runner
 mvn clean package > $RESULT_DIR/$GIT_COMMIT.build.log
 cd target/
-echo $GIT_COMMIT.results.csv
-java -jar fireworks-$MVN_VERSION.jar 1>$RESULT_CSV 2>$RESULT_LOG
-echo date $GIT_COMMIT $GIT_MESSAGE >> $RESEARCH_LOG
-
+java -jar fireworks-$MVN_VERSION.jar 1>$RESULT_FILE 2>$RESULT_LOG
+echo $(date --iso-8601) $(hostname) $GIT_COMMIT $GIT_MESSAGE >> $RESEARCH_LOG
+echo run finished.
