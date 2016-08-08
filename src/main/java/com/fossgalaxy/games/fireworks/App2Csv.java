@@ -2,9 +2,6 @@ package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
-import com.fossgalaxy.games.fireworks.ai.RandomAgent;
-import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
-import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.players.Player;
 
 /**
@@ -12,7 +9,9 @@ import com.fossgalaxy.games.fireworks.players.Player;
  *
  */
 public class App2Csv {
-	private static final Integer DEFAULT_NUM_RUNS = 10_000;
+	public static final Integer GAME_SIZE = 3;
+	public static final Integer DEFAULT_NUM_RUNS = 10_000;
+	public static final String[] AGENT_NAMES = {"pure_random", "random", "internal", "outer", "cautious"};
 	
 	public static void main(String[] args) {
 		
@@ -24,17 +23,26 @@ public class App2Csv {
 			runCount = Integer.parseInt(runCountEnv);
 		}
 		
-		
-		System.out.println("name,players,information,lives,moves,score");
-		for (int run=0; run<runCount; run++) {
-			playGame("pure_random", new RandomAgent(), new RandomAgent(), new RandomAgent());
-			playGame("random", OsawaFactory.buildRandom(), OsawaFactory.buildRandom(), OsawaFactory.buildRandom());
-			playGame("internal", OsawaFactory.buildInternalState(), OsawaFactory.buildInternalState(), OsawaFactory.buildInternalState());
-			playGame("outer", OsawaFactory.buildOuterState(), OsawaFactory.buildOuterState(), OsawaFactory.buildOuterState());
-			playGame("cautious", IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious());
+		//agents which will be playing
+		String[] agentNames = App2Csv.AGENT_NAMES;
+		String envAgents = System.getenv("FIREWORKS_AGENTS");
+		if (envAgents != null) {
+			agentNames = envAgents.split(",");
 		}
 		
-		//System.out.println("avg: "+sum/games);
+		//play the games
+		System.out.println("name,players,information,lives,moves,score");
+		for (int run=0; run<runCount; run++) {
+			Agent[] agents = new Agent[GAME_SIZE];
+			
+			for (String name : agentNames) {
+				for (int agent=0; agent<agents.length; agent++) {
+					agents[agent] = App.buildAgent(name);
+				}
+				
+				playGame(name, agents);
+			}
+		}
 	}
 	
 	public static GameStats playGame(String name, Player ... players) {

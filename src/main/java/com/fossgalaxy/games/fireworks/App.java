@@ -1,6 +1,10 @@
 package com.fossgalaxy.games.fireworks;
 
+import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
+import com.fossgalaxy.games.fireworks.ai.RandomAgent;
+import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
+import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 
 /**
@@ -36,6 +40,23 @@ public class App {
 		GameStats stats = runner.playGame();
 		System.out.println("the agents scored: "+stats);
 		return stats;
+	}
+	
+	public static Agent buildAgent(String name) {
+		switch (name) {
+			case "pure_random":
+				return new RandomAgent();
+			case "random":
+				return OsawaFactory.buildRandom();
+			case "internal":
+				return OsawaFactory.buildInternalState();
+			case "outer":
+				return  OsawaFactory.buildOuterState();
+			case "cautious":
+				return IGGIFactory.buildCautious();
+		}
+		
+		throw new RuntimeException("unknown agent type "+name);
 	}
 
 }
