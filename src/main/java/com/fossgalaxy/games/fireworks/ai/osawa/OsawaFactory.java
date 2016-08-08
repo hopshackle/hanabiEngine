@@ -10,6 +10,12 @@ import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellPlayableCard;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 
+/**
+ * Factory for describing agents defined in Osawa's paper.
+ * 
+ * the paper is entitled, "Solving Hanabi: Estimating Hands by Opponent's Actions in Cooperative Game with Incomplete Information"
+ * and was published in 2015 in "Computer Poker and Imperfect Information: Papers from the 2015 AAAI Workshop"
+ */
 public class OsawaFactory {
 
 	/**
