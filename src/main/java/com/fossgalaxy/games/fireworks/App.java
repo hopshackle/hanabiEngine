@@ -1,7 +1,7 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
-import com.fossgalaxy.games.fireworks.ai.ProductionRuleAgent;
+import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 
 /**
  * Hello world!

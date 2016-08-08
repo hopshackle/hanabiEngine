@@ -1,9 +1,9 @@
 package com.fossgalaxy.games.fireworks.ai.osawa;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.ai.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.rule.DiscardIfUseless;
 import com.fossgalaxy.games.fireworks.ai.rule.PlayIfCertian;
+import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.rule.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.TellUnknown;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;

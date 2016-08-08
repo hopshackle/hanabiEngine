@@ -2,9 +2,10 @@ package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
-import com.fossgalaxy.games.fireworks.ai.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
+import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
+import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.players.Player;
 
 /**
@@ -15,13 +16,10 @@ public class App2Csv {
 
 	public static void main(String[] args) {
 
-		
-		
 		System.out.println("name,players,information,lives,moves,score");
 		for (int run=0; run<500; run++) {
 			playGame("random", new RandomAgent(), new RandomAgent(), new RandomAgent());
-			playGame("productionRule1", ProductionRuleAgent.buildTest1(), ProductionRuleAgent.buildTest1(), ProductionRuleAgent.buildTest1());
-			playGame("productionRule2", ProductionRuleAgent.buildTest2(), ProductionRuleAgent.buildTest2(), ProductionRuleAgent.buildTest2());
+			playGame("cautious", IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious());
 			playGame("internal", OsawaFactory.buildInternalState(), OsawaFactory.buildInternalState(), OsawaFactory.buildInternalState());
 			playGame("outer", OsawaFactory.buildOuterState(), OsawaFactory.buildOuterState(), OsawaFactory.buildOuterState());
 		}

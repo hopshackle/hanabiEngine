@@ -1,14 +1,10 @@
-package com.fossgalaxy.games.fireworks.ai;
+package com.fossgalaxy.games.fireworks.ai.rule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.fossgalaxy.games.fireworks.ai.rule.DiscardIfUseless;
-import com.fossgalaxy.games.fireworks.ai.rule.PlayIfCertian;
-import com.fossgalaxy.games.fireworks.ai.rule.Rule;
-import com.fossgalaxy.games.fireworks.ai.rule.TellPlayableCardOuter;
-import com.fossgalaxy.games.fireworks.ai.rule.TellAnyoneAboutUsefulCard;
+import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
@@ -17,22 +13,6 @@ import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 public class ProductionRuleAgent implements Agent {
 	private List<Rule> rules;
 	private Random random;
-	
-	public static ProductionRuleAgent buildTest1() {
-		ProductionRuleAgent pra = new ProductionRuleAgent();
-		pra.addRule(new TellAnyoneAboutUsefulCard());
-		pra.addRule(new PlayIfCertian());
-		pra.addRule(new DiscardIfUseless());
-		return pra;
-	}
-	
-	public static ProductionRuleAgent buildTest2() {
-		ProductionRuleAgent pra = new ProductionRuleAgent();
-		pra.addRule(new TellPlayableCardOuter());
-		pra.addRule(new PlayIfCertian());
-		pra.addRule(new DiscardIfUseless());
-		return pra;
-	}
 	
 	public ProductionRuleAgent() {
 		this.rules = new ArrayList<>();
