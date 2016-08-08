@@ -9,6 +9,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.TellUnknown;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellPlayableCard;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
+import com.fossgalaxy.games.fireworks.players.Player;
 
 /**
  * Factory for describing agents defined in Osawa's paper.
@@ -95,6 +96,10 @@ public class OsawaFactory {
 		ruleAgent.addRule(new DiscardRandomly());
 		
 		return ruleAgent;
+	}
+
+	public static Agent buildRandom() {
+		return new RandomAgent();
 	}
 	
 }

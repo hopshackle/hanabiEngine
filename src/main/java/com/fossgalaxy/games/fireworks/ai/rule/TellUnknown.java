@@ -21,6 +21,10 @@ public class TellUnknown extends AbstractRule {
 
 	@Override
 	public Action execute(int playerID, GameState state) {
+		if (state.getInfomation() == 0) {
+			return null;
+		}
+		
 		int nextAgent = selectPlayer(playerID, state);
 		Hand otherHand = state.getHand(nextAgent);
 		

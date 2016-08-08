@@ -16,6 +16,11 @@ public class DiscardRandomly extends AbstractRule {
 
 	@Override
 	public Action execute(int playerID, GameState state) {
+		//cannot discard cards if full on information
+		if (state.getInfomation() == state.getStartingInfomation()) {
+			return null;
+		}
+		
 		int randomDiscard = random.nextInt(state.getHandSize());
 		return new DiscardCard(randomDiscard);
 	}

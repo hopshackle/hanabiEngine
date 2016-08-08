@@ -5,7 +5,6 @@ import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
-import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.players.Player;
 
 /**
@@ -13,15 +12,26 @@ import com.fossgalaxy.games.fireworks.players.Player;
  *
  */
 public class App2Csv {
-
+	private static final Integer DEFAULT_NUM_RUNS = 10_000;
+	
 	public static void main(String[] args) {
-
+		
+		int runCount = DEFAULT_NUM_RUNS;
+		
+		//allow setting of run count via env variable
+		String runCountEnv = System.getenv("FIREWORKS_RUN_COUNT");
+		if (runCountEnv != null) {
+			runCount = Integer.parseInt(runCountEnv);
+		}
+		
+		
 		System.out.println("name,players,information,lives,moves,score");
-		for (int run=0; run<500; run++) {
-			playGame("random", new RandomAgent(), new RandomAgent(), new RandomAgent());
-			playGame("cautious", IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious());
+		for (int run=0; run<runCount; run++) {
+			playGame("pure_random", new RandomAgent(), new RandomAgent(), new RandomAgent());
+			playGame("random", OsawaFactory.buildRandom(), OsawaFactory.buildRandom(), OsawaFactory.buildRandom());
 			playGame("internal", OsawaFactory.buildInternalState(), OsawaFactory.buildInternalState(), OsawaFactory.buildInternalState());
 			playGame("outer", OsawaFactory.buildOuterState(), OsawaFactory.buildOuterState(), OsawaFactory.buildOuterState());
+			playGame("cautious", IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious());
 		}
 		
 		//System.out.println("avg: "+sum/games);
