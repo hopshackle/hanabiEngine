@@ -8,9 +8,11 @@ import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
- * Tell the next player about useful cards in their hand.
+ * Tell the next player about a playable card in their hand.
+ * 
+ * This rule makes use of information the player already has, avoiding telling duplicate information.
  */
-public class TellAboutUsefulCard extends AbstractRule {
+public class TellPlayableCardOuter extends AbstractRule {
 
 	@Override
 	public Action execute(int playerID, GameState state) {
@@ -18,7 +20,7 @@ public class TellAboutUsefulCard extends AbstractRule {
 			return null;
 		}
 		
-		int nextPlayer = (playerID+1) % state.getPlayerCount();
+		int nextPlayer = selectPlayer(playerID, state);
 		Hand hand = state.getHand(nextPlayer);
 		
 		for (int slot=0; slot<state.getHandSize(); slot++) {

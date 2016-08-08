@@ -7,7 +7,7 @@ import java.util.Random;
 import com.fossgalaxy.games.fireworks.ai.rule.DiscardIfUseless;
 import com.fossgalaxy.games.fireworks.ai.rule.PlayIfCertian;
 import com.fossgalaxy.games.fireworks.ai.rule.Rule;
-import com.fossgalaxy.games.fireworks.ai.rule.TellAboutUsefulCard;
+import com.fossgalaxy.games.fireworks.ai.rule.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.TellAnyoneAboutUsefulCard;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
@@ -28,7 +28,7 @@ public class ProductionRuleAgent implements Agent {
 	
 	public static ProductionRuleAgent buildTest2() {
 		ProductionRuleAgent pra = new ProductionRuleAgent();
-		pra.addRule(new TellAboutUsefulCard());
+		pra.addRule(new TellPlayableCardOuter());
 		pra.addRule(new PlayIfCertian());
 		pra.addRule(new DiscardIfUseless());
 		return pra;
@@ -44,7 +44,7 @@ public class ProductionRuleAgent implements Agent {
 		rules.add(new DiscardIfUseless());
 	}
 
-	protected void addRule(Rule rule) {
+	public void addRule(Rule rule) {
 		rules.add(rule);
 	}
 	
