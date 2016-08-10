@@ -8,6 +8,7 @@ public interface GameState {
 	final int STARTING_INFO = 8;
 
 	void init();
+	void init(Long seed);
 	
 	void addToDiscard(Card card);
 

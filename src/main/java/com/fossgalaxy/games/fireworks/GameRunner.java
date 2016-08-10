@@ -43,9 +43,9 @@ public class GameRunner {
 		players[nPlayers++] = player;
 	}
 
-	public void init() {
+	public void init(Long seed) {
 		eventLog.clear();
-		state.init();
+		state.init(seed);
 		
 		//tell players about their hands
 		for (int player = 0; player<players.length; player++) {
@@ -81,9 +81,9 @@ public class GameRunner {
 		nextPlayer = (nextPlayer + 1) % players.length;
 	}
 	
-	public GameStats playGame() {
+	public GameStats playGame(Long seed) {
 		assert nPlayers == players.length;
-		init();
+		init(seed);
 		
 		int strikes = 3;
 		while (!state.isGameOver()) {

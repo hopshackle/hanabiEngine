@@ -7,6 +7,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.rule.TellAnyoneAboutUsefulCard;
 import com.fossgalaxy.games.fireworks.ai.rule.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
+import com.fossgalaxy.games.fireworks.ai.rule.random.TellPlayableCard;
 
 /**
  * Stratergies used/theorised about by IGGI students.

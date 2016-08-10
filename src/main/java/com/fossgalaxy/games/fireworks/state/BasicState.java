@@ -55,8 +55,16 @@ public class BasicState implements GameState {
 	}
 
 	public void init(){
+		init(null);
+	}
+	
+	public void init(Long seed){
 		deck.init();
-		deck.shuffle();
+		if (seed != null) {
+			deck.shuffle(seed);
+		} else {
+			deck.shuffle();
+		}
 		
 		for (int hand=0; hand<hands.length; hand++) {
 			for (int slot=0; slot<handSize; slot++) {

@@ -1,5 +1,7 @@
 package com.fossgalaxy.games.fireworks;
 
+import java.util.Random;
+
 import com.fossgalaxy.games.fireworks.ai.Agent;
 
 /**
@@ -7,7 +9,7 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
  *
  */
 public class App2CsvMulti {
-	private static final String[] AGENT_NAMES = {"pure_random", "random", "internal", "outer", "cautious"};
+
 	
 	public static void main(String[] args) {
 		
@@ -20,16 +22,19 @@ public class App2CsvMulti {
 		}
 		
 		//agents which will be playing
-		String[] agentNames = AGENT_NAMES;
+		String[] agentNames = App2Csv.AGENT_NAMES;
 		String envAgents = System.getenv("FIREWORKS_AGENTS");
 		if (envAgents != null) {
 			agentNames = envAgents.split(",");
 		}
 		
-		System.out.println("name,players,information,lives,moves,score");
-		for (int run=0; run<runCount; run++) {
+		Random random = new Random();
+		
+		System.out.println("name,seed,players,information,lives,moves,score");
+		for (int i=2; i<=5; i++) {
+			for (int run=0; run<runCount; run++) {
 			
-			for (int i=2; i<=5; i++) {
+				long seed = random.nextLong();
 				Agent[] agents = new Agent[i];
 				
 				for (String name : agentNames) {
@@ -39,7 +44,7 @@ public class App2CsvMulti {
 						agents[agent] = App.buildAgent(name);
 					}
 					
-					App2Csv.playGame(name, agents);
+					App2Csv.playGame(name, seed, agents);
 				}
 				
 			}

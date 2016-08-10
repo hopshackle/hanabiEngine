@@ -37,7 +37,7 @@ public class App {
 		runner.addPlayer(new AgentPlayer(3, new ProductionRuleAgent()));
 		//runner.addPlayer(new AgentPlayer(2, new RandomAgent()));
 		
-		GameStats stats = runner.playGame();
+		GameStats stats = runner.playGame(null);
 		System.out.println("the agents scored: "+stats);
 		return stats;
 	}

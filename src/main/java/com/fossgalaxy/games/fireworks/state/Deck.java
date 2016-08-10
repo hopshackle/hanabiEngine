@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.state;
 
 import java.util.Collections;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -90,6 +91,14 @@ public class Deck {
 	 */
 	public void shuffle() {
 		Collections.shuffle(cards);
+	}
+	
+	/**
+	 * shuffle this deck with a prefined seed
+	 * 
+	 */
+	public void shuffle(long seed) {
+		Collections.shuffle(cards, new Random(seed));
 	}
 
 }
