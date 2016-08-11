@@ -20,6 +20,8 @@ public interface GameState {
 	// injector
 	Deck getDeck();
 
+	GameState getCopy();
+	
 	Collection<Card> getDiscards();
 
 	Hand getHand(int player);

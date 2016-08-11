@@ -65,12 +65,19 @@ public class BasicState implements GameState {
 		} else {
 			deck.shuffle();
 		}
-		
+		dealHands();
+	}
+	
+	private void dealHands() {
 		for (int hand=0; hand<hands.length; hand++) {
 			for (int slot=0; slot<handSize; slot++) {
 				hands[hand].setCard(slot, deck.getTopCard());
 			}
 		}
+	}
+	
+	public GameState getCopy() {
+		return new BasicState(this);
 	}
 	
 	@Override
