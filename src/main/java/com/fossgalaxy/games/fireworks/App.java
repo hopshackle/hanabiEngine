@@ -54,6 +54,8 @@ public class App {
 				return  OsawaFactory.buildOuterState();
 			case "cautious":
 				return IGGIFactory.buildCautious();
+			case "legal_random":
+				return IGGIFactory.buildRandom();
 		}
 		
 		throw new RuntimeException("unknown agent type "+name);

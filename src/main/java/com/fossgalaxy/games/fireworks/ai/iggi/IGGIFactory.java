@@ -40,4 +40,10 @@ public class IGGIFactory {
 	}
 	
 	
+	public static Agent buildRandom() {
+		ProductionRuleAgent pra = new ProductionRuleAgent();
+		pra.addRule(new LegalRandom());
+		return pra;
+	}
+	
 }
