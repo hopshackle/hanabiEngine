@@ -24,7 +24,14 @@ public class Utils {
 		Hand myHand = state.getHand(playerID);
 		for (int slot=0; slot<myHand.getSize(); slot++) {
 			list.add(new PlayCard(slot));
-			list.add(new DiscardCard(slot));
+			if (state.getInfomation()!=state.getStartingInfomation()) {
+				list.add(new DiscardCard(slot));
+			}
+		}
+		
+		//if we have no information, abort
+		if (state.getInfomation() == 0) {
+			return list;
 		}
 		
 		//Legal Information Actions

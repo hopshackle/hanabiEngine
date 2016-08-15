@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.state.events;
 import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
+import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
 public class CardDrawn extends GameEvent {
@@ -21,7 +22,12 @@ public class CardDrawn extends GameEvent {
 
 	@Override
 	public void apply(GameState state) {
-		state.setCardAt(playerId, slotId, new Card(cardValue, colour));
+		Card card = new Card(cardValue, colour);
+		
+		state.setCardAt(playerId, slotId, card);
+		
+		Deck deck = state.getDeck();
+		deck.remove(card);
 	}
 
 	@Override

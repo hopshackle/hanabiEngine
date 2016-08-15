@@ -21,6 +21,7 @@ public interface GameState {
 	Deck getDeck();
 
 	GameState getCopy();
+	void deal(int playerID);
 	
 	Collection<Card> getDiscards();
 
@@ -50,6 +51,7 @@ public interface GameState {
 	void setInfomation(int newValue);
 
 	// update the state
+	@Deprecated
 	void setKnownValue(int player, int slot, Integer value, CardColour colour);
 
 	void setLives(int newValue);

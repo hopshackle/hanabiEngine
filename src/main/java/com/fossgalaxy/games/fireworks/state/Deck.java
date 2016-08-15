@@ -101,4 +101,8 @@ public class Deck {
 		Collections.shuffle(cards, new Random(seed));
 	}
 
+	public void remove(Card card) {
+		cards.remove(card);
+	}
+
 }

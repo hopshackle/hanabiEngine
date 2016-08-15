@@ -75,4 +75,8 @@ public class PlayCard implements Action {
 		return String.format("%s %d", TextProtocol.ACTION_PLAY, slot);
 	}
 
+	public String toString() {
+		return String.format("play %d", slot);
+	}
+	
 }

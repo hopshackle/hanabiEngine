@@ -70,9 +70,7 @@ public class BasicState implements GameState {
 	
 	private void dealHands() {
 		for (int hand=0; hand<hands.length; hand++) {
-			for (int slot=0; slot<handSize; slot++) {
-				hands[hand].setCard(slot, deck.getTopCard());
-			}
+			deal(hand);
 		}
 	}
 	
@@ -195,7 +193,6 @@ public class BasicState implements GameState {
 
 		Hand hand = hands[player];
 		hand.setCard(slot, new Card(value, colour));
-		hand.setKnownValue(slot, value);
 	}
 
 	@Override
@@ -214,6 +211,13 @@ public class BasicState implements GameState {
 	public void tick() {
 		if (!deck.hasCardsLeft()) {
 			movesLeft--;
+		}
+	}
+
+	@Override
+	public void deal(int playerID) {
+		for (int slot=0; slot<handSize; slot++) {
+			hands[playerID].setCard(slot, deck.getTopCard());
 		}
 	}
 
