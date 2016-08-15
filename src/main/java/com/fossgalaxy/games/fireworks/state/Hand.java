@@ -38,9 +38,17 @@ public class Hand implements Iterable<Card> {
 		this.cards = new Card[size];
 		this.possibleColours = new HashMap<>();
 		this.possibleValues = new HashMap<>();
+		
+		for (int i=0; i<size; i++) {
+			clear(i);
+		}
 	}
 
+	/**
+	 * Reset all information about a slot
+	 */
 	void clear(int slot) {
+		cards[slot] = null;
 		values[slot] = null;
 		colours[slot] = null;
 		possibleColours.put(slot, EnumSet.allOf(CardColour.class));
@@ -85,8 +93,8 @@ public class Hand implements Iterable<Card> {
 	}
 
 	void setCard(int slot, Card card) {
-		cards[slot] = card;
 		clear(slot);
+		cards[slot] = card;
 	}
 
 	public void setKnownColour(CardColour colour, Integer[] slots){
