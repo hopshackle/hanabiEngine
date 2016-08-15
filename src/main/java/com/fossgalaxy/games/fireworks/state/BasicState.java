@@ -176,6 +176,7 @@ public class BasicState implements GameState {
 	@Override
 	public void setCardAt(int player, int slot, Card card) {
 		Hand hand = hands[player];
+		hand.clear(slot);
 		hand.setCard(slot, card);
 	}
 

@@ -17,7 +17,6 @@ public class DiscardIfUseless extends AbstractRule {
 			return null;
 		}
 		
-
 		Hand myHand = state.getHand(playerID);
 		for (int slot = 0; slot < state.getHandSize(); slot++) {
 			CardColour c = myHand.getKnownColour(slot);

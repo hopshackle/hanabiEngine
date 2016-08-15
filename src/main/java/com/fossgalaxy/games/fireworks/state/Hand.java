@@ -17,6 +17,7 @@ public class Hand implements Iterable<Card> {
 	private final Integer[] values;
 	private final Card[] cards;
 	
+	//what the agent can infer about it's hand (based on negative information)
 	private final Map<Integer, EnumSet<CardColour>> possibleColours;
 	private final Map<Integer, Set<Integer>> possibleValues;
 

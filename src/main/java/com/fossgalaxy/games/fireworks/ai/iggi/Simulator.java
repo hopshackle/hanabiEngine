@@ -67,10 +67,6 @@ public class Simulator {
 			System.out.println(String.format("P(1) %f", DeckUtils.getProbablity(entry.getValue(), 1)));
 		}
 		
-		if (1 == 1) {
-			return;
-		}
-		
 		Simulator s = new Simulator();
 		double score = s.simulate(0, state);
 		System.out.println(score);

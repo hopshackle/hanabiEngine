@@ -1,9 +1,10 @@
 package com.fossgalaxy.games.fireworks.ai.rule.logic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
@@ -16,23 +17,17 @@ public class DeckUtils {
 		
 		Map<Integer, List<Card>> possible = new HashMap<>();
 		
-		for (Card card : deck) {
-			
-			for (int slot=0; slot<hand.getSize(); slot++) {
-				List<Card> possibleCards = possible.get(slot);
-				if (possibleCards == null) {
-					possibleCards = new ArrayList<>();
-					possible.put(slot, possibleCards);
-				}
-				
-				if (hand.isPossible(slot, card)) {
-					possibleCards.add(card);
-				}
-			}
-		}	
+		for (int slot=0; slot<hand.getSize(); slot++) {
+			final int slotF = slot;
+			List<Card> possibleCards = deck.stream().filter((Card c) -> hand.isPossible(slotF, c)).collect(Collectors.toList());
+			possible.put(slot, possibleCards);
+		}
 		
 		return possible;
-		
+	}
+	
+	public static boolean isDiscardable(List<Card> cards, GameState state) {
+		return cards.stream().allMatch((Card c) -> isDiscardable(c, state));
 	}
 	
 	public static boolean isDiscardable(Card card, GameState state) {
@@ -46,26 +41,19 @@ public class DeckUtils {
 	}
 	
 	public static double getProbablity(List<Card> cards, Card target) {
-		double matchingCards = 0;
-		for (Card card : cards) {
-			if (card.equals(target)) matchingCards++;
-		}
-		return matchingCards/cards.size();
+		return getProbablity(cards, (Card c) -> target.equals(c));
 	}
 
 	public static double getProbablity(List<Card> cards, CardColour target) {
-		double matchingCards = 0;
-		for (Card card : cards) {
-			if (target.equals(card.colour)) matchingCards++;
-		}
-		return matchingCards/cards.size();
+		return getProbablity(cards, (Card c) -> target.equals(c.colour));
 	}
 	
 	public static double getProbablity(List<Card> cards, Integer target) {
-		double matchingCards = 0;
-		for (Card card : cards) {
-			if (target.equals(card.value)) matchingCards++;
-		}
+		return getProbablity(cards, (Card c) -> target.equals(c.value));
+	}
+	
+	public static double getProbablity(List<Card> cards, Predicate<Card> rule) {
+		double matchingCards = cards.stream().filter(rule).count() * 1.0;
 		return matchingCards/cards.size();
 	}
 	
