@@ -12,7 +12,7 @@ public class Hand implements Iterable<Card> {
 	//flag for controlling if players remember what they haven't been told
 	private boolean negativeInfomation = true;
 	private int size;
-
+	
 	private final CardColour[] colours;
 	private final Integer[] values;
 	private final Card[] cards;
@@ -146,6 +146,12 @@ public class Hand implements Iterable<Card> {
 		}
 
 		return buf.toString();
+	}
+	
+	public boolean isPossible(int slot, Card card) {
+		Set<CardColour> possibleColour = possibleColours.get(slot);
+		Set<Integer> possibleValue = possibleValues.get(slot);
+		return possibleColour.contains(card.colour) && possibleValue.contains(card.value);
 	}
 
 }

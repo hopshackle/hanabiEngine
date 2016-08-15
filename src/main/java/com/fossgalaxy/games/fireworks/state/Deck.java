@@ -1,6 +1,8 @@
 package com.fossgalaxy.games.fireworks.state;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
@@ -103,6 +105,10 @@ public class Deck {
 
 	public void remove(Card card) {
 		cards.remove(card);
+	}
+	
+	public List<Card> toList() {
+		return new LinkedList<>(cards);
 	}
 
 }

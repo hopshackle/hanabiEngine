@@ -3,7 +3,7 @@ package com.fossgalaxy.games.fireworks.state;
 /**
  * A card for the Hanabi card game
  */
-public class Card {
+public class Card implements Comparable<Card> {
 	public final Integer value;
 	public final CardColour colour;
 
@@ -43,5 +43,14 @@ public class Card {
 	@Override
 	public String toString() {
 		return colour + " " + value;
+	}
+
+	@Override
+	public int compareTo(Card o) {
+		if (colour.equals(o.colour)) {
+			return value.compareTo(o.value);
+		} else {
+			return colour.compareTo(o.colour);
+		}
 	}
 }
