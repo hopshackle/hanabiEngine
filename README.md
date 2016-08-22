@@ -1,4 +1,4 @@
-# An implemtantion of Hanabi in Java
+# An implementation of Hanabi in Java
 This is designed to allow the development of bots which play the board game [hanabi][hanabi].
 
 ## Authors
