@@ -3,7 +3,7 @@ package com.fossgalaxy.games.fireworks.state;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 public class RulesViolation extends RuntimeException {
-	private Action action;
+	private final Action action;
 
 	public RulesViolation(Action action) {
 		super("RuleViolation: "+action);

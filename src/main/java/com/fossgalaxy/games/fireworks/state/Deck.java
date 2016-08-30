@@ -1,20 +1,16 @@
 package com.fossgalaxy.games.fireworks.state;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Represents a deck of Hanabi cards.
  *
  */
 public class Deck {
-	private Stack<Card> cards;
+	private LinkedList<Card> cards;
 
 	public Deck() {
-		this.cards = new Stack<Card>();
+		this.cards = new LinkedList<>();
 	}
 
 	/**
@@ -26,7 +22,7 @@ public class Deck {
 	 *            The given deck to be cloned
 	 */
 	public Deck(Deck deck) {
-		this.cards = (Stack<Card>) deck.cards.clone();
+		this.cards = new LinkedList<>(deck.cards);
 	}
 
 	/**

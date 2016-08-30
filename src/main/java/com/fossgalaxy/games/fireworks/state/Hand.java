@@ -134,7 +134,7 @@ public class Hand implements Iterable<Card> {
 
 	@Override
 	public String toString() {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 
 		for (int i = 0; i < size; i++) {
 			buf.append(colours[i]);
