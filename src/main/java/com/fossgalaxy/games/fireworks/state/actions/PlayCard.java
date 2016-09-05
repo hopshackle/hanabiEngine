@@ -20,7 +20,7 @@ public class PlayCard implements Action {
 	@Override
 	public List<GameEvent> apply(int playerID, GameState game) {
 		if (!isLegal(playerID, game)) {
-			throw new RuntimeException("this is a voilation of the game rules!");
+			throw new RuntimeException("this is a violation of the game rules!");
 		}
 		
 		// deal with the old card first

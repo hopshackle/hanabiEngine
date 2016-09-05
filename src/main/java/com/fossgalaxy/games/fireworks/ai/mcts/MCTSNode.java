@@ -4,15 +4,21 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by webpigeon on 22/08/16.
  */
 public class MCTSNode {
+    private static final double EXP_CONST = Math.sqrt(2);
+    private static final int MAX_SCORE = 25;
+    private static final double EPSILON = 1e-6;
+
     private final Action moveToState;
     private final int agentId;
     private final MCTSNode parent;
     private final List<MCTSNode> children;
+    private final Random random;
 
     private double score;
     private int visits;
@@ -32,10 +38,7 @@ public class MCTSNode {
         this.score = 0;
         this.visits = 0;
         this.children = new ArrayList<>();
-
-        if (parent != null) {
-            parent.addChild(this);
-        }
+        this.random = new Random();
     }
 
     protected void addChild(MCTSNode node) {
@@ -43,17 +46,20 @@ public class MCTSNode {
     }
 
     public double getUCTValue() {
-        return 0.0;
-    }
+        if (parent == null) {
+            return 0;
+        }
 
-    public void update(double score) {
+        System.out.println(score+" "+visits+" "+parent.visits);
 
+        return ( (score/MAX_SCORE) / visits) + EXP_CONST * Math.sqrt( Math.log(parent.visits) / visits );
     }
 
     public void backup(double score) {
         MCTSNode current = this;
         while (current != null) {
-            current.backup(score);
+            current.score += score;
+            current.visits++;
             current = current.parent;
         }
     }
@@ -63,15 +69,25 @@ public class MCTSNode {
     }
 
     public MCTSNode getUCTNode() {
-        double bestScore = 0.0;
+        assert !children.isEmpty();
+
+        double bestScore = -Double.MAX_VALUE;
         MCTSNode bestChild = null;
+
+        if (children.isEmpty()) {
+            System.out.println("EMPTY CHILDREN?!");
+        }
+
         for (MCTSNode child : children) {
-            double childScore = child.getUCTValue();
-            if (childScore < bestScore) {
+            double childScore = child.getUCTValue() + (random.nextDouble() * EPSILON);
+            System.out.println(childScore);
+            if (childScore > bestScore) {
                 bestScore = childScore;
                 bestChild = child;
             }
         }
+
+        assert bestChild != null;
         return bestChild;
     }
 
@@ -94,5 +110,12 @@ public class MCTSNode {
             }
         }
         return bestChild;
+    }
+
+    public int getDepth() {
+        if (parent == null) {
+            return 0;
+        }
+        return 1 + parent.getDepth();
     }
 }

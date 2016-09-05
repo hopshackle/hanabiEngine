@@ -11,12 +11,12 @@ import java.util.Queue;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
-public class BredthFirstSearch {
+public class BreadthFirstSearch {
 	private int playerID;
 	private Queue<Node> expansionList;
 	private Map<Node, Node> cameFrom;
 	
-	public BredthFirstSearch(){
+	public BreadthFirstSearch(){
 		this.expansionList = new LinkedList<>();
 		this.cameFrom = new HashMap<>();
 	}

@@ -156,6 +156,7 @@ public class BasicState implements GameState {
 
 	@Override
 	public int getTableValue(CardColour colour) {
+		assert colour != null : "colour should never be null";
 		Integer curr = table.get(colour);
 		return curr == null ? 0 : curr;
 	}
