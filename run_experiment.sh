@@ -38,6 +38,6 @@ touch $RESEARCH_LOG
 # the actual runner
 mvn clean package > $RESULT_DIR/$GIT_COMMIT.build.log
 cd target/
-java -jar fireworks-$MVN_VERSION.jar 1>$RESULT_FILE 2>$RESULT_LOG
+java -cp fireworks-$MVN_VERSION.jar com.fossgalaxy.games.fireworks.MixedAgentGame 1>$RESULT_FILE 2>$RESULT_LOG
 echo $(date --iso-8601) $(hostname) $GIT_COMMIT $GIT_MESSAGE >> $RESEARCH_LOG
 echo run finished.
