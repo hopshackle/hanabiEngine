@@ -73,8 +73,6 @@ public class DeckUtils {
 		Random r = new Random();
 		List<Card> removed = new ArrayList<Card>();
 
-		System.err.println(order+" "+possibleCards);
-
 		Map<Integer, Card> hand = new HashMap<Integer, Card>();
 		for (Integer slot : order) {
 			List<Card> possible = possibleCards.get(slot);

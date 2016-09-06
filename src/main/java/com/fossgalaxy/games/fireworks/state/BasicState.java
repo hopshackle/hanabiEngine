@@ -249,5 +249,4 @@ public class BasicState implements GameState {
 		result = 31 * result + movesLeft;
 		return result;
 	}
-
 }

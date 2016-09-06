@@ -26,6 +26,7 @@ public class TellColour implements Action {
 	public List<GameEvent> apply(int playerID, GameState game) {
 
 		Hand hand = game.getHand(player);
+
 		List<Integer> slots = new ArrayList<Integer>();
 		for (int i = 0; i < hand.getSize(); i++) {
 			Card card = hand.getCard(i);

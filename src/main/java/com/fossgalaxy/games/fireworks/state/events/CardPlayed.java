@@ -34,7 +34,6 @@ public class CardPlayed extends GameEvent {
 			state.addToDiscard(oldCard);
 		} else {
 			state.setTableValue(oldCard.colour, nextValue);
-			state.setCardAt(playerId, slotId, null);
 
 			// next value is 5, get free infomations
 			if (nextValue == 5) {
@@ -46,6 +45,7 @@ public class CardPlayed extends GameEvent {
 				}
 			}
 		}
+		state.setCardAt(playerId, slotId, null);
 
 	}
 
