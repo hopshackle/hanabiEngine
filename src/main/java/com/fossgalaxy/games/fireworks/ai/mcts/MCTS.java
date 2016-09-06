@@ -4,7 +4,9 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.state.Card;
+import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 import java.util.*;
@@ -23,37 +25,56 @@ public class MCTS implements Agent {
 
     @Override
     public Action doMove(int agentID, GameState state) {
+        assert !state.isGameOver() : "why are you asking me for a move?";
         MCTSNode root = new MCTSNode(agentID, null);
+
+        GameState invarCheck = state.getCopy();
 
         for (int round = 0; round < ROUND_LENGTH; round++) {
             //find a leaf node
             GameState currentState = state.getCopy();
 
-            Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
+            Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, currentState.getHand(agentID), state.getDeck().toList());
+            List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
+            Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
 
+            Deck deck = currentState.getDeck();
+            Hand myHand = currentState.getHand(agentID);
+            for (int slot=0; slot<myHand.getSize(); slot++) {
+                Card hand = myHandCards.get(slot);
+                myHand.setCard(slot, hand);
+                deck.remove(hand);
+            }
+            deck.shuffle();
 
             MCTSNode current = select(root, currentState);
             if (current.getDepth() < TREE_DEPTH) {
                 current = expand(current, currentState);
             }
 
-            int score = rollout(state, agentID);
+            int score = rollout(currentState, agentID);
             current.backup(score);
         }
+
+        assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
 
         return root.getBestNode().getAction();
     }
 
     protected MCTSNode select(MCTSNode root, GameState state) {
         MCTSNode current = root;
-        while (!current.isLeaf()) {
+        while (!current.isLeaf() && !state.isGameOver()) {
             int agent = current.getAgent();
             Action action = current.getAction();
             if (action != null) {
                 action.apply(agent, state);
             }
-            current = current.getUCTNode();
-            System.out.println("c "+current);
+            MCTSNode next = current.getUCTNode(state);
+            if (next == null) {
+                //XXX if all follow on states explored so far are null, we are now a leaf node
+                return current;
+            }
+            current = next;
         }
         return current;
     }
@@ -69,17 +90,22 @@ public class MCTS implements Agent {
         Collection<Action> legalActions = Utils.generateActions(agentID, state);
         Iterator<Action> actionItr = legalActions.iterator();
 
-        Action curr = null;
+        assert !legalActions.isEmpty() : "no legal moves from this state";
+
+        Action curr = actionItr.next();
         int selected = random.nextInt(legalActions.size());
         for (int i = 0; i < selected; i++) {
             curr = actionItr.next();
         }
+
+        assert curr != null;
         return curr;
     }
 
     protected MCTSNode expand(MCTSNode parent, GameState state) {
         int nextAgentID = (parent.getAgent() + 1) % state.getPlayerCount();
         Action action = selectAction(state, nextAgentID);
+        assert action != null : "selected a null action for expansion";
         MCTSNode child = new MCTSNode(parent, nextAgentID, action);
         parent.addChild(child);
         return child;

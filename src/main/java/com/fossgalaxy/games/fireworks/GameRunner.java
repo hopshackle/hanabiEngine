@@ -13,6 +13,7 @@ import com.fossgalaxy.games.fireworks.state.RulesViolation;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.state.events.GameInformation;
 
 public class GameRunner {
 	private static final int[] HAND_SIZE = { -1, -1, 5, 5, 4, 4 };
@@ -27,8 +28,8 @@ public class GameRunner {
 	private int nextPlayer;
 	
 	public GameRunner(int expectedPlayers) {
-		assert expectedPlayers < 2 : "too few players";
-		assert expectedPlayers > HAND_SIZE.length : "too many players";
+		assert expectedPlayers > 2 : "too few players";
+		assert expectedPlayers < HAND_SIZE.length : "too many players";
 		
 		this.players = new Player[expectedPlayers];
 		this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
@@ -46,7 +47,10 @@ public class GameRunner {
 	public void init(Long seed) {
 		eventLog.clear();
 		state.init(seed);
-		
+
+
+		send(new GameInformation(nPlayers, HAND_SIZE[nPlayers], 8, 3));
+
 		//tell players about their hands
 		for (int player = 0; player<players.length; player++) {
 			Hand hand = state.getHand(player);

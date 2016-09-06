@@ -1,8 +1,10 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
+import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Random;
 
@@ -39,6 +41,7 @@ public class MCTSNode {
         this.visits = 0;
         this.children = new ArrayList<>();
         this.random = new Random();
+        assert (parent != null && moveToState != null) || (parent == null && moveToState == null);
     }
 
     protected void addChild(MCTSNode node) {
@@ -49,8 +52,6 @@ public class MCTSNode {
         if (parent == null) {
             return 0;
         }
-
-        System.out.println(score+" "+visits+" "+parent.visits);
 
         return ( (score/MAX_SCORE) / visits) + EXP_CONST * Math.sqrt( Math.log(parent.visits) / visits );
     }
@@ -68,26 +69,27 @@ public class MCTSNode {
         return children.isEmpty();
     }
 
-    public MCTSNode getUCTNode() {
-        assert !children.isEmpty();
+    public MCTSNode getUCTNode(GameState state) {
+        assert !children.isEmpty() : "no valid child nodes";
 
         double bestScore = -Double.MAX_VALUE;
         MCTSNode bestChild = null;
 
-        if (children.isEmpty()) {
-            System.out.println("EMPTY CHILDREN?!");
-        }
-
         for (MCTSNode child : children) {
             double childScore = child.getUCTValue() + (random.nextDouble() * EPSILON);
-            System.out.println(childScore);
+
+            //XXX Hack to check if the move is legal in this version
+            Action moveToMake = child.moveToState;
+            if(!moveToMake.isLegal(child.agentId, state)){
+                continue;
+            }
+
             if (childScore > bestScore) {
                 bestScore = childScore;
                 bestChild = child;
             }
         }
 
-        assert bestChild != null;
         return bestChild;
     }
 
@@ -100,15 +102,18 @@ public class MCTSNode {
     }
 
     public MCTSNode getBestNode() {
-        double bestScore = 0.0;
+        double bestScore = -Double.MAX_VALUE;
         MCTSNode bestChild = null;
+
         for (MCTSNode child : children) {
-            double childScore = child.score / child.visits;
-            if (childScore < bestScore ) {
+            double childScore = child.score / child.visits + (random.nextDouble() * EPSILON);
+            if (childScore > bestScore ) {
                 bestScore = childScore;
                 bestChild = child;
             }
         }
+
+        assert bestChild != null;
         return bestChild;
     }
 
@@ -117,5 +122,13 @@ public class MCTSNode {
             return 0;
         }
         return 1 + parent.getDepth();
+    }
+
+    public String toString() {
+        return String.format("NODE(%d: %s %f)", getDepth(), moveToState, score);
+    }
+
+    public int getChildSize() {
+        return children.size();
     }
 }

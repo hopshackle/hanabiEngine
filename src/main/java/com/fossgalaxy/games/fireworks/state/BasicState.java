@@ -1,11 +1,6 @@
 package com.fossgalaxy.games.fireworks.state;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BasicState implements GameState {
 	private static final int MAX_INFOMATION = 8;
@@ -24,13 +19,13 @@ public class BasicState implements GameState {
 
 	public BasicState(BasicState state) {
 		this.handSize = state.handSize;
-		this.deck = state.deck;
+		this.deck = new Deck(state.deck);
 		this.discard = new ArrayList<>(state.discard);
 		this.infomation = state.infomation;
 		this.lives = state.lives;
 		this.movesLeft = state.movesLeft;
 
-		this.table = null; // TODO find a way to copy this safely
+		this.table = new EnumMap<>(state.table);
 
 		this.hands = new Hand[state.hands.length];
 		for (int i = 0; i < hands.length; i++) {
@@ -183,7 +178,7 @@ public class BasicState implements GameState {
 
 	@Override
 	public void setInfomation(int newValue) {
-		assert newValue < MAX_INFOMATION;
+		assert newValue <= MAX_INFOMATION;
 		assert newValue >= 0;
 		infomation = newValue;
 	}
@@ -199,7 +194,7 @@ public class BasicState implements GameState {
 
 	@Override
 	public void setLives(int newValue) {
-		assert newValue < MAX_LIVES;
+		assert newValue <= MAX_LIVES;
 		assert newValue >= 0;
 		lives = newValue;
 	}
@@ -221,6 +216,38 @@ public class BasicState implements GameState {
 		for (int slot=0; slot<handSize; slot++) {
 			hands[playerID].setCard(slot, deck.getTopCard());
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		BasicState that = (BasicState) o;
+
+		if (handSize != that.handSize) return false;
+		if (infomation != that.infomation) return false;
+		if (lives != that.lives) return false;
+		if (movesLeft != that.movesLeft) return false;
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
+		if (!Arrays.equals(hands, that.hands)) return false;
+		if (!deck.equals(that.deck)) return false;
+		if (!table.equals(that.table)) return false;
+		return discard.equals(that.discard);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = handSize;
+		result = 31 * result + Arrays.hashCode(hands);
+		result = 31 * result + deck.hashCode();
+		result = 31 * result + table.hashCode();
+		result = 31 * result + discard.hashCode();
+		result = 31 * result + infomation;
+		result = 31 * result + lives;
+		result = 31 * result + movesLeft;
+		return result;
 	}
 
 }

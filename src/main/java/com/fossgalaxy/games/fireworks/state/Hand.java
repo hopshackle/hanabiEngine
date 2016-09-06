@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Hand implements Iterable<Card> {
 	//flag for controlling if players remember what they haven't been told
-	private boolean negativeInfomation = true;
+	private boolean negativeInfomation = false;
 	private int size;
 	
 	private final CardColour[] colours;
@@ -93,7 +93,7 @@ public class Hand implements Iterable<Card> {
 		return Arrays.asList(cards).iterator();
 	}
 
-	void setCard(int slot, Card card) {
+	public void setCard(int slot, Card card) {
 		clear(slot);
 		cards[slot] = card;
 	}
@@ -104,6 +104,7 @@ public class Hand implements Iterable<Card> {
 			if (index < slots.length && slots[index] == slot) {
 				//we found a matching slot
 				possibleColours.put(slot, EnumSet.of(colour));
+				assert colours[slot] == null || colours[slot].equals(colour) : "told about contradictory colours: "+colours[slot]+ " "+colour;
 				colours[slot] = colour;
 				index++;
 			} else {
@@ -121,6 +122,7 @@ public class Hand implements Iterable<Card> {
 			if (index < slots.length && slots[index] == slot) {
 				//we found a matching slot
 				possibleValues.put(slot, new HashSet<Integer>(Arrays.asList(value)));
+				assert values[slot] == null || values[slot].equals(value) : "told contradictary values "+values[slot] + " "  +value;
 				values[slot] = value;
 				index++;
 			} else {
@@ -134,6 +136,8 @@ public class Hand implements Iterable<Card> {
 
 	@Override
 	public String toString() {
+		System.out.println(Arrays.toString(cards));
+
 		StringBuilder buf = new StringBuilder();
 
 		for (int i = 0; i < size; i++) {
@@ -146,13 +150,57 @@ public class Hand implements Iterable<Card> {
 			}
 		}
 
-		return buf.toString();
+		return "I think I have: " +buf.toString();
 	}
 	
 	public boolean isPossible(int slot, Card card) {
-		Set<CardColour> possibleColour = possibleColours.get(slot);
-		Set<Integer> possibleValue = possibleValues.get(slot);
-		return possibleColour.contains(card.colour) && possibleValue.contains(card.value);
+
+		if (negativeInfomation) {
+			Set<CardColour> possibleColour = possibleColours.get(slot);
+			Set<Integer> possibleValue = possibleValues.get(slot);
+			return possibleColour.contains(card.colour) && possibleValue.contains(card.value);
+		} else {
+			if (cards[slot] != null) {
+				return cards[slot].equals(card);
+			}
+
+			boolean possibleColour = colours[slot] == null || colours[slot].equals(card.colour);
+			boolean possibleValue = values[slot] == null || values[slot].equals(card.value);
+			return possibleColour && possibleValue;
+		}
+
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Hand cards1 = (Hand) o;
+
+		if (negativeInfomation != cards1.negativeInfomation) return false;
+		if (size != cards1.size) return false;
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
+		if (!Arrays.equals(colours, cards1.colours)) return false;
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
+		if (!Arrays.equals(values, cards1.values)) return false;
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
+		if (!Arrays.equals(cards, cards1.cards)) return false;
+		if (possibleColours != null ? !possibleColours.equals(cards1.possibleColours) : cards1.possibleColours != null)
+			return false;
+		return possibleValues != null ? possibleValues.equals(cards1.possibleValues) : cards1.possibleValues == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (negativeInfomation ? 1 : 0);
+		result = 31 * result + size;
+		result = 31 * result + Arrays.hashCode(colours);
+		result = 31 * result + Arrays.hashCode(values);
+		result = 31 * result + Arrays.hashCode(cards);
+		result = 31 * result + (possibleColours != null ? possibleColours.hashCode() : 0);
+		result = 31 * result + (possibleValues != null ? possibleValues.hashCode() : 0);
+		return result;
+	}
 }

@@ -1,8 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule.logic;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -14,7 +12,7 @@ import com.fossgalaxy.games.fireworks.state.Hand;
 public class DeckUtils {
 	
 	public static Map<Integer, List<Card>> bindCard(int player, Hand hand, List<Card> deck) {
-		
+
 		Map<Integer, List<Card>> possible = new HashMap<>();
 		
 		for (int slot=0; slot<hand.getSize(); slot++) {
@@ -56,5 +54,41 @@ public class DeckUtils {
 		double matchingCards = cards.stream().filter(rule).count() * 1.0;
 		return matchingCards/cards.size();
 	}
-	
+
+    public static List<Integer> bindOrder(Map<Integer, List<Card>> possibleCards) {
+
+    	List<Integer> ordering = new ArrayList<>(possibleCards.keySet());
+		Collections.sort(ordering, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return Integer.compare(possibleCards.get(o1).size(), possibleCards.get(o2).size());
+			}
+		});
+
+		return ordering;
+	}
+
+	public static Map<Integer, Card> bindCards(List<Integer> order, Map<Integer, List<Card>> possibleCards){
+
+		Random r = new Random();
+		List<Card> removed = new ArrayList<Card>();
+
+		System.err.println(order+" "+possibleCards);
+
+		Map<Integer, Card> hand = new HashMap<Integer, Card>();
+		for (Integer slot : order) {
+			List<Card> possible = possibleCards.get(slot);
+			for (Card card : removed) {
+				possible.remove(card);
+			}
+
+			assert !possible.isEmpty() : "no cards to bind?! "+slot+" "+hand+" "+possible+" "+possibleCards;
+
+			Card selected = possible.get(r.nextInt(possible.size()));
+			hand.put(slot, selected);
+			removed.add(selected);
+		}
+
+		return hand;
+	}
 }
