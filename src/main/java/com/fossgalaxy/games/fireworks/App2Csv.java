@@ -12,7 +12,7 @@ import com.fossgalaxy.games.fireworks.players.Player;
  */
 public class App2Csv {
 	public static final Integer GAME_SIZE = 3;
-	public static final Integer DEFAULT_NUM_RUNS = 50_000;
+	public static final Integer DEFAULT_NUM_RUNS = 1000;
 	protected static final String[] AGENT_NAMES = {"pure_random", "random", "internal", "outer", "legal_random", "cautious", "mcts"};
 	
 	public static void main(String[] args) {
