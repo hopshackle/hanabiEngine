@@ -5,6 +5,7 @@ import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 
@@ -59,6 +60,9 @@ public class App {
 				return IGGIFactory.buildRandom();
 			case "mcts":
 				return new MCTS();
+			case "cautiousMCTS":
+				Agent[] a = new Agent[]{buildAgent("cautious"),buildAgent("cautious"),buildAgent("cautious"),buildAgent("cautious"),buildAgent("cautious")};
+				return new MCTSPredictor(a);
 		}
 		
 		throw new RuntimeException("unknown agent type "+name);
