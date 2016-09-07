@@ -70,7 +70,6 @@ public class GameRunner {
 		//get the action and try to apply it
 		Action action = player.getAction();
 		if (!action.isLegal(nextPlayer, state)) {
-			//TODO deal with the user giving us invalid answers
 			throw new RulesViolation(action);
 		}
 		
@@ -93,8 +92,8 @@ public class GameRunner {
 		while (!state.isGameOver()) {
 			try {
 				nextMove();
+				state.tick();
 			} catch (RulesViolation rv) {
-				rv.printStackTrace();
 
 				//House rule: mess up 3 times and you lose a life (and your go)
 				if (strikes == 0) {
@@ -109,7 +108,6 @@ public class GameRunner {
 				strikes--;
 				//System.err.println("user broke rules by prompting again "+rv);
 			}
-			state.tick();
 		}
 		
 		GameStats stats = new GameStats();
