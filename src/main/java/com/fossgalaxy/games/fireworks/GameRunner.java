@@ -94,7 +94,8 @@ public class GameRunner {
 			try {
 				nextMove();
 			} catch (RulesViolation rv) {
-				
+				rv.printStackTrace();
+
 				//House rule: mess up 3 times and you lose a life (and your go)
 				if (strikes == 0) {
 					state.setLives(state.getLives()-1);

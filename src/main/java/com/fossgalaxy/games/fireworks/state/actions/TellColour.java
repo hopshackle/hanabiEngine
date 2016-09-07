@@ -35,6 +35,10 @@ public class TellColour implements Action {
 			}
 		}
 
+		if (playerID == player) {
+			throw new RulesViolation("you cannot tell yourself things", this);
+		}
+
 		if (slots.isEmpty()) {
 			throw new RulesViolation("you cannot tell a player about a lack of cards", this);
 		}
@@ -52,7 +56,7 @@ public class TellColour implements Action {
 
 	@Override
 	public boolean isLegal(int playerId, GameState state) {
-		return state.getInfomation() > 0;
+		return state.getInfomation() > 0 && state.getHand(player).hasColour(colour) && playerId != player;
 	}
 
 	@Override

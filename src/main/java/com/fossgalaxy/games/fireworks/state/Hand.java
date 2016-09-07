@@ -133,4 +133,22 @@ public class Hand implements Iterable<Card> {
 		result = 31 * result + Arrays.hashCode(cards);
 		return result;
 	}
+
+    public boolean hasColour(CardColour colour) {
+    	for (Card c : cards){
+    		if (c != null && colour.equals(c.colour)){
+    			return true;
+			}
+		}
+		return false;
+    }
+
+	public boolean hasValue(Integer value) {
+		for (Card c : cards){
+			if (c != null && value.equals(c.value)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

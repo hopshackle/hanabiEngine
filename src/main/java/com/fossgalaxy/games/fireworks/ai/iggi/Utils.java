@@ -37,7 +37,7 @@ public class Utils {
 		//Legal Information Actions
 		for (int player=0; player<state.getPlayerCount(); player++) {
 			//can't tell self about hand
-			if (player != playerID) {
+			if (player == playerID) {
 				continue;
 			}
 			
@@ -67,7 +67,7 @@ public class Utils {
 		//Legal Information Actions
 		for (int player=0; player<state.getPlayerCount(); player++) {
 			//can't tell self about hand
-			if (player != playerID) {
+			if (player == playerID) {
 				continue;
 			}
 			

@@ -26,7 +26,7 @@ public class MCTS implements Agent {
     @Override
     public Action doMove(int agentID, GameState state) {
         assert !state.isGameOver() : "why are you asking me for a move?";
-        MCTSNode root = new MCTSNode(agentID, null);
+        MCTSNode root = new MCTSNode( (agentID+state.getPlayerCount()-1) % state.getPlayerCount(), null);
 
         GameState invarCheck = state.getCopy();
 
@@ -114,11 +114,11 @@ public class MCTS implements Agent {
     protected int rollout(GameState state, final int agentID) {
         int playerID = agentID;
         while (!state.isGameOver()) {
-            Collection<Action> legalActions = Utils.generateActions(agentID, state);
+            Collection<Action> legalActions = Utils.generateActions(playerID, state);
             assert !legalActions.isEmpty() : "no legal actions in rollout";
             Action action = legalActions.iterator().next();
             action.apply(playerID, state);
-            playerID = (agentID + 1) % state.getPlayerCount();
+            playerID = (playerID + 1) % state.getPlayerCount();
         }
         return state.getScore();
     }
