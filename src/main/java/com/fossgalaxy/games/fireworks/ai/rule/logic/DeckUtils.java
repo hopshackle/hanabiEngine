@@ -17,7 +17,7 @@ public class DeckUtils {
 		
 		for (int slot=0; slot<hand.getSize(); slot++) {
 			final int slotF = slot;
-			List<Card> possibleCards = deck.stream().filter((Card c) -> hand.isPossible(slotF, c)).collect(Collectors.toList());
+			List<Card> possibleCards = Collections.unmodifiableList(deck.stream().filter((Card c) -> hand.isPossible(slotF, c)).collect(Collectors.toList()));
 			possible.put(slot, possibleCards);
 		}
 		
@@ -75,7 +75,7 @@ public class DeckUtils {
 
 		Map<Integer, Card> hand = new HashMap<Integer, Card>();
 		for (Integer slot : order) {
-			List<Card> possible = possibleCards.get(slot);
+			List<Card> possible = new ArrayList<>(possibleCards.get(slot));
 			for (Card card : removed) {
 				possible.remove(card);
 			}
