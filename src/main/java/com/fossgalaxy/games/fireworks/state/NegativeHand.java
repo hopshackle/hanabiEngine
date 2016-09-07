@@ -11,35 +11,14 @@ public class NegativeHand extends Hand {
 	public NegativeHand(NegativeHand hand) {
 		super(hand);
 
-		//TODO these should be deep copies
 		this.possibleColours = copyEnumMap(hand.possibleColours);
 		this.possibleValues = copyMap(hand.possibleValues);
-	}
-
-	private static <T> Map<Integer, Set<T>> copyMap(Map<Integer, Set<T>> map) {
-		Map<Integer, Set<T>> mapCopy = new HashMap<>();
-		for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
-			mapCopy.put(entry.getKey(), new HashSet<>(entry.getValue()));
-		}
-		return mapCopy;
-	}
-
-	private static <T extends Enum> Map<Integer, Set<T>> copyEnumMap(Map<Integer, Set<T>> map) {
-		Map<Integer, Set<T>> mapCopy = new HashMap<>();
-		for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
-			mapCopy.put(entry.getKey(), EnumSet.copyOf(entry.getValue()));
-		}
-		return mapCopy;
 	}
 
 	public NegativeHand(int size) {
 		super(size);
 		this.possibleColours = new HashMap<>();
 		this.possibleValues = new HashMap<>();
-		
-		for (int i=0; i<size; i++) {
-			clear(i);
-		}
 	}
 
 	/**
@@ -48,7 +27,7 @@ public class NegativeHand extends Hand {
 	void clear(int slot) {
 		super.clear(slot);
 		possibleColours.put(slot, EnumSet.allOf(CardColour.class));
-		possibleValues.put(slot, new HashSet<Integer>(Arrays.asList(1,2,3,4,5)));
+		possibleValues.put(slot, new HashSet<>(Arrays.asList(1,2,3,4,5)));
 	}
 
 
@@ -110,4 +89,19 @@ public class NegativeHand extends Hand {
 		return possibleColour.contains(card.colour) && possibleValue.contains(card.value);
 	}
 
+	private static <T> Map<Integer, Set<T>> copyMap(Map<Integer, Set<T>> map) {
+		Map<Integer, Set<T>> mapCopy = new HashMap<>();
+		for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
+			mapCopy.put(entry.getKey(), new HashSet<>(entry.getValue()));
+		}
+		return mapCopy;
+	}
+
+	private static <T extends Enum> Map<Integer, Set<T>> copyEnumMap(Map<Integer, Set<T>> map) {
+		Map<Integer, Set<T>> mapCopy = new HashMap<>();
+		for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
+			mapCopy.put(entry.getKey(), EnumSet.copyOf(entry.getValue()));
+		}
+		return mapCopy;
+	}
 }

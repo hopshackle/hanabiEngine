@@ -23,6 +23,9 @@ public class Hand implements Iterable<Card> {
 		this.values = new Integer[size];
 		this.cards = new Card[size];
 
+	}
+
+	public void init(){
 		for (int i=0; i<size; i++) {
 			clear(i);
 		}

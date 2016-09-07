@@ -46,6 +46,7 @@ public class BasicState implements GameState {
 
 		for (int i = 0; i < playerCount; i++) {
 			hands[i] = new NegativeHand(handSize);
+			hands[i].init();
 		}
 	}
 
