@@ -123,8 +123,7 @@ public class Hand implements Iterable<Card> {
 		// Probably incorrect - comparing Object[] arrays with Arrays.equals
 		if (!Arrays.equals(values, cards1.values)) return false;
 		// Probably incorrect - comparing Object[] arrays with Arrays.equals
-		if (!Arrays.equals(cards, cards1.cards)) return false;
-		return true;
+		return Arrays.equals(cards, cards1.cards);
 	}
 
 	@Override
