@@ -20,7 +20,7 @@ public class LegalRandom extends AbstractRule {
 	public Action execute(int playerID, GameState state) {
 		
 		Collection<Action> actions = Utils.generateActions(playerID, state);
-		List<Action> listAction = new ArrayList<Action>(actions);
+		List<Action> listAction = new ArrayList<>(actions);
 		
 		return listAction.get(random.nextInt(listAction.size()));
 	}
