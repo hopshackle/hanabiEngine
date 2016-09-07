@@ -12,15 +12,6 @@ import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
-//Server -> Client Action Descriptions
-//System.out.println("$WHO PLAY $SLOT");
-//System.out.println("$WHO DISCARD $SLOT");
-//System.out.println("$WHO TELL_COLOUR $COLOUR $PLAYERID $SLOT,...,$SLOT");
-//System.out.println("$WHO TELL_VALUE $VALUE $PLAYERID $SLOT,...,$SLOT");
-
-//Result of drawing a card (happens after play or discard)
-//System.out.println("$WHO DRAW SLOT COLOUR VALUE");
-
 public class TextProtocol {
 	public static final String ACTION_PLAY = "play";
 	public static final String ACTION_DISCARD = "discard";
