@@ -65,7 +65,7 @@ public class App {
 				return new MCTSPredictor(a);
 		}
 		
-		throw new RuntimeException("unknown agent type "+name);
+		throw new IllegalArgumentException("unknown agent type "+name);
 	}
 
 }

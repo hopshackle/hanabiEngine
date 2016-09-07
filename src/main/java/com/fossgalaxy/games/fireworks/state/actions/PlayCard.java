@@ -6,6 +6,7 @@ import java.util.List;
 import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.RulesViolation;
 import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.CardPlayed;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
@@ -20,7 +21,7 @@ public class PlayCard implements Action {
 	@Override
 	public List<GameEvent> apply(int playerID, GameState game) {
 		if (!isLegal(playerID, game)) {
-			throw new RuntimeException("this is a violation of the game rules!");
+			throw new RulesViolation("this is a violation of the game rules!", this);
 		}
 		
 		// deal with the old card first

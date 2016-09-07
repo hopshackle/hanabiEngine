@@ -22,15 +22,15 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 //System.out.println("$WHO DRAW SLOT COLOUR VALUE");
 
 public class TextProtocol {
-	public static String ACTION_PLAY = "play";
-	public static String ACTION_DISCARD = "discard";
-	public static String ACTION_TELL_COLOUR = "tell_colour";
-	public static String ACTION_TELL_VALUE = "tell_value";
+	public static final String ACTION_PLAY = "play";
+	public static final String ACTION_DISCARD = "discard";
+	public static final String ACTION_TELL_COLOUR = "tell_colour";
+	public static final String ACTION_TELL_VALUE = "tell_value";
 
-	public static String EFFECT_DRAW = "draw";
-	public static String EFFECT_GAMEINFO = "draw";
+	public static final String EFFECT_DRAW = "draw";
+	public static final String EFFECT_GAMEINFO = "draw";
 
-	public static String PROTOCOL_REQ_MOVE = "DOMOVE";
+	public static final String PROTOCOL_REQ_MOVE = "DOMOVE";
 
 	public static String buildMessage(int player, String action, String args) {
 		return player + " " + action + " " + args;
