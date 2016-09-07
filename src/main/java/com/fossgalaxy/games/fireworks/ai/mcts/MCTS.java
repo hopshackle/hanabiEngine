@@ -28,14 +28,15 @@ public class MCTS implements Agent {
         assert !state.isGameOver() : "why are you asking me for a move?";
         MCTSNode root = new MCTSNode( (agentID+state.getPlayerCount()-1) % state.getPlayerCount(), null);
 
+        Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
+        List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
+
         GameState invarCheck = state.getCopy();
 
         for (int round = 0; round < ROUND_LENGTH; round++) {
             //find a leaf node
             GameState currentState = state.getCopy();
 
-            Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, currentState.getHand(agentID), state.getDeck().toList());
-            List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
             Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
 
             Deck deck = currentState.getDeck();
