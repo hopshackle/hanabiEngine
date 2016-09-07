@@ -5,15 +5,31 @@ import java.util.*;
 public class NegativeHand extends Hand {
 
 	//what the agent can infer about it's hand (based on negative information)
-	private final Map<Integer, EnumSet<CardColour>> possibleColours;
+	private final Map<Integer, Set<CardColour>> possibleColours;
 	private final Map<Integer, Set<Integer>> possibleValues;
 
 	public NegativeHand(NegativeHand hand) {
 		super(hand);
 
 		//TODO these should be deep copies
-		this.possibleColours = new HashMap<>(hand.possibleColours);
-		this.possibleValues = new HashMap<>(hand.possibleValues);
+		this.possibleColours = copyEnumMap(hand.possibleColours);
+		this.possibleValues = copyMap(hand.possibleValues);
+	}
+
+	private static <T> Map<Integer, Set<T>> copyMap(Map<Integer, Set<T>> map) {
+		Map<Integer, Set<T>> mapCopy = new HashMap<>();
+		for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
+			mapCopy.put(entry.getKey(), new HashSet<>(entry.getValue()));
+		}
+		return mapCopy;
+	}
+
+	private static <T extends Enum> Map<Integer, Set<T>> copyEnumMap(Map<Integer, Set<T>> map) {
+		Map<Integer, Set<T>> mapCopy = new HashMap<>();
+		for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
+			mapCopy.put(entry.getKey(), EnumSet.copyOf(entry.getValue()));
+		}
+		return mapCopy;
 	}
 
 	public NegativeHand(int size) {
@@ -38,7 +54,7 @@ public class NegativeHand extends Hand {
 
 	// From this players perspective
 	public CardColour getKnownColour(int slot) {
-			EnumSet<CardColour> c = possibleColours.get(slot);
+			Set<CardColour> c = possibleColours.get(slot);
 			if (c != null && c.size() == 1) {
 				return c.iterator().next();
 			}
@@ -61,7 +77,7 @@ public class NegativeHand extends Hand {
 				possibleColours.put(slot, EnumSet.of(colour));
 				index++;
 			} else {
-				EnumSet<CardColour> colours = possibleColours.get(slot);
+				Set<CardColour> colours = possibleColours.get(slot);
 				if (colours != null) {
 					colours.remove(colour);
 				}
