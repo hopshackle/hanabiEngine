@@ -110,14 +110,7 @@ public class GameRunner {
 			}
 		}
 		
-		GameStats stats = new GameStats();
-		stats.nPlayers = players.length;
-		stats.moves = moves;
-		stats.lives = state.getLives();
-		stats.infomation = state.getInfomation();
-		stats.score = state.getScore();
-		
-		return stats;
+		return new GameStats(players.length, state.getLives(), moves, state.getInfomation(), state.getScore());
 	}
 	
 	//send messages as soon as they are available

@@ -1,13 +1,21 @@
 package com.fossgalaxy.games.fireworks;
 
 public class GameStats {
-	public int nPlayers;
+	public final int nPlayers;
 	
-	public int score;
-	public int lives;
-	public int moves;
+	public final int score;
+	public final int lives;
+	public final int moves;
 
-	public int infomation;
+	public final int infomation;
+
+	public GameStats(int players, int score, int lives, int moves, int infomation) {
+		this.nPlayers = players;
+		this.score = score;
+		this.lives = lives;
+		this.moves = moves;
+		this.infomation = infomation;
+	}
 
 	
 	public String toString() {
