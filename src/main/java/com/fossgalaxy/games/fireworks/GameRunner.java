@@ -34,7 +34,7 @@ public class GameRunner {
 		this.players = new Player[expectedPlayers];
 		this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
 		this.nPlayers = 0;
-		this.eventLog = new ArrayList<GameEvent>();
+		this.eventLog = new ArrayList<>();
 		
 		this.nextPlayer = 0;
 		this.moves = 0;
@@ -87,7 +87,7 @@ public class GameRunner {
 	public GameStats playGame(Long seed) {
 		assert nPlayers == players.length;
 		init(seed);
-		
+
 		int strikes = 3;
 		while (!state.isGameOver()) {
 			try {
@@ -110,7 +110,7 @@ public class GameRunner {
 			}
 		}
 		
-		return new GameStats(players.length, state.getLives(), moves, state.getInfomation(), state.getScore());
+		return new GameStats(players.length, state.getLives(), moves, state.getInfomation(), state.getScore(), strikes==0);
 	}
 	
 	//send messages as soon as they are available

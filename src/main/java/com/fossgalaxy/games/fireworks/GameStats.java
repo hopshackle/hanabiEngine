@@ -8,13 +8,15 @@ public class GameStats {
 	public final int moves;
 
 	public final int infomation;
+	public final boolean disqal;
 
-	public GameStats(int players, int score, int lives, int moves, int infomation) {
+	public GameStats(int players, int score, int lives, int moves, int information, boolean disqual) {
 		this.nPlayers = players;
 		this.score = score;
 		this.lives = lives;
 		this.moves = moves;
-		this.infomation = infomation;
+		this.infomation = information;
+		this.disqal = disqual;
 	}
 
 	
