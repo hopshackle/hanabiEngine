@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class MCTS implements Agent {
     private final static int ROUND_LENGTH = 10_000;
-    private final static int TREE_DEPTH = 15;
+    private final static int TREE_DEPTH = 5;
     private Random random;
 
     public MCTS() {
@@ -49,7 +49,7 @@ public class MCTS implements Agent {
             deck.shuffle();
 
             MCTSNode current = select(root, currentState);
-            if (current.getDepth() < TREE_DEPTH) {
+            if (current.getDepth() < state.getPlayerCount()+1) {
                 current = expand(current, currentState);
             }
 
