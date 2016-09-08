@@ -15,8 +15,7 @@ import java.util.*;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
-    private final static int ROUND_LENGTH = 10_000;
-    private final static int TREE_DEPTH = 5;
+    private final static int ROUND_LENGTH = 50_000;
     private final static int ROLLOUT_DEPTH = 9;
     private Random random;
 
