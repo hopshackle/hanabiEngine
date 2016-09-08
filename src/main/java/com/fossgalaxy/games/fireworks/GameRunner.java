@@ -88,6 +88,8 @@ public class GameRunner {
 		assert nPlayers == players.length;
 		init(seed);
 
+		int disquals = 0;
+
 		int strikes = 3;
 		while (!state.isGameOver()) {
 			try {
@@ -99,7 +101,9 @@ public class GameRunner {
 				if (strikes == 0) {
 					state.setLives(state.getLives()-1);
 					nextPlayer = (nextPlayer + 1) % players.length;
-					
+					strikes = 3;
+					disquals++;
+
 					System.err.println("player "+nextPlayer+" got 3 strikes - lose a life");
 					continue;
 				}
@@ -109,8 +113,8 @@ public class GameRunner {
 				//System.err.println("user broke rules by prompting again "+rv);
 			}
 		}
-		
-		return new GameStats(players.length, state.getLives(), moves, state.getInfomation(), state.getScore(), strikes==0);
+
+		return new GameStats(players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), disquals);
 	}
 	
 	//send messages as soon as they are available

@@ -8,9 +8,9 @@ public class GameStats {
 	public final int moves;
 
 	public final int infomation;
-	public final boolean disqal;
+	public final int disqal;
 
-	public GameStats(int players, int score, int lives, int moves, int information, boolean disqual) {
+	public GameStats(int players, int score, int lives, int moves, int information, int disqual) {
 		this.nPlayers = players;
 		this.score = score;
 		this.lives = lives;
