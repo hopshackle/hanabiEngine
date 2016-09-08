@@ -17,6 +17,7 @@ import java.util.*;
 public class MCTS implements Agent {
     private final static int ROUND_LENGTH = 10_000;
     private final static int TREE_DEPTH = 5;
+    private final static int ROLLOUT_DEPTH = 9;
     private Random random;
 
     public MCTS() {
@@ -106,6 +107,7 @@ public class MCTS implements Agent {
     protected MCTSNode expand(MCTSNode parent, GameState state) {
         int nextAgentID = (parent.getAgent() + 1) % state.getPlayerCount();
         Action action = selectAction(state, nextAgentID);
+        //XXX we may expand a node which we already visited? :S
         assert action != null : "selected a null action for expansion";
         MCTSNode child = new MCTSNode(parent, nextAgentID, action);
         parent.addChild(child);
@@ -114,12 +116,15 @@ public class MCTS implements Agent {
 
     protected int rollout(GameState state, final int agentID) {
         int playerID = agentID;
-        while (!state.isGameOver()) {
+        int moves = 0;
+
+        while (!state.isGameOver() && moves < ROLLOUT_DEPTH) {
             Collection<Action> legalActions = Utils.generateActions(playerID, state);
             assert !legalActions.isEmpty() : "no legal actions in rollout";
             Action action = legalActions.iterator().next();
             action.apply(playerID, state);
             playerID = (playerID + 1) % state.getPlayerCount();
+            moves++;
         }
         return state.getScore();
     }
