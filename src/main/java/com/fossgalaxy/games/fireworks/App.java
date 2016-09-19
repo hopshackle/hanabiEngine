@@ -9,6 +9,10 @@ import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.UUID;
+
 /**
  * Hello world!
  *
@@ -30,7 +34,7 @@ public class App {
 	}
 	
 	public static GameStats playGame() {
-		GameRunner runner = new GameRunner(4);
+		GameRunner runner = new GameRunner(UUID.randomUUID(), 4, null);
 		//runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
 		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
 		//runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
