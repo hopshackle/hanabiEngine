@@ -68,6 +68,7 @@ public class App2Csv {
 			}
 
 			GameStats stats = runner.playGame(seed);
+			ps.println("DEBUG,game is over");
 			System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", name, seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
 			return stats;
 		} catch (IOException ex) {

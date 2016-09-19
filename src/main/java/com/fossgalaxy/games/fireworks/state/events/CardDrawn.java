@@ -40,4 +40,9 @@ public class CardDrawn extends GameEvent {
 		return TextProtocol.drawMessage(playerId, slotId, colour, cardValue);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("player %s draw card %s %d in slot %d", playerId, colour, cardValue, slotId);
+	}
+
 }

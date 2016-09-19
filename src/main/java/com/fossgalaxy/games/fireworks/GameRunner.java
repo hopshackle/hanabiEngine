@@ -69,14 +69,14 @@ public class GameRunner {
 		if (gameOut == null) {
 			return;
 		}
-		gameOut.println(String.format("MOVE,%s,%d,%d,%s", gameID, moves, nextPlayer, action));
+		gameOut.println(String.format("MOVE,%s,%d,%d,\"%s\"", gameID, moves, nextPlayer, action));
 	}
 
 	private void writeEvent(GameEvent event) {
 		if (gameOut == null) {
 			return;
 		}
-		gameOut.println(String.format("EVENT,%s,%s", gameID, event));
+		gameOut.println(String.format("EVENT,%s,\"%s\"", gameID, event));
 	}
 
 	private void writeState(GameState state) {

@@ -30,4 +30,9 @@ public class GameInformation extends GameEvent {
 				players + " " + handSize + " " + infoTokens + " " + lives);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Game Information: %d players (hand size of %d), info: %d, lives: %d", players, handSize, infoTokens, lives);
+	}
+
 }
