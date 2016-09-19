@@ -1,6 +1,12 @@
 package com.fossgalaxy.games.fireworks;
 
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+
+import java.util.List;
+import java.util.UUID;
+
 public class GameStats {
+	public final UUID gameID;
 	public final int nPlayers;
 	
 	public final int score;
@@ -10,7 +16,8 @@ public class GameStats {
 	public final int infomation;
 	public final int disqal;
 
-	public GameStats(int players, int score, int lives, int moves, int information, int disqual) {
+	public GameStats(UUID gameID, int players, int score, int lives, int moves, int information, int disqual) {
+		this.gameID = gameID;
 		this.nPlayers = players;
 		this.score = score;
 		this.lives = lives;

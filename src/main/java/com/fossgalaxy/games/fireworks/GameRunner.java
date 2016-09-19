@@ -1,8 +1,10 @@
 package com.fossgalaxy.games.fireworks;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.BasicState;
@@ -20,24 +22,27 @@ public class GameRunner {
 	
 	private final Player[] players;
 	private final GameState state;
-	private final List<GameEvent> eventLog;
-	
+
+	private final PrintStream gameOut;
+	private final UUID gameID;
+
 	private int nPlayers;
 	private int moves;
 	
 	private int nextPlayer;
 	
-	public GameRunner(int expectedPlayers) {
+	public GameRunner(UUID gameID, int expectedPlayers, PrintStream gameOut) {
 		assert expectedPlayers > 2 : "too few players";
 		assert expectedPlayers < HAND_SIZE.length : "too many players";
 		
 		this.players = new Player[expectedPlayers];
 		this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
 		this.nPlayers = 0;
-		this.eventLog = new ArrayList<>();
+		this.gameOut = gameOut;
 		
 		this.nextPlayer = 0;
 		this.moves = 0;
+		this.gameID = gameID;
 	}
 	
 	public void addPlayer(Player player) {
@@ -45,9 +50,7 @@ public class GameRunner {
 	}
 
 	public void init(Long seed) {
-		eventLog.clear();
 		state.init(seed);
-
 
 		send(new GameInformation(nPlayers, HAND_SIZE[nPlayers], 8, 3));
 
@@ -61,7 +64,28 @@ public class GameRunner {
 			}
 		}
 	}
-	
+
+	private void writeMove(Action action) {
+		if (gameOut == null) {
+			return;
+		}
+		gameOut.println(String.format("MOVE,%s,%d,%d,%s", gameID, moves, nextPlayer, action));
+	}
+
+	private void writeEvent(GameEvent event) {
+		if (gameOut == null) {
+			return;
+		}
+		gameOut.println(String.format("EVENT,%s,%s", gameID, event));
+	}
+
+	private void writeState(GameState state) {
+		if (gameOut == null) {
+			return;
+		}
+		gameOut.println(String.format("STATE,%s,%d,%d,%d,%d,%d", gameID, moves, state.getLives(), state.getInfomation(), state.getScore(), state.getPlayerCount()));
+	}
+
 	//TODO time limit the agent
 	public void nextMove() {
 		Player player = players[nextPlayer];
@@ -69,6 +93,7 @@ public class GameRunner {
 		
 		//get the action and try to apply it
 		Action action = player.getAction();
+		writeMove(action);
 		if (!action.isLegal(nextPlayer, state)) {
 			throw new RulesViolation(action);
 		}
@@ -93,19 +118,16 @@ public class GameRunner {
 		int strikes = 3;
 		while (!state.isGameOver()) {
 			try {
+				writeState(state);
 				nextMove();
 				state.tick();
 			} catch (RulesViolation rv) {
 
-				//House rule: mess up 3 times and you lose a life (and your go)
+				//House rule: mess up 3 times and you end the game
 				if (strikes == 0) {
-					state.setLives(state.getLives()-1);
-					nextPlayer = (nextPlayer + 1) % players.length;
-					strikes = 3;
 					disquals++;
-
 					System.err.println("player "+nextPlayer+" got 3 strikes - lose a life");
-					continue;
+					break;
 				}
 				
 				//decrement strikes and last player gets another go
@@ -114,13 +136,13 @@ public class GameRunner {
 			}
 		}
 
-		return new GameStats(players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), disquals);
+		return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), disquals);
 	}
 	
 	//send messages as soon as they are available
 	private void send(GameEvent event) {
-		eventLog.add(event);
-		for (int i=0; i<players.length; i++) {
+		writeEvent(event);
+		for (int i = 0; i < players.length; i++) {
 			if (event.isVisibleTo(i)) {
 				players[i].sendMessage(event);
 			}

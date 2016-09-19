@@ -1,6 +1,8 @@
 package com.fossgalaxy.games.fireworks;
 
+import java.io.*;
 import java.util.Random;
+import java.util.UUID;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
@@ -53,16 +55,25 @@ public class App2Csv {
 	}
 	
 	public static GameStats playGame(String name, Long seed, Player ... players) {
-		GameRunner runner = new GameRunner(players.length);
-		
-		for (int i=-0; i<players.length; i++) {
-			runner.addPlayer(players[i]);
-			players[i].setID(i, players.length);
+		UUID id = UUID.randomUUID();
+		try (
+				FileOutputStream fos = new FileOutputStream(String.format("trace_%s.csv", id));
+				PrintStream ps = new PrintStream(fos)
+		){
+			GameRunner runner = new GameRunner(id, players.length, ps);
+
+			for (int i=-0; i<players.length; i++) {
+				runner.addPlayer(players[i]);
+				players[i].setID(i, players.length);
+			}
+
+			GameStats stats = runner.playGame(seed);
+			System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", name, seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+			return stats;
+		} catch (IOException ex) {
+			System.err.println("error: " + ex.toString());
 		}
-		
-		GameStats stats = runner.playGame(seed);
-		System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%b", name, seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
-		return stats;
+		return null;
 	}
 	
 	public static GameStats playGame(String name, Long seed, Agent ... agents) {
