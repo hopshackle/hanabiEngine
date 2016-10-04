@@ -3,10 +3,8 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by webpigeon on 22/08/16.
@@ -20,31 +18,34 @@ public class MCTSNode {
     private final int agentId;
     private final MCTSNode parent;
     private final List<MCTSNode> children;
+    private final Collection<Action> allUnexpandedActions;
     private final Random random;
 
     private double score;
     private int visits;
 
-    public MCTSNode() {
-        this(null, -1, null);
+    public MCTSNode(Collection<Action> allUnexpandedActions) {
+        this(null, -1, null, allUnexpandedActions);
     }
 
-    public MCTSNode(int agentID, Action moveToState) {
-        this(null, agentID, moveToState);
+    public MCTSNode(int agentID, Action moveToState, Collection<Action> allUnexpandedActions) {
+        this(null, agentID, moveToState, allUnexpandedActions);
     }
 
-    public MCTSNode(MCTSNode parent, int agentId, Action moveToState) {
+    public MCTSNode(MCTSNode parent, int agentId, Action moveToState, Collection<Action> allUnexpandedActions) {
         this.parent = parent;
         this.agentId = agentId;
         this.moveToState = moveToState;
         this.score = 0;
         this.visits = 0;
         this.children = new ArrayList<>();
+        this.allUnexpandedActions = allUnexpandedActions;
         this.random = new Random();
         assert (parent != null && moveToState != null) || (parent == null && moveToState == null);
     }
 
     protected void addChild(MCTSNode node) {
+        allUnexpandedActions.remove(node.getAction());
         children.add(node);
     }
 
@@ -130,5 +131,30 @@ public class MCTSNode {
 
     public int getChildSize() {
         return children.size();
+    }
+
+    public boolean containsChild(Action moveToChild){
+        for(MCTSNode child : children){
+            if(child.moveToState.equals(moveToChild)) return true;
+        }
+        return false;
+    }
+
+    public boolean fullyExpanded(GameState state, int nextId){
+        if(allUnexpandedActions.isEmpty()) return true;
+        for(Action action : allUnexpandedActions){
+            if(action.isLegal(nextId, state)) return false;
+        }
+        return true;
+    }
+
+    public Collection<Action> getLegalMoves(GameState state, int nextId){
+        return allUnexpandedActions.stream().filter(action -> action.isLegal(nextId, state)).collect(Collectors.toList());
+    }
+
+    public Collection<Action> getAllActionsExpandedAlready(){
+        ArrayList<Action> actions = new ArrayList<>();
+        for(MCTSNode node : children) actions.add(node.getAction());
+        return actions;
     }
 }

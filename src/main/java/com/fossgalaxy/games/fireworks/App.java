@@ -23,8 +23,9 @@ public class App {
 
 		double sum = 0;
 		int games = 0;
+		System.out.println("Start");
 		
-		for (int run=0; run<500; run++) {
+		for (int run=0; run<1; run++) {
 			GameStats stats = playGame();
 			sum += stats.score;
 			games++;
@@ -36,13 +37,20 @@ public class App {
 	public static GameStats playGame() {
 		GameRunner runner = new GameRunner(UUID.randomUUID(), 4, null);
 		//runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
-		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
+//		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
 		//runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
-		runner.addPlayer(new AgentPlayer(1, new ProductionRuleAgent()));
-		runner.addPlayer(new AgentPlayer(2, new ProductionRuleAgent()));
-		runner.addPlayer(new AgentPlayer(3, new ProductionRuleAgent()));
+		runner.addPlayer(new AgentPlayer(0, new MCTS()));
+		runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
+		runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
+		runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
+//		runner.addPlayer(new AgentPlayer(1, new ProductionRuleAgent()));
+//		runner.addPlayer(new AgentPlayer(2, new ProductionRuleAgent()));
+//		runner.addPlayer(new AgentPlayer(3, new ProductionRuleAgent()));
 		//runner.addPlayer(new AgentPlayer(2, new RandomAgent()));
-		
+//		runner.addPlayer(new AgentPlayer(1, new MCTS()));
+//		runner.addPlayer(new AgentPlayer(2, new MCTS()));
+//		runner.addPlayer(new AgentPlayer(3, new MCTS()));
+
 		GameStats stats = runner.playGame(null);
 		System.out.println("the agents scored: "+stats);
 		return stats;

@@ -1,15 +1,8 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
-import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-
-import java.util.*;
 
 /**
  * Created by WebPigeon on 09/08/2016.
@@ -37,7 +30,7 @@ public class MCTSPredictor extends MCTS {
      */
     protected Action selectAction(GameState state, int agentID) {
         if (agents[agentID] == null) {
-            return super.selectAction(state, agentID);
+            return null;//super.selectActionForExpand(state, agentID);
         }
 
         return agents[agentID].doMove(agentID, state);

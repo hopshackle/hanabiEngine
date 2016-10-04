@@ -66,4 +66,22 @@ public class TellValue implements Action {
 		return String.format("tell %d about their %ss", player, value);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		TellValue tellValue = (TellValue) o;
+
+		if (player != tellValue.player) return false;
+		return value == tellValue.value;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = player;
+		result = 31 * result + value;
+		return result;
+	}
 }

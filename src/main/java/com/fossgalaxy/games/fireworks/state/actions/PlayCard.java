@@ -79,5 +79,20 @@ public class PlayCard implements Action {
 	public String toString() {
 		return String.format("play %d", slot);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		PlayCard playCard = (PlayCard) o;
+
+		return slot == playCard.slot;
+
+	}
+
+	@Override
+	public int hashCode() {
+		return slot;
+	}
 }
