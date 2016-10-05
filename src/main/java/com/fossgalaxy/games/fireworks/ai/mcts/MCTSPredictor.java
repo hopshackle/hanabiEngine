@@ -2,14 +2,11 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
-import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Created by WebPigeon on 09/08/2016.
@@ -35,18 +32,37 @@ public class MCTSPredictor extends MCTS {
      * @param agentID the AgentID to use for action selection
      * @return the next action to be added to the tree from this state.
      */
-    protected Action selectAction(GameState state, int agentID) {
+    @Override
+    protected Action selectActionForExpand(GameState state, MCTSNode node, int agentID) {
         if (agents[agentID] == null) {
-            return super.selectAction(state, agentID);
+            return super.selectActionForExpand(state, node, agentID);
         }
 
         return agents[agentID].doMove(agentID, state);
     }
 
+    private Action selectActionForRollout(GameState state, int agentID){
+        if(agents[agentID] == null){
+            // Random
+            Collection<Action> legalActions = Utils.generateActions(agentID, state);
+            Iterator<Action> actionItr = legalActions.iterator();
+
+            int selected = random.nextInt(legalActions.size());
+            Action curr = actionItr.next();
+            for (int i = 0; i < selected; i++) {
+                curr = actionItr.next();
+            }
+
+            return curr;
+        }
+        return agents[agentID].doMove(agentID, state);
+    }
+
+
     protected int rollout(GameState state, final int agentID) {
         int playerID = agentID;
         while (!state.isGameOver()) {
-            Action action = selectAction(state, playerID);
+            Action action = selectActionForRollout(state, playerID);
             action.apply(playerID, state);
             playerID = (playerID + 1) % state.getPlayerCount();
         }

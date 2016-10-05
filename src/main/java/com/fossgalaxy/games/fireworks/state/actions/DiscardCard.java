@@ -62,5 +62,20 @@ public class DiscardCard implements Action {
 	public String toString() {
 		return String.format("Discard %d", slot);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		DiscardCard that = (DiscardCard) o;
+
+		return slot == that.slot;
+
+	}
+
+	@Override
+	public int hashCode() {
+		return slot;
+	}
 }

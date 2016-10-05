@@ -67,5 +67,23 @@ public class TellColour implements Action {
 	public String toString() {
 		return String.format("tell %d about their %ss", player, colour);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		TellColour that = (TellColour) o;
+
+		if (player != that.player) return false;
+		return colour == that.colour;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = player;
+		result = 31 * result + (colour != null ? colour.hashCode() : 0);
+		return result;
+	}
 }
