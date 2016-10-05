@@ -25,7 +25,7 @@ public class App {
 		int games = 0;
 		System.out.println("Start");
 		
-		for (int run=0; run<1; run++) {
+		for (int run=0; run<100; run++) {
 			GameStats stats = playGame();
 			sum += stats.score;
 			games++;
@@ -39,7 +39,8 @@ public class App {
 		//runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
 //		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
 		//runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
-		runner.addPlayer(new AgentPlayer(0, new MCTS()));
+//		runner.addPlayer(new AgentPlayer(0, new MCTS()));
+		runner.addPlayer(new AgentPlayer(0, new MCTSPredictor(new Agent[]{null, IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious()})));
 		runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
 		runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
 		runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
