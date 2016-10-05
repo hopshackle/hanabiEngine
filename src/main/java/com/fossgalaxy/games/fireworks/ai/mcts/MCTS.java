@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class MCTS implements Agent {
     private final static int ROUND_LENGTH = 50_000;
-    private final static int ROLLOUT_DEPTH = 9;
+    private final static int ROLLOUT_DEPTH = 18;
     protected Random random;
 
     public MCTS() {
@@ -33,20 +33,20 @@ public class MCTS implements Agent {
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
         // Guaranteed cards
-        System.out.println("Guaranteed Cards");
-        possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
-        System.out.println("We know the value of these");
-        possibleCards.entrySet().stream()
-                .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
-                .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
+//        System.out.println("Guaranteed Cards");
+//        possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
+//        System.out.println("We know the value of these");
+//        possibleCards.entrySet().stream()
+//                .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
+//                .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
 
         GameState invarCheck = state.getCopy();
 
         int treeDepth = state.getPlayerCount() + 1;
-        for (CardColour colour : CardColour.values()) {
-            System.out.print(colour + ":" + state.getTableValue(colour) + ",");
-        }
-        System.out.println("");
+//        for (CardColour colour : CardColour.values()) {
+//            System.out.print(colour + ":" + state.getTableValue(colour) + ",");
+//        }
+//        System.out.println("");
 
         for (int round = 0; round < ROUND_LENGTH; round++) {
             //find a leaf node
@@ -78,14 +78,13 @@ public class MCTS implements Agent {
                     //(scoreGained * 100) +
                     (iterationObject.getPointsGainedMyGo() * 1000);
 
-            current.backup(score + (iterationObject.getPointsGainedMyGo() * 10));
-//            System.out.println("Score: " +  (score - state.getScore()));
+            current.backup(score);
         }
 
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
-        System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
-        root.printChildren();
+//        System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
+//        root.printChildren();
         return chosenOne;
     }
 

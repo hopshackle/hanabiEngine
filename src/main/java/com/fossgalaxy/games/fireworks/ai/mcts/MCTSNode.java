@@ -23,6 +23,7 @@ public class MCTSNode {
 
     private double score;
     private int visits;
+    private int parentWasVisitedAndIWasLegal;
 
     public MCTSNode(Collection<Action> allUnexpandedActions) {
         this(null, -1, null, allUnexpandedActions);
@@ -54,7 +55,7 @@ public class MCTSNode {
             return 0;
         }
 
-        return ( (score/MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt( Math.log(parent.visits) / visits ));
+        return ( (score/MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt( Math.log(parentWasVisitedAndIWasLegal) / visits ));
     }
 
     public void backup(double score) {
@@ -79,13 +80,13 @@ public class MCTSNode {
         MCTSNode bestChild = null;
 
         for (MCTSNode child : children) {
-            double childScore = child.getUCTValue() + (random.nextDouble() * EPSILON);
-
             //XXX Hack to check if the move is legal in this version
             Action moveToMake = child.moveToState;
             if(!moveToMake.isLegal(child.agentId, state)){
                 continue;
             }
+            child.parentWasVisitedAndIWasLegal++;
+            double childScore = child.getUCTValue() + (random.nextDouble() * EPSILON);
 
             if (childScore > bestScore) {
                 bestScore = childScore;
