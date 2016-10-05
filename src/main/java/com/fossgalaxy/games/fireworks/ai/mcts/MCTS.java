@@ -12,11 +12,22 @@ import java.util.*;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
-    private final static int ROUND_LENGTH = 50_000;
-    private final static int ROLLOUT_DEPTH = 18;
+    private final int roundLength;
+    private final int rolloutDepth;
     protected Random random;
+    private boolean printDebug = false;
 
     public MCTS() {
+        this(50_000, 18);
+    }
+
+    public MCTS(int roundLength){
+        this(roundLength, 18);
+    }
+
+    public MCTS(int roundLength, int rolloutDepth){
+        this.roundLength = roundLength;
+        this.rolloutDepth = rolloutDepth;
         this.random = new Random();
     }
 
@@ -32,29 +43,36 @@ public class MCTS implements Agent {
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
-        // Guaranteed cards
-//        System.out.println("Guaranteed Cards");
-//        possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
-//        System.out.println("We know the value of these");
-//        possibleCards.entrySet().stream()
-//                .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
-//                .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
+        if (printDebug) {
+            // Guaranteed cards
+            System.out.println("Guaranteed Cards");
+            possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
+            System.out.println("We know the value of these");
+            possibleCards.entrySet().stream()
+                    .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
+                    .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
 
+        }
         GameState invarCheck = state.getCopy();
 
         int treeDepth = state.getPlayerCount() + 1;
-//        for (CardColour colour : CardColour.values()) {
-//            System.out.print(colour + ":" + state.getTableValue(colour) + ",");
-//        }
-//        System.out.println("");
+        if (printDebug) {
+            for (CardColour colour : CardColour.values()) {
+                System.out.print(colour + ":" + state.getTableValue(colour) + ",");
+            }
+            System.out.println("");
+        }
 
-        for (int round = 0; round < ROUND_LENGTH; round++) {
+
+        for (int round = 0; round < roundLength; round++) {
             //find a leaf node
             GameState currentState = state.getCopy();
             IterationObject iterationObject = new IterationObject(agentID);
 
             Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
-//            System.out.println(myHandCards);
+            if (printDebug) {
+                System.out.println(myHandCards);
+            }
 
             Deck deck = currentState.getDeck();
             Hand myHand = currentState.getHand(agentID);
@@ -83,8 +101,10 @@ public class MCTS implements Agent {
 
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
-//        System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
-//        root.printChildren();
+        if (printDebug) {
+            System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
+            root.printChildren();
+        }
         return chosenOne;
     }
 
@@ -151,7 +171,7 @@ public class MCTS implements Agent {
         int playerID = agentID;
         int moves = 0;
 
-        while (!state.isGameOver() && moves < ROLLOUT_DEPTH) {
+        while (!state.isGameOver() && moves < rolloutDepth) {
             Collection<Action> legalActions = Utils.generateActions(playerID, state);
             assert !legalActions.isEmpty() : "no legal actions in rollout";
             Action action = legalActions.iterator().next();
@@ -160,6 +180,10 @@ public class MCTS implements Agent {
             moves++;
         }
         return state.getScore();
+    }
+
+    public void setPrintDebug(boolean printDebug){
+        this.printDebug = printDebug;
     }
 
 

@@ -19,6 +19,16 @@ public class MCTSPredictor extends MCTS {
         this.agents = others;
     }
 
+    public MCTSPredictor(Agent[] agents, int roundLength) {
+        super(roundLength);
+        this.agents = agents;
+    }
+
+    public MCTSPredictor(Agent[] agents, int roundLength, int rolloutDepth) {
+        super(roundLength, rolloutDepth);
+        this.agents = agents;
+    }
+
     @Override
     public Action doMove(int agentID, GameState state) {
         agents[agentID] = null;
