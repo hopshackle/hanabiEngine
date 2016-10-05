@@ -12,7 +12,7 @@ import java.util.*;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
-    private final static int ROUND_LENGTH = 15;
+    private final static int ROUND_LENGTH = 50_000;
     private final static int ROLLOUT_DEPTH = 9;
     protected Random random;
 
@@ -32,6 +32,14 @@ public class MCTS implements Agent {
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
+        // Guaranteed cards
+        System.out.println("Guaranteed Cards");
+        possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println(x.getKey() + ":" + x.getValue()));
+        System.out.println("We know the value of these");
+        possibleCards.entrySet().stream()
+                .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
+                .forEach(x -> System.out.println(x.getKey() + ":" + x.getValue()));
+
         GameState invarCheck = state.getCopy();
 
         int treeDepth = state.getPlayerCount() + 1;
@@ -46,7 +54,7 @@ public class MCTS implements Agent {
             IterationObject iterationObject = new IterationObject(agentID);
 
             Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
-            System.out.println(myHandCards);
+//            System.out.println(myHandCards);
 
             Deck deck = currentState.getDeck();
             Hand myHand = currentState.getHand(agentID);
@@ -70,13 +78,14 @@ public class MCTS implements Agent {
                     //(scoreGained * 100) +
                     (iterationObject.getPointsGainedMyGo() * 1000);
 
-            current.backup(backupScore);
+            current.backup(score + (iterationObject.getPointsGainedMyGo() * 10));
 //            System.out.println("Score: " +  (score - state.getScore()));
         }
 
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
         System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
+        root.printChildren();
         return chosenOne;
     }
 

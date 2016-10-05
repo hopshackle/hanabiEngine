@@ -54,15 +54,17 @@ public class MCTSNode {
             return 0;
         }
 
-        return ( (score/MAX_SCORE) / visits) + EXP_CONST * Math.sqrt( Math.log(parent.visits) / visits );
+        return ( (score/MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt( Math.log(parent.visits) / visits ));
     }
 
     public void backup(double score) {
         MCTSNode current = this;
+        double discount = 1;
         while (current != null) {
-            current.score += score;
+            current.score += score * discount;
             current.visits++;
             current = current.parent;
+            discount *= 0.99;
         }
     }
 
@@ -156,5 +158,11 @@ public class MCTSNode {
         ArrayList<Action> actions = new ArrayList<>();
         for(MCTSNode node : children) actions.add(node.getAction());
         return actions;
+    }
+
+    public void printChildren(){
+        for(MCTSNode child : children){
+            System.out.println("\t" + child.getAction() + " visits: " + child.visits + " score: " + child.score);
+        }
     }
 }
