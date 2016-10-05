@@ -34,11 +34,11 @@ public class MCTS implements Agent {
 
         // Guaranteed cards
         System.out.println("Guaranteed Cards");
-        possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println(x.getKey() + ":" + x.getValue()));
+        possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
         System.out.println("We know the value of these");
         possibleCards.entrySet().stream()
                 .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
-                .forEach(x -> System.out.println(x.getKey() + ":" + x.getValue()));
+                .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
 
         GameState invarCheck = state.getCopy();
 
