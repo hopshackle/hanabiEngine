@@ -12,7 +12,7 @@ import java.util.*;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
-    private final static int ROUND_LENGTH = 50_000;
+    private final static int ROUND_LENGTH = 15;
     private final static int ROLLOUT_DEPTH = 9;
     protected Random random;
 
@@ -35,17 +35,18 @@ public class MCTS implements Agent {
         GameState invarCheck = state.getCopy();
 
         int treeDepth = state.getPlayerCount() + 1;
-//        for(CardColour colour : CardColour.values()) {
-//            System.out.print(colour + ":" + state.getTableValue(colour) + ",");
-//        }
-//        System.out.println("");
+        for (CardColour colour : CardColour.values()) {
+            System.out.print(colour + ":" + state.getTableValue(colour) + ",");
+        }
+        System.out.println("");
 
         for (int round = 0; round < ROUND_LENGTH; round++) {
             //find a leaf node
             GameState currentState = state.getCopy();
+            IterationObject iterationObject = new IterationObject(agentID);
 
             Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
-//            System.out.println(myHandCards);
+            System.out.println(myHandCards);
 
             Deck deck = currentState.getDeck();
             Hand myHand = currentState.getHand(agentID);
@@ -56,31 +57,42 @@ public class MCTS implements Agent {
             }
             deck.shuffle();
 
-            MCTSNode current = select(root, currentState);
+            MCTSNode current = select(root, currentState, iterationObject);
             if (current.getDepth() < treeDepth) {
                 current = expand(current, currentState);
             }
 
             int score = rollout(currentState, agentID);
             int scoreGained = score - state.getScore();
-            int livesLost = state.getLives() - currentState.getLives();
-            current.backup((livesLost == 0)? (scoreGained * 100) : -1000 + (scoreGained * 100));
+            int livesLost = iterationObject.getLivesLostMyGo();
+
+            int backupScore = (livesLost * -1000) +
+                    //(scoreGained * 100) +
+                    (iterationObject.getPointsGainedMyGo() * 1000);
+
+            current.backup(backupScore);
 //            System.out.println("Score: " +  (score - state.getScore()));
         }
 
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
-//        System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
+        System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
         return chosenOne;
     }
 
-    protected MCTSNode select(MCTSNode root, GameState state) {
+    protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
         while (!state.isGameOver() && current.fullyExpanded(state, (current.getAgent() + 1) % state.getPlayerCount())) {
             int agent = current.getAgent();
+            int lives = state.getLives();
+            int score = state.getScore();
             Action action = current.getAction();
             if (action != null) {
                 action.apply(agent, state);
+            }
+            if (iterationObject.isMyGo(agent)) {
+                if (state.getLives() < lives) iterationObject.incrementLivesLostMyGo();
+                if (state.getScore() > score) iterationObject.incrementPointsGainedMyGo();
             }
             MCTSNode next = current.getUCTNode(state);
             if (next == null) {
