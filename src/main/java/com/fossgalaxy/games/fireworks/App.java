@@ -81,4 +81,19 @@ public class App {
 		throw new IllegalArgumentException("unknown agent type "+name);
 	}
 
+	public static Agent buildAgent(String name, int agentID, String paired, int size) {
+		if ("cautiousMCTS".equals(name)) {
+			Agent[] agents = new Agent[size];
+			for (int i=0; i<size; i++) {
+				if (i==agentID) {
+					agents[i] = null;
+				}
+				agents[i] = buildAgent(paired);
+			}
+			return new MCTSPredictor(agents);
+		}
+
+		return buildAgent(name);
+	}
+
 }
