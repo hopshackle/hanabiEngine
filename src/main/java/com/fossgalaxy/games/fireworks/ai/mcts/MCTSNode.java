@@ -58,6 +58,10 @@ public class MCTSNode {
         return ( (score/MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt( Math.log(parentWasVisitedAndIWasLegal) / visits ));
     }
 
+    public List<MCTSNode> getChildren() {
+        return children;
+    }
+
     public void backup(double score) {
         MCTSNode current = this;
         double discount = 1;
@@ -163,7 +167,7 @@ public class MCTSNode {
 
     public void printChildren(){
         for(MCTSNode child : children){
-            System.out.println("\t" + child.getAction() + " visits: " + child.visits + " score: " + child.score);
+            System.out.println("\t" + child.getAction() + " visits: " + child.visits + " score: " + child.score + " Avg: " + child.score / child.visits);
         }
     }
 }

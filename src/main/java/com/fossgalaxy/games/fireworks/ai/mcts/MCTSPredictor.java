@@ -48,7 +48,8 @@ public class MCTSPredictor extends MCTS {
             return super.selectActionForExpand(state, node, agentID);
         }
 
-        return agents[agentID].doMove(agentID, state);
+        Action choice = agents[agentID].doMove(agentID, state.getCopy());
+        return node.containsChild(choice) ? null : choice;
     }
 
     private Action selectActionForRollout(GameState state, int agentID){
@@ -65,10 +66,11 @@ public class MCTSPredictor extends MCTS {
 
             return curr;
         }
-        return agents[agentID].doMove(agentID, state);
+        return agents[agentID].doMove(agentID, state.getCopy());
     }
 
 
+    @Override
     protected int rollout(GameState state, final int agentID) {
         int playerID = agentID;
         while (!state.isGameOver()) {

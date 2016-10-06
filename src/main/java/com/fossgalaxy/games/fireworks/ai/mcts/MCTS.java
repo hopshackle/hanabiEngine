@@ -15,7 +15,7 @@ public class MCTS implements Agent {
     private final int roundLength;
     private final int rolloutDepth;
     protected Random random;
-    private boolean printDebug = false;
+    private boolean printDebug = true;
 
     public MCTS() {
         this(50_000, 18);
@@ -70,9 +70,6 @@ public class MCTS implements Agent {
             IterationObject iterationObject = new IterationObject(agentID);
 
             Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
-            if (printDebug) {
-                System.out.println(myHandCards);
-            }
 
             Deck deck = currentState.getDeck();
             Hand myHand = currentState.getHand(agentID);
@@ -98,6 +95,14 @@ public class MCTS implements Agent {
 
             current.backup(score);
         }
+
+        if (printDebug) {
+            for (MCTSNode level1 : root.getChildren()) {
+                System.out.println(level1.getAction()+"'s children");
+                level1.printChildren();
+            }
+        }
+
 
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
