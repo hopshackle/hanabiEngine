@@ -51,7 +51,6 @@ public class MCTS implements Agent {
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
                     .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
-
         }
         GameState invarCheck = state.getCopy();
 
