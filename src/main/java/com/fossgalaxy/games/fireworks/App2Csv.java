@@ -96,12 +96,21 @@ public class App2Csv {
 		return null;
 	}
 
-	public static GameStats playGame(String name, Long seed, Agent ... agents) {
+	public static GameStats playGameNoTrace(String name, Long seed, Agent ... agents) {
 		Player[] wrapper = new Player[agents.length];
 		for (int i=0; i<agents.length; i++) {
 			wrapper[i] = new AgentPlayer(i, agents[i]);
 		}
 		return playGameNoTrace(name, seed, wrapper);
 	}
+
+	public static GameStats playGame(String name, Long seed, Agent ... agents) {
+		Player[] wrapper = new Player[agents.length];
+		for (int i=0; i<agents.length; i++) {
+			wrapper[i] = new AgentPlayer(i, agents[i]);
+		}
+		return playGame(name, seed, wrapper);
+	}
+
 
 }

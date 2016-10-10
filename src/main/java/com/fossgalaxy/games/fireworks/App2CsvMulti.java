@@ -44,7 +44,7 @@ public class App2CsvMulti {
 						agents[agent] = App.buildAgent(name);
 					}
 					
-					App2Csv.playGame(name, seed, agents);
+					App2Csv.playGameNoTrace(name, seed, agents);
 				}
 				
 			}
