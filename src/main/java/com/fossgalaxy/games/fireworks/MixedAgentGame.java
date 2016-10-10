@@ -11,8 +11,8 @@ import java.util.Random;
  *
  */
 public class MixedAgentGame {
-	protected static final String[] AGENT_PAIRED = {"pure_random", "internal", "outer", "legal_random", "cautious"};
-	protected static final String[] AGENT_NAMES = {"cautious", "legal_random", "mcts", "cautiousMCTS"};
+	public static final String[] AGENT_PAIRED = {"pure_random", "internal", "outer", "legal_random", "cautious"};
+	public static final String[] AGENT_NAMES = {"cautious", "legal_random", "mcts", "predictorMCTS"};
 
 	public static void main(String[] args) {
 		

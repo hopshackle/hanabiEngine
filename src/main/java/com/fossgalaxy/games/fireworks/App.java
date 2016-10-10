@@ -82,7 +82,7 @@ public class App {
 	}
 
 	public static Agent buildAgent(String name, int agentID, String paired, int size) {
-		if ("cautiousMCTS".equals(name)) {
+		if ("predictorMCTS".equals(name)) {
 			Agent[] agents = new Agent[size];
 			for (int i=0; i<size; i++) {
 				if (i==agentID) {
