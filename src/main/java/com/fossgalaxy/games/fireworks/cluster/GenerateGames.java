@@ -26,7 +26,6 @@ public class GenerateGames {
             long seed = r.nextLong();
         for (String agentUnderTest : agentsUnderTest) {
            for (String agentPaired : agentsPaired) {
-
                    System.out.println(String.format("%s %s %d", agentUnderTest, agentPaired, seed));
                }
            }

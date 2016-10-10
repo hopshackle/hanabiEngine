@@ -40,16 +40,19 @@ public class MixedAgentGame {
 
 					long seed = random.nextLong();
 					Agent[] agents = new Agent[i];
+					String[] agentStr = new String[5];
 
 					for (String name : agentNames) {
 
 						//populate list of agents
 						agents[0] = App.buildAgent(name,0,paired, i);
+						agentStr[0] = name;
 						for (int agent = 1; agent < agents.length; agent++) {
 							agents[agent] = App.buildAgent(paired);
+							agentStr[agent] = paired;
 						}
 
-						App2Csv.playGame(name, seed, agents);
+						App2Csv.playGame(agentStr, seed, agents);
 					}
 
 				}

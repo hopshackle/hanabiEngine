@@ -32,14 +32,18 @@ public class MixedAgentGameSingle {
 			for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
 
 				Agent[] agents = new Agent[nPlayers];
+				String[] agentStr = new String[5];
+
 				//generate agent under test
 				agents[0] = App.buildAgent(agentUnderTest, 0, agentPaired, nPlayers);
+				agentStr[0] = agentUnderTest;
 				for (int i = 1; i < nPlayers; i++) {
 					agents[i] = App.buildAgent(agentPaired);
+					agentStr[i] = agentPaired;
 				}
 
 				//System.out.println("name,seed,players,information,lives,moves,score");
-				App2Csv.playGameNoTrace(agentUnderTest, seed, agents);
+				App2Csv.playGameNoTrace(agentStr, seed, agents);
 			}
 		}
 	}

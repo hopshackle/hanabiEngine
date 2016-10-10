@@ -36,15 +36,17 @@ public class App2CsvMulti {
 			
 				long seed = random.nextLong();
 				Agent[] agents = new Agent[i];
-				
+				String[] agentStr = new String[5];
+
 				for (String name : agentNames) {
 					
 					//populate list of agents
 					for (int agent=0; agent<agents.length; agent++) {
 						agents[agent] = App.buildAgent(name);
+						agentStr[agent] = name;
 					}
 					
-					App2Csv.playGameNoTrace(name, seed, agents);
+					App2Csv.playGameNoTrace(agentStr, seed, agents);
 				}
 				
 			}

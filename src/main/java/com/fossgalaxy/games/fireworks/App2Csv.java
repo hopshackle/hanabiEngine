@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 
@@ -38,23 +39,26 @@ public class App2Csv {
 		
 		//play the games
 		System.out.println("name,seed,players,information,lives,moves,score");
+
 		for (int run=0; run<runCount; run++) {
 			Agent[] agents = new Agent[GAME_SIZE];
+			String[] agentStr = new String[5]; //an array containing all 5 agent names
 			
 			//use the same seed for 1 game for all agents (for fairness)
 			long seed = random.nextLong();
 			
-			for (String name : agentNames) {
+			for (int i=0; i<agents.length; i++) {
 				for (int agent=0; agent<agents.length; agent++) {
-					agents[agent] = App.buildAgent(name);
+					agents[agent] = App.buildAgent(agentNames[i]);
+					agentStr[agent] = agentNames[i];
 				}
 				
-				playGame(name, seed, agents);
+				playGame(agentStr, seed, agents);
 			}
 		}
 	}
 	
-	public static GameStats playGame(String name, Long seed, Player ... players) {
+	public static GameStats playGame(String[] names, Long seed, Player ... players) {
 		UUID id = UUID.randomUUID();
 		try (
 				FileOutputStream fos = new FileOutputStream(String.format("trace_%s.csv", id));
@@ -69,7 +73,7 @@ public class App2Csv {
 
 			GameStats stats = runner.playGame(seed);
 			ps.println("DEBUG,game is over");
-			System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", name, seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+			System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", String.join(",", Arrays.asList(names) ), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
 			return stats;
 		} catch (IOException ex) {
 			System.err.println("error: " + ex.toString());
@@ -77,7 +81,7 @@ public class App2Csv {
 		return null;
 	}
 
-	public static GameStats playGameNoTrace(String name, Long seed, Player ... players) {
+	public static GameStats playGameNoTrace(String[] name, Long seed, Player ... players) {
 		UUID id = UUID.randomUUID();
 		try {
 			GameRunner runner = new GameRunner(id, players.length, null);
@@ -88,7 +92,7 @@ public class App2Csv {
 			}
 
 			GameStats stats = runner.playGame(seed);
-			System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", name, seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+			System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", String.join(",", Arrays.asList(name) ), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
 			return stats;
 		} catch (Exception ex) {
 			System.err.println("error: " + ex.toString());
@@ -96,7 +100,7 @@ public class App2Csv {
 		return null;
 	}
 
-	public static GameStats playGameNoTrace(String name, Long seed, Agent ... agents) {
+	public static GameStats playGameNoTrace(String[] name, Long seed, Agent ... agents) {
 		Player[] wrapper = new Player[agents.length];
 		for (int i=0; i<agents.length; i++) {
 			wrapper[i] = new AgentPlayer(i, agents[i]);
@@ -104,7 +108,7 @@ public class App2Csv {
 		return playGameNoTrace(name, seed, wrapper);
 	}
 
-	public static GameStats playGame(String name, Long seed, Agent ... agents) {
+	public static GameStats playGame(String[] name, Long seed, Agent ... agents) {
 		Player[] wrapper = new Player[agents.length];
 		for (int i=0; i<agents.length; i++) {
 			wrapper[i] = new AgentPlayer(i, agents[i]);
