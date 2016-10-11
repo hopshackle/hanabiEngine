@@ -22,7 +22,6 @@ Again, for a competition runner, this might change (to use reflection) - at the 
 
 Sample agents live under ```com.fossgalaxy.games.fireworks.ai```. 
 
-
 ## Running the code
 
 ### Running locally
