@@ -5,7 +5,6 @@ import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
-import com.oracle.webservices.internal.api.message.PropertySet;
 
 public class AgentPlayer implements Player {
 	private GameState state;
