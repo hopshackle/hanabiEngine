@@ -25,8 +25,8 @@ public class MCTSPredictor extends MCTS {
         this.agents = agents;
     }
 
-    public MCTSPredictor(Agent[] agents, int roundLength, int rolloutDepth) {
-        super(roundLength, rolloutDepth);
+    public MCTSPredictor(Agent[] agents, int roundLength, int rolloutDepth, int treeDepthMul) {
+        super(roundLength, rolloutDepth, treeDepthMul);
         this.agents = agents;
     }
 

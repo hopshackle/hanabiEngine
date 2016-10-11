@@ -16,20 +16,23 @@ import java.util.stream.Collectors;
 public class MCTS implements Agent {
     private final int roundLength;
     private final int rolloutDepth;
+    private final int treeDepthMul;
     protected Random random;
+
     private boolean printDebug = true;
 
     public MCTS() {
-        this(50_000, 18);
+        this(50_000, 18, 1);
     }
 
     public MCTS(int roundLength){
-        this(roundLength, 18);
+        this(roundLength, 18, 1);
     }
 
-    public MCTS(int roundLength, int rolloutDepth){
+    public MCTS(int roundLength, int rolloutDepth, int treeDepthMul){
         this.roundLength = roundLength;
         this.rolloutDepth = rolloutDepth;
+        this.treeDepthMul = treeDepthMul;
         this.random = new Random();
     }
 
@@ -64,7 +67,7 @@ public class MCTS implements Agent {
         }
         GameState invarCheck = state.getCopy();
 
-        int treeDepth = state.getPlayerCount() + 1;
+        int treeDepth = (state.getPlayerCount()*treeDepthMul) + 1;
         if (printDebug) {
             DebugUtils.printTable(System.err, state);
             System.err.println();
