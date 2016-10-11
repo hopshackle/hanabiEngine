@@ -11,8 +11,26 @@ import java.util.Random;
  *
  */
 public class MixedAgentGame {
-	public static final String[] AGENT_PAIRED = {"pure_random", "internal", "outer", "legal_random", "cautious"};
-	public static final String[] AGENT_NAMES = {"cautious", "legal_random", "mcts", "predictorMCTS"};
+	private static final String[] AGENT_PAIRED = {"pure_random", "internal", "outer", "legal_random", "cautious"};
+	private static final String[] AGENT_NAMES = {"cautious", "legal_random", "mcts", "predictorMCTS"};
+
+	public static String[] getAgentNames() {
+		String[] agentNames = AGENT_NAMES;
+		String envAgents = System.getenv("FIREWORKS_AGENTS");
+		if (envAgents != null) {
+			agentNames = envAgents.split(",");
+		}
+		return agentNames;
+	}
+
+	public static String[] getPartnerNames() {
+		String[] agentNames = AGENT_PAIRED;
+		String envAgents = System.getenv("FIREWORKS_AGENTS_PAIRED");
+		if (envAgents != null) {
+			agentNames = envAgents.split(",");
+		}
+		return agentNames;
+	}
 
 	public static void main(String[] args) {
 		
@@ -24,17 +42,14 @@ public class MixedAgentGame {
 			runCount = Integer.parseInt(runCountEnv);
 		}
 		
-		//agents which will be playing
-		String[] agentNames = AGENT_NAMES;
-		String envAgents = System.getenv("FIREWORKS_AGENTS");
-		if (envAgents != null) {
-			agentNames = envAgents.split(",");
-		}
+
+		String[] agentNames = getAgentNames();
+		String[] agentsPaired = getPartnerNames();
 
 		Random random = new Random();
 		
 		System.out.println("name,seed,players,information,lives,moves,score");
-		for (String paired : AGENT_PAIRED) {
+		for (String paired : agentsPaired) {
 			for (int i = 2; i <= 5; i++) {
 				for (int run = 0; run < runCount; run++) {
 

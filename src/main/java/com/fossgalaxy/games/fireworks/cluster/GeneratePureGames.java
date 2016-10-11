@@ -12,7 +12,7 @@ import java.util.Random;
 public class GeneratePureGames {
 
     public static void main(String[] args) {
-        String[] agentsUnderTest = MixedAgentGame.AGENT_NAMES;
+        String[] agentsUnderTest = MixedAgentGame.getAgentNames();
 
         //number of seeds
         String numSeedsEnv = System.getenv("FIREWORKS_NUM_SEEDS");

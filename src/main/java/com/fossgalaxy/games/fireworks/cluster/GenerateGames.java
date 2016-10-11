@@ -10,8 +10,8 @@ import java.util.Random;
 public class GenerateGames {
 
     public static void main(String[] args) {
-        String[] agentsUnderTest = MixedAgentGame.AGENT_NAMES;
-        String[] agentsPaired = MixedAgentGame.AGENT_PAIRED;
+        String[] agentsUnderTest = MixedAgentGame.getAgentNames();
+        String[] agentsPaired = MixedAgentGame.getPartnerNames();
 
         //number of seeds
         String numSeedsEnv = System.getenv("FIREWORKS_NUM_SEEDS");
