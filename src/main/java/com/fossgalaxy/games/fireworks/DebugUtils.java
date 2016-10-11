@@ -4,12 +4,10 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -65,6 +63,21 @@ public class DebugUtils {
         out.println("Deck:");
         Map<Card, Long> cardCounts = histogram(state.getDeck().toList());
         cardCounts.forEach((card, count) -> out.format("\t%10s x %-2d\n", card, count));
+    }
+
+    public static <T> String getHistStr(Map<T, Long> hist) {
+
+        List<String> result = new ArrayList<>();
+        hist.forEach((key, value) -> result.add(getHistEntry(key, value)));
+        return result.toString();
+    }
+
+    public static <T> String getHistEntry(T key, Long value) {
+        if (value == 1) {
+            return key.toString();
+        } else {
+            return String.format("%s x %d", key, value);
+        }
     }
 
     public static <T> Map<T,Long> histogram(Collection<T> c) {

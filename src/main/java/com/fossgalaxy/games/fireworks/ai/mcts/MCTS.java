@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
+import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
@@ -7,6 +8,7 @@ import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by WebPigeon on 09/08/2016.
@@ -44,11 +46,17 @@ public class MCTS implements Agent {
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
         if (printDebug) {
+            System.err.println("possible bindings");
+            possibleCards.forEach((slot, cards) -> System.err.format("\t %d %s\n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))) );
+        }
+
+        if (printDebug) {
             // Guaranteed cards
             System.err.println("Guaranteed Cards");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().size() == 1)
                     .forEach(MCTS::printCard);
+
             System.err.println("We know the value of these");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
@@ -58,12 +66,9 @@ public class MCTS implements Agent {
 
         int treeDepth = state.getPlayerCount() + 1;
         if (printDebug) {
-            for (CardColour colour : CardColour.values()) {
-                System.err.print(colour + ":" + state.getTableValue(colour) + ",");
-            }
-            System.err.println("");
+            DebugUtils.printTable(System.err, state);
+            System.err.println();
         }
-
 
         for (int round = 0; round < roundLength; round++) {
             //find a leaf node
@@ -98,11 +103,7 @@ public class MCTS implements Agent {
         }
 
         if (printDebug) {
-
-            System.err.println("End of move");
-            root.printChildren();
-
-            System.err.println("next player's moves considerations: ");
+            System.err.println("\t next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
                 System.err.println(level1.getAction()+"'s children");
                 level1.printChildren();
@@ -113,7 +114,8 @@ public class MCTS implements Agent {
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
         if (printDebug) {
-            System.err.println("Move Chosen by: " + agentID + " was: " + chosenOne);
+            System.err.format("Move Chosen by %d was %s", agentID, chosenOne);
+            System.err.println();
             root.printChildren();
         }
         return chosenOne;

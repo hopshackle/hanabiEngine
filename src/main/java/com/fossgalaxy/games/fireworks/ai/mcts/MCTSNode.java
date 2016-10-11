@@ -166,8 +166,10 @@ public class MCTSNode {
     }
 
     public void printChildren(){
+        System.err.format("\t %35s\t%-10s\t%-10s\t%-9s\n", "action", "visits", "score", "avg");
         for(MCTSNode child : children){
-            System.err.println("\t" + child.getAction() + " visits: " + child.visits + " score: " + child.score + " Avg: " + child.score / child.visits);
+            System.err.format("\t %35s\t%-10d\t%-6.3f\t%6.3f\n", child.getAction(), child.visits, child.score, child.score / child.visits);
         }
+        System.err.println();
     }
 }
