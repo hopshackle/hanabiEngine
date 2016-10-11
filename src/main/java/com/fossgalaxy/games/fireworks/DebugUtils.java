@@ -4,7 +4,6 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import java.io.PrintStream;
 import java.util.*;
