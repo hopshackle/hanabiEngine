@@ -167,7 +167,7 @@ public class MCTSNode {
 
     public void printChildren(){
         for(MCTSNode child : children){
-            System.out.println("\t" + child.getAction() + " visits: " + child.visits + " score: " + child.score + " Avg: " + child.score / child.visits);
+            System.err.println("\t" + child.getAction() + " visits: " + child.visits + " score: " + child.score + " Avg: " + child.score / child.visits);
         }
     }
 }

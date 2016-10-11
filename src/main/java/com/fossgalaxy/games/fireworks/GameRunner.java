@@ -1,10 +1,7 @@
 package com.fossgalaxy.games.fireworks;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.BasicState;
@@ -113,8 +110,8 @@ public class GameRunner {
 		assert nPlayers == players.length;
 		init(seed);
 
+		System.err.println(String.format("playing game %d. players: %s", seed, Arrays.toString(players)));
 		int disquals = 0;
-
 		int strikes = 3;
 		while (!state.isGameOver()) {
 			try {

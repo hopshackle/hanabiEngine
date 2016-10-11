@@ -45,9 +45,9 @@ public class MCTS implements Agent {
 
         if (printDebug) {
             // Guaranteed cards
-            System.out.println("Guaranteed Cards");
+            System.err.println("Guaranteed Cards");
             possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
-            System.out.println("We know the value of these");
+            System.err.println("We know the value of these");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
                     .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
@@ -57,9 +57,9 @@ public class MCTS implements Agent {
         int treeDepth = state.getPlayerCount() + 1;
         if (printDebug) {
             for (CardColour colour : CardColour.values()) {
-                System.out.print(colour + ":" + state.getTableValue(colour) + ",");
+                System.err.print(colour + ":" + state.getTableValue(colour) + ",");
             }
-            System.out.println("");
+            System.err.println("");
         }
 
 
@@ -97,7 +97,7 @@ public class MCTS implements Agent {
 
         if (printDebug) {
             for (MCTSNode level1 : root.getChildren()) {
-                System.out.println(level1.getAction()+"'s children");
+                System.err.println(level1.getAction()+"'s children");
                 level1.printChildren();
             }
         }
@@ -106,7 +106,7 @@ public class MCTS implements Agent {
         assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
         if (printDebug) {
-            System.out.println("Move Chosen by: " + agentID + " was: " + chosenOne);
+            System.err.println("Move Chosen by: " + agentID + " was: " + chosenOne);
             root.printChildren();
         }
         return chosenOne;
@@ -190,5 +190,8 @@ public class MCTS implements Agent {
         this.printDebug = printDebug;
     }
 
+    public String toString() {
+        return "MCTS";
+    }
 
 }

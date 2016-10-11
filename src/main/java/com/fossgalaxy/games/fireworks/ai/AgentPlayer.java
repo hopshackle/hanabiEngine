@@ -5,6 +5,7 @@ import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.oracle.webservices.internal.api.message.PropertySet;
 
 public class AgentPlayer implements Player {
 	private GameState state;
@@ -31,6 +32,11 @@ public class AgentPlayer implements Player {
 	public void setID(int id, int nPlayers) {
 		this.playerID = id;
 		this.state = new BasicState(GameState.HAND_SIZE[nPlayers], nPlayers);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("{agent: %s}", agent);
 	}
 
 }

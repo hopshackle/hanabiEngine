@@ -48,4 +48,9 @@ public class RandomAgent implements Agent {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "RandomAgent";
+	}
+
 }

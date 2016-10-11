@@ -5,6 +5,7 @@ import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -79,6 +80,11 @@ public class MCTSPredictor extends MCTS {
             playerID = (playerID + 1) % state.getPlayerCount();
         }
         return state.getScore();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("MCTS(%s)", Arrays.toString(agents));
     }
 
 

@@ -49,5 +49,9 @@ public class ProductionRuleAgent implements Agent {
 			return new PlayCard(random.nextInt(state.getHandSize()));
 		}
 	}
-	
+
+	public String toString() {
+		return "ProductionRuleAgent";
+	}
+
 }
