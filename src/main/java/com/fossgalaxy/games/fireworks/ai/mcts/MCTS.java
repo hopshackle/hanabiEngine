@@ -15,7 +15,7 @@ public class MCTS implements Agent {
     private final int roundLength;
     private final int rolloutDepth;
     protected Random random;
-    private boolean printDebug = false;
+    private boolean printDebug = true;
 
     public MCTS() {
         this(50_000, 18);
