@@ -98,6 +98,11 @@ public class MCTS implements Agent {
         }
 
         if (printDebug) {
+
+            System.err.println("End of move");
+            root.printChildren();
+
+            System.err.println("next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
                 System.err.println(level1.getAction()+"'s children");
                 level1.printChildren();

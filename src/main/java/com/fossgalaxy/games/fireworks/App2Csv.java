@@ -81,10 +81,10 @@ public class App2Csv {
 		return null;
 	}
 
-	public static GameStats playGameNoTrace(String[] name, Long seed, Player ... players) {
+	public static GameStats playGameErrTrace(String[] name, Long seed, Player ... players) {
 		UUID id = UUID.randomUUID();
 		try {
-			GameRunner runner = new GameRunner(id, players.length, null);
+			GameRunner runner = new GameRunner(id, players.length, System.err);
 
 			for (int i=-0; i<players.length; i++) {
 				runner.addPlayer(players[i]);
@@ -100,12 +100,12 @@ public class App2Csv {
 		return null;
 	}
 
-	public static GameStats playGameNoTrace(String[] name, Long seed, Agent ... agents) {
+	public static GameStats playGameErrTrace(String[] name, Long seed, Agent ... agents) {
 		Player[] wrapper = new Player[agents.length];
 		for (int i=0; i<agents.length; i++) {
 			wrapper[i] = new AgentPlayer(i, agents[i]);
 		}
-		return playGameNoTrace(name, seed, wrapper);
+		return playGameErrTrace(name, seed, wrapper);
 	}
 
 	public static GameStats playGame(String[] name, Long seed, Agent ... agents) {

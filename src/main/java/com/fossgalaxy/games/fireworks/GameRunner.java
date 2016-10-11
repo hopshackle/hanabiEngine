@@ -47,6 +47,10 @@ public class GameRunner {
 	}
 
 	public void init(Long seed) {
+		if (gameOut != null) {
+			gameOut.println(String.format("GAME INIT STARTED: %d player game with %d seed", players.length, seed));
+		}
+
 		state.init(seed);
 
 		send(new GameInformation(nPlayers, HAND_SIZE[nPlayers], 8, 3));
@@ -60,48 +64,62 @@ public class GameRunner {
 				send(new CardDrawn(player, slot, cardInSlot.colour, cardInSlot.value));
 			}
 		}
+
+		if (gameOut != null) {
+			gameOut.println(String.format("GAME INIT COMPLETE: %d player game with %d seed", players.length, seed));
+		}
 	}
 
-	private void writeMove(Action action) {
+	private void writeMove(int playerID, Action action) {
 		if (gameOut == null) {
 			return;
 		}
-		gameOut.println(String.format("MOVE,%s,%d,%d,\"%s\"", gameID, moves, nextPlayer, action));
+
+		gameOut.format("%d performed move %-50s\n",playerID, action);
 	}
 
 	private void writeEvent(GameEvent event) {
 		if (gameOut == null) {
 			return;
 		}
-		gameOut.println(String.format("EVENT,%s,\"%s\"", gameID, event));
+
+		gameOut.format("\t[debug] %s\n", event);
 	}
 
 	private void writeState(GameState state) {
 		if (gameOut == null) {
 			return;
 		}
-		gameOut.println(String.format("STATE,%s,%d,%d,%d,%d,%d", gameID, moves, state.getLives(), state.getInfomation(), state.getScore(), state.getPlayerCount()));
+
+		DebugUtils.printState(gameOut, state);
 	}
 
 	//TODO time limit the agent
 	public void nextMove() {
 		Player player = players[nextPlayer];
 		assert player != null : "that player is not valid";
-		
+
+		if (gameOut != null) {
+			gameOut.format(" --- asking player %d for their move --- \n", nextPlayer);
+		}
+
 		//get the action and try to apply it
 		Action action = player.getAction();
-		writeMove(action);
+
+		if (gameOut != null) {
+			gameOut.format(" --- player provided move, processing --- \n");
+		}
+
+		writeMove(nextPlayer, action);
 		if (!action.isLegal(nextPlayer, state)) {
 			throw new RulesViolation(action);
 		}
-		
+
 		//perform the action and get the effects
 		moves++;
 		Collection<GameEvent> events = action.apply(nextPlayer, state);
-		for (GameEvent event : events) {
-			send(event);
-		}
-		
+		events.forEach(this::send);
+
 		//make sure it's the next player's turn
 		nextPlayer = (nextPlayer + 1) % players.length;
 	}

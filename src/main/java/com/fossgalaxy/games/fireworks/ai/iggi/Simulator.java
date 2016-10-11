@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
@@ -24,6 +25,8 @@ public class Simulator {
 	public static void main(String[] args) {
 		GameState state = new BasicState(5,3);
 		state.init();
+
+		DebugUtils.printState(System.err, state);
 		
 		Deck deck = state.getDeck();
 		//deck.init();

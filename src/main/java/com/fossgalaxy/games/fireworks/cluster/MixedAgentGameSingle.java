@@ -43,7 +43,7 @@ public class MixedAgentGameSingle {
 				}
 
 				//System.out.println("name,seed,players,information,lives,moves,score");
-				App2Csv.playGameNoTrace(agentStr, seed, agents);
+				App2Csv.playGameErrTrace(agentStr, seed, agents);
 			}
 		}
 	}
