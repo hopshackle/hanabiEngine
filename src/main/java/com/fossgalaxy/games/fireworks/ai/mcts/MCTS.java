@@ -46,11 +46,13 @@ public class MCTS implements Agent {
         if (printDebug) {
             // Guaranteed cards
             System.err.println("Guaranteed Cards");
-            possibleCards.entrySet().stream().filter(x -> x.getValue().size() == 1).forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
+            possibleCards.entrySet().stream()
+                    .filter(x -> x.getValue().size() == 1)
+                    .forEach(MCTS::printCard);
             System.err.println("We know the value of these");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
-                    .forEach(x -> System.out.println("\t" + x.getKey() + ":" + x.getValue()));
+                    .forEach(MCTS::printCard);
         }
         GameState invarCheck = state.getCopy();
 
@@ -192,6 +194,10 @@ public class MCTS implements Agent {
 
     public String toString() {
         return "MCTS";
+    }
+
+    private static void printCard(Map.Entry<Integer, List<Card>> entry) {
+        System.err.println("\t" + entry.getKey() + ":" + entry.getValue());
     }
 
 }
