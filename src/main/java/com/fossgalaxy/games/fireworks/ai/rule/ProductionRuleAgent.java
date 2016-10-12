@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
@@ -30,7 +32,7 @@ public class ProductionRuleAgent implements Agent {
 	
 	@Override
 	public Action doMove(int agentID, GameState state) {
-		
+
 		for (Rule rule : rules) {
 			if (rule.canFire(agentID, state)) {
 				return rule.execute(agentID, state);
