@@ -47,6 +47,7 @@ public class TellValue implements Action {
 		}
 
 		game.setInfomation(infomation - 1);
+		hand.setKnownValue(value, slots.toArray(new Integer[slots.size()]));
 
 		GameEvent cardInfomation = new CardInfoValue(playerID, player, value, slots);
 		return Arrays.asList(cardInfomation);

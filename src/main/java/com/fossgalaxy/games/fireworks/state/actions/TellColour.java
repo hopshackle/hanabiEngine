@@ -49,6 +49,7 @@ public class TellColour implements Action {
 		}
 
 		game.setInfomation(infomation - 1);
+		hand.setKnownColour(colour, slots.toArray(new Integer[slots.size()]));
 
 		GameEvent cardInfomation = new CardInfoColour(playerID, player, colour, slots);
 		return Arrays.asList(cardInfomation);
