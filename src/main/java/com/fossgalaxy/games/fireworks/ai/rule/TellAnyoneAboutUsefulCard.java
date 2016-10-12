@@ -15,9 +15,14 @@ public class TellAnyoneAboutUsefulCard extends AbstractRule {
             return null;
         }
 
-        for (int i = 1; i < state.getPlayerCount() - 1; i++) {
+        for (int i = 0; i < state.getPlayerCount(); i++) {
             int nextPlayer = (playerID + i) % state.getPlayerCount();
             Hand hand = state.getHand(nextPlayer);
+
+            //gard against trying to tell ourselves things
+            if (nextPlayer == playerID) {
+                continue;
+            }
 
             for (int slot = 0; slot < state.getHandSize(); slot++) {
 
@@ -37,8 +42,6 @@ public class TellAnyoneAboutUsefulCard extends AbstractRule {
                     return new TellColour(nextPlayer, card.colour);
                 }
             }
-
-            nextPlayer = (nextPlayer + 1) % state.getPlayerCount();
         }
 
         return null;
