@@ -50,7 +50,8 @@ public class MCTSPredictor extends MCTS {
         }
 
         Action choice = agents[agentID].doMove(agentID, state.getCopy());
-        return node.containsChild(choice) ? null : choice;
+        return choice;
+//        return node.containsChild(choice) ? null : choice;
     }
 
     private Action selectActionForRollout(GameState state, int agentID){
