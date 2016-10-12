@@ -8,6 +8,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.TellAnyoneAboutUsefulCard;
 import com.fossgalaxy.games.fireworks.ai.rule.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellPlayableCard;
+import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 
 /**
  * Stratergies used/theorised about by IGGI students.
@@ -27,6 +28,7 @@ public class IGGIFactory {
 		pra.addRule(new TellAnyoneAboutUsefulCard());
 		pra.addRule(new PlayIfCertian());
 		pra.addRule(new DiscardIfUseless());
+		//pra.addRule(new TellRandomly());
 		pra.addRule(new DiscardRandomly());
 		return pra;
 	}
