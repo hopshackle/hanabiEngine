@@ -68,6 +68,10 @@ public class Hand implements Iterable<Card> {
 		cards[slot] = card;
 	}
 
+	public void bindCard(int slot, Card card){
+		cards[slot] = card;
+	}
+
 	public void setKnownColour(CardColour colour, Integer[] slots){
 		for (Integer slot : slots) {
 			assert colours[slot] == null || colours[slot].equals(colour) : "told about contradictory colours: "+colours[slot]+ " "+colour;
@@ -99,15 +103,19 @@ public class Hand implements Iterable<Card> {
 		return "I think I have: " +buf.toString();
 	}
 	
-	public boolean isPossible(int slot, Card card) {
+	public boolean isCompletePossible(int slot, Card card) {
 
 			if (cards[slot] != null) {
 				return cards[slot].equals(card);
 			}
 
-			boolean possibleColour = colours[slot] == null || colours[slot].equals(card.colour);
-			boolean possibleValue = values[slot] == null || values[slot].equals(card.value);
-			return possibleColour && possibleValue;
+			return isPossible(slot, card);
+	}
+
+	public boolean isPossible(int slot, Card card) {
+		boolean possibleColour = colours[slot] == null || colours[slot].equals(card.colour);
+		boolean possibleValue = values[slot] == null || values[slot].equals(card.value);
+		return possibleColour && possibleValue;
 	}
 
 	@Override

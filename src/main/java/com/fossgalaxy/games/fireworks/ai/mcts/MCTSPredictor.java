@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
+import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -53,8 +54,13 @@ public class MCTSPredictor extends MCTS {
         return choice;
     }
 
-    private Action selectActionForRollout(GameState state, int agentID){
-        if(agents[agentID] == null){
+    @Override
+    protected Action selectActionForRollout(GameState state, int agentID){
+        if (agents[agentID] == null) {
+            return super.selectActionForRollout(state, agentID);
+        }
+
+        if(agents[agentID] == null && false){
             // Random
             Collection<Action> legalActions = Utils.generateActions(agentID, state);
             Iterator<Action> actionItr = legalActions.iterator();
@@ -67,19 +73,8 @@ public class MCTSPredictor extends MCTS {
 
             return curr;
         }
+
         return agents[agentID].doMove(agentID, state.getCopy());
-    }
-
-
-    @Override
-    protected int rollout(GameState state, final int agentID) {
-        int playerID = agentID;
-        while (!state.isGameOver()) {
-            Action action = selectActionForRollout(state, playerID);
-            action.apply(playerID, state);
-            playerID = (playerID + 1) % state.getPlayerCount();
-        }
-        return state.getScore();
     }
 
     @Override

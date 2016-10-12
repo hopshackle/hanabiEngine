@@ -17,13 +17,37 @@ public class DeckUtils {
 		
 		for (int slot=0; slot<hand.getSize(); slot++) {
 			final int slotF = slot;
-			List<Card> possibleCards = Collections.unmodifiableList(deck.stream().filter((Card c) -> hand.isPossible(slotF, c)).collect(Collectors.toList()));
+			List<Card> possibleCards = Collections.unmodifiableList(deck.stream().filter((Card c) -> hand.isCompletePossible(slotF, c)).collect(Collectors.toList()));
 			possible.put(slot, possibleCards);
 		}
 		
 		return possible;
 	}
-	
+
+	/**
+	 * Bind cards, but don't use real values if present.
+	 *
+	 * This should be used if the player has a perfect infomation copy of the state but should act like they don't.
+	 * (mostly important for rule based AIs which can be used as predictors).
+	 *
+	 * @param player
+	 * @param hand
+	 * @param deck
+	 * @return
+	 */
+	public static Map<Integer, List<Card>> bindBlindCard(int player, Hand hand, List<Card> deck) {
+
+		Map<Integer, List<Card>> possible = new HashMap<>();
+
+		for (int slot=0; slot<hand.getSize(); slot++) {
+			final int slotF = slot;
+			List<Card> possibleCards = Collections.unmodifiableList(deck.stream().filter((Card c) -> hand.isPossible(slotF, c)).collect(Collectors.toList()));
+			possible.put(slot, possibleCards);
+		}
+
+		return possible;
+	}
+
 	public static boolean isDiscardable(List<Card> cards, GameState state) {
 		return cards.stream().allMatch((Card c) -> isDiscardable(c, state));
 	}

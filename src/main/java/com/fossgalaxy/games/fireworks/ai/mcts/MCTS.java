@@ -45,6 +45,7 @@ public class MCTS implements Agent {
                 Utils.generateAllActions(agentID, state.getPlayerCount())
         );
 
+
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
@@ -65,7 +66,6 @@ public class MCTS implements Agent {
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
                     .forEach(MCTS::printCard);
         }
-        GameState invarCheck = state.getCopy();
 
         int treeDepth = (state.getPlayerCount()*treeDepthMul) + 1;
         if (printDebug) {
@@ -84,7 +84,7 @@ public class MCTS implements Agent {
             Hand myHand = currentState.getHand(agentID);
             for (int slot = 0; slot < myHand.getSize(); slot++) {
                 Card hand = myHandCards.get(slot);
-                myHand.setCard(slot, hand);
+                myHand.bindCard(slot, hand);
                 deck.remove(hand);
             }
             deck.shuffle();
@@ -93,6 +93,8 @@ public class MCTS implements Agent {
             if (current.getDepth() < treeDepth) {
                 current = expand(current, currentState);
             }
+
+            //System.out.println(current.parent.getAction()+" -> "+current);
 
             int score = rollout(currentState, agentID);
             int scoreGained = score - state.getScore();
@@ -113,8 +115,6 @@ public class MCTS implements Agent {
             }
         }
 
-
-        assert invarCheck.getHand(agentID).equals(state.getHand(agentID)) : "state was not invariant";
         Action chosenOne = root.getBestNode().getAction();
         if (printDebug) {
             System.err.format("Move Chosen by %d was %s", agentID, chosenOne);
@@ -127,6 +127,7 @@ public class MCTS implements Agent {
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
         // TODO This is the cause - the predictor always returns the same move but the node is never fully expanded so selection ends
+
         while (!state.isGameOver() && current.fullyExpanded(state, (current.getAgent() + 1) % state.getPlayerCount())) {
             int agent = current.getAgent();
             int lives = state.getLives();
@@ -135,6 +136,7 @@ public class MCTS implements Agent {
             if (action != null) {
                 action.apply(agent, state);
             }
+
             if (iterationObject.isMyGo(agent)) {
                 if (state.getLives() < lives) iterationObject.incrementLivesLostMyGo();
                 if (state.getScore() > score) iterationObject.incrementPointsGainedMyGo();
@@ -189,14 +191,19 @@ public class MCTS implements Agent {
         return child;
     }
 
+    protected Action selectActionForRollout(GameState state, int playerID) {
+        Collection<Action> legalActions = Utils.generateActions(playerID, state);
+        assert !legalActions.isEmpty() : "no legal actions in rollout";
+        return legalActions.iterator().next();
+    }
+
     protected int rollout(GameState state, final int agentID) {
+
         int playerID = agentID;
         int moves = 0;
 
         while (!state.isGameOver() && moves < rolloutDepth) {
-            Collection<Action> legalActions = Utils.generateActions(playerID, state);
-            assert !legalActions.isEmpty() : "no legal actions in rollout";
-            Action action = legalActions.iterator().next();
+            Action action = selectActionForRollout(state, playerID);
             action.apply(playerID, state);
             playerID = (playerID + 1) % state.getPlayerCount();
             moves++;

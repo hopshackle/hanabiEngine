@@ -16,7 +16,7 @@ public class MCTSNode {
 
     private final Action moveToState;
     private final int agentId;
-    private final MCTSNode parent;
+    protected final MCTSNode parent;
     private final List<MCTSNode> children;
     private final Collection<Action> allUnexpandedActions;
     private final Random random;
@@ -69,7 +69,7 @@ public class MCTSNode {
             current.score += score * discount;
             current.visits++;
             current = current.parent;
-            discount *= 0.99;
+            discount *= 0.95;
         }
     }
 

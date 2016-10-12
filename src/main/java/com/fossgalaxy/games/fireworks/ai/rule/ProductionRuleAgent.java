@@ -19,11 +19,6 @@ public class ProductionRuleAgent implements Agent {
 	public ProductionRuleAgent() {
 		this.rules = new ArrayList<>();
 		this.random = new Random();
-		
-		rules.add(new TellAnyoneAboutUsefulCard());
-		rules.add(new PlayIfCertian());
-		//rules.add(new TellAboutUsefulCard());
-		rules.add(new DiscardIfUseless());
 	}
 
 	public void addRule(Rule rule) {

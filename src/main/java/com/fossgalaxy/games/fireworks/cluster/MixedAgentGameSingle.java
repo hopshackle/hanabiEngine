@@ -23,13 +23,15 @@ public class MixedAgentGameSingle {
 			runCount = Integer.parseInt(runCountEnv);
 		}
 
+		runCount = 1;
+
 		//arguments for script
 		String agentUnderTest = args[0];
 		String agentPaired = args[1];
 		long seed = Long.parseLong(args[2]);
 
 		for (int run=0; run<runCount; run++) {
-			for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
+			for (int nPlayers = 2; nPlayers <= 2; nPlayers++) {
 
 				Agent[] agents = new Agent[nPlayers];
 				String[] agentStr = new String[5];
