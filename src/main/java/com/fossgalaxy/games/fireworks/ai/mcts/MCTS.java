@@ -126,6 +126,7 @@ public class MCTS implements Agent {
 
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
+        // TODO This is the cause - the predictor always returns the same move but the node is never fully expanded so selection ends
         while (!state.isGameOver() && current.fullyExpanded(state, (current.getAgent() + 1) % state.getPlayerCount())) {
             int agent = current.getAgent();
             int lives = state.getLives();
@@ -177,6 +178,11 @@ public class MCTS implements Agent {
         Action action = selectActionForExpand(state, parent, nextAgentID);
         // It is possible it wasn't allowed
         if (action == null) return parent;
+        action.apply(nextAgentID, state);
+        if(parent.containsChild(action)){
+            // return the correct node instead
+            return parent.getChild(action);
+        }
         //XXX we may expand a node which we already visited? :S
         MCTSNode child = new MCTSNode(parent, nextAgentID, action, Utils.generateAllActions(nextAgentID, state.getPlayerCount()));
         parent.addChild(child);

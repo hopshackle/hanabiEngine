@@ -147,6 +147,13 @@ public class MCTSNode {
         return false;
     }
 
+    public MCTSNode getChild(Action action){
+        for(MCTSNode child : children){
+            if(child.moveToState.equals(action)) return child;
+        }
+        return null;
+    }
+
     public boolean fullyExpanded(GameState state, int nextId){
         if(allUnexpandedActions.isEmpty()) return true;
         for(Action action : allUnexpandedActions){
