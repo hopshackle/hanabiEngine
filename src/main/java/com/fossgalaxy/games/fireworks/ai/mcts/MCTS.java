@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
-    private final int roundLength;
-    private final int rolloutDepth;
-    private final int treeDepthMul;
+    protected final int roundLength;
+    protected final int rolloutDepth;
+    protected final int treeDepthMul;
     protected Random random;
 
     private boolean printDebug = true;
@@ -90,12 +90,6 @@ public class MCTS implements Agent {
             deck.shuffle();
 
             MCTSNode current = select(root, currentState, iterationObject);
-            if (current.getDepth() < treeDepth) {
-                current = expand(current, currentState);
-            }
-
-            //System.out.println(current.parent.getAction()+" -> "+current);
-
             int score = rollout(currentState, agentID);
             int scoreGained = score - state.getScore();
             int livesLost = iterationObject.getLivesLostMyGo();
@@ -126,9 +120,21 @@ public class MCTS implements Agent {
 
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
-        // TODO This is the cause - the predictor always returns the same move but the node is never fully expanded so selection ends
+        int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
+        while (!state.isGameOver() && current.getDepth() < treeDepth) {
+            MCTSNode next;
+            if(current.fullyExpanded(state)){
+                next = current.getUCTNode(state);
+            }else{
+                next = expand(current, state);
+                return next;
+            }
+            if (next == null) {
+                //XXX if all follow on states explored so far are null, we are now a leaf node
+                return current;
+            }
+            current = next;
 
-        while (!state.isGameOver() && current.fullyExpanded(state, (current.getAgent() + 1) % state.getPlayerCount())) {
             int agent = current.getAgent();
             int lives = state.getLives();
             int score = state.getScore();
@@ -141,12 +147,6 @@ public class MCTS implements Agent {
                 if (state.getLives() < lives) iterationObject.incrementLivesLostMyGo();
                 if (state.getScore() > score) iterationObject.incrementPointsGainedMyGo();
             }
-            MCTSNode next = current.getUCTNode(state);
-            if (next == null) {
-                //XXX if all follow on states explored so far are null, we are now a leaf node
-                return current;
-            }
-            current = next;
         }
         return current;
     }
@@ -180,7 +180,7 @@ public class MCTS implements Agent {
         Action action = selectActionForExpand(state, parent, nextAgentID);
         // It is possible it wasn't allowed
         if (action == null) return parent;
-        action.apply(nextAgentID, state);
+        //action.apply(nextAgentID, state);
         if(parent.containsChild(action)){
             // return the correct node instead
             return parent.getChild(action);

@@ -154,6 +154,10 @@ public class MCTSNode {
         return null;
     }
 
+    public boolean fullyExpanded(GameState state){
+        return fullyExpanded(state, (agentId + 1) % state.getPlayerCount());
+    }
+
     public boolean fullyExpanded(GameState state, int nextId){
         if(allUnexpandedActions.isEmpty()) return true;
         for(Action action : allUnexpandedActions){

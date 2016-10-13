@@ -1,9 +1,9 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.RulesViolation;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 import java.util.Arrays;
@@ -37,6 +37,50 @@ public class MCTSPredictor extends MCTS {
         return super.doMove(agentID, state);
     }
 
+    @Override
+    protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
+        MCTSNode current = root;
+        int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
+
+            while (!state.isGameOver() && current.getDepth() < treeDepth) {
+                MCTSNode next;
+                if (current.fullyExpanded(state)) {
+                    next = current.getUCTNode(state);
+                } else {
+                    int numChildren = current.getChildSize();
+                    next = expand(current, state);
+
+                    //trip if the move is illegal
+                    if (!next.getAction().isLegal(next.getAgent(), state)) {
+                        System.err.println("INVALID NODE SELECTED?! ");
+                    }
+
+                    if (numChildren != current.getChildSize()) {
+                        // It is new
+                        return next;
+                    }
+                }
+                // Forward the state
+                if (next == null) return current;
+                current = next;
+
+                int score = state.getScore();
+                int lives = state.getLives();
+                int agent = current.getAgent();
+                Action action = current.getAction();
+                if (action != null) {
+                    action.apply(agent, state);
+                }
+
+                if (iterationObject.isMyGo(agent)) {
+                    if (state.getLives() < lives) iterationObject.incrementLivesLostMyGo();
+                    if (state.getScore() > score) iterationObject.incrementPointsGainedMyGo();
+                }
+            }
+
+        return current;
+    }
+
     /**
      * Select a new action for the expansion node.
      *
@@ -55,12 +99,12 @@ public class MCTSPredictor extends MCTS {
     }
 
     @Override
-    protected Action selectActionForRollout(GameState state, int agentID){
+    protected Action selectActionForRollout(GameState state, int agentID) {
         if (agents[agentID] == null) {
             return super.selectActionForRollout(state, agentID);
         }
 
-        if(agents[agentID] == null && false){
+        if (agents[agentID] == null && false) {
             // Random
             Collection<Action> legalActions = Utils.generateActions(agentID, state);
             Iterator<Action> actionItr = legalActions.iterator();
