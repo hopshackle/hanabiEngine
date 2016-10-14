@@ -24,10 +24,10 @@ public class PlaySafeCard extends AbstractRule {
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindBlindCard(playerID, state.getHand(playerID), state.getDeck().toList());
 
         //figure out what cards are playable
-        List<Integer> playableSlots = new ArrayList<>();
-       possibleCards.entrySet().stream()
+        List<Integer> playableSlots = possibleCards.entrySet().stream()
                 .filter(x -> x.getValue().stream().allMatch(y -> isPlayable(y, state)))
-               .forEach(x -> playableSlots.add(x.getKey()));
+               .map(Map.Entry::getKey)
+               .collect(Collectors.toList());
 
         //if nothing is garenteed to be playable, this rule doesn't fire
         if (playableSlots.isEmpty()) {
