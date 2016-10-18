@@ -4,6 +4,8 @@ import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 
+import java.util.Random;
+
 /**
  * Created by piers on 18/10/16.
  */
@@ -35,7 +37,7 @@ public class MCTSTuner {
                             agents[0] = App.buildAgent("mcts", 0, agentPaired, nPlayers, roundLength, rolloutDepth, treeDepthMul);
                             for (int agent = 1; agent < nPlayers; agent++) {
                                 agents[agent] = App.buildAgent(agentPaired);
-                                agentStr[treeDepthMul] = agentPaired;
+                                agentStr[agent] = agentPaired;
                             }
                             App2Csv.playGameErrTrace(agentStr, seed, agents);
                         }
