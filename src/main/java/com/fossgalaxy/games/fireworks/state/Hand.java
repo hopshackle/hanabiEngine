@@ -3,6 +3,11 @@ package com.fossgalaxy.games.fireworks.state;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * An implementation of a hand.
+ *
+ * This only keeps track of only explicitly told information (performs no deduction)
+ */
 public class Hand implements Iterable<Card> {
 	private int size;
 	
@@ -10,6 +15,11 @@ public class Hand implements Iterable<Card> {
 	private final Integer[] values;
 	private final Card[] cards;
 
+	/**
+	 * Create a deep copy of a given hand.
+	 *
+	 * @param hand the hand to copy
+	 */
 	public Hand(Hand hand) {
 		this.size = hand.size;
 		this.colours = Arrays.copyOf(hand.colours, size);
@@ -17,6 +27,13 @@ public class Hand implements Iterable<Card> {
 		this.cards = Arrays.copyOf(hand.cards, size);
 	}
 
+	/**
+	 * Create a new blank hand.
+	 *
+	 * When initialised, all card slots will be blank (have no card present).
+	 *
+	 * @param size the number of cards in this hand
+	 */
 	public Hand(int size) {
 		this.size = size;
 		this.colours = new CardColour[size];
@@ -25,6 +42,11 @@ public class Hand implements Iterable<Card> {
 
 	}
 
+	/**
+	 * Initialise all information about the slots.
+	 *
+	 * This should reset any known infomation for any slot in the hand.
+	 */
 	public void init(){
 		for (int i=0; i<size; i++) {
 			clear(i);
@@ -32,7 +54,9 @@ public class Hand implements Iterable<Card> {
 	}
 
 	/**
-	 * Reset all information about a slot
+	 * Reset all information about a slot.
+	 *
+	 * This resets all known information about the slot to be blank (we know nothing about the slot).
 	 */
 	void clear(int slot) {
 		cards[slot] = null;
@@ -41,44 +65,124 @@ public class Hand implements Iterable<Card> {
 	}
 
 	// From the Game's (perfect information) perspective
+
+	/**
+	 * Get the card really present in the slot (or null if unknown).
+	 *
+	 * This is the card which is present in the slot based on information provided by the game itself. This method
+	 * should always return null for your own hand (agents should not call this method on their own hands).
+	 *
+	 * Agents can use this for accurate information about other player's hands.
+	 *
+	 * @param slot the slot to query
+	 * @return the card present in that slot, or null if the card is unknown.
+	 */
 	public Card getCard(int slot) {
 		return cards[slot];
 	}
 
-	// From this players perspective
+	/**
+	 * Get the known colour of this slot, from the perspective of the player who's hand it is.
+	 *
+	 * For this version of the hand class, this is worked out based on explicitly observed tell actions.
+	 * It will not take into account negative information.
+	 *
+	 * @param slot the slot to query
+	 * @return the colour of the slot, from the owner's perspective.
+	 */
 	public CardColour getKnownColour(int slot) {
 		return colours[slot];
 	}
 
+	/**
+	 * Get the known value of this slot, from the perspective of the player who's hand it is.
+	 *
+	 * For this version of the hand class, this is worked out based on explicitly observed tell actions.
+	 * It will not take into account negative information.
+	 *
+	 * @param slot the slot to query
+	 * @return the value of the slot, from the owner's perspective.
+	 */
 	public Integer getKnownValue(int slot) {
 		return values[slot];
 	}
 
+	/**
+	 * The number of cards which make up this hand.
+	 *
+	 * This can very with game size, and so this should be used whenever you need to iterate over the number of slots
+	 * in this player's hand.
+	 *
+	 * @return the number of slots in this player's hand.
+	 */
 	public int getSize() {
 		return size;
 	}
 
+	/**
+	 * Create an iterator of the cards, based on the real cards present.
+	 *
+	 * This uses the same values as {@link #getCard).
+	 *
+	 * @return a card iterator based on the getCard function
+	 */
 	@Override
 	public Iterator<Card> iterator() {
 		return Arrays.asList(cards).iterator();
 	}
 
+	/**
+	 * Set a card in a given slot, removing all known information about it.
+	 *
+	 * This should be called when a {@link com.fossgalaxy.games.fireworks.state.events.CardDrawn} event occurs in order
+	 * to update this hand with the correct information.
+	 *
+	 * It will also reset all known information from the perspective of the owner.
+	 *
+	 * @param slot the slot to update
+	 * @param card the card now residing in this slot
+	 */
 	public void setCard(int slot, Card card) {
 		clear(slot);
 		cards[slot] = card;
 	}
 
+	/**
+	 * Bind a card to a given slot, keeping all known information about it.
+	 *
+	 * This has the same basic role as {@link #setCard} but will not remove any information from the owners perspective.
+	 * This is mostly useful when using this class as part of a simulation based agent to set the value of the card.
+	 *
+	 * @param slot the slot to update
+	 * @param card the card to assign to that slot
+	 */
 	public void bindCard(int slot, Card card){
 		cards[slot] = card;
 	}
 
+	/**
+	 * Sets the known colour of a slot from the perspective of the owner.
+	 *
+	 * This method is used to inform the hand about the card from the owner's perspective (tell actions).
+	 *
+	 * @param colour the colour to assign to the slots
+	 * @param slots the slots to assign the colour to.
+	 */
 	public void setKnownColour(CardColour colour, Integer[] slots){
 		for (Integer slot : slots) {
 			assert colours[slot] == null || colours[slot].equals(colour) : "told about contradictory colours: "+colours[slot]+ " "+colour;
 			colours[slot] = colour;
 		}
 	}
-	
+
+	/**
+	 * Sets the known value of a slot from the perspective of the owner.
+	 *
+	 * This method is used to inform the hand about the card from the owner's perspective (tell actions).
+	 *
+	 * @param value the value to assign to the slots
+	 * @param slots the slots to assign the value to.
+	 */
 	public void setKnownValue(Integer value, Integer[] slots) {
 		for (Integer slot : slots) {
 			assert values[slot] == null || values[slot].equals(value) : "told about contradictory values for "+slot+": "+values[slot]+ " "+value;
@@ -86,6 +190,11 @@ public class Hand implements Iterable<Card> {
 		}
 	}
 
+	/**
+	 * Pretty print this hand.
+	 *
+	 * @return a string representation of the hand.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder buf = new StringBuilder();
@@ -102,7 +211,14 @@ public class Hand implements Iterable<Card> {
 
 		return "I think I have: " +buf.toString();
 	}
-	
+
+	/**
+	 * Check if this card is possible based on complete infomation.
+	 *
+	 * @param slot the slot to check
+	 * @param card the card we are considering
+	 * @return true if this card could possibly be in this slot, else return false
+	 */
 	public boolean isCompletePossible(int slot, Card card) {
 
 			if (cards[slot] != null) {
@@ -112,12 +228,25 @@ public class Hand implements Iterable<Card> {
 			return isPossible(slot, card);
 	}
 
+	/**
+	 * check if the card is possible, based on the owner's prespective
+	 *
+	 * @param slot the slot to check
+	 * @param card the card we are considering
+	 * @return true if this card could possibly fit in this slow, false otherwise.
+	 */
 	public boolean isPossible(int slot, Card card) {
 		boolean possibleColour = colours[slot] == null || colours[slot].equals(card.colour);
 		boolean possibleValue = values[slot] == null || values[slot].equals(card.value);
 		return possibleColour && possibleValue;
 	}
 
+	/**
+	 * get possible values for a given slot.
+	 *
+	 * @param slot the slot to check
+	 * @return all possible value for this slot
+	 */
 	public int[] getPossibleValues(int slot) {
 		Integer value = getKnownValue(slot);
 		if (value == null) {
@@ -126,6 +255,12 @@ public class Hand implements Iterable<Card> {
 		return new int[]{value};
 	}
 
+	/**
+	 * get possible colours for a given slot.
+	 *
+	 * @param slot the slot to check
+	 * @return all possible colour for this slot
+	 */
 	public CardColour[] getPossibleColours(int slot){
 		CardColour colour = getKnownColour(slot);
 		if (colour == null) {
@@ -177,4 +312,5 @@ public class Hand implements Iterable<Card> {
 		}
 		return false;
 	}
+
 }
