@@ -40,7 +40,7 @@ public class PlaySafeCard extends AbstractRule {
 
     public static void main(String[] args) {
         GameState state = new BasicState(5, 2);
-        state.init(0l);
+        state.init(0L);
 
         state.getHand(0).setKnownValue(1, new Integer[]{3,4});
         DebugUtils.printState(System.out, state);

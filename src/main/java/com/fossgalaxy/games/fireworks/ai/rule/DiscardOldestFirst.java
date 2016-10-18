@@ -9,7 +9,7 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 /**
  * Created by webpigeon on 18/10/16.
  */
-public class DiscardOldestFirst extends AbstractRule {
+public class DiscardOldestFirst extends AbstractDiscardRule {
 
     @Override
     public Action execute(int playerID, GameState state) {

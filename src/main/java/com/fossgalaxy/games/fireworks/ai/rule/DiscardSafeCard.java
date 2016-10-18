@@ -9,7 +9,7 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 /**
  * Created by webpigeon on 18/10/16.
  */
-public class DiscardSafeCard extends AbstractRule {
+public class DiscardSafeCard extends AbstractDiscardRule {
     @Override
     public Action execute(int playerID, GameState state) {
         if (state.getInfomation() == state.getStartingInfomation()) {
