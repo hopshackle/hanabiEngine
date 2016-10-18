@@ -2,7 +2,7 @@ package com.fossgalaxy.games.fireworks.state;
 
 import java.util.*;
 
-public class NegativeHand extends Hand {
+public class NegativeHand extends BasicHand {
 
 	//what the agent can infer about it's hand (based on negative information)
 	private final Map<Integer, Set<CardColour>> possibleColours;

@@ -13,7 +13,7 @@ public class BasicState implements GameState {
 	private final Map<CardColour, Integer> table;
 	private final List<Card> discard;
 
-	private int infomation;
+	private int information;
 	private int lives;
 	private int movesLeft;
 
@@ -21,7 +21,7 @@ public class BasicState implements GameState {
 		this.handSize = state.handSize;
 		this.deck = new Deck(state.deck);
 		this.discard = new ArrayList<>(state.discard);
-		this.infomation = state.infomation;
+		this.information = state.information;
 		this.lives = state.lives;
 		this.movesLeft = state.movesLeft;
 
@@ -41,7 +41,7 @@ public class BasicState implements GameState {
 		this.discard = new ArrayList<Card>();
 		this.movesLeft = playerCount;
 
-		this.infomation = MAX_INFOMATION;
+		this.information = MAX_INFOMATION;
 		this.lives = MAX_LIVES;
 
 		for (int i = 0; i < playerCount; i++) {
@@ -72,6 +72,21 @@ public class BasicState implements GameState {
 	
 	public GameState getCopy() {
 		return new BasicState(this);
+	}
+
+	/**
+	 * Get a version of the hand for a given player, with information about their hand removed.
+	 *
+	 * The server side should <b>never</b> need to use this - as only updates are sent to each client they should not
+	 * see any information they are not permitted to see.
+	 *
+	 * It's mostly good for simulation-based approaches.
+	 *
+	 * @param playerID the playerID of the hand you want to access
+	 * @return the hidden information version of the hand
+	 */
+	public Hand getPerspective(int playerID) {
+		return new ShieldedHand(hands[playerID]);
 	}
 	
 	@Override
@@ -117,7 +132,7 @@ public class BasicState implements GameState {
 
 	@Override
 	public int getInfomation() {
-		return infomation;
+		return information;
 	}
 
 	@Override
@@ -172,7 +187,7 @@ public class BasicState implements GameState {
 
 	@Override
 	public void setCardAt(int player, int slot, Card card) {
-		Hand hand = hands[player];
+		BasicHand hand = hands[player];
 		hand.clear(slot);
 		hand.setCard(slot, card);
 	}
@@ -181,7 +196,7 @@ public class BasicState implements GameState {
 	public void setInfomation(int newValue) {
 		assert newValue <= MAX_INFOMATION;
 		assert newValue >= 0;
-		infomation = newValue;
+		information = newValue;
 	}
 
 	@Override
@@ -227,7 +242,7 @@ public class BasicState implements GameState {
 		BasicState that = (BasicState) o;
 
 		if (handSize != that.handSize) return false;
-		if (infomation != that.infomation) return false;
+		if (information != that.information) return false;
 		if (lives != that.lives) return false;
 		if (movesLeft != that.movesLeft) return false;
 		// Probably incorrect - comparing Object[] arrays with Arrays.equals
@@ -245,7 +260,7 @@ public class BasicState implements GameState {
 		result = 31 * result + deck.hashCode();
 		result = 31 * result + table.hashCode();
 		result = 31 * result + discard.hashCode();
-		result = 31 * result + infomation;
+		result = 31 * result + information;
 		result = 31 * result + lives;
 		result = 31 * result + movesLeft;
 		return result;
