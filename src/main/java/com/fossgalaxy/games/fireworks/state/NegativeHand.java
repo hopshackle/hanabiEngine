@@ -82,6 +82,36 @@ public class NegativeHand extends Hand {
 		super.setKnownValue(value, slots);
 	}
 
+	public int[] getPossibleValues(int slot) {
+		Set<Integer> possible = possibleValues.get(slot);
+		if (possible == null) {
+			return super.getPossibleValues(slot);
+		}
+
+		int[] possibleArr = new int[possible.size()];
+		int i=0;
+		for (Integer card : possible) {
+			possibleArr[i++] = card;
+		}
+
+		return possibleArr;
+	}
+
+	public CardColour[] getPossibleColours(int slot){
+
+		Set<CardColour> possible = possibleColours.get(slot);
+		if (possible == null) {
+			return super.getPossibleColours(slot);
+		}
+
+		CardColour[] possibleArr = new CardColour[possible.size()];
+		int i=0;
+		for (CardColour card : possible) {
+			possibleArr[i++] = card;
+		}
+
+		return possibleArr;
+	}
 
 	public boolean isPossible(int slot, Card card) {
 		Set<CardColour> possibleColour = possibleColours.get(slot);

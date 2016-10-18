@@ -118,6 +118,22 @@ public class Hand implements Iterable<Card> {
 		return possibleColour && possibleValue;
 	}
 
+	public int[] getPossibleValues(int slot) {
+		Integer value = getKnownValue(slot);
+		if (value == null) {
+			return new int[]{1,2,3,4,5};
+		}
+		return new int[]{value};
+	}
+
+	public CardColour[] getPossibleColours(int slot){
+		CardColour colour = getKnownColour(slot);
+		if (colour == null) {
+			return CardColour.values();
+		}
+		return new CardColour[]{colour};
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
