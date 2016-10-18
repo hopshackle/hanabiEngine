@@ -12,7 +12,7 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
  * 
  * This rule makes use of information the player already has, avoiding telling duplicate information.
  */
-public class TellPlayableCardOuter extends AbstractRule {
+public class TellPlayableCardOuter extends AbstractTellRule {
 
 	@Override
 	public Action execute(int playerID, GameState state) {

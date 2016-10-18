@@ -14,7 +14,7 @@ public class DiscardOldestFirst extends AbstractDiscardRule {
     @Override
     public Action execute(int playerID, GameState state) {
 
-        //we're not allowed to discard on full infomation
+        //we're not allowed to discard on full information
         if (state.getInfomation() == state.getStartingInfomation()) {
             return null;
         }

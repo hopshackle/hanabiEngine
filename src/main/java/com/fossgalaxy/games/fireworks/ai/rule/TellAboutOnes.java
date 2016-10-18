@@ -7,7 +7,7 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
-public class TellAboutOnes extends AbstractRule {
+public class TellAboutOnes extends AbstractTellRule {
 
 	@Override
 	public Action execute(int playerID, GameState state) {

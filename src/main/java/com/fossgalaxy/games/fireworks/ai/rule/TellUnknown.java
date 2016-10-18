@@ -12,7 +12,7 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 /**
  * Tell the next player about an unknown card.
  */
-public class TellUnknown extends AbstractRule {
+public class TellUnknown extends AbstractTellRule {
 	private Random random;
 	
 	public TellUnknown(){
