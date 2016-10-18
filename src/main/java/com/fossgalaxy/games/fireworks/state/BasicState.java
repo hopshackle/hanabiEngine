@@ -8,7 +8,7 @@ public class BasicState implements GameState {
 
 	private final int handSize;
 
-	private final NegativeHand[] hands;
+	private final TimedHand[] hands;
 	private final Deck deck;
 	private final Map<CardColour, Integer> table;
 	private final List<Card> discard;
@@ -27,15 +27,15 @@ public class BasicState implements GameState {
 
 		this.table = new EnumMap<>(state.table);
 
-		this.hands = new NegativeHand[state.hands.length];
+		this.hands = new TimedHand[state.hands.length];
 		for (int i = 0; i < hands.length; i++) {
-			hands[i] = new NegativeHand(state.hands[i]);
+			hands[i] = new TimedHand(state.hands[i]);
 		}
 	}
 
 	public BasicState(int handSize, int playerCount) {
 		this.handSize = handSize;
-		this.hands = new NegativeHand[playerCount];
+		this.hands = new TimedHand[playerCount];
 		this.deck = new Deck();
 		this.table = new EnumMap<>(CardColour.class);
 		this.discard = new ArrayList<Card>();
@@ -45,7 +45,7 @@ public class BasicState implements GameState {
 		this.lives = MAX_LIVES;
 
 		for (int i = 0; i < playerCount; i++) {
-			hands[i] = new NegativeHand(handSize);
+			hands[i] = new TimedHand(handSize);
 			hands[i].init();
 		}
 	}

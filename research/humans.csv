@@ -38,7 +38,7 @@ Date,User1,User2,User3,User4,User5,Score,Information,Lives,Notes
 26/09/16,Ed,Andrei,Joseph,N/A,N/A,23,4,3,
 26/09/16,Ed,Andrei,Joseph,N/A,N/A,21,3,2,
 26/09/16,Ed,Andrei,Joseph,N/A,N/A,21,2,3,"Discarded white 2 very early, maximum possible score considering this."
-28/09/16,Ed,Julia,Joseph,N/A,N/A,21,3,3,"Julia had never played before, Me and Ed hid our strategry from each other."
+28/09/16,Ed,Julia,Joseph,N/A,N/A,21,3,3,"Julia had never played before, Me and Ed hid our strategy from each other."
 04/10/16,Ed,Piers,Joseph,N/A,N/A,24,2,2,Life was lost by playing a card which should have been known invalid.
 07/10/16,Ed,Piers,Andrei,Joseph,N/A,20,5,2,Was maximum score (other cards discarded)
 07/10/16,Ed,Piers,Andrei,Joseph,N/A,23,2,3,
@@ -49,3 +49,5 @@ Date,User1,User2,User3,User4,User5,Score,Information,Lives,Notes
 13/10/16,Piers,Joseph,N/A,N/A,N/A,18,0,0,"we blew up, it was glorious"
 13/10/16,Piers,Joseph,N/A,N/A,N/A,11,1,0,Explodypigeon!
 14/10/16,Piers,Joseph,N/A,N/A,N/A,22,7,3,All other cards thrown away due to lack of information
+17/10/16,Piers,Joseph,N/A,N/A,N/A,16,3,2,
+18/10/16,Piers,Joseph,Ed,N/A,N/A,22,2,1,

@@ -1,5 +1,6 @@
-package com.fossgalaxy.games.fireworks.ai.rule;
+package com.fossgalaxy.games.fireworks.ai.rule.simple;
 
+import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;

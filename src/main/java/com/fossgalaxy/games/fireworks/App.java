@@ -68,6 +68,8 @@ public class App {
                 return OsawaFactory.buildOuterState();
             case "cautious":
                 return IGGIFactory.buildCautious();
+            case "iggi":
+                return IGGIFactory.buildIGGIPlayer();
             case "legal_random":
                 return IGGIFactory.buildRandom();
             case "mcts":
