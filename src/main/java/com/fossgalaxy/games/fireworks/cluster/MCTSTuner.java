@@ -27,7 +27,7 @@ public class MCTSTuner {
 
         for (int run = 0; run < runCount; run++) {
             for (int treeDepthMul = 1; treeDepthMul <= 3; treeDepthMul++) {
-                for (int roundLength = 1000; roundLength <= 50_000; roundLength += 1000) {
+                for (int roundLength = 5000; roundLength <= 50_000; roundLength += 5000) {
                     for (int rolloutDepth = 5; rolloutDepth < 25; rolloutDepth += 5) {
                         for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
                             Agent[] agents = new Agent[nPlayers];
