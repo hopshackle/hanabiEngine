@@ -15,85 +15,108 @@ import java.util.UUID;
 
 /**
  * Hello world!
- *
  */
 public class App {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		double sum = 0;
-		int games = 0;
-		System.out.println("Start");
-		
-		for (int run=0; run<1; run++) {
-			GameStats stats = playGame();
-			sum += stats.score;
-			games++;
-		}
-		
-		System.out.println("avg: "+sum/games);
-	}
-	
-	public static GameStats playGame() {
-		GameRunner runner = new GameRunner(UUID.randomUUID(), 4, null);
-		//runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
+        double sum = 0;
+        int games = 0;
+        System.out.println("Start");
+
+        for (int run = 0; run < 1; run++) {
+            GameStats stats = playGame();
+            sum += stats.score;
+            games++;
+        }
+
+        System.out.println("avg: " + sum / games);
+    }
+
+    public static GameStats playGame() {
+        GameRunner runner = new GameRunner(UUID.randomUUID(), 4, null);
+        //runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
 //		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
-		//runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
-		runner.addPlayer(new AgentPlayer(0, new MCTS()));
+        //runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
+        runner.addPlayer(new AgentPlayer(0, new MCTS()));
 //		runner.addPlayer(new AgentPlayer(0, new MCTSPredictor(new Agent[]{null, IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious()})));
-		runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
-		runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
-		runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
+        runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
+        runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
+        runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
 //		runner.addPlayer(new AgentPlayer(1, new ProductionRuleAgent()));
 //		runner.addPlayer(new AgentPlayer(2, new ProductionRuleAgent()));
 //		runner.addPlayer(new AgentPlayer(3, new ProductionRuleAgent()));
-		//runner.addPlayer(new AgentPlayer(2, new RandomAgent()));
+        //runner.addPlayer(new AgentPlayer(2, new RandomAgent()));
 //		runner.addPlayer(new AgentPlayer(1, new MCTS()));
 //		runner.addPlayer(new AgentPlayer(2, new MCTS()));
 //		runner.addPlayer(new AgentPlayer(3, new MCTS()));
 
-		GameStats stats = runner.playGame(null);
-		System.out.println("the agents scored: "+stats);
-		return stats;
-	}
-	
-	public static Agent buildAgent(String name) {
-		switch (name) {
-			case "pure_random":
-				return new RandomAgent();
-			case "random":
-				return OsawaFactory.buildRandom();
-			case "internal":
-				return OsawaFactory.buildInternalState();
-			case "outer":
-				return  OsawaFactory.buildOuterState();
-			case "cautious":
-				return IGGIFactory.buildCautious();
-			case "legal_random":
-				return IGGIFactory.buildRandom();
-			case "mcts":
-				return new MCTS();
-			case "cautiousMCTS":
-				Agent[] a = new Agent[]{buildAgent("cautious"),buildAgent("cautious"),buildAgent("cautious"),buildAgent("cautious"),buildAgent("cautious")};
-				return new MCTSPredictor(a);
-		}
-		
-		throw new IllegalArgumentException("unknown agent type "+name);
-	}
+        GameStats stats = runner.playGame(null);
+        System.out.println("the agents scored: " + stats);
+        return stats;
+    }
 
-	public static Agent buildAgent(String name, int agentID, String paired, int size) {
-		if ("predictorMCTS".equals(name)) {
-			Agent[] agents = new Agent[size];
-			for (int i=0; i<size; i++) {
-				if (i==agentID) {
-					agents[i] = null;
-				}
-				agents[i] = buildAgent(paired);
-			}
-			return new MCTSPredictor(agents);
-		}
+    public static Agent buildAgent(String name) {
+        switch (name) {
+            case "pure_random":
+                return new RandomAgent();
+            case "random":
+                return OsawaFactory.buildRandom();
+            case "internal":
+                return OsawaFactory.buildInternalState();
+            case "outer":
+                return OsawaFactory.buildOuterState();
+            case "cautious":
+                return IGGIFactory.buildCautious();
+            case "legal_random":
+                return IGGIFactory.buildRandom();
+            case "mcts":
+                return new MCTS();
+            case "cautiousMCTS":
+                Agent[] a = new Agent[]{buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious")};
+                return new MCTSPredictor(a);
+        }
 
-		return buildAgent(name);
-	}
+        throw new IllegalArgumentException("unknown agent type " + name);
+    }
 
+    public static Agent buildAgent(String name, int agentID, String paired, int size) {
+        if ("predictorMCTS".equals(name)) {
+            Agent[] agents = new Agent[size];
+            for (int i = 0; i < size; i++) {
+                if (i == agentID) {
+                    agents[i] = null;
+                }
+                agents[i] = buildAgent(paired);
+            }
+            return new MCTSPredictor(agents);
+        }
+
+        return buildAgent(name);
+    }
+
+    public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth) {
+        switch (name) {
+            case "mcts":
+                return new MCTS(roundLength, rolloutDepth, treeDepth);
+            default:
+                return buildAgent(name);
+        }
+    }
+
+    public static Agent buildAgent(String name, int agentID, String paired, int size, int roundLength, int rolloutDepth, int treeDepth) {
+        switch (name) {
+            case "predictorMCTS":
+                Agent[] agents = new Agent[size];
+                for (int i = 0; i < size; i++) {
+                    if (i == agentID) {
+                        agents[i] = null;
+                    }
+                    agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
+                }
+                return new MCTSPredictor(agents);
+            default:
+                return buildAgent(name);
+        }
+    }
 }
