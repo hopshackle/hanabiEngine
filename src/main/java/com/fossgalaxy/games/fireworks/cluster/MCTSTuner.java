@@ -33,14 +33,19 @@ public class MCTSTuner {
                         for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
                             Agent[] agents = new Agent[nPlayers];
                             String[] agentStr = new String[5];
-                            agentStr[0] = String.format("%d, %d, %d, mcts", treeDepthMul, roundLength, rolloutDepth);
+                            agentStr[0] = "mcts";
+
+                            //Piers, this should emulate what you were doing with the mcts params :)
+                            //I added a gameID field to make re-combining easier (populate it with SGE_TASK_ID for the
+                            //other runners, for your use case this should be fine).
+                            String gameID = String.format("%d,%d,%d", treeDepthMul,rolloutDepth,rolloutDepth);
 
                             agents[0] = App.buildAgent("mcts", 0, agentPaired, nPlayers, roundLength, rolloutDepth, treeDepthMul);
                             for (int agent = 1; agent < nPlayers; agent++) {
                                 agents[agent] = App.buildAgent(agentPaired);
                                 agentStr[agent] = agentPaired;
                             }
-                            App2Csv.playGameErrTrace(agentStr, seed, agents);
+                            App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
                         }
                     }
                 }
