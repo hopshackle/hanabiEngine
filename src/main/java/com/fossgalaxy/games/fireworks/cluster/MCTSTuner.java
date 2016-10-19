@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.cluster;
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.state.CardColour;
 
 import java.util.Random;
 

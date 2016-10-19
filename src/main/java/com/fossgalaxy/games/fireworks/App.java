@@ -74,8 +74,14 @@ public class App {
                 return IGGIFactory.buildRandom();
             case "mcts":
                 return new MCTS();
+            case "mctsND":
+                return new MCTS(50_000, 100, 100);
             case "cautiousMCTS":
+            case "cautiousMCTSND":
                 Agent[] a = new Agent[]{buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious")};
+                if (name.contains("ND")) {
+                    return new MCTSPredictor(a, 50_000, 100, 100);
+                }
                 return new MCTSPredictor(a);
         }
 
@@ -83,18 +89,23 @@ public class App {
     }
 
     public static Agent buildAgent(String name, int agentID, String paired, int size) {
-        if ("predictorMCTS".equals(name)) {
-            Agent[] agents = new Agent[size];
-            for (int i = 0; i < size; i++) {
-                if (i == agentID) {
-                    agents[i] = null;
+        switch(name){
+            case "predictorMCTS":
+            case "predictorMCTSND":
+                Agent[] agents = new Agent[size];
+                for (int i = 0; i < size; i++) {
+                    if (i == agentID) {
+                        agents[i] = null;
+                    }
+                    agents[i] = buildAgent(paired);
                 }
-                agents[i] = buildAgent(paired);
-            }
-            return new MCTSPredictor(agents);
+                if(name.contains("ND")){
+                    return new MCTSPredictor(agents, 50_000, 100, 100);
+                }
+                return new MCTSPredictor(agents);
+            default:
+                return buildAgent(name);
         }
-
-        return buildAgent(name);
     }
 
     public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth) {
