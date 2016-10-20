@@ -125,7 +125,7 @@ public class BasicHand implements Iterable<Card>, Hand {
 	/**
 	 * Create an iterator of the cards, based on the real cards present.
 	 *
-	 * This uses the same values as {@link #getCard).
+	 * This uses the same values as {@link #getCard(int)}.
 	 *
 	 * @return a card iterator based on the getCard function
 	 */
