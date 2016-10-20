@@ -108,6 +108,28 @@ public class App {
         }
     }
 
+    public static Agent buildAgent(String name, int agentID, String[] paired, int size) {
+        switch(name){
+            case "predictorMCTS":
+            case "predictorMCTSND":
+                Agent[] agents = new Agent[size];
+                for (int i = 0; i < size; i++) {
+                    if (i == agentID) {
+                        agents[i] = null;
+                    }
+                    agents[i] = buildAgent(paired[i]);
+                }
+
+                if(name.contains("ND")){
+                    return new MCTSPredictor(agents, 50_000, 100, 100);
+                }
+                return new MCTSPredictor(agents);
+            default:
+                return buildAgent(name);
+        }
+    }
+
+
     public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth) {
         switch (name) {
             case "mcts":
