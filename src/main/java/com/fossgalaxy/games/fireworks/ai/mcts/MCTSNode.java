@@ -135,6 +135,7 @@ public class MCTSNode {
         return 1 + parent.getDepth();
     }
 
+    @Override
     public String toString() {
         return String.format("NODE(%d: %s %f)", getDepth(), moveToState, score);
     }

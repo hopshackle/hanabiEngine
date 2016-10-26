@@ -20,7 +20,6 @@ public class Simulator {
         DebugUtils.printState(System.err, state);
 
         Deck deck = state.getDeck();
-        //deck.init();
 
         //fake telling player 0 about their first card
         Action tell = new TellColour(0, state.getCardAt(0, 0).colour);

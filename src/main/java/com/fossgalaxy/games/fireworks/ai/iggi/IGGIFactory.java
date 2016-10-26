@@ -11,6 +11,10 @@ import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertian;
  */
 public class IGGIFactory {
 
+    private IGGIFactory() {
+
+    }
+
     /**
      * Cautious but helpful bot.
      * <p>
@@ -25,7 +29,6 @@ public class IGGIFactory {
         pra.addRule(new PlaySafeCard());
         pra.addRule(new TellAnyoneAboutUsefulCard());
         pra.addRule(new DiscardIfCertian());
-        //pra.addRule(new TellRandomly());
         pra.addRule(new DiscardRandomly());
         return pra;
     }

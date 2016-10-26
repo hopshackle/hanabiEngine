@@ -12,9 +12,13 @@ import java.util.HashSet;
 public class Utils {
     private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
 
+    private Utils() {
+
+    }
+
     public static Collection<Action> generateAllActions(int playerID, int numPlayers) {
 
-        HashSet<Action> list = new HashSet<Action>();
+        HashSet<Action> list = new HashSet<>();
 
         for (int i = 0; i < HAND_SIZE[numPlayers]; i++) {
             list.add(new DiscardCard(i));
@@ -41,7 +45,7 @@ public class Utils {
     }
 
     public static Collection<Action> generateActions(int playerID, GameState state) {
-        HashSet<Action> list = new HashSet<Action>();
+        HashSet<Action> list = new HashSet<>();
 
         //TODO handle null cards
         Hand myHand = state.getHand(playerID);
@@ -78,7 +82,7 @@ public class Utils {
     }
 
     public static Collection<Action> generateSuitableActions(int playerID, GameState state) {
-        HashSet<Action> list = new HashSet<Action>();
+        HashSet<Action> list = new HashSet<>();
 
         //TODO handle null cards
         Hand myHand = state.getHand(playerID);
