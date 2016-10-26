@@ -18,6 +18,13 @@
 		<version>0.1</version>
 	</parent>
 
+  <distributionManagement>
+    <site>
+      <id>fossgalaxy.website.static</id>
+      <url>scp://docs.fossgalaxy.com/srv/public_sites/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
