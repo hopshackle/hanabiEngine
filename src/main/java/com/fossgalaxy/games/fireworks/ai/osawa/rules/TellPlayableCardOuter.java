@@ -1,5 +1,6 @@
-package com.fossgalaxy.games.fireworks.ai.rule;
+package com.fossgalaxy.games.fireworks.ai.osawa.rules;
 
+import com.fossgalaxy.games.fireworks.ai.rule.AbstractTellRule;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;

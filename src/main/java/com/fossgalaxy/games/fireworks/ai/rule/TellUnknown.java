@@ -13,11 +13,6 @@ import java.util.Random;
  * Tell the next player about an unknown card.
  */
 public class TellUnknown extends AbstractTellRule {
-    private Random random;
-
-    public TellUnknown() {
-        this.random = new Random();
-    }
 
     @Override
     public Action execute(int playerID, GameState state) {

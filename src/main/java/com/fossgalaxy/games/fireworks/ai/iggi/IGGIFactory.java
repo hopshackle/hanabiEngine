@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertian;
