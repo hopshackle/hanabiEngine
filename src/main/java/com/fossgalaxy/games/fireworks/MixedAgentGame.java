@@ -14,6 +14,11 @@ public class MixedAgentGame {
 	private static final String[] AGENT_PAIRED = {"iggi", "internal", "outer", "legal_random", "cautious"};
 	private static final String[] AGENT_NAMES = {"cautious", "outer", "legal_random", "mcts", "predictorMCTS"};
 
+	//utility class - no instances required.
+	private MixedAgentGame() {
+
+	}
+
 	public static String[] getAgentNames() {
 		String[] agentNames = AGENT_NAMES;
 		String envAgents = System.getenv("FIREWORKS_AGENTS");

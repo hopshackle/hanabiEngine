@@ -10,6 +10,10 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
  */
 public class App2CsvMulti {
 
+	//utility class - no instances permitted.
+	private App2CsvMulti() {
+
+	}
 	
 	public static void main(String[] args) {
 		

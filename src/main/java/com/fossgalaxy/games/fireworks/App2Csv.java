@@ -17,7 +17,12 @@ public class App2Csv {
 	public static final Integer GAME_SIZE = 3;
 	public static final Integer DEFAULT_NUM_RUNS = 100;
 	protected static final String[] AGENT_NAMES = {"pure_random", "internal", "outer", "legal_random", "cautious", "mcts", "cautiousMCTS"};
-	
+
+	//Utility class - instances not permitted.
+	private App2Csv() {
+
+	}
+
 	public static void main(String[] args) {
 		
 		int runCount = DEFAULT_NUM_RUNS;

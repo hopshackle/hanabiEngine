@@ -18,6 +18,11 @@ import java.util.UUID;
  */
 public class App {
 
+    //utility class - don't create instances of it
+    private App() {
+
+    }
+
     public static void main(String[] args) {
 
         double sum = 0;

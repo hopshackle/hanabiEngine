@@ -11,6 +11,7 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 public class TextProtocol {
 	public static final String ACTION_PLAY = "play";
@@ -22,6 +23,11 @@ public class TextProtocol {
 	public static final String EFFECT_GAMEINFO = "draw";
 
 	public static final String PROTOCOL_REQ_MOVE = "DOMOVE";
+
+	//utility class no instances required.
+	private TextProtocol() {
+
+	}
 
 	public static String buildMessage(int player, String action, String args) {
 		return player + " " + action + " " + args;

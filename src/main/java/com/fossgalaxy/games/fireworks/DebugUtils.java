@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
  */
 public class DebugUtils {
 
+    //utility class - no instances required
+    private DebugUtils() {
+
+    }
+
     public static void printState(PrintStream out, GameState state) {
 
         out.println();
