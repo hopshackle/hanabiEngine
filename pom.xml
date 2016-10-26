@@ -13,7 +13,7 @@
 
 	<!-- Use FOSS Galaxy's parent POM to do most of the build setup for us -->
 	<parent>
-		<groupId>com.fossgalaxy.parent</groupId>
+		<groupId>com.fossgalaxy.common</groupId>
 		<artifactId>parent-pom</artifactId>
 		<version>0.1</version>
 	</parent>
