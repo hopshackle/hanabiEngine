@@ -75,7 +75,7 @@ public class GameRunner {
 			return;
 		}
 
-		gameOut.format("%d performed move %-50s\n",playerID, action);
+		gameOut.format("%d performed move %-50s%n",playerID, action);
 	}
 
 	private void writeEvent(GameEvent event) {
@@ -83,7 +83,7 @@ public class GameRunner {
 			return;
 		}
 
-		gameOut.format("\t[debug] %s\n", event);
+		gameOut.format("\t[debug] %s%n", event);
 	}
 
 	private void writeState(GameState state) {
@@ -100,14 +100,14 @@ public class GameRunner {
 		assert player != null : "that player is not valid";
 
 		if (gameOut != null) {
-			gameOut.format(" --- asking player %d for their move --- \n", nextPlayer);
+			gameOut.format(" --- asking player %d for their move --- %n", nextPlayer);
 		}
 
 		//get the action and try to apply it
 		Action action = player.getAction();
 
 		if (gameOut != null) {
-			gameOut.format(" --- player provided move, processing --- \n");
+			gameOut.format(" --- player provided move, processing --- %n");
 		}
 
 		writeMove(nextPlayer, action);
