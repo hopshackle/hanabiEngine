@@ -5,21 +5,19 @@ import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 public class OneStepRollout implements Agent {
-	private Simulator simulator;
-	
-	public OneStepRollout() {
-		this.simulator = new Simulator();
-	}
+    private Simulator simulator;
 
-	@Override
-	public Action doMove(int agentID, GameState state) {
-		
-		
-		
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
+    public OneStepRollout() {
+        this.simulator = new Simulator();
+    }
+
+    @Override
+    public Action doMove(int agentID, GameState state) {
+
+
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 
 }

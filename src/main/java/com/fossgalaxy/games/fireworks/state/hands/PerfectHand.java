@@ -2,7 +2,6 @@ package com.fossgalaxy.games.fireworks.state.hands;
 
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
-import com.fossgalaxy.games.fireworks.state.Hand;
 
 import java.util.Arrays;
 
@@ -41,7 +40,7 @@ public class PerfectHand implements SimpleHand {
     @Override
     public Integer[] getValues(int slot) {
         if (cards[slot] == null) {
-            return new Integer[]{1,2,3,4,5};
+            return new Integer[]{1, 2, 3, 4, 5};
         } else {
             return new Integer[]{cards[slot].value};
         }

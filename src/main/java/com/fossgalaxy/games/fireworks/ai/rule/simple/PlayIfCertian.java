@@ -12,23 +12,23 @@ import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
  */
 public class PlayIfCertian extends AbstractRule {
 
-	@Override
-	public Action execute(int playerID, GameState state) {
+    @Override
+    public Action execute(int playerID, GameState state) {
 
-		Hand myHand = state.getHand(playerID);
-		for (int slot = 0; slot < state.getHandSize(); slot++) {
-			CardColour c = myHand.getKnownColour(slot);
-			Integer value = myHand.getKnownValue(slot);
+        Hand myHand = state.getHand(playerID);
+        for (int slot = 0; slot < state.getHandSize(); slot++) {
+            CardColour c = myHand.getKnownColour(slot);
+            Integer value = myHand.getKnownValue(slot);
 
-			if (c != null) {
-				int nextValue = state.getTableValue(c);
-				if (value != null && nextValue + 1 == value) {
-					return new PlayCard(slot);
-				}
-			}
-		}
+            if (c != null) {
+                int nextValue = state.getTableValue(c);
+                if (value != null && nextValue + 1 == value) {
+                    return new PlayCard(slot);
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

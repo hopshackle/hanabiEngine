@@ -9,30 +9,30 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 public class TellAboutOnes extends AbstractTellRule {
 
-	@Override
-	public Action execute(int playerID, GameState state) {
-		if (state.getInfomation() == 0) {
-			return null;
-		}
-		
-		int nextPlayer = (playerID+1) % state.getPlayerCount();
-		Hand hand = state.getHand(nextPlayer);
-		
-		for (int slot=0; slot<state.getHandSize(); slot++) {
-			
-				Card card = hand.getCard(slot);
-				if (card == null || card.value != 1) {
-					continue;
-				}
-				
-				if (hand.getKnownValue(slot) == null) {
-					return new TellValue(nextPlayer, 1);
-				} else if (hand.getKnownColour(slot) == null) {
-					return new TellColour(nextPlayer, card.colour);
-				}
-		}
-		
-		return null;
-	}
+    @Override
+    public Action execute(int playerID, GameState state) {
+        if (state.getInfomation() == 0) {
+            return null;
+        }
+
+        int nextPlayer = (playerID + 1) % state.getPlayerCount();
+        Hand hand = state.getHand(nextPlayer);
+
+        for (int slot = 0; slot < state.getHandSize(); slot++) {
+
+            Card card = hand.getCard(slot);
+            if (card == null || card.value != 1) {
+                continue;
+            }
+
+            if (hand.getKnownValue(slot) == null) {
+                return new TellValue(nextPlayer, 1);
+            } else if (hand.getKnownColour(slot) == null) {
+                return new TellColour(nextPlayer, card.colour);
+            }
+        }
+
+        return null;
+    }
 
 }

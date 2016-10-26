@@ -21,11 +21,11 @@ public class DiscardOldestFirst extends AbstractDiscardRule {
 
         //we can't fire if you didn't use a timed hand
         Hand hand = state.getHand(playerID);
-        if (! (hand instanceof TimedHand) ) {
+        if (!(hand instanceof TimedHand)) {
             return null;
         }
 
-        TimedHand timedHand = (TimedHand)state.getHand(playerID);
+        TimedHand timedHand = (TimedHand) state.getHand(playerID);
         int slotID = timedHand.getOldestSlot();
 
         return new DiscardCard(slotID);

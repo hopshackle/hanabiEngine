@@ -13,7 +13,7 @@ public class IterationObject {
         this.agentID = agentID;
     }
 
-    public void incrementLivesLostMyGo(){
+    public void incrementLivesLostMyGo() {
         livesLostMyGo++;
     }
 
@@ -21,7 +21,7 @@ public class IterationObject {
         return livesLostMyGo;
     }
 
-    public void incrementPointsGainedMyGo(){
+    public void incrementPointsGainedMyGo() {
         pointsGainedMyGo++;
     }
 
@@ -29,7 +29,7 @@ public class IterationObject {
         return pointsGainedMyGo;
     }
 
-    public boolean isMyGo(int currentAgentID){
+    public boolean isMyGo(int currentAgentID) {
         return currentAgentID == agentID;
     }
 

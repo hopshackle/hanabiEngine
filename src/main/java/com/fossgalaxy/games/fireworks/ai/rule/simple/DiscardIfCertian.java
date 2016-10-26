@@ -11,27 +11,27 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
  * Discard a card we know is 100% safe based on provided information.
  */
 public class DiscardIfCertian extends AbstractRule {
-	
-	@Override
-	public Action execute(int playerID, GameState state) {
-		if (state.getInfomation() == state.getStartingInfomation()) {
-			return null;
-		}
-		
-		Hand myHand = state.getHand(playerID);
-		for (int slot = 0; slot < state.getHandSize(); slot++) {
-			CardColour c = myHand.getKnownColour(slot);
-			Integer value = myHand.getKnownValue(slot);
 
-			if (c != null) {
-				int currValue = state.getTableValue(c);
-				if (value != null && currValue >= value) {
-					return new DiscardCard(slot);
-				}
-			}
-		}
+    @Override
+    public Action execute(int playerID, GameState state) {
+        if (state.getInfomation() == state.getStartingInfomation()) {
+            return null;
+        }
 
-		return null;
-	}
+        Hand myHand = state.getHand(playerID);
+        for (int slot = 0; slot < state.getHandSize(); slot++) {
+            CardColour c = myHand.getKnownColour(slot);
+            Integer value = myHand.getKnownValue(slot);
+
+            if (c != null) {
+                int currValue = state.getTableValue(c);
+                if (value != null && currValue >= value) {
+                    return new DiscardCard(slot);
+                }
+            }
+        }
+
+        return null;
+    }
 
 }

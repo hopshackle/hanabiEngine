@@ -5,10 +5,10 @@ import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
 public interface Player {
 
-	Action getAction();
+    Action getAction();
 
-	void sendMessage(GameEvent msg);
+    void sendMessage(GameEvent msg);
 
-	void setID(int id, int nPlayers);
+    void setID(int id, int nPlayers);
 
 }

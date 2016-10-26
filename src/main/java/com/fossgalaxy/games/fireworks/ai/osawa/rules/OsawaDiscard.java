@@ -8,7 +8,7 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 /**
  * Osawa has strange notions of discard and play - this tries to enumerate them.
- *
+ * <p>
  * If a card has enough information but is not playable after the turn, this card is defined as a discard-able card.
  * For example, if there is a red fireworks set with the number 4 on top, R1, R2, R3 are discard-able cards. If there
  * is a yellow fireworks set with the number 5 on top, any yellow card is discard-able without needing information

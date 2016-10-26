@@ -3,7 +3,10 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +58,7 @@ public class MCTSNode {
             return 0;
         }
 
-        return ( (score/MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt( Math.log(parentWasVisitedAndIWasLegal) / visits ));
+        return ((score / MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt(Math.log(parentWasVisitedAndIWasLegal) / visits));
     }
 
     public List<MCTSNode> getChildren() {
@@ -86,7 +89,7 @@ public class MCTSNode {
         for (MCTSNode child : children) {
             //XXX Hack to check if the move is legal in this version
             Action moveToMake = child.moveToState;
-            if(!moveToMake.isLegal(child.agentId, state)){
+            if (!moveToMake.isLegal(child.agentId, state)) {
                 continue;
             }
             child.parentWasVisitedAndIWasLegal++;
@@ -115,7 +118,7 @@ public class MCTSNode {
 
         for (MCTSNode child : children) {
             double childScore = child.score / child.visits + (random.nextDouble() * EPSILON);
-            if (childScore > bestScore ) {
+            if (childScore > bestScore) {
                 bestScore = childScore;
                 bestChild = child;
             }
@@ -140,45 +143,45 @@ public class MCTSNode {
         return children.size();
     }
 
-    public boolean containsChild(Action moveToChild){
-        for(MCTSNode child : children){
-            if(child.moveToState.equals(moveToChild)) return true;
+    public boolean containsChild(Action moveToChild) {
+        for (MCTSNode child : children) {
+            if (child.moveToState.equals(moveToChild)) return true;
         }
         return false;
     }
 
-    public MCTSNode getChild(Action action){
-        for(MCTSNode child : children){
-            if(child.moveToState.equals(action)) return child;
+    public MCTSNode getChild(Action action) {
+        for (MCTSNode child : children) {
+            if (child.moveToState.equals(action)) return child;
         }
         return null;
     }
 
-    public boolean fullyExpanded(GameState state){
+    public boolean fullyExpanded(GameState state) {
         return fullyExpanded(state, (agentId + 1) % state.getPlayerCount());
     }
 
-    public boolean fullyExpanded(GameState state, int nextId){
-        if(allUnexpandedActions.isEmpty()) return true;
-        for(Action action : allUnexpandedActions){
-            if(action.isLegal(nextId, state)) return false;
+    public boolean fullyExpanded(GameState state, int nextId) {
+        if (allUnexpandedActions.isEmpty()) return true;
+        for (Action action : allUnexpandedActions) {
+            if (action.isLegal(nextId, state)) return false;
         }
         return true;
     }
 
-    public Collection<Action> getLegalMoves(GameState state, int nextId){
+    public Collection<Action> getLegalMoves(GameState state, int nextId) {
         return allUnexpandedActions.stream().filter(action -> action.isLegal(nextId, state)).collect(Collectors.toList());
     }
 
-    public Collection<Action> getAllActionsExpandedAlready(){
+    public Collection<Action> getAllActionsExpandedAlready() {
         ArrayList<Action> actions = new ArrayList<>();
-        for(MCTSNode node : children) actions.add(node.getAction());
+        for (MCTSNode node : children) actions.add(node.getAction());
         return actions;
     }
 
-    public void printChildren(){
+    public void printChildren() {
         System.err.format("\t %35s\t%-10s\t%-10s\t%-9s%n", "action", "visits", "score", "avg");
-        for(MCTSNode child : children){
+        for (MCTSNode child : children) {
             System.err.format("\t %35s\t%-10d\t%-6.3f\t%6.3f%n", child.getAction(), child.visits, child.score, child.score / child.visits);
         }
         System.err.println();

@@ -8,7 +8,6 @@ import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,8 +25,8 @@ public class PlaySafeCard extends AbstractRule {
         //figure out what cards are playable
         List<Integer> playableSlots = possibleCards.entrySet().stream()
                 .filter(x -> x.getValue().stream().allMatch(y -> isPlayable(y, state)))
-               .map(Map.Entry::getKey)
-               .collect(Collectors.toList());
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
 
         //if nothing is garenteed to be playable, this rule doesn't fire
         if (playableSlots.isEmpty()) {
@@ -42,7 +41,7 @@ public class PlaySafeCard extends AbstractRule {
         GameState state = new BasicState(5, 2);
         state.init(0L);
 
-        state.getHand(0).setKnownValue(1, new Integer[]{3,4});
+        state.getHand(0).setKnownValue(1, new Integer[]{3, 4});
         DebugUtils.printState(System.out, state);
 
         PlaySafeCard psc = new PlaySafeCard();
@@ -51,7 +50,7 @@ public class PlaySafeCard extends AbstractRule {
     }
 
     public boolean isPlayable(Card card, GameState state) {
-       return state.getTableValue(card.colour) + 1 == card.value;
+        return state.getTableValue(card.colour) + 1 == card.value;
     }
 
 }

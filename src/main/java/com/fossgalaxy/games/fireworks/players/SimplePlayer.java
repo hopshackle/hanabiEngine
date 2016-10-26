@@ -1,49 +1,49 @@
 package com.fossgalaxy.games.fireworks.players;
 
-import java.io.PrintStream;
-import java.util.Scanner;
-
 import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
 public class SimplePlayer implements Player {
 
-	private String name;
-	private Scanner in;
-	private PrintStream out;
+    private String name;
+    private Scanner in;
+    private PrintStream out;
 
-	public SimplePlayer(String name, Scanner in, PrintStream out) {
-		this.name = name;
-		this.in = in;
-		this.out = out;
-	}
+    public SimplePlayer(String name, Scanner in, PrintStream out) {
+        this.name = name;
+        this.in = in;
+        this.out = out;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.fossgalaxy.hanabi.Player#getAction()
-	 */
-	@Override
-	public Action getAction() {
-		out.println("your move");
-		return TextProtocol.stringToAction(in.nextLine());
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.fossgalaxy.hanabi.Player#getAction()
+     */
+    @Override
+    public Action getAction() {
+        out.println("your move");
+        return TextProtocol.stringToAction(in.nextLine());
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.fossgalaxy.hanabi.Player#sendMessage(java.lang.String)
-	 */
-	@Override
-	public void sendMessage(GameEvent msg) {
-		out.println("[" + name + "] " + msg);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.fossgalaxy.hanabi.Player#sendMessage(java.lang.String)
+     */
+    @Override
+    public void sendMessage(GameEvent msg) {
+        out.println("[" + name + "] " + msg);
+    }
 
-	@Override
-	public void setID(int id, int nPlayers) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setID(int id, int nPlayers) {
+        // TODO Auto-generated method stub
+
+    }
 
 }

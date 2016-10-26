@@ -31,7 +31,7 @@ public class TimedHand extends NegativeHand {
 
     public int getOldestSlot() {
         int oldest = 0;
-        for (int i=0; i<time.length; i++) {
+        for (int i = 0; i < time.length; i++) {
             if (time[i] < time[oldest]) {
                 oldest = i;
             }
@@ -42,7 +42,7 @@ public class TimedHand extends NegativeHand {
 
     public int getNewestSlot() {
         int oldest = 0;
-        for (int i=0; i<time.length; i++) {
+        for (int i = 0; i < time.length; i++) {
             if (time[i] > time[oldest]) {
                 oldest = i;
             }

@@ -6,17 +6,17 @@ package com.fossgalaxy.games.fireworks.state;
 public interface Hand {
     /**
      * Initialise all information about the slots.
-     *
+     * <p>
      * This should reset any known infomation for any slot in the hand.
      */
     void init();
 
     /**
      * Get the card really present in the slot (or null if unknown).
-     *
+     * <p>
      * This is the card which is present in the slot based on information provided by the game itself. This method
      * should always return null for your own hand (agents should not call this method on their own hands).
-     *
+     * <p>
      * Agents can use this for accurate information about other player's hands.
      *
      * @param slot the slot to query
@@ -26,7 +26,7 @@ public interface Hand {
 
     /**
      * Get the known colour of this slot, from the perspective of the player who's hand it is.
-     *
+     * <p>
      * For this version of the hand class, this is worked out based on explicitly observed tell actions.
      * It will not take into account negative information.
      *
@@ -37,7 +37,7 @@ public interface Hand {
 
     /**
      * Get the known value of this slot, from the perspective of the player who's hand it is.
-     *
+     * <p>
      * For this version of the hand class, this is worked out based on explicitly observed tell actions.
      * It will not take into account negative information.
      *
@@ -48,7 +48,7 @@ public interface Hand {
 
     /**
      * The number of cards which make up this hand.
-     *
+     * <p>
      * This can very with game size, and so this should be used whenever you need to iterate over the number of slots
      * in this player's hand.
      *
@@ -58,10 +58,10 @@ public interface Hand {
 
     /**
      * Set a card in a given slot, removing all known information about it.
-     *
+     * <p>
      * This should be called when a {@link com.fossgalaxy.games.fireworks.state.events.CardDrawn} event occurs in order
      * to update this hand with the correct information.
-     *
+     * <p>
      * It will also reset all known information from the perspective of the owner.
      *
      * @param slot the slot to update
@@ -71,7 +71,7 @@ public interface Hand {
 
     /**
      * Bind a card to a given slot, keeping all known information about it.
-     *
+     * <p>
      * This has the same basic role as {@link #setCard} but will not remove any information from the owners perspective.
      * This is mostly useful when using this class as part of a simulation based agent to set the value of the card.
      *
@@ -82,17 +82,17 @@ public interface Hand {
 
     /**
      * Sets the known colour of a slot from the perspective of the owner.
-     *
+     * <p>
      * This method is used to inform the hand about the card from the owner's perspective (tell actions).
      *
      * @param colour the colour to assign to the slots
-     * @param slots the slots to assign the colour to.
+     * @param slots  the slots to assign the colour to.
      */
     void setKnownColour(CardColour colour, Integer[] slots);
 
     /**
      * Sets the known value of a slot from the perspective of the owner.
-     *
+     * <p>
      * This method is used to inform the hand about the card from the owner's perspective (tell actions).
      *
      * @param value the value to assign to the slots

@@ -9,40 +9,40 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Tell the next player about a playable card in their hand.
- * 
+ * <p>
  * This rule makes use of information the player already has, avoiding telling duplicate information.
  */
 public class TellPlayableCardOuter extends AbstractTellRule {
 
-	@Override
-	public Action execute(int playerID, GameState state) {
-		if (state.getInfomation() == 0) {
-			return null;
-		}
-		
-		int nextPlayer = selectPlayer(playerID, state);
-		Hand hand = state.getHand(nextPlayer);
-		
-		for (int slot=0; slot<state.getHandSize(); slot++) {
-			
-				Card card = hand.getCard(slot);
-				if (card == null) {
-					continue;
-				}
-				
-				int currTable = state.getTableValue(card.colour);
-				if (card.value != currTable + 1) {
-					continue;
-				}
-				
-				if (hand.getKnownValue(slot) == null) {
-					return new TellValue(nextPlayer, card.value);
-				} else if (hand.getKnownColour(slot) == null) {
-					return new TellColour(nextPlayer, card.colour);
-				}
-		}
-		
-		return null;
-	}
+    @Override
+    public Action execute(int playerID, GameState state) {
+        if (state.getInfomation() == 0) {
+            return null;
+        }
+
+        int nextPlayer = selectPlayer(playerID, state);
+        Hand hand = state.getHand(nextPlayer);
+
+        for (int slot = 0; slot < state.getHandSize(); slot++) {
+
+            Card card = hand.getCard(slot);
+            if (card == null) {
+                continue;
+            }
+
+            int currTable = state.getTableValue(card.colour);
+            if (card.value != currTable + 1) {
+                continue;
+            }
+
+            if (hand.getKnownValue(slot) == null) {
+                return new TellValue(nextPlayer, card.value);
+            } else if (hand.getKnownColour(slot) == null) {
+                return new TellColour(nextPlayer, card.colour);
+            }
+        }
+
+        return null;
+    }
 
 }

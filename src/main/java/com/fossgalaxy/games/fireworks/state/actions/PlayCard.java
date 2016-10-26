@@ -1,8 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -11,88 +8,91 @@ import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.CardPlayed;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayCard implements Action {
-	public final int slot;
+    public final int slot;
 
-	public PlayCard(int slot) {
-		this.slot = slot;
-	}
+    public PlayCard(int slot) {
+        this.slot = slot;
+    }
 
-	@Override
-	public List<GameEvent> apply(int playerID, GameState game) {
-		if (!isLegal(playerID, game)) {
-			throw new RulesViolation("this is a violation of the game rules!", this);
-		}
-		
-		// deal with the old card first
-		Card oldCard = game.getCardAt(playerID, slot);
-		assert oldCard != null : "old card was unknown or did not exist";
+    @Override
+    public List<GameEvent> apply(int playerID, GameState game) {
+        if (!isLegal(playerID, game)) {
+            throw new RulesViolation("this is a violation of the game rules!", this);
+        }
 
-		// figure out the next value
-		int nextValue = game.getTableValue(oldCard.colour) + 1;
+        // deal with the old card first
+        Card oldCard = game.getCardAt(playerID, slot);
+        assert oldCard != null : "old card was unknown or did not exist";
 
-		// check if the card was valid
-		if (nextValue == oldCard.value) {
-			game.setTableValue(oldCard.colour, nextValue);
+        // figure out the next value
+        int nextValue = game.getTableValue(oldCard.colour) + 1;
 
-			// if you complete a firework, you get an information back
-			if (nextValue == 5) {
-				int currentInfo = game.getInfomation();
-				int maxInfo = game.getStartingInfomation();
-				if (currentInfo < maxInfo) {
-					game.setInfomation(currentInfo + 1);
-				}
-			}
+        // check if the card was valid
+        if (nextValue == oldCard.value) {
+            game.setTableValue(oldCard.colour, nextValue);
 
-		} else {
-			// if this card wasn't valid, discard it and lose a life.
-			game.addToDiscard(oldCard);
-			game.setLives(game.getLives() - 1);
-		}
+            // if you complete a firework, you get an information back
+            if (nextValue == 5) {
+                int currentInfo = game.getInfomation();
+                int maxInfo = game.getStartingInfomation();
+                if (currentInfo < maxInfo) {
+                    game.setInfomation(currentInfo + 1);
+                }
+            }
 
-		ArrayList<GameEvent> events = new ArrayList<>();
-		events.add(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value));
+        } else {
+            // if this card wasn't valid, discard it and lose a life.
+            game.addToDiscard(oldCard);
+            game.setLives(game.getLives() - 1);
+        }
 
-		// deal with the new card
-		// XXX null pointer exception if next card was null.
-		if (game.getDeck().hasCardsLeft()) {
-			Card newCard = game.drawFromDeck();
-			game.setCardAt(playerID, slot, newCard);
-			events.add(new CardDrawn(playerID, slot, newCard.colour, newCard.value));
-		} else {
-			game.setCardAt(playerID, slot, null);
-		}
+        ArrayList<GameEvent> events = new ArrayList<>();
+        events.add(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value));
 
-		return events;
-	}
+        // deal with the new card
+        // XXX null pointer exception if next card was null.
+        if (game.getDeck().hasCardsLeft()) {
+            Card newCard = game.drawFromDeck();
+            game.setCardAt(playerID, slot, newCard);
+            events.add(new CardDrawn(playerID, slot, newCard.colour, newCard.value));
+        } else {
+            game.setCardAt(playerID, slot, null);
+        }
 
-	@Override
-	public boolean isLegal(int playerID, GameState state) {
-		return true;
-	}
+        return events;
+    }
 
-	@Override
-	public String toProtocol() {
-		return String.format("%s %d", TextProtocol.ACTION_PLAY, slot);
-	}
+    @Override
+    public boolean isLegal(int playerID, GameState state) {
+        return true;
+    }
 
-	public String toString() {
-		return String.format("play %d", slot);
-	}
+    @Override
+    public String toProtocol() {
+        return String.format("%s %d", TextProtocol.ACTION_PLAY, slot);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public String toString() {
+        return String.format("play %d", slot);
+    }
 
-		PlayCard playCard = (PlayCard) o;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		return slot == playCard.slot;
+        PlayCard playCard = (PlayCard) o;
 
-	}
+        return slot == playCard.slot;
 
-	@Override
-	public int hashCode() {
-		return slot;
-	}
+    }
+
+    @Override
+    public int hashCode() {
+        return slot;
+    }
 }

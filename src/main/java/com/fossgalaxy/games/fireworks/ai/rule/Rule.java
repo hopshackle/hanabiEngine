@@ -6,11 +6,11 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 @FunctionalInterface
 public interface Rule {
 
-	default boolean canFire(int playerID, GameState state){
-		Action returnedAction = execute(playerID, state);
-		return returnedAction != null;
-	}
+    default boolean canFire(int playerID, GameState state) {
+        Action returnedAction = execute(playerID, state);
+        return returnedAction != null;
+    }
 
-	Action execute(int playerID, GameState state);
+    Action execute(int playerID, GameState state);
 
 }

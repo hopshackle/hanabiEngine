@@ -3,9 +3,6 @@ package com.fossgalaxy.games.fireworks.cluster;
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.state.CardColour;
-
-import java.util.Random;
 
 /**
  * Created by piers on 18/10/16.
@@ -38,7 +35,7 @@ public class MCTSTuner {
                             //Piers, this should emulate what you were doing with the mcts params :)
                             //I added a gameID field to make re-combining easier (populate it with SGE_TASK_ID for the
                             //other runners, for your use case this should be fine).
-                            String gameID = String.format("%d,%d,%d", treeDepthMul,rolloutDepth,rolloutDepth);
+                            String gameID = String.format("%d,%d,%d", treeDepthMul, rolloutDepth, rolloutDepth);
                             agents[0] = App.buildAgent("predictorMCTS", 0, agentPaired, nPlayers, roundLength, rolloutDepth, treeDepthMul);
                             for (int agent = 1; agent < nPlayers; agent++) {
                                 agents[agent] = App.buildAgent(agentPaired);

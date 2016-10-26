@@ -9,16 +9,13 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * This rule is damage control - we can't get a perfect score because we have discarded a prerequisite card, now we
  * know it's safe to discard higher value cards of the same suit.
  */
 public class DiscardUselessCard extends AbstractDiscardRule {
-    private final int[] numCards = {0,3,2,2,2,1}; //zeroth value should never occur
+    private final int[] numCards = {0, 3, 2, 2, 2, 1}; //zeroth value should never occur
 
     //TODO if the highest in the suit has already been reached, then discard this card.
     //XXX possible values are not being tracked in a way we can see,
@@ -27,7 +24,7 @@ public class DiscardUselessCard extends AbstractDiscardRule {
     public Action execute(int playerID, GameState state) {
 
         Hand myHand = state.getHand(playerID);
-        for (int slot=0; slot<myHand.getSize(); slot++) {
+        for (int slot = 0; slot < myHand.getSize(); slot++) {
             CardColour c = myHand.getKnownColour(slot);
             if (c == null) {
                 continue;
@@ -47,12 +44,12 @@ public class DiscardUselessCard extends AbstractDiscardRule {
         int nextValue = state.getTableValue(colour) + 1;
 
         Collection<Card> discards = state.getDiscards();
-        for (int i=nextValue; i<=5; i++) {
+        for (int i = nextValue; i <= 5; i++) {
             int occurrences = Collections.frequency(discards, new Card(i, colour));
 
             //if all of this value have already been discarded, the previous value is the highest
             if (occurrences == numCards[i]) {
-                return i-1;
+                return i - 1;
             }
 
         }

@@ -1,23 +1,16 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
-import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
-import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
+import com.fossgalaxy.games.fireworks.state.actions.*;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 public class Utils {
-    private static final int[] HAND_SIZE = { -1, -1, 5, 5, 4, 4 };
+    private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
 
     public static Collection<Action> generateAllActions(int playerID, int numPlayers) {
 

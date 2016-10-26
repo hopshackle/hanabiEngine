@@ -1,167 +1,165 @@
 package com.fossgalaxy.games.fireworks;
 
-import java.io.PrintStream;
-import java.util.*;
-
 import com.fossgalaxy.games.fireworks.players.Player;
-import com.fossgalaxy.games.fireworks.state.BasicState;
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
-import com.fossgalaxy.games.fireworks.state.RulesViolation;
+import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.state.events.GameInformation;
 
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.UUID;
+
 public class GameRunner {
-	private static final int[] HAND_SIZE = { -1, -1, 5, 5, 4, 4 };
-	
-	private final Player[] players;
-	private final GameState state;
+    private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
 
-	private final PrintStream gameOut;
-	private final UUID gameID;
+    private final Player[] players;
+    private final GameState state;
 
-	private int nPlayers;
-	private int moves;
-	
-	private int nextPlayer;
-	
-	public GameRunner(UUID gameID, int expectedPlayers, PrintStream gameOut) {
-		assert expectedPlayers > 2 : "too few players";
-		assert expectedPlayers < HAND_SIZE.length : "too many players";
-		
-		this.players = new Player[expectedPlayers];
-		this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
-		this.nPlayers = 0;
-		this.gameOut = gameOut;
-		
-		this.nextPlayer = 0;
-		this.moves = 0;
-		this.gameID = gameID;
-	}
-	
-	public void addPlayer(Player player) {
-		players[nPlayers++] = player;
-	}
+    private final PrintStream gameOut;
+    private final UUID gameID;
 
-	public void init(Long seed) {
-		if (gameOut != null) {
-			gameOut.println(String.format("GAME INIT STARTED: %d player game with %d seed", players.length, seed));
-		}
+    private int nPlayers;
+    private int moves;
 
-		state.init(seed);
+    private int nextPlayer;
 
-		send(new GameInformation(nPlayers, HAND_SIZE[nPlayers], 8, 3));
+    public GameRunner(UUID gameID, int expectedPlayers, PrintStream gameOut) {
+        assert expectedPlayers > 2 : "too few players";
+        assert expectedPlayers < HAND_SIZE.length : "too many players";
 
-		//tell players about their hands
-		for (int player = 0; player<players.length; player++) {
-			Hand hand = state.getHand(player);
+        this.players = new Player[expectedPlayers];
+        this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
+        this.nPlayers = 0;
+        this.gameOut = gameOut;
 
-			for (int slot = 0; slot < hand.getSize(); slot++) {
-				Card cardInSlot = hand.getCard(slot);
-				send(new CardDrawn(player, slot, cardInSlot.colour, cardInSlot.value));
-			}
-		}
+        this.nextPlayer = 0;
+        this.moves = 0;
+        this.gameID = gameID;
+    }
 
-		if (gameOut != null) {
-			gameOut.println(String.format("GAME INIT COMPLETE: %d player game with %d seed", players.length, seed));
-		}
-	}
+    public void addPlayer(Player player) {
+        players[nPlayers++] = player;
+    }
 
-	private void writeMove(int playerID, Action action) {
-		if (gameOut == null) {
-			return;
-		}
+    public void init(Long seed) {
+        if (gameOut != null) {
+            gameOut.println(String.format("GAME INIT STARTED: %d player game with %d seed", players.length, seed));
+        }
 
-		gameOut.format("%d performed move %-50s%n",playerID, action);
-	}
+        state.init(seed);
 
-	private void writeEvent(GameEvent event) {
-		if (gameOut == null) {
-			return;
-		}
+        send(new GameInformation(nPlayers, HAND_SIZE[nPlayers], 8, 3));
 
-		gameOut.format("\t[debug] %s%n", event);
-	}
+        //tell players about their hands
+        for (int player = 0; player < players.length; player++) {
+            Hand hand = state.getHand(player);
 
-	private void writeState(GameState state) {
-		if (gameOut == null) {
-			return;
-		}
+            for (int slot = 0; slot < hand.getSize(); slot++) {
+                Card cardInSlot = hand.getCard(slot);
+                send(new CardDrawn(player, slot, cardInSlot.colour, cardInSlot.value));
+            }
+        }
 
-		DebugUtils.printState(gameOut, state);
-	}
+        if (gameOut != null) {
+            gameOut.println(String.format("GAME INIT COMPLETE: %d player game with %d seed", players.length, seed));
+        }
+    }
 
-	//TODO time limit the agent
-	public void nextMove() {
-		Player player = players[nextPlayer];
-		assert player != null : "that player is not valid";
+    private void writeMove(int playerID, Action action) {
+        if (gameOut == null) {
+            return;
+        }
 
-		if (gameOut != null) {
-			gameOut.format(" --- asking player %d for their move --- %n", nextPlayer);
-		}
+        gameOut.format("%d performed move %-50s%n", playerID, action);
+    }
 
-		//get the action and try to apply it
-		Action action = player.getAction();
+    private void writeEvent(GameEvent event) {
+        if (gameOut == null) {
+            return;
+        }
 
-		if (gameOut != null) {
-			gameOut.println(" --- player provided move, processing --- ");
-		}
+        gameOut.format("\t[debug] %s%n", event);
+    }
 
-		writeMove(nextPlayer, action);
-		if (!action.isLegal(nextPlayer, state)) {
-			throw new RulesViolation(action);
-		}
+    private void writeState(GameState state) {
+        if (gameOut == null) {
+            return;
+        }
 
-		//perform the action and get the effects
-		moves++;
-		Collection<GameEvent> events = action.apply(nextPlayer, state);
-		events.forEach(this::send);
+        DebugUtils.printState(gameOut, state);
+    }
 
-		//make sure it's the next player's turn
-		nextPlayer = (nextPlayer + 1) % players.length;
-	}
-	
-	public GameStats playGame(Long seed) {
-		assert nPlayers == players.length;
-		init(seed);
+    //TODO time limit the agent
+    public void nextMove() {
+        Player player = players[nextPlayer];
+        assert player != null : "that player is not valid";
 
-		System.err.println(String.format("playing game %d. players: %s", seed, Arrays.toString(players)));
-		int disquals = 0;
-		int strikes = 3;
-		while (!state.isGameOver()) {
-			try {
-				writeState(state);
-				nextMove();
-				state.tick();
-			} catch (RulesViolation rv) {
+        if (gameOut != null) {
+            gameOut.format(" --- asking player %d for their move --- %n", nextPlayer);
+        }
 
-				//House rule: mess up 3 times and you end the game
-				if (strikes == 0) {
-					disquals++;
-					System.err.println("player "+nextPlayer+" got 3 strikes - lose a life");
-					break;
-				}
-				
-				//decrement strikes and last player gets another go
-				strikes--;
-				//System.err.println("user broke rules by prompting again "+rv);
-			}
-		}
+        //get the action and try to apply it
+        Action action = player.getAction();
 
-		return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), disquals);
-	}
-	
-	//send messages as soon as they are available
-	private void send(GameEvent event) {
-		writeEvent(event);
-		for (int i = 0; i < players.length; i++) {
-			if (event.isVisibleTo(i)) {
-				players[i].sendMessage(event);
-			}
-		}
-	}
-	
+        if (gameOut != null) {
+            gameOut.println(" --- player provided move, processing --- ");
+        }
+
+        writeMove(nextPlayer, action);
+        if (!action.isLegal(nextPlayer, state)) {
+            throw new RulesViolation(action);
+        }
+
+        //perform the action and get the effects
+        moves++;
+        Collection<GameEvent> events = action.apply(nextPlayer, state);
+        events.forEach(this::send);
+
+        //make sure it's the next player's turn
+        nextPlayer = (nextPlayer + 1) % players.length;
+    }
+
+    public GameStats playGame(Long seed) {
+        assert nPlayers == players.length;
+        init(seed);
+
+        System.err.println(String.format("playing game %d. players: %s", seed, Arrays.toString(players)));
+        int disquals = 0;
+        int strikes = 3;
+        while (!state.isGameOver()) {
+            try {
+                writeState(state);
+                nextMove();
+                state.tick();
+            } catch (RulesViolation rv) {
+
+                //House rule: mess up 3 times and you end the game
+                if (strikes == 0) {
+                    disquals++;
+                    System.err.println("player " + nextPlayer + " got 3 strikes - lose a life");
+                    break;
+                }
+
+                //decrement strikes and last player gets another go
+                strikes--;
+                //System.err.println("user broke rules by prompting again "+rv);
+            }
+        }
+
+        return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), disquals);
+    }
+
+    //send messages as soon as they are available
+    private void send(GameEvent event) {
+        writeEvent(event);
+        for (int i = 0; i < players.length; i++) {
+            if (event.isVisibleTo(i)) {
+                players[i].sendMessage(event);
+            }
+        }
+    }
+
 }

@@ -1,26 +1,26 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
-import java.io.Serializable;
-
 import com.fossgalaxy.games.fireworks.state.GameState;
 
+import java.io.Serializable;
+
 public abstract class GameEvent implements Serializable {
-	private final MessageType id;
+    private final MessageType id;
 
-	public GameEvent(MessageType id) {
-		this.id = id;
-	}
+    public GameEvent(MessageType id) {
+        this.id = id;
+    }
 
-	public abstract void apply(GameState state);
+    public abstract void apply(GameState state);
 
-	public MessageType getEvent() {
-		return id;
-	}
+    public MessageType getEvent() {
+        return id;
+    }
 
-	public boolean isVisibleTo(int playerID) {
-		return true;
-	}
+    public boolean isVisibleTo(int playerID) {
+        return true;
+    }
 
-	public abstract String toTextProtocol();
+    public abstract String toTextProtocol();
 
 }

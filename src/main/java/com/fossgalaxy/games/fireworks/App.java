@@ -7,10 +7,7 @@ import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
-import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.UUID;
 
 /**
@@ -94,7 +91,7 @@ public class App {
     }
 
     public static Agent buildAgent(String name, int agentID, String paired, int size) {
-        switch(name){
+        switch (name) {
             case "predictorMCTS":
             case "predictorMCTSND":
                 Agent[] agents = new Agent[size];
@@ -104,7 +101,7 @@ public class App {
                     }
                     agents[i] = buildAgent(paired);
                 }
-                if(name.contains("ND")){
+                if (name.contains("ND")) {
                     return new MCTSPredictor(agents, 50_000, 100, 100);
                 }
                 return new MCTSPredictor(agents);
@@ -114,7 +111,7 @@ public class App {
     }
 
     public static Agent buildAgent(String name, int agentID, String[] paired, int size) {
-        switch(name){
+        switch (name) {
             case "predictorMCTS":
             case "predictorMCTSND":
                 Agent[] agents = new Agent[size];
@@ -125,7 +122,7 @@ public class App {
                     agents[i] = buildAgent(paired[i]);
                 }
 
-                if(name.contains("ND")){
+                if (name.contains("ND")) {
                     return new MCTSPredictor(agents, 50_000, 100, 100);
                 }
                 return new MCTSPredictor(agents);

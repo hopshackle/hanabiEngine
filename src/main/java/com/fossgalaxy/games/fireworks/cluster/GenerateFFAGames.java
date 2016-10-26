@@ -41,14 +41,14 @@ public class GenerateFFAGames {
         for (int seedID = 0; seedID < numSeeds; seedID++) {
             long seed = r.nextLong();
 
-            for (int numPlayers=2; numPlayers<5; numPlayers++) {
+            for (int numPlayers = 2; numPlayers < 5; numPlayers++) {
                 int myAgent = r.nextInt(numPlayers);
 
                 for (String agentPaired : agentsPaired) {
                     for (String agentUnderTest : agentsUnderTest) {
 
                         String[] agentStr = new String[numPlayers];
-                        for (int i=0; i<numPlayers; i++) {
+                        for (int i = 0; i < numPlayers; i++) {
                             agentStr[i] = (myAgent == i) ? agentUnderTest : agentPaired;
                         }
 

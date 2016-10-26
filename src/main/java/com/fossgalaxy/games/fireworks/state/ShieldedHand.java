@@ -2,7 +2,7 @@ package com.fossgalaxy.games.fireworks.state;
 
 /**
  * A wrapper to prevent accessing of complete information.
- *
+ * <p>
  * Created by webpigeon on 18/10/16.
  */
 public class ShieldedHand implements Hand {

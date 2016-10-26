@@ -4,56 +4,58 @@ import java.util.Collection;
 
 public interface GameState {
 
-	void init();
-	void init(Long seed);
-	
-	void addToDiscard(Card card);
+    void init();
 
-	Card drawFromDeck();
+    void init(Long seed);
 
-	// query the state (primatives)
-	Card getCardAt(int player, int slot);
-	
-	// injector
-	Deck getDeck();
+    void addToDiscard(Card card);
 
-	GameState getCopy();
-	void deal(int playerID);
-	
-	Collection<Card> getDiscards();
+    Card drawFromDeck();
 
-	Hand getHand(int player);
+    // query the state (primatives)
+    Card getCardAt(int player, int slot);
 
-	int getHandSize();
+    // injector
+    Deck getDeck();
 
-	int getInfomation();
+    GameState getCopy();
 
-	int getLives();
+    void deal(int playerID);
 
-	// meta data
-	int getPlayerCount();
+    Collection<Card> getDiscards();
 
-	int getScore();
+    Hand getHand(int player);
 
-	int getStartingInfomation();
+    int getHandSize();
 
-	int getStartingLives();
+    int getInfomation();
 
-	int getTableValue(CardColour colour);
+    int getLives();
 
-	boolean isGameOver();
+    // meta data
+    int getPlayerCount();
 
-	void setCardAt(int player, int slot, Card newCard);
+    int getScore();
 
-	void setInfomation(int newValue);
+    int getStartingInfomation();
 
-	// update the state
-	@Deprecated
-	void setKnownValue(int player, int slot, Integer value, CardColour colour);
+    int getStartingLives();
 
-	void setLives(int newValue);
+    int getTableValue(CardColour colour);
 
-	void setTableValue(CardColour c, int nextValue);
+    boolean isGameOver();
 
-	void tick();
+    void setCardAt(int player, int slot, Card newCard);
+
+    void setInfomation(int newValue);
+
+    // update the state
+    @Deprecated
+    void setKnownValue(int player, int slot, Integer value, CardColour colour);
+
+    void setLives(int newValue);
+
+    void setTableValue(CardColour c, int nextValue);
+
+    void tick();
 }

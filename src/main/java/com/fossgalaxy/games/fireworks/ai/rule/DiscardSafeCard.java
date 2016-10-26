@@ -38,7 +38,7 @@ public class DiscardSafeCard extends AbstractDiscardRule {
                         return new DiscardCard(slot);
                     }
                 } else if (tableCurr[c.ordinal()] > value) {
-                        return new DiscardCard(slot);
+                    return new DiscardCard(slot);
                 }
             } else if (value < min) {
                 return new DiscardCard(slot);

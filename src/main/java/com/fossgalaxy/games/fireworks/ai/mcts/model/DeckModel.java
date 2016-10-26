@@ -55,13 +55,13 @@ public class DeckModel {
 
     /**
      * Provide the model with a list of cards that are visible at the start of the game.
-     *
+     * <p>
      * These are used to calculate intial probabilities for cards in your hand and the deck.
      *
      * @param observableCards
      */
-    public void initialObservations(List<Card> observableCards){
-        for(Card card : observableCards){
+    public void initialObservations(List<Card> observableCards) {
+        for (Card card : observableCards) {
 
         }
     }

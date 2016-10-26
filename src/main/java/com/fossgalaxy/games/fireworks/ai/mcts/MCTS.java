@@ -4,11 +4,13 @@ import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
-import com.fossgalaxy.games.fireworks.state.*;
+import com.fossgalaxy.games.fireworks.state.Card;
+import com.fossgalaxy.games.fireworks.state.Deck;
+import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by WebPigeon on 09/08/2016.
@@ -25,11 +27,11 @@ public class MCTS implements Agent {
         this(50_000, 18, 1);
     }
 
-    public MCTS(int roundLength){
+    public MCTS(int roundLength) {
         this(roundLength, 18, 1);
     }
 
-    public MCTS(int roundLength, int rolloutDepth, int treeDepthMul){
+    public MCTS(int roundLength, int rolloutDepth, int treeDepthMul) {
         this.roundLength = roundLength;
         this.rolloutDepth = rolloutDepth;
         this.treeDepthMul = treeDepthMul;
@@ -51,7 +53,7 @@ public class MCTS implements Agent {
 
         if (printDebug) {
             System.err.println("possible bindings");
-            possibleCards.forEach((slot, cards) -> System.err.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))) );
+            possibleCards.forEach((slot, cards) -> System.err.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
         }
 
         if (printDebug) {
@@ -67,7 +69,7 @@ public class MCTS implements Agent {
                     .forEach(MCTS::printCard);
         }
 
-        int treeDepth = (state.getPlayerCount()*treeDepthMul) + 1;
+        int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
         if (printDebug) {
             DebugUtils.printTable(System.err, state);
             System.err.println();
@@ -104,7 +106,7 @@ public class MCTS implements Agent {
         if (printDebug) {
             System.err.println("\t next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
-                System.err.println(level1.getAction()+"'s children");
+                System.err.println(level1.getAction() + "'s children");
                 level1.printChildren();
             }
         }
@@ -123,9 +125,9 @@ public class MCTS implements Agent {
         int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
         while (!state.isGameOver() && current.getDepth() < treeDepth) {
             MCTSNode next;
-            if(current.fullyExpanded(state)){
+            if (current.fullyExpanded(state)) {
                 next = current.getUCTNode(state);
-            }else{
+            } else {
                 next = expand(current, state);
                 return next;
             }
@@ -181,7 +183,7 @@ public class MCTS implements Agent {
         // It is possible it wasn't allowed
         if (action == null) return parent;
         //action.apply(nextAgentID, state);
-        if(parent.containsChild(action)){
+        if (parent.containsChild(action)) {
             // return the correct node instead
             return parent.getChild(action);
         }
@@ -211,7 +213,7 @@ public class MCTS implements Agent {
         return state.getScore();
     }
 
-    public void setPrintDebug(boolean printDebug){
+    public void setPrintDebug(boolean printDebug) {
         this.printDebug = printDebug;
     }
 

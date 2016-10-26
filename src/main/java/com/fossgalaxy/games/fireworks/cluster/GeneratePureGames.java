@@ -2,11 +2,9 @@ package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.MixedAgentGame;
 
-import java.util.Random;
-
 /**
  * Generate matchups between an agent and itself.
- *
+ * <p>
  * Created by webpigeon on 10/10/16.
  */
 public class GeneratePureGames {

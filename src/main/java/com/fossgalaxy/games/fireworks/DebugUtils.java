@@ -38,19 +38,19 @@ public class DebugUtils {
         out.println("END STATE");
     }
 
-    public static void printTable(PrintStream out, GameState state){
+    public static void printTable(PrintStream out, GameState state) {
         out.println("table value: ");
         Arrays.stream(CardColour.values()).forEach(c -> out.format("\t%10s %d%n", c, state.getTableValue(c)));
     }
 
     public static void printHands(PrintStream out, GameState state) {
         out.println("hand values: ");
-        for (int player=0; player<state.getPlayerCount(); player++) {
+        for (int player = 0; player < state.getPlayerCount(); player++) {
             Hand hand = state.getHand(player);
 
             out.format("%n\tplayer %d's hand%n", player);
             out.format("\t\t %-7s %-10s %-15s %-15s%n", "slot", "card", "known colour", "known value");
-            for (int slot=0; slot<hand.getSize(); slot++) {
+            for (int slot = 0; slot < hand.getSize(); slot++) {
                 Card real = hand.getCard(slot);
                 out.format("\t\t %-7d %-10s %-15s %-15d%n", slot, real, hand.getKnownColour(slot), hand.getKnownValue(slot));
             }
@@ -84,7 +84,7 @@ public class DebugUtils {
         }
     }
 
-    public static <T> Map<T,Long> histogram(Collection<T> c) {
+    public static <T> Map<T, Long> histogram(Collection<T> c) {
         return c.stream().collect(Collectors.groupingBy(r -> r, Collectors.counting()));
     }
 
