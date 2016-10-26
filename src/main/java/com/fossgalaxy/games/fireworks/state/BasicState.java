@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.state;
 import java.util.*;
 
 public class BasicState implements GameState {
+	private static final int[] HAND_SIZE = { -1, -1, 5, 5, 4, 4 };
 	private static final int MAX_INFOMATION = 8;
 	private static final int MAX_LIVES = 3;
 
@@ -31,6 +32,10 @@ public class BasicState implements GameState {
 		for (int i = 0; i < hands.length; i++) {
 			hands[i] = new TimedHand(state.hands[i]);
 		}
+	}
+
+	public BasicState(int playerCount) {
+		this(HAND_SIZE[playerCount], playerCount);
 	}
 
 	public BasicState(int handSize, int playerCount) {

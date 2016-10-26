@@ -51,7 +51,7 @@ public class MCTS implements Agent {
 
         if (printDebug) {
             System.err.println("possible bindings");
-            possibleCards.forEach((slot, cards) -> System.err.format("\t %d %s\n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))) );
+            possibleCards.forEach((slot, cards) -> System.err.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))) );
         }
 
         if (printDebug) {

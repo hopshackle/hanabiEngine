@@ -30,7 +30,7 @@ public class AgentPlayer implements Player {
 	@Override
 	public void setID(int id, int nPlayers) {
 		this.playerID = id;
-		this.state = new BasicState(GameState.HAND_SIZE[nPlayers], nPlayers);
+		this.state = new BasicState(nPlayers);
 	}
 
 	@Override

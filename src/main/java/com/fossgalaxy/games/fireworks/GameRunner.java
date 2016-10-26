@@ -107,7 +107,7 @@ public class GameRunner {
 		Action action = player.getAction();
 
 		if (gameOut != null) {
-			gameOut.format(" --- player provided move, processing --- %n");
+			gameOut.println(" --- player provided move, processing --- ");
 		}
 
 		writeMove(nextPlayer, action);

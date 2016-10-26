@@ -104,20 +104,6 @@ public class MCTSPredictor extends MCTS {
             return super.selectActionForRollout(state, agentID);
         }
 
-        if (agents[agentID] == null && false) {
-            // Random
-            Collection<Action> legalActions = Utils.generateActions(agentID, state);
-            Iterator<Action> actionItr = legalActions.iterator();
-
-            int selected = random.nextInt(legalActions.size());
-            Action curr = actionItr.next();
-            for (int i = 0; i < selected; i++) {
-                curr = actionItr.next();
-            }
-
-            return curr;
-        }
-
         return agents[agentID].doMove(agentID, state.getCopy());
     }
 

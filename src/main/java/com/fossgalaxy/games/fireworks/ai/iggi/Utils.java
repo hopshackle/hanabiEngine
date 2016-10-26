@@ -17,12 +17,13 @@ import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 public class Utils {
+    private static final int[] HAND_SIZE = { -1, -1, 5, 5, 4, 4 };
 
     public static Collection<Action> generateAllActions(int playerID, int numPlayers) {
 
         HashSet<Action> list = new HashSet<Action>();
 
-        for (int i = 0; i < GameState.HAND_SIZE[numPlayers]; i++) {
+        for (int i = 0; i < HAND_SIZE[numPlayers]; i++) {
             list.add(new DiscardCard(i));
             list.add(new PlayCard(i));
         }
