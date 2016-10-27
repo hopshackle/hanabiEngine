@@ -25,6 +25,19 @@
     </site>
   </distributionManagement>
 
+	<developers>
+		<developer>
+			<id>pwillic</id>
+			<name>Piers Williams</name>
+			<email>pwillic@essex.ac.uk</email>
+		</developer>
+		<developer>
+			<id>webpigeon</id>
+			<name>Joseph Walton-Rivers</name>
+			<email>webpigeon@fossgalaxy.com</email>
+		</developer>
+	</developers>
+
 	<build>
 		<plugins>
 			<plugin>
