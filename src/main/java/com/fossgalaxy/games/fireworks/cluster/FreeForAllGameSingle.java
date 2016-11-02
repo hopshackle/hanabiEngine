@@ -37,7 +37,7 @@ public class FreeForAllGameSingle {
         }
 
         int repeats = 2;
-        for (int i=0; i<repeats; i++) {
+        for (int j=0; j<repeats; j++) {
             for (int run = 0; run < runCount; run++) {
                 Agent[] agents = new Agent[numPlayers];
 
