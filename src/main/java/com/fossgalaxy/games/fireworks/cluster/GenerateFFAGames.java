@@ -41,8 +41,8 @@ public class GenerateFFAGames {
 
         for (int seedID = 0; seedID < numSeeds; seedID++) {
             long seed = r.nextLong();
+            int numPlayers = r.nextInt(3)+2;
 
-            for (int numPlayers = 2; numPlayers < 5; numPlayers++) {
                 int myAgent = r.nextInt(numPlayers);
 
                 for (String agentPaired : agentsPaired) {
@@ -56,8 +56,6 @@ public class GenerateFFAGames {
                         System.out.println(String.format("%d %d %s", numPlayers, seed, String.join(" ", agentStr)));
                     }
                 }
-            }
-
         }
 
     }

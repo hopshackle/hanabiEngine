@@ -36,16 +36,19 @@ public class FreeForAllGameSingle {
             }
         }
 
-        for (int run = 0; run < runCount; run++) {
-            Agent[] agents = new Agent[numPlayers];
+        int repeats = 2;
+        for (int i=0; i<repeats; i++) {
+            for (int run = 0; run < runCount; run++) {
+                Agent[] agents = new Agent[numPlayers];
 
-            //generate agent under test
-            for (int i = 1; i < numPlayers; i++) {
-                App.buildAgent(agentStr[i], i, agentStr, numPlayers);
+                //generate agent under test
+                for (int i = 1; i < numPlayers; i++) {
+                    App.buildAgent(agentStr[i], i, agentStr, numPlayers);
+                }
+
+                //System.out.println("name,seed,players,information,lives,moves,score");
+                App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
             }
-
-            //System.out.println("name,seed,players,information,lives,moves,score");
-            App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
         }
     }
 
