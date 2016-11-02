@@ -27,7 +27,7 @@ public class FreeForAllGameSingle {
 
         int preambleArgs = 3; //number of args before player names
 
-        String[] agentStr = new String[numPlayers];
+        String[] agentStr = new String[5];
         for (int i = 0; i < 5; i++) {
             if (i > numPlayers) {
                 agentStr[i] = args[i + preambleArgs];
