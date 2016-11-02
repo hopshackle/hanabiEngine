@@ -6,6 +6,7 @@ import java.util.Random;
 
 /**
  * Generate matchups between an agent and other agents.
+ * The order of the agents in the group are randomised.
  */
 public class GenerateFFAGames {
 
