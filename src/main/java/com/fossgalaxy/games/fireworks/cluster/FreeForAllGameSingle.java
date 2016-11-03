@@ -29,7 +29,7 @@ public class FreeForAllGameSingle {
 
         String[] agentStr = new String[5];
         for (int i = 0; i < 5; i++) {
-            if (i > numPlayers) {
+            if (i < numPlayers) {
                 agentStr[i] = args[i + preambleArgs];
             } else {
                 agentStr[i] = null;
@@ -42,8 +42,8 @@ public class FreeForAllGameSingle {
                 Agent[] agents = new Agent[numPlayers];
 
                 //generate agent under test
-                for (int i = 1; i < numPlayers; i++) {
-                    App.buildAgent(agentStr[i], i, agentStr, numPlayers);
+                for (int i = 0; i < numPlayers; i++) {
+                    agents[i] = App.buildAgent(agentStr[i], i, agentStr, numPlayers);
                 }
 
                 //System.out.println("name,seed,players,information,lives,moves,score");

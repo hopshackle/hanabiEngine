@@ -118,8 +118,9 @@ public class App {
                 for (int i = 0; i < size; i++) {
                     if (i == agentID) {
                         agents[i] = null;
+                    } else {
+                        agents[i] = buildAgent(paired[i]);
                     }
-                    agents[i] = buildAgent(paired[i]);
                 }
 
                 if (name.contains("ND")) {
