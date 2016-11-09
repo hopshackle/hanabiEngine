@@ -47,14 +47,22 @@ fi
 GIT_COMMIT=$(git rev-parse HEAD)
 
 # Create a folder to drop stuff into
-TASK_DIR=`pwd`/results/tasks/$GIT_COMMIT/`date -I`
+TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT
+
+# Sanity check - don't permit the same run twice
+if [ -d "$TASK_DIR" ]; then
+	echo "[ERROR] task directory exists, i would over write data, abort!"
+	exit 1
+fi
+
 mkdir -p $TASK_DIR
 
-# drop the stuff we need in it
+# drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
 cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
+mkdir -p results/
 
 # Build the game runner
-$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/mixedArgs.txt
+$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
 

@@ -3,7 +3,7 @@
 #$ -l h_vmem=4G
 #$ -l h_rt=10:00:00
 #$ -q iggi-cluster
-#$ -t 1-250
+#$ -t 1-5000
 #$ -tc 150
 #$ -m e
 #$ -M jwr518@york.ac.uk
@@ -19,5 +19,5 @@
 export MALLOC_ARENA_MAX=4
 export FIREWORKS_RUN_COUNT=1
 vmArgs="-Xmx1024m -XX:ParallelGCThreads=1"
-filename=$(awk NR==$SGE_TASK_ID args_mcts.txt)
+filename=$(awk NR==$SGE_TASK_ID args.txt)
 java $vmArgs -cp target/fireworks-0.1-SNAPSHOT.jar com.fossgalaxy.games.fireworks.cluster.MixedAgentGameSingle $filename
