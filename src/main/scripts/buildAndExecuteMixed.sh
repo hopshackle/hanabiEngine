@@ -23,27 +23,9 @@ then
 fi
 
 ##
-# build phase: create the jar file
+# setup phase: create the structure we'll need going forward
 ##
-
-# ok - update to the latest from the server
 git pull
-
-# build phase: clean build the project
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-module load maven
-mvn clean package
-
-# check the repo is (still) clean
-if [[ -n $(git status -s) ]]
-then
-	echo "[ERROR] working directory not clean, aborting run"
-	exit 1
-fi
-
-##
-# task generation phase: place the jar and generate tasks
-##
 GIT_COMMIT=$(git rev-parse HEAD)
 
 # Create a folder to drop stuff into
@@ -57,12 +39,30 @@ fi
 
 mkdir -p $TASK_DIR
 
+##
+# build phase: create jar file
+##
+echo "building project..."
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+module load maven
+mvn clean package > $TASK_DIR/build.log
+echo "[OK] project built"
+
+##
+# Deploy phase: copy the stuff we need to run
+##
+echo "copying files..."
 # drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
 cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
 mkdir -p $TASK_DIR/results/ # place to put our data :)
+echo "[OK] files in place"
 
-# Build the game runner
+##
+# Job creation phase: generate arguments
+##
+echo "generating arguments..."
 $JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
-
+ARG_COUNT=$(wc --lines $TASK_DIR/args.txt)
+echo "[OK] generated $ARG_COUNT setups."
