@@ -2,7 +2,7 @@
 ##
 # Make the damn thing work on the yarcc cluster
 #
-# Repeatable runs mode - with multiple runs
+# Repeatable, well defined runs mode
 ##
 set -e
 
@@ -10,6 +10,7 @@ VERSION=0.1.0
 SUBJECT=webpigeon
 JAR_FILE=fireworks-0.1-SNAPSHOT.jar
 JOB_FILE=mixed.job
+GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames 
 
 # params
 export FIREWORKS_NUM_SEEDS=200
@@ -51,8 +52,9 @@ mkdir -p $TASK_DIR
 
 # drop the stuff we need in it
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
-cp main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
+cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
+echo $GIT_COMMIT > $TASK_DIR/commit
 
 # Build the game runner
-$JAVA_HOME/bin/java -cp target/fireworks-0.1-SNAPSHOT.jar com.fossgalaxy.games.fireworks.cluster.GenerateGames > $TASK_DIR/mixedArgs.txt
+$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/mixedArgs.txt
 
