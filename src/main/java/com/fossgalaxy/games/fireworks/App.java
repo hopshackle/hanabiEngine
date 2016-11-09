@@ -85,6 +85,8 @@ public class App {
                     return new MCTSPredictor(a, 50_000, 100, 100);
                 }
                 return new MCTSPredictor(a);
+            case "iggi_risky":
+                return IGGIFactory.buildRiskyPlayer();
         }
 
         throw new IllegalArgumentException("unknown agent type " + name);
@@ -153,6 +155,15 @@ public class App {
                     agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
                 }
                 return new MCTSPredictor(agents);
+            default:
+                return buildAgent(name);
+        }
+    }
+
+    public static Agent buildAgent(String name, double threshold){
+        switch(name){
+            case "iggi_risky":
+                return IGGIFactory.buildRiskyPlayer(threshold);
             default:
                 return buildAgent(name);
         }

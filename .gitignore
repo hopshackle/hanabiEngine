@@ -12,3 +12,5 @@ target/
 
 # Results logging for phd
 results/
+
+*.csv

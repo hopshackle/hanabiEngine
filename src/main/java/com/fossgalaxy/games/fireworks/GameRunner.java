@@ -126,7 +126,7 @@ public class GameRunner {
         assert nPlayers == players.length;
         init(seed);
 
-        System.err.println(String.format("playing game %d. players: %s", seed, Arrays.toString(players)));
+        //System.err.println(String.format("playing game %d. players: %s", seed, Arrays.toString(players)));
         int disquals = 0;
         int strikes = 3;
         while (!state.isGameOver()) {

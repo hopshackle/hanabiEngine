@@ -63,7 +63,7 @@ public class DeckUtils {
     }
 
     public static double getProbablity(List<Card> cards, Card target) {
-        return getProbablity(cards, (Card c) -> target.equals(c));
+        return getProbablity(cards, target::equals);
     }
 
     public static double getProbablity(List<Card> cards, CardColour target) {
