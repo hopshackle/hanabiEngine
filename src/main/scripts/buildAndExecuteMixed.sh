@@ -61,7 +61,7 @@ mkdir -p $TASK_DIR
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
 cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
-mkdir -p results/
+mkdir -p $TASK_DIR/results/ # place to put our data :)
 
 # Build the game runner
 $JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
