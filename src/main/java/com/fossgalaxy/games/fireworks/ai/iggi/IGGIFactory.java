@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
@@ -30,7 +31,7 @@ public class IGGIFactory {
         pra.addRule(new PlayIfCertian());
         pra.addRule(new PlaySafeCard());
         pra.addRule(new TellAnyoneAboutUsefulCard());
-        pra.addRule(new DiscardIfCertian());
+        pra.addRule(new OsawaDiscard());
         pra.addRule(new DiscardRandomly());
         return pra;
     }
@@ -40,7 +41,7 @@ public class IGGIFactory {
         pra.addRule(new PlayIfCertian());
         pra.addRule(new PlaySafeCard());
         pra.addRule(new TellAnyoneAboutUsefulCard());
-        pra.addRule(new DiscardIfCertian());
+        pra.addRule(new OsawaDiscard());
         pra.addRule(new DiscardOldestFirst());
 
         return pra;
@@ -51,7 +52,7 @@ public class IGGIFactory {
         pra.addRule(new PlayIfCertian());
         pra.addRule(new PlayProbablySafeCard(threshold));
         pra.addRule(new TellAnyoneAboutUsefulCard());
-        pra.addRule(new DiscardIfCertian());
+        pra.addRule(new OsawaDiscard());
         pra.addRule(new DiscardOldestFirst());
         return pra;
     }

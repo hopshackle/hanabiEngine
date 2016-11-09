@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.osawa;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
 import com.fossgalaxy.games.fireworks.ai.rule.PlaySafeCard;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
@@ -31,7 +32,7 @@ public class OsawaFactory {
         ruleAgent.addRule(new PlaySafeCard());
 
         //2. if we have a useless card, discard it
-        ruleAgent.addRule(new DiscardIfCertian());
+        ruleAgent.addRule(new OsawaDiscard());
 
         //3. if there a useful card, tell the player about it
         ruleAgent.addRule(new TellPlayableCard());
@@ -57,7 +58,7 @@ public class OsawaFactory {
         ruleAgent.addRule(new PlaySafeCard());
 
         //2. if we have a useless card, discard it
-        ruleAgent.addRule(new DiscardIfCertian());
+        ruleAgent.addRule(new OsawaDiscard());
 
         //3. if there a useful card, tell the player about it
         ruleAgent.addRule(new TellPlayableCardOuter());
