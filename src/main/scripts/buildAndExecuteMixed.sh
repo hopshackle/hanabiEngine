@@ -66,3 +66,12 @@ echo "generating arguments..."
 $JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
 ARG_COUNT=$(wc --lines $TASK_DIR/args.txt)
 echo "[OK] generated $ARG_COUNT setups."
+
+##
+# Job submission phase: submit jobs and prey
+##
+echo "submitting jobs..."
+cd $TASK_DIR
+QLOG=$(qsub $JOB_FILE)
+echo $QLOG > qsub.log
+echo "[OK] job file submitted: $QLOG"

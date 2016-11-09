@@ -5,19 +5,21 @@
 #$ -q iggi-cluster
 #$ -t 1-5000
 #$ -tc 150
+#$ -N hanabi_run
 #$ -m e
 #$ -M jwr518@york.ac.uk
-#$ -o ./results/mx_yarcc
-#$ -e ./results/mx_yarcc
+#$ -o ./results/
+#$ -e ./results/
 
 ##
-# MCTS only run
-# 
-# This run is designed to generate debug logs for MCTS.
+# Hanabi cluster 
+# Accountable, repeatable runs version
+#
+# This is designed to be used with the build and execute script.
 ##
 
 export MALLOC_ARENA_MAX=4
 export FIREWORKS_RUN_COUNT=1
 vmArgs="-Xmx1024m -XX:ParallelGCThreads=1"
 filename=$(awk NR==$SGE_TASK_ID args.txt)
-java $vmArgs -cp target/fireworks-0.1-SNAPSHOT.jar com.fossgalaxy.games.fireworks.cluster.MixedAgentGameSingle $filename
+java $vmArgs -cp fireworks-0.1-SNAPSHOT.jar com.fossgalaxy.games.fireworks.cluster.MixedAgentGameSingle $filename
