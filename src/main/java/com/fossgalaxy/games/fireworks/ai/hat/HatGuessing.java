@@ -44,7 +44,9 @@ public class HatGuessing implements Agent {
     }
 
     public boolean isIndispensable(GameState state, Card card) {
-	int totalCopies = 0;
+	int totalCopies = copies[card.value];
+	//TODO figure out how many have been played already.
+	//ok, that might be quite difficault if they are already in place
 	return false;
     }
 
