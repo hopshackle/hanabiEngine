@@ -14,7 +14,7 @@ import com.fossgalaxy.games.fireworks.state.events.GameInformation;
  * Created by piers on 11/11/16.
  */
 public class HatGuessing implements Agent {
-
+    private int[] copies = {0,3,2,2,2,1};
     private int playerID;
     private int lastToldAction;
 
@@ -35,6 +35,20 @@ public class HatGuessing implements Agent {
         return null;
     }
 
+    public boolean isDead(GameState state, Card card) {
+	return state.getTableValue(card.colour) >= card.value; 
+    }
+
+    public boolean isPlayable(GameState state, Card card) {
+	return state.getTableValue(card.colour) == card.value;
+    }
+
+    public boolean isIndispensable(GameState state, Card card) {
+	int totalCopies = 0;
+	return false;
+    }
+
+
     /**
      * Playable: a card that can be successfully played with the current game state.
      * <p>
@@ -48,7 +62,6 @@ public class HatGuessing implements Agent {
      * @param state
      * @return
      */
-
     public Action doRecommend(int agentID, GameState state) {
         // 1. Recommend that the playable card of rank 5 with lowest index be played.
         // 2. Recommend that the playable card with lowest rank be played. If there is a tie for
