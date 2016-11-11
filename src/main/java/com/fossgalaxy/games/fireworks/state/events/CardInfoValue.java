@@ -61,4 +61,19 @@ public class CardInfoValue extends GameEvent {
         return TextProtocol.tellPlayer(performer, playerId, value, slotList);
     }
 
+    public int getPerformer() {
+        return performer;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public Integer[] getSlots() {
+        return slots;
+    }
 }

@@ -25,12 +25,14 @@ public class AgentPlayer implements Player {
     @Override
     public void sendMessage(GameEvent msg) {
         msg.apply(state);
+        agent.receiveEvent(msg);
     }
 
     @Override
     public void setID(int id, int nPlayers) {
         this.playerID = id;
         this.state = new BasicState(nPlayers);
+        agent.receiveID(id);
     }
 
     @Override

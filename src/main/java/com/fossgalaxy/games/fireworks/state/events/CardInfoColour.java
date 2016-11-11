@@ -65,4 +65,19 @@ public class CardInfoColour extends GameEvent {
         return TextProtocol.tellPlayer(performer, playerId, colour, slotList);
     }
 
+    public int getPerformer() {
+        return performer;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public CardColour getColour() {
+        return colour;
+    }
+
+    public Integer[] getSlots() {
+        return slots;
+    }
 }
