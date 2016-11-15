@@ -50,4 +50,8 @@ public class TimedHand extends NegativeHand {
 
         return oldest;
     }
+
+    public int getAge(Integer i) {
+        return time[i];
+    }
 }
