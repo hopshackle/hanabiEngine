@@ -10,7 +10,6 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
-import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.Arrays;
 
@@ -76,10 +75,17 @@ public class HatGuessing implements Agent {
     }
 
     public boolean isIndispensable(GameState state, Card card) {
-	int totalCopies = copies[card.value];
-	//TODO figure out how many have been played already.
-	//ok, that might be quite difficault if they are already in place
-	return false;
+        long copiesInDeck = state.getDeck().toList().stream().filter(card::equals).count();
+
+        //if there is at least 1 copy in the deck we're fine
+        if (copiesInDeck > 0) {
+            return false;
+        }
+
+        int totalCopies = copies[card.value];
+        //TODO figure out how many have been played already.
+        // ok, that might be quite difficault if they are already in place
+        return false;
     }
 
 
