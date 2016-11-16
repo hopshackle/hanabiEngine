@@ -72,7 +72,7 @@ public class HatGuessing implements Agent {
     }
 
     public boolean isPlayable(GameState state, Card card) {
-	return state.getTableValue(card.colour) == card.value;
+	return state.getTableValue(card.colour) == card.value - 1;
     }
 
     public boolean isIndispensable(GameState state, Card card) {
