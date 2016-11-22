@@ -6,14 +6,20 @@ import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by piers on 22/11/16.
  */
+@RunWith(JUnitParamsRunner.class)
 public class testDiscardUselessCard {
 
     private BasicState state;
@@ -23,6 +29,30 @@ public class testDiscardUselessCard {
     public void setup() {
         state = new BasicState(2);
         instance = new DiscardUselessCard();
+        state.setInfomation(7);
+    }
+
+    public Object[]parametersForHighestScorePossible(){
+        return $(
+                $(1, 0, 5),
+                $(1, 3, 0),
+                $(2, 2, 1),
+                $(3, 2, 2),
+                $(4, 2, 3),
+                $(5, 1, 4)
+        );
+    }
+
+    @Test
+    @Parameters(method="parametersForHighestScorePossible")
+    public void testHighestScorePossible(int cardValue, int numToRemove, int maxScore) {
+        state.init();
+        final CardColour colour = CardColour.BLUE;
+        for (int i = 0; i < numToRemove; i++) {
+            state.addToDiscard(new Card(cardValue, colour));
+        }
+
+        assertEquals(maxScore, instance.getHighestScore(state, colour));
     }
 
     @Test
@@ -33,10 +63,8 @@ public class testDiscardUselessCard {
         state.getHand(0).setKnownColour(CardColour.BLUE, new Integer[]{0});
 
         // Need to discard the correct cards
-        state.getDeck().toList()
-                .stream()
-                .filter(card -> card.colour == CardColour.BLUE && card.value == 3)
-                .forEach(card -> state.addToDiscard(card));
+        state.addToDiscard(new Card(3, CardColour.BLUE));
+        state.addToDiscard(new Card(3, CardColour.BLUE));
 
         assertEquals(true, instance.canFire(0, state));
         Action action = instance.execute(0, state);

@@ -36,19 +36,6 @@ public class PlaySafeCard extends AbstractRule {
         return new PlayCard(playableSlots.get(0));
     }
 
-
-    public static void main(String[] args) {
-        GameState state = new BasicState(5, 2);
-        state.init(0L);
-
-        state.getHand(0).setKnownValue(1, new Integer[]{3, 4});
-        DebugUtils.printState(System.out, state);
-
-        PlaySafeCard psc = new PlaySafeCard();
-
-        System.out.println(psc.execute(0, state));
-    }
-
     public boolean isPlayable(Card card, GameState state) {
         return state.getTableValue(card.colour) + 1 == card.value;
     }

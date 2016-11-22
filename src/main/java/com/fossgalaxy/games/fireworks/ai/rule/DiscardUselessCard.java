@@ -40,6 +40,12 @@ public class DiscardUselessCard extends AbstractDiscardRule {
         return null;
     }
 
+    /**
+     * Calculates the maximum possible score obtainable for the given colour
+     * @param state The game state
+     * @param colour The colour to look at
+     * @return The maximum possible score
+     */
     public int getHighestScore(GameState state, CardColour colour) {
         int nextValue = state.getTableValue(colour) + 1;
 
@@ -56,15 +62,6 @@ public class DiscardUselessCard extends AbstractDiscardRule {
 
         //if we didn't find any doomed combinations, we're probably still good
         return 5;
-    }
-
-    public boolean allAreHigher(int sp, int[] possible) {
-        for (int p : possible) {
-            if (p < sp) {
-                return false;
-            }
-        }
-        return true;
     }
 
 }

@@ -13,7 +13,6 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
-// TODO these should really be permaterised tests - You mean like this?
 public class CardTest {
 
 	public Object[] parametersForEqualsAndHashCode() {

@@ -6,6 +6,8 @@ import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 
+import java.util.Arrays;
+
 /**
  * Created by webpigeon on 18/10/16.
  */
@@ -40,7 +42,7 @@ public class DiscardSafeCard extends AbstractDiscardRule {
                 } else if (tableCurr[c.ordinal()] > value) {
                     return new DiscardCard(slot);
                 }
-            } else if (value != null && value < min) { //TODO Check this line shouldn'#t ne <=
+            } else if (value != null && value <= min) { //TODO Check this line shouldn'#t ne <=
                 return new DiscardCard(slot);
             }
         }

@@ -38,6 +38,8 @@ public class TestPlaySafeCard {
         BasicState state = new BasicState(2);
         PlaySafeCard instance = new PlaySafeCard();
 
+        state.init();
+
         state.getHand(1).setCard(0, new Card(2, CardColour.BLUE));
         state.getHand(1).setCard(1, new Card(2, CardColour.BLUE));
         state.getHand(1).setCard(2, new Card(3, CardColour.BLUE));
@@ -46,7 +48,6 @@ public class TestPlaySafeCard {
 
         assertEquals(false, instance.canFire(1, state));
         Action action = instance.execute(1, state);
-        System.out.println(action);
         assertEquals(null, action);
     }
 }

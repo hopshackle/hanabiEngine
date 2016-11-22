@@ -22,6 +22,7 @@ public class TestDiscardSafeCard {
     public void setup() {
         state = new BasicState(2);
         instance = new DiscardSafeCard();
+        state.setInfomation(7);
     }
 
 
@@ -31,7 +32,7 @@ public class TestDiscardSafeCard {
 
         boolean result = instance.canFire(0, state);
 
-        assertEquals(result, false);
+        assertEquals(false, result);
     }
 
     @Test
