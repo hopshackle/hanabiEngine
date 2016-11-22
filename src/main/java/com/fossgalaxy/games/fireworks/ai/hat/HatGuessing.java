@@ -74,7 +74,21 @@ public class HatGuessing implements Agent {
 	return state.getTableValue(card.colour) == card.value - 1;
     }
 
+
+    /*
+     * places a card can be:
+     *  1) in the deck (still in deck or our hand)
+     *  2) in the discard pile (played incorrectly or discarded cards)
+     *  3) on the table (card is no longer needed, a copy was played successfully)
+     *  4) another player's hand (our copy is not the only one)
+     */
     public boolean isIndispensable(GameState state, Card card) {
+
+        //if the card is dead, then it's not needed and we can discard it
+        if (isDead(state, card)) {
+            return false;
+        }
+
         long copiesInDeck = state.getDeck().toList().stream().filter(card::equals).count();
 
         //if there is at least 1 copy in the deck we're fine
@@ -82,10 +96,15 @@ public class HatGuessing implements Agent {
             return false;
         }
 
+        //figure out how many copies have already been discarded/played incorrectly
         int totalCopies = copies[card.value];
-        //TODO figure out how many have been played already.
-        // ok, that might be quite difficault if they are already in place
-        return false;
+        long copiesIsDiscard = state.getDiscards().stream().filter(card::equals).count();
+        if (copiesIsDiscard < totalCopies-1 ) {
+            return false; //we've can't account for all of them in either the discard - they're still in play somewhere
+        }
+
+        //
+        return true;
     }
 
 
