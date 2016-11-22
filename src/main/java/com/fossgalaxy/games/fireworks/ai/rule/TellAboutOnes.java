@@ -14,10 +14,6 @@ public class TellAboutOnes extends AbstractTellRule {
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == 0) {
-            return null;
-        }
-
         int nextPlayer = (playerID + 1) % state.getPlayerCount();
         Hand hand = state.getHand(nextPlayer);
 
