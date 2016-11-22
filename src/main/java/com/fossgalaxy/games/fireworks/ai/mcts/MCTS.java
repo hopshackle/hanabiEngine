@@ -23,6 +23,12 @@ public class MCTS implements Agent {
 
     private boolean printDebug = true;
 
+    /**
+     * Create a default MCTS implementation.
+     *
+     * This creates an MCTS agent that has a default roll-out length of 50_000 iterations, a depth of 18 and a tree
+     * multiplier of 1.
+     */
     public MCTS() {
         this(50_000, 18, 1);
     }
@@ -31,6 +37,13 @@ public class MCTS implements Agent {
         this(roundLength, 18, 1);
     }
 
+    /**
+     * Create an MCTS agent which has the parameters.
+     *
+     * @param roundLength
+     * @param rolloutDepth
+     * @param treeDepthMul
+     */
     public MCTS(int roundLength, int rolloutDepth, int treeDepthMul) {
         this.roundLength = roundLength;
         this.rolloutDepth = rolloutDepth;
