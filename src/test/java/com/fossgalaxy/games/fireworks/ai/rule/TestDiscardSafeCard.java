@@ -84,4 +84,22 @@ public class TestDiscardSafeCard {
         DiscardCard discardCard = (DiscardCard) action;
         assertEquals(0, discardCard.slot);
     }
+
+    @Test
+    public void willDiscardSafeCardColourAndValue(){
+        state.setTableValue(CardColour.BLUE, 3);
+
+        state.getHand(0).setCard(0, new Card(2, CardColour.BLUE));
+        state.getHand(0).setKnownColour(CardColour.BLUE, new Integer[]{0});
+        state.getHand(0).setKnownValue(2, new Integer[]{0});
+
+        assertEquals(true, instance.canFire(0, state));
+
+        Action action = instance.execute(0, state);
+        assertEquals(true, action != null);
+        assertEquals(true, action instanceof DiscardCard);
+        DiscardCard discardCard = (DiscardCard) action;
+
+        assertEquals(0, discardCard.slot);
+    }
 }

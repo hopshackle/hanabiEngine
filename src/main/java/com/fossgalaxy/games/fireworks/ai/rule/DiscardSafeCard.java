@@ -14,9 +14,6 @@ import java.util.Arrays;
 public class DiscardSafeCard extends AbstractDiscardRule {
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == state.getStartingInfomation()) {
-            return null;
-        }
 
         int[] tableCurr = new int[CardColour.values().length];
         int min = 5;
@@ -42,7 +39,7 @@ public class DiscardSafeCard extends AbstractDiscardRule {
                 } else if (tableCurr[c.ordinal()] > value) {
                     return new DiscardCard(slot);
                 }
-            } else if (value != null && value <= min) { //TODO Check this line shouldn'#t ne <=
+            } else if (value != null && value <= min) {
                 return new DiscardCard(slot);
             }
         }

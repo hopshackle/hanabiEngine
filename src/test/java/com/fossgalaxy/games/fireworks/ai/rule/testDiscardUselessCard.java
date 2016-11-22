@@ -11,7 +11,6 @@ import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +31,7 @@ public class testDiscardUselessCard {
         state.setInfomation(7);
     }
 
-    public Object[]parametersForHighestScorePossible(){
+    public Object[] parametersForHighestScorePossible() {
         return $(
                 $(1, 0, 5),
                 $(1, 3, 0),
@@ -44,7 +43,7 @@ public class testDiscardUselessCard {
     }
 
     @Test
-    @Parameters(method="parametersForHighestScorePossible")
+    @Parameters(method = "parametersForHighestScorePossible")
     public void testHighestScorePossible(int cardValue, int numToRemove, int maxScore) {
         state.init();
         final CardColour colour = CardColour.BLUE;
@@ -75,5 +74,33 @@ public class testDiscardUselessCard {
         assertEquals(true, discardCard.slot == 0);
     }
 
+    @Test
+    public void testDiscardPossibleCardThatIsUseless() {
+        state.init();
+        // Throw away all the ones and take them out the deck
+        Deck deck = state.getDeck();
 
+        for (int i = 0; i < 3; i++) {
+            deck.remove(new Card(1, CardColour.BLUE));
+            state.addToDiscard(new Card(1, CardColour.BLUE));
+        }
+
+        state.getHand(1).setCard(0, new Card(2, CardColour.BLUE));
+        state.getHand(1).setKnownColour(CardColour.BLUE, new Integer[]{0});
+
+        assertEquals(true, instance.canFire(1, state));
+
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(true, action instanceof DiscardCard);
+        DiscardCard discardCard = (DiscardCard) action;
+        assertEquals(0, discardCard.slot);
+    }
+
+    @Test
+    public void testDoesNotDiscardIfDoesNotKnowColour() {
+        Action action = instance.execute(1, state);
+        assertEquals(true, action == null);
+    }
 }
+
