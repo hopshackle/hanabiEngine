@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
+import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
@@ -87,6 +88,8 @@ public class App {
                 return new MCTSPredictor(a);
             case "iggi_risky":
                 return IGGIFactory.buildRiskyPlayer();
+            case "hat":
+                return new HatGuessing();
         }
 
         throw new IllegalArgumentException("unknown agent type " + name);
