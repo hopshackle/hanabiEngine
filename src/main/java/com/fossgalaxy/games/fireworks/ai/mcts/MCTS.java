@@ -92,8 +92,6 @@ public class MCTS implements Agent {
 
             MCTSNode current = select(root, currentState, iterationObject);
             int score = rollout(currentState, agentID);
-            int livesLost = iterationObject.getLivesLostMyGo();
-
             current.backup(score);
         }
 
@@ -140,8 +138,12 @@ public class MCTS implements Agent {
             }
 
             if (iterationObject.isMyGo(agent)) {
-                if (state.getLives() < lives) iterationObject.incrementLivesLostMyGo();
-                if (state.getScore() > score) iterationObject.incrementPointsGainedMyGo();
+                if (state.getLives() < lives) {
+                    iterationObject.incrementLivesLostMyGo();
+                }
+                if (state.getScore() > score){
+                    iterationObject.incrementPointsGainedMyGo();
+                }
             }
         }
         return current;
@@ -157,9 +159,10 @@ public class MCTS implements Agent {
      */
     protected Action selectActionForExpand(GameState state, MCTSNode node, int agentID) {
         Collection<Action> legalActions = node.getLegalMoves(state, agentID);
-        assert !legalActions.isEmpty() : "no legal moves from this state";
+        if (legalActions.isEmpty()) {
+            return null;
+        }
 
-        if (legalActions.isEmpty()) return null;
         Iterator<Action> actionItr = legalActions.iterator();
 
         int selected = random.nextInt(legalActions.size());
@@ -175,8 +178,9 @@ public class MCTS implements Agent {
         int nextAgentID = (parent.getAgent() + 1) % state.getPlayerCount();
         Action action = selectActionForExpand(state, parent, nextAgentID);
         // It is possible it wasn't allowed
-        if (action == null) return parent;
-        //action.apply(nextAgentID, state);
+        if (action == null) {
+            return parent;
+        }
         if (parent.containsChild(action)) {
             // return the correct node instead
             return parent.getChild(action);
@@ -211,6 +215,7 @@ public class MCTS implements Agent {
         this.printDebug = printDebug;
     }
 
+    @Override
     public String toString() {
         return "MCTS";
     }
