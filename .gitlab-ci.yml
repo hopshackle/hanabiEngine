@@ -90,7 +90,7 @@ package:jdk8:
 
 mvn_sonar:jdk8:
   stage: test
-  script: "mvn $MAVEN_CLI_OPTS sonar:sonar -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_KEY"
+  script: "mvn $MAVEN_CLI_OPTS test sonar:sonar -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_KEY"
   except:
     - tags
   image: maven:3.3.9-jdk-8
