@@ -69,7 +69,6 @@ public class MCTS implements Agent {
                     .forEach(MCTS::printCard);
         }
 
-        int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
         if (printDebug) {
             DebugUtils.printTable(System.err, state);
             System.err.println();
@@ -93,12 +92,7 @@ public class MCTS implements Agent {
 
             MCTSNode current = select(root, currentState, iterationObject);
             int score = rollout(currentState, agentID);
-            int scoreGained = score - state.getScore();
             int livesLost = iterationObject.getLivesLostMyGo();
-
-            int backupScore = (livesLost * -1000) +
-                    //(scoreGained * 100) +
-                    (iterationObject.getPointsGainedMyGo() * 1000);
 
             current.backup(score);
         }
