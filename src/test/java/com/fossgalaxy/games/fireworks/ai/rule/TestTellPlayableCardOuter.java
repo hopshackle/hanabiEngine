@@ -7,6 +7,7 @@ import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -16,11 +17,17 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestTellPlayableCardOuter {
 
+    private BasicState state;
+    private TellPlayableCardOuter instance;
+
+    @Before
+    public void setup(){
+        state = new BasicState(2);
+        instance = new TellPlayableCardOuter();
+    }
+
     @Test
     public void testTellPlayableCard(){
-        BasicState state = new BasicState(2);
-        TellPlayableCardOuter instance = new TellPlayableCardOuter();
-
         // something we want
         state.getHand(0).setCard(0, new Card(1, CardColour.BLUE));
 
@@ -37,4 +44,34 @@ public class TestTellPlayableCardOuter {
             assertEquals(true, tellValue.value == 1);
         }
     }
+
+    @Test
+    public void testTellPlayableCardNoPlayableCards(){
+        for(CardColour colour : CardColour.values()){
+            state.getHand(0).setCard(colour.ordinal(), new Card(1, colour));
+            state.setTableValue(colour, 1);
+        }
+        assertEquals(false, instance.canFire(1, state));
+    }
+
+    @Test
+    public void testTellPlayableCardKnowValue(){
+        state.getHand(0).setCard(0, new Card(1, CardColour.BLUE));
+        state.getHand(0).setKnownValue(1, new Integer[]{0});
+        assertEquals(true, instance.canFire(1, state));
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(TellColour.class, action.getClass());
+    }
+
+    @Test
+    public void testTellPlayableCardKnowColour(){
+        state.getHand(0).setCard(0, new Card(1, CardColour.BLUE));
+        state.getHand(0).setKnownColour(CardColour.BLUE, new Integer[]{0});
+        assertEquals(true, instance.canFire(1, state));
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(TellValue.class, action.getClass());
+    }
+
 }

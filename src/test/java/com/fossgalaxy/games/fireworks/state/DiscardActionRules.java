@@ -92,6 +92,18 @@ public class DiscardActionRules {
         assertEquals(false, discard.isLegal(player, state));
     }
 
+    @Test(expected = RulesViolation.class)
+    public void testDiscardInvalidAndApply(){
+        int slot = 0;
+        int player = 0;
+        CardColour colour = CardColour.BLUE;
+
+        GameState state = new BasicState(2, 5);
+        state.setCardAt(player, slot, new Card(4, colour));
+
+        Action discard = new DiscardCard(slot);
+        discard.apply(player, state);
+    }
     @Test
     public void testDiscardIsNullInvalid() {
         int slot = 0;

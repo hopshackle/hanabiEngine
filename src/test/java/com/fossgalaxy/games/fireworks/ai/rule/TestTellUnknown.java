@@ -40,6 +40,32 @@ public class TestTellUnknown {
     }
 
     @Test
+    public void testUnknownCardsToTellKnowsValue() {
+        for (int i = 0; i < 5; i++) {
+            state.getHand(0).setCard(i, new Card(i, CardColour.RED));
+            state.getHand(0).setKnownValue(i, new Integer[]{i});
+        }
+
+        assertEquals(true, instance.canFire(1, state));
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(TellColour.class, action.getClass());
+    }
+
+    @Test
+    public void testUnknownCardsToTellKnowsColour() {
+        for (int i = 0; i < 5; i++) {
+            state.getHand(0).setCard(i, new Card(i, CardColour.RED));
+        }
+        state.getHand(0).setKnownColour(CardColour.RED, new Integer[]{0, 1, 2, 3, 4});
+
+        assertEquals(true, instance.canFire(1, state));
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(TellValue.class, action.getClass());
+    }
+
+    @Test
     public void testNoUnknownCardsToTell() {
         for (int i = 0; i < 5; i++) {
             state.getHand(0).setCard(i, new Card(i, CardColour.RED));

@@ -17,9 +17,6 @@ public class TellPlayableCardOuter extends AbstractTellRule {
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == 0) {
-            return null;
-        }
 
         int nextPlayer = selectPlayer(playerID, state);
         Hand hand = state.getHand(nextPlayer);
