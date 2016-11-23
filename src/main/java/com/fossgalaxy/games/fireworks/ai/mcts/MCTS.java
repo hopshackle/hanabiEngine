@@ -23,6 +23,12 @@ public class MCTS implements Agent {
 
     private boolean printDebug = true;
 
+    /**
+     * Create a default MCTS implementation.
+     *
+     * This creates an MCTS agent that has a default roll-out length of 50_000 iterations, a depth of 18 and a tree
+     * multiplier of 1.
+     */
     public MCTS() {
         this(50_000, 18, 1);
     }
@@ -31,6 +37,13 @@ public class MCTS implements Agent {
         this(roundLength, 18, 1);
     }
 
+    /**
+     * Create an MCTS agent which has the parameters.
+     *
+     * @param roundLength
+     * @param rolloutDepth
+     * @param treeDepthMul
+     */
     public MCTS(int roundLength, int rolloutDepth, int treeDepthMul) {
         this.roundLength = roundLength;
         this.rolloutDepth = rolloutDepth;
@@ -69,7 +82,6 @@ public class MCTS implements Agent {
                     .forEach(MCTS::printCard);
         }
 
-        int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
         if (printDebug) {
             DebugUtils.printTable(System.err, state);
             System.err.println();
@@ -93,13 +105,6 @@ public class MCTS implements Agent {
 
             MCTSNode current = select(root, currentState, iterationObject);
             int score = rollout(currentState, agentID);
-            int scoreGained = score - state.getScore();
-            int livesLost = iterationObject.getLivesLostMyGo();
-
-            int backupScore = (livesLost * -1000) +
-                    //(scoreGained * 100) +
-                    (iterationObject.getPointsGainedMyGo() * 1000);
-
             current.backup(score);
         }
 
@@ -146,8 +151,12 @@ public class MCTS implements Agent {
             }
 
             if (iterationObject.isMyGo(agent)) {
-                if (state.getLives() < lives) iterationObject.incrementLivesLostMyGo();
-                if (state.getScore() > score) iterationObject.incrementPointsGainedMyGo();
+                if (state.getLives() < lives) {
+                    iterationObject.incrementLivesLostMyGo();
+                }
+                if (state.getScore() > score){
+                    iterationObject.incrementPointsGainedMyGo();
+                }
             }
         }
         return current;
@@ -163,9 +172,10 @@ public class MCTS implements Agent {
      */
     protected Action selectActionForExpand(GameState state, MCTSNode node, int agentID) {
         Collection<Action> legalActions = node.getLegalMoves(state, agentID);
-        assert !legalActions.isEmpty() : "no legal moves from this state";
+        if (legalActions.isEmpty()) {
+            return null;
+        }
 
-        if (legalActions.isEmpty()) return null;
         Iterator<Action> actionItr = legalActions.iterator();
 
         int selected = random.nextInt(legalActions.size());
@@ -181,8 +191,9 @@ public class MCTS implements Agent {
         int nextAgentID = (parent.getAgent() + 1) % state.getPlayerCount();
         Action action = selectActionForExpand(state, parent, nextAgentID);
         // It is possible it wasn't allowed
-        if (action == null) return parent;
-        //action.apply(nextAgentID, state);
+        if (action == null) {
+            return parent;
+        }
         if (parent.containsChild(action)) {
             // return the correct node instead
             return parent.getChild(action);
@@ -217,6 +228,7 @@ public class MCTS implements Agent {
         this.printDebug = printDebug;
     }
 
+    @Override
     public String toString() {
         return "MCTS";
     }
