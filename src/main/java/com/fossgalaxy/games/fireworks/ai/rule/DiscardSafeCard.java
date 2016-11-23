@@ -9,6 +9,8 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 import java.util.Arrays;
 
 /**
+ * Discards a card that is safe - It is safe to discard if it cannot be played
+ *
  * Created by webpigeon on 18/10/16.
  */
 public class DiscardSafeCard extends AbstractDiscardRule {

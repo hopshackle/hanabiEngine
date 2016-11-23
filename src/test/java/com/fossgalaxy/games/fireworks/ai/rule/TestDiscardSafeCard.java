@@ -102,4 +102,17 @@ public class TestDiscardSafeCard {
 
         assertEquals(0, discardCard.slot);
     }
+
+    @Test
+    public void willNotDiscardWhenNoSafeCard(){
+        for(CardColour colour : CardColour.values()){
+            state.getHand(0).setCard(colour.ordinal(), new Card(1, colour));
+            state.getHand(0).setKnownColour(colour, new Integer[]{colour.ordinal()});
+            state.getHand(0).setKnownValue(1, new Integer[]{colour.ordinal()});
+        }
+
+        // Knows all about its ones - all playable
+        assertEquals(false, instance.canFire(0, state));
+
+    }
 }

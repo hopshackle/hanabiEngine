@@ -63,4 +63,27 @@ public class TestTellAnyoneAboutUsefulCard {
             assertEquals(true, tellColour.player == second);
         }
     }
+
+    @Test
+    public void testKnowsValueNeedsColourOfUsefulCard(){
+        state.getHand(0).setCard(0, new Card(1, CardColour.BLUE));
+        state.getHand(0).setKnownValue(1, new Integer[]{0});
+
+        assertEquals(true, instance.canFire(1, state));
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(true, action instanceof TellColour);
+        TellColour tellColour = (TellColour) action;
+        assertEquals(true, tellColour.colour == CardColour.BLUE);
+    }
+
+    @Test
+    public void testKnowsNothingButUselessHand(){
+        for(CardColour colour : CardColour.values()){
+            state.getHand(0).setCard(0, new Card(1, colour));
+            state.setTableValue(colour, 1);
+        }
+
+        assertEquals(false, instance.canFire(1, state));
+    }
 }

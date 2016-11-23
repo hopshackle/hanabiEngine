@@ -18,9 +18,6 @@ public class TellAnyoneAboutUsefulCard extends AbstractTellRule {
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == 0) {
-            return null;
-        }
 
         for (int i = 0; i < state.getPlayerCount(); i++) {
             int nextPlayer = (playerID + i) % state.getPlayerCount();
@@ -50,36 +47,6 @@ public class TellAnyoneAboutUsefulCard extends AbstractTellRule {
                 }
             }
         }
-
         return null;
     }
-
-
-    public static void main(String[] args) {
-        GameState state = new BasicState(5, 2);
-        state.init(2l);
-
-        DebugUtils.printState(System.out, state);
-
-        Agent pra = IGGIFactory.buildCautious();
-
-        Action action = pra.doMove(0, state);
-        action.apply(0, state);
-        System.out.println(action);
-
-
-        Action action3 = pra.doMove(0, state);
-        action3.apply(0, state);
-        System.out.println(action3);
-
-        DebugUtils.printState(System.out, state);
-
-        Action action2 = pra.doMove(1, state);
-        action2.apply(1, state);
-        System.out.println(action2);
-
-        DebugUtils.printState(System.out, state);
-
-    }
-
 }

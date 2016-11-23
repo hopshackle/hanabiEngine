@@ -21,6 +21,7 @@ public class TestTellAboutOnes {
     @Before
     public void setup() {
         state = new BasicState(2);
+        state.setInfomation(8);
         instance = new TellAboutOnes();
     }
 
@@ -41,8 +42,6 @@ public class TestTellAboutOnes {
      */
     @Test
     public void tellNextPlayerHasOnes() {
-        state.setInfomation(8);
-
         state.getHand(1).setCard(0, new Card(1, CardColour.RED));
         state.getHand(1).setCard(1, new Card(1, CardColour.RED));
 
@@ -56,8 +55,6 @@ public class TestTellAboutOnes {
      */
     @Test
     public void tellNextPlayerHasOnesButTheyKnowAlready() {
-        state.setInfomation(8);
-
         state.getHand(1).setCard(0, new Card(1, CardColour.RED));
         state.getHand(1).setKnownValue(1, new Integer[]{0});
         state.getHand(1).setKnownColour(CardColour.RED, new Integer[]{0});
@@ -67,12 +64,21 @@ public class TestTellAboutOnes {
 
     @Test
     public void tellNextPlayerKnowsValueButNotColour() {
-        state.setInfomation(8);
-
         state.getHand(1).setCard(0, new Card(1, CardColour.RED));
         state.getHand(1).setKnownValue(1, new Integer[]{0});
 
         assertEquals(true, instance.canFire(0, state));
+    }
+
+    @Test
+    public void tellNextPlayerWhenTheyHaveNoOnes() {
+        state.getHand(1).setCard(0, new Card(2, CardColour.BLUE));
+        state.getHand(1).setCard(1, new Card(2, CardColour.BLUE));
+        state.getHand(1).setCard(2, new Card(3, CardColour.BLUE));
+        state.getHand(1).setCard(3, new Card(3, CardColour.BLUE));
+        state.getHand(1).setCard(4, new Card(4, CardColour.BLUE));
+
+        assertEquals(false, instance.canFire(0, state));
     }
 
 }
