@@ -8,19 +8,21 @@ import com.fossgalaxy.games.fireworks.state.actions.*;
  * Hat Guessing recommendation protocol.
  */
 public enum Recommendation {
-    PLAY_SLOT_1(new PlayCard(0)),
-    PLAY_SLOT_2(new PlayCard(1)),
-    PLAY_SLOT_3(new PlayCard(2)),
-    PLAY_SLOT_4(new PlayCard(3)),
-    DISCARD_SLOT_1(new DiscardCard(0)),
-    DISCARD_SLOT_2(new DiscardCard(1)),
-    DISCARD_SLOT_3(new DiscardCard(2)),
-    DISCARD_SLOT_4(new DiscardCard(3));
+    PLAY_SLOT_1(new PlayCard(0), true),
+    PLAY_SLOT_2(new PlayCard(1), true),
+    PLAY_SLOT_3(new PlayCard(2), true),
+    PLAY_SLOT_4(new PlayCard(3), true),
+    DISCARD_SLOT_1(new DiscardCard(0), false),
+    DISCARD_SLOT_2(new DiscardCard(1), false),
+    DISCARD_SLOT_3(new DiscardCard(2), false),
+    DISCARD_SLOT_4(new DiscardCard(3), false);
 
     public final Action recommended;
+    private final boolean isPlayAction;
 
-    Recommendation(Action recommended) {
+    Recommendation(Action recommended, boolean play) {
         this.recommended = recommended;
+        this.isPlayAction = play;
     }
 
     public static Action encode(Recommendation recommendation, int myID, GameState state) {
@@ -38,14 +40,14 @@ public enum Recommendation {
             peopleWhoAreNotMe[size++] = i;
         }
 
-        if (recommendation.ordinal() > 4) {
+        if (recommendation.ordinal() < 4) {
             //first four, encode as rank (value)
             int playerID = peopleWhoAreNotMe[recommendation.ordinal()];
             int valueToUse = state.getHand(playerID).getCard(0).value;
             return new TellValue(playerID, valueToUse);
         } else {
             //second four, encode has suit (colour)
-            int playerID = peopleWhoAreNotMe[4 - recommendation.ordinal()];
+            int playerID = peopleWhoAreNotMe[recommendation.ordinal() - 4];
             CardColour colourToUse = state.getHand(playerID).getCard(0).colour;
             return new TellColour(playerID, colourToUse);
         }
@@ -59,5 +61,13 @@ public enum Recommendation {
     public static Recommendation discardSlot(int slot){
         Recommendation[] recs = Recommendation.values();
         return recs[4+slot];
+    }
+
+    public boolean isPlay() {
+        return isPlayAction;
+    }
+
+    public boolean isDiscard() {
+        return !isPlayAction;
     }
 }

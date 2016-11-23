@@ -27,7 +27,7 @@ public class App {
         int games = 0;
         System.out.println("Start");
 
-        for (int run = 0; run < 1; run++) {
+        for (int run = 0; run < 1000; run++) {
             GameStats stats = playGame();
             sum += stats.score;
             games++;
@@ -37,15 +37,23 @@ public class App {
     }
 
     public static GameStats playGame() {
-        GameRunner runner = new GameRunner(UUID.randomUUID(), 4, null);
+        GameRunner runner = new GameRunner(UUID.randomUUID(), 5, null);
+
+        for (int i=0; i<5; i++) {
+            AgentPlayer player = new AgentPlayer(i, buildAgent("hat"));
+            player.setID(i, 5);
+            runner.addPlayer(player);
+        }
+
+
         //runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
 //		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
         //runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
-        runner.addPlayer(new AgentPlayer(0, new MCTS()));
+      //  runner.addPlayer(new AgentPlayer(0, new MCTS()));
 //		runner.addPlayer(new AgentPlayer(0, new MCTSPredictor(new Agent[]{null, IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious()})));
-        runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
-        runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
-        runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
+     //   runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
+       // runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
+        //runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
 //		runner.addPlayer(new AgentPlayer(1, new ProductionRuleAgent()));
 //		runner.addPlayer(new AgentPlayer(2, new ProductionRuleAgent()));
 //		runner.addPlayer(new AgentPlayer(3, new ProductionRuleAgent()));

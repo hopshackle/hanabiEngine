@@ -22,13 +22,14 @@ public class HatGuessing implements Agent {
 
     private int playerID;
 
-    private int lastToldAction;
+    private Recommendation lastToldAction;
     private int cardsPlayedSinceHint = 0;
 
     private Rule discardOldest;
 
     public HatGuessing() {
         this.discardOldest = new DiscardOldestFirst();
+        this.lastToldAction = null;
     }
 
     @Override
@@ -36,9 +37,9 @@ public class HatGuessing implements Agent {
         Recommendation[] recommendations = Recommendation.values();
 
         // 1. If the most recent recommendation was to play a card and no card has been played since the lat hint, player the recommended card
-        if (lastToldAction > 4) {
+        if (lastToldAction != null && lastToldAction.isPlay()) {
             if (cardsPlayedSinceHint == 0 || state.getLives() != 1) {
-                return recommendations[lastToldAction].recommended;
+                return lastToldAction.recommended;
             }
         }
 
@@ -53,8 +54,8 @@ public class HatGuessing implements Agent {
         }
 
         // 4. If the most recent recommendation was to discard a card, discard the requested card.
-        if (lastToldAction <= 4) {
-            return recommendations[lastToldAction].recommended;
+        if (lastToldAction != null && lastToldAction.isDiscard()) {
+            return lastToldAction.recommended;
         }
 
         // 5. Discard card c 1 (Oldest Card)
@@ -128,7 +129,7 @@ public class HatGuessing implements Agent {
         //order the hand fro oldest to newest
         //whenever the rules talk about "lowest index" they mean oldest due to
         //the way this paper manages the hands.
-        Integer[] handOrder = new Integer[]{1,2,3,4,5};
+        Integer[] handOrder = new Integer[]{0,1,2,3};
         Arrays.sort(handOrder, (c1, c2) -> Integer.compare(hand.getAge(c1), hand.getAge(c2)));
 
 
@@ -207,16 +208,31 @@ public class HatGuessing implements Agent {
         switch (event.getEvent()) {
             case CARD_INFO_COLOUR:
                 CardInfoColour tellColour = (CardInfoColour) event;
-                lastToldAction = 4 + tellColour.getPlayerId() + (tellColour.getPlayerId() < playerID ? -1 : 1);
+                int recommendation = 4 + getEncodedValue(tellColour.getPerformer(), tellColour.getPlayerId());
+                lastToldAction = Recommendation.values()[recommendation];
                 cardsPlayedSinceHint = 0;
                 break;
             case CARD_INFO_VALUE:
                 CardInfoValue tellValue = (CardInfoValue) event;
-                lastToldAction = tellValue.getPlayerId() + (tellValue.getPlayerId() < playerID ? -1 : 1);
+                int recommendation2 = getEncodedValue(tellValue.getPerformer(), tellValue.getPlayerId());
+                lastToldAction = Recommendation.values()[recommendation2];
                 cardsPlayedSinceHint = 0;
                 break;
             case CARD_PLAYED:
                 cardsPlayedSinceHint++;
         }
+    }
+
+    private int getEncodedValue(int whoTold, int toldWho) {
+        int[] tellArray = new int[5];
+        int pid = 0;
+        for (int i=0; i<5; i++) {
+            if (i != whoTold) {
+                tellArray[i] = pid++;
+            } else {
+                tellArray[i] = 99;
+            }
+        }
+        return tellArray[toldWho];
     }
 }

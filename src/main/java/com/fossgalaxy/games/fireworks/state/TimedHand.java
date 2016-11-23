@@ -7,7 +7,7 @@ import java.util.Arrays;
  * Created by webpigeon on 18/10/16.
  */
 public class TimedHand extends NegativeHand {
-    private int time[];
+    private int[] time;
     private int drawTime;
 
     public TimedHand(TimedHand hand) {
