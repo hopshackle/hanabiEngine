@@ -19,7 +19,7 @@ public class MCTSNode {
 
     private final Action moveToState;
     private final int agentId;
-    protected final MCTSNode parent;
+    private final MCTSNode parent;
     private final List<MCTSNode> children;
     private final Collection<Action> allUnexpandedActions;
     private final Random random;
@@ -43,7 +43,7 @@ public class MCTSNode {
         this.score = 0;
         this.visits = 0;
         this.children = new ArrayList<>();
-        this.allUnexpandedActions = allUnexpandedActions;
+        this.allUnexpandedActions = new ArrayList<>(allUnexpandedActions);
         this.random = new Random();
         assert (parent != null && moveToState != null) || (parent == null && moveToState == null);
     }
@@ -164,6 +164,7 @@ public class MCTSNode {
 
     public boolean fullyExpanded(GameState state, int nextId) {
         if (allUnexpandedActions.isEmpty()) return true;
+
         for (Action action : allUnexpandedActions) {
             if (action.isLegal(nextId, state)) return false;
         }
@@ -176,7 +177,7 @@ public class MCTSNode {
 
     public Collection<Action> getAllActionsExpandedAlready() {
         ArrayList<Action> actions = new ArrayList<>();
-        for (MCTSNode node : children) actions.add(node.getAction());
+        children.forEach(node -> actions.add(node.getAction()));
         return actions;
     }
 
