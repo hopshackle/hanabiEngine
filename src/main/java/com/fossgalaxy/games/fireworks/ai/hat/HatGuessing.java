@@ -63,7 +63,7 @@ public class HatGuessing implements Agent {
         }
 
         //ok, what happens now? :S
-        return null;
+        throw new IllegalStateException("No hat guessing rule fired, no idea what to do...");
     }
 
     public boolean isDead(GameState state, Card card) {
