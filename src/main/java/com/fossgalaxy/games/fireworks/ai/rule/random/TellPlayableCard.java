@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.rule.random;
 
 import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
+import com.fossgalaxy.games.fireworks.ai.rule.AbstractTellRule;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
@@ -16,7 +17,7 @@ import java.util.Random;
  * This does not make use of any information about what the other player has been told in
  * the past and non-determisticlly selects between telling the colour and the number.
  */
-public class TellPlayableCard extends AbstractRule {
+public class TellPlayableCard extends AbstractTellRule {
     private Random random;
 
     public TellPlayableCard() {
@@ -25,10 +26,6 @@ public class TellPlayableCard extends AbstractRule {
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == 0) {
-            return null;
-        }
-
         int nextPlayer = selectPlayer(playerID, state);
         Hand hand = state.getHand(nextPlayer);
 
