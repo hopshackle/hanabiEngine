@@ -1,6 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
-import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertian;
+import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
@@ -17,13 +17,13 @@ import static org.junit.Assert.assertEquals;
 public class TestDiscardIfCertain {
 
     private BasicState state;
-    private DiscardIfCertian instance;
+    private DiscardIfCertain instance;
 
     @Before
     public void setup(){
         state = new BasicState(2);
         state.setInfomation(7);
-        instance = new DiscardIfCertian();
+        instance = new DiscardIfCertain();
     }
 
     @Test

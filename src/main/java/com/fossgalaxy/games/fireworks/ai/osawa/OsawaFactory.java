@@ -9,8 +9,8 @@ import com.fossgalaxy.games.fireworks.ai.rule.TellUnknown;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellPlayableCard;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
-import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertian;
-import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertian;
+import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
+import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
 
 /**
  * Factory for describing agents defined in Osawa's paper.
@@ -82,10 +82,10 @@ public class OsawaFactory {
         ProductionRuleAgent ruleAgent = new ProductionRuleAgent();
 
         //1. if we have a playable card, play it
-        ruleAgent.addRule(new PlayIfCertian());
+        ruleAgent.addRule(new PlayIfCertain());
 
         //2. if we have a useless card, discard it
-        ruleAgent.addRule(new DiscardIfCertian());
+        ruleAgent.addRule(new DiscardIfCertain());
 
         //3. if there a useful card, tell the player about it
         ruleAgent.addRule(new TellPlayableCardOuter());

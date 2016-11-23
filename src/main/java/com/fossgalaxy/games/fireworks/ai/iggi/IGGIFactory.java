@@ -6,8 +6,8 @@ import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
-import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertian;
-import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertian;
+import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
+import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
 
 /**
  * Stratergies used/theorised about by IGGI students.
@@ -28,7 +28,7 @@ public class IGGIFactory {
      */
     public static Agent buildCautious() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
-        pra.addRule(new PlayIfCertian());
+        pra.addRule(new PlayIfCertain());
         pra.addRule(new PlaySafeCard());
         pra.addRule(new TellAnyoneAboutUsefulCard());
         pra.addRule(new OsawaDiscard());
@@ -38,7 +38,7 @@ public class IGGIFactory {
 
     public static Agent buildIGGIPlayer() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
-        pra.addRule(new PlayIfCertian());
+        pra.addRule(new PlayIfCertain());
         pra.addRule(new PlaySafeCard());
         pra.addRule(new TellAnyoneAboutUsefulCard());
         pra.addRule(new OsawaDiscard());
@@ -49,7 +49,7 @@ public class IGGIFactory {
 
     public static Agent buildRiskyPlayer(double threshold){
         ProductionRuleAgent pra = new ProductionRuleAgent();
-        pra.addRule(new PlayIfCertian());
+        pra.addRule(new PlayIfCertain());
         pra.addRule(new PlayProbablySafeCard(threshold));
         pra.addRule(new TellAnyoneAboutUsefulCard());
         pra.addRule(new OsawaDiscard());
@@ -64,8 +64,8 @@ public class IGGIFactory {
     public static Agent buildTest2() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new TellPlayableCardOuter());
-        pra.addRule(new PlayIfCertian());
-        pra.addRule(new DiscardIfCertian());
+        pra.addRule(new PlayIfCertain());
+        pra.addRule(new DiscardIfCertain());
         return pra;
     }
 
