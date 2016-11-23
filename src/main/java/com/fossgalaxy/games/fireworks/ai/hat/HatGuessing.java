@@ -34,7 +34,6 @@ public class HatGuessing implements Agent {
 
     @Override
     public Action doMove(int agentID, GameState state) {
-        Recommendation[] recommendations = Recommendation.values();
 
         // 1. If the most recent recommendation was to play a card and no card has been played since the lat hint, player the recommended card
         if (lastToldAction != null && lastToldAction.isPlay()) {

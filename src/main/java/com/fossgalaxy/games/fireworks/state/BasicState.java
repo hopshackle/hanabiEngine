@@ -43,7 +43,7 @@ public class BasicState implements GameState {
         this.hands = new TimedHand[playerCount];
         this.deck = new Deck();
         this.table = new EnumMap<>(CardColour.class);
-        this.discard = new ArrayList<Card>();
+        this.discard = new ArrayList<>();
         this.movesLeft = playerCount;
 
         this.information = MAX_INFOMATION;
@@ -55,10 +55,12 @@ public class BasicState implements GameState {
         }
     }
 
+    @Override
     public void init() {
         init(null);
     }
 
+    @Override
     public void init(Long seed) {
         deck.init();
         if (seed != null) {
@@ -75,6 +77,7 @@ public class BasicState implements GameState {
         }
     }
 
+    @Override
     public GameState getCopy() {
         return new BasicState(this);
     }
