@@ -62,16 +62,13 @@ public class MCTS implements Agent {
                 Utils.generateAllActions(agentID, state.getPlayerCount())
         );
 
-
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
         if (log != null) {
             log.println("possible bindings");
             possibleCards.forEach((slot, cards) -> log.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
-        }
 
-        if (log != null) {
             // Guaranteed cards
             log.println("Guaranteed Cards");
             possibleCards.entrySet().stream()
@@ -82,9 +79,7 @@ public class MCTS implements Agent {
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
                     .forEach(MCTS::printCard);
-        }
 
-        if (log != null) {
             DebugUtils.printTable(log, state);
             log.println();
         }
@@ -147,6 +142,7 @@ public class MCTS implements Agent {
             int agent = current.getAgent();
             int lives = state.getLives();
             int score = state.getScore();
+
             Action action = current.getAction();
             if (action != null) {
                 action.apply(agent, state);
