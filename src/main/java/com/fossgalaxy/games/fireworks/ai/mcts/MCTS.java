@@ -10,6 +10,7 @@ import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
+import java.io.PrintStream;
 import java.util.*;
 
 /**
@@ -21,7 +22,7 @@ public class MCTS implements Agent {
     protected final int treeDepthMul;
     protected Random random;
 
-    private boolean printDebug = true;
+    private PrintStream log;
 
     /**
      * Create a default MCTS implementation.
@@ -49,6 +50,7 @@ public class MCTS implements Agent {
         this.rolloutDepth = rolloutDepth;
         this.treeDepthMul = treeDepthMul;
         this.random = new Random();
+        this.log = System.err;
     }
 
     @Override
@@ -64,27 +66,27 @@ public class MCTS implements Agent {
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
-        if (printDebug) {
-            System.err.println("possible bindings");
-            possibleCards.forEach((slot, cards) -> System.err.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
+        if (log != null) {
+            log.println("possible bindings");
+            possibleCards.forEach((slot, cards) -> log.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
         }
 
-        if (printDebug) {
+        if (log != null) {
             // Guaranteed cards
-            System.err.println("Guaranteed Cards");
+            log.println("Guaranteed Cards");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().size() == 1)
                     .forEach(MCTS::printCard);
 
-            System.err.println("We know the value of these");
+            log.println("We know the value of these");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
                     .forEach(MCTS::printCard);
         }
 
-        if (printDebug) {
-            DebugUtils.printTable(System.err, state);
-            System.err.println();
+        if (log != null) {
+            DebugUtils.printTable(log, state);
+            log.println();
         }
 
         for (int round = 0; round < roundLength; round++) {
@@ -108,18 +110,18 @@ public class MCTS implements Agent {
             current.backup(score);
         }
 
-        if (printDebug) {
-            System.err.println("\t next player's moves considerations: ");
+        if (log != null) {
+            log.println("\t next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
-                System.err.println(level1.getAction() + "'s children");
+                log.println(level1.getAction() + "'s children");
                 level1.printChildren();
             }
         }
 
         Action chosenOne = root.getBestNode().getAction();
-        if (printDebug) {
-            System.err.format("Move Chosen by %d was %s", agentID, chosenOne);
-            System.err.println();
+        if (log != null) {
+            log.format("Move Chosen by %d was %s", agentID, chosenOne);
+            log.println();
             root.printChildren();
         }
         return chosenOne;
@@ -225,7 +227,7 @@ public class MCTS implements Agent {
     }
 
     public void setPrintDebug(boolean printDebug) {
-        this.printDebug = printDebug;
+        this.log = printDebug ? System.err : null;
     }
 
     @Override
@@ -234,7 +236,7 @@ public class MCTS implements Agent {
     }
 
     private static void printCard(Map.Entry<Integer, List<Card>> entry) {
-        System.err.println("\t" + entry.getKey() + ":" + entry.getValue());
+        System.out.println("\t" + entry.getKey() + ":" + entry.getValue());
     }
 
 }
