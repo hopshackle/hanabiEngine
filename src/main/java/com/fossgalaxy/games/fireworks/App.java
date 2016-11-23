@@ -33,6 +33,10 @@ public class App {
             games++;
         }
 
+        if (games == 0) {
+            return;
+        }
+
         System.out.println("avg: " + sum / games);
     }
 
