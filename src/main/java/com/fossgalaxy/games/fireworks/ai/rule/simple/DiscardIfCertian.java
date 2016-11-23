@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule.simple;
 
+import com.fossgalaxy.games.fireworks.ai.rule.AbstractDiscardRule;
 import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -10,14 +11,10 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 /**
  * Discard a card we know is 100% safe based on provided information.
  */
-public class DiscardIfCertian extends AbstractRule {
+public class DiscardIfCertian extends AbstractDiscardRule {
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == state.getStartingInfomation()) {
-            return null;
-        }
-
         Hand myHand = state.getHand(playerID);
         for (int slot = 0; slot < state.getHandSize(); slot++) {
             CardColour c = myHand.getKnownColour(slot);
