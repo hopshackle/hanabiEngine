@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.rule.random;
 
 import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
+import com.fossgalaxy.games.fireworks.ai.rule.AbstractTellRule;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
@@ -13,7 +14,7 @@ import java.util.Random;
 /**
  * Tell the next player about a card randomly.
  */
-public class TellRandomly extends AbstractRule {
+public class TellRandomly extends AbstractTellRule {
     private Random random;
 
     public TellRandomly() {
@@ -22,9 +23,6 @@ public class TellRandomly extends AbstractRule {
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if (state.getInfomation() == 0) {
-            return null;
-        }
 
         int nextAgent = selectPlayer(playerID, state);
         Hand otherHand = state.getHand(nextAgent);
