@@ -1,5 +1,6 @@
-package com.fossgalaxy.games.fireworks.state;
+package com.fossgalaxy.games.fireworks.state.actions;
 
+import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.actions.*;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

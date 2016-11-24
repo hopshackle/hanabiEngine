@@ -1,7 +1,8 @@
-package com.fossgalaxy.games.fireworks.state;
+package com.fossgalaxy.games.fireworks.state.actions;
 
 import static org.junit.Assert.assertEquals;
 
+import com.fossgalaxy.games.fireworks.state.*;
 import org.junit.Test;
 
 import com.fossgalaxy.games.fireworks.state.actions.Action;
