@@ -5,6 +5,7 @@ import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -14,15 +15,31 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestTellRandomly {
 
-    @Test
-    public void testTellsWhenAbleTo(){
-        BasicState state = new BasicState(2);
+    private BasicState state;
+    private TellRandomly instance;
+
+    @Before
+    public void setup(){
+        state = new BasicState(2);
+        instance = new TellRandomly();
         state.setInfomation(8);
         state.init();
-        TellRandomly instance = new TellRandomly();
+    }
+
+    @Test
+    public void testTellsWhenAbleTo(){
         assertEquals(true, instance.canFire(0, state));
         Action action = instance.execute(0, state);
         assertEquals(true, action != null);
         assertEquals(true, action instanceof TellColour || action instanceof TellValue);
+    }
+
+    @Test
+    public void testTellsNothingWhenAllCardsNull(){
+        for(int i = 0; i < 5; i++){
+            state.getHand(0).setCard(i, null);
+        }
+
+        assertEquals(false, instance.canFire(1, state));
     }
 }

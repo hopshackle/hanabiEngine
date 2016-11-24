@@ -74,4 +74,15 @@ public class TestTellUnknown {
         state.getHand(0).setKnownColour(CardColour.BLUE, new Integer[]{0, 1, 2, 3, 4});
         assertEquals(false, instance.canFire(1, state));
     }
+
+    @Test
+    public void testWithNullInHand(){
+        state.getHand(0).setCard(0, null);
+        state.getHand(0).setCard(1, new Card(1, CardColour.BLUE));
+
+        assertEquals(true, instance.canFire(1, state));
+        Action action = instance.execute(1, state);
+        assertEquals(true, action != null);
+        assertEquals(true, action instanceof TellColour || action instanceof TellValue);
+    }
 }

@@ -46,4 +46,16 @@ public class TestTellPlayableCard {
 
         assertEquals(false, instance.canFire(0, state));
     }
+
+    @Test
+    public void testWithNullInHand(){
+        state.getHand(1).setCard(0, null);
+        state.getHand(1).setCard(1, new Card(2, CardColour.BLUE));
+        state.getHand(1).setCard(2, new Card(1, CardColour.BLUE));
+
+        assertEquals(true, instance.canFire(0, state));
+        Action action = instance.execute(0, state);
+        assertEquals(true, action != null);
+        assertEquals(true, action instanceof TellValue || action instanceof TellColour);
+    }
 }
