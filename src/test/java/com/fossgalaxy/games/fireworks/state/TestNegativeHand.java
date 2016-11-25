@@ -15,7 +15,6 @@ import static com.fossgalaxy.games.fireworks.state.TestBasicHand.c;
 import static com.fossgalaxy.games.fireworks.state.TestBasicHand.setKnowledge;
 import static com.fossgalaxy.games.fireworks.state.TestBasicHand.v;
 import static junitparams.JUnitParamsRunner.$;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
