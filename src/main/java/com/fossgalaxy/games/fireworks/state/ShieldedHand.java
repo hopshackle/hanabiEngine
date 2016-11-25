@@ -87,4 +87,20 @@ public class ShieldedHand implements Hand {
     public boolean hasValue(Integer value) {
         return hand.hasValue(value);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShieldedHand that = (ShieldedHand) o;
+
+        return hand != null ? hand.equals(that.hand) : that.hand == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return hand != null ? hand.hashCode() : 0;
+    }
 }
