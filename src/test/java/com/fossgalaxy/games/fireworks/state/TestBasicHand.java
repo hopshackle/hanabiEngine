@@ -100,38 +100,40 @@ public class TestBasicHand {
 
     public Object[] parametersForTestHasColour() {
         return $(
-                $(c(BLUE, null, RED, ORANGE), BLUE, true),
-                $(c(BLUE, null, RED, ORANGE), RED, true),
-                $(c(BLUE, null, RED, ORANGE), ORANGE, true),
-                $(c(BLUE, null, RED, ORANGE), GREEN, false),
-                $(c(BLUE, null, RED, ORANGE), WHITE, false)
+                $(c(BLUE, null, RED, ORANGE), v(1, 1, 1, 1), BLUE, true),
+                $(c(BLUE, null, RED, ORANGE), v(1, 1, 1, 1), RED, true),
+                $(c(BLUE, null, RED, ORANGE), v(1, 1, 1, 1), ORANGE, true),
+                $(c(BLUE, null, RED, ORANGE), v(1, 1, 1, 1), GREEN, false),
+                $(c(BLUE, null, RED, ORANGE), v(1, 1, 1, 1), WHITE, false)
         );
     }
 
     @Test
     @Parameters(method = "parametersForTestHasColour")
-    public void testHasColour(CardColour[] colours, CardColour testColour, boolean expected) {
-        setKnowledge(basicHand, colours);
+    public void testHasColour(CardColour[] colours, Integer[] values, CardColour testColour, boolean expected) {
+        setKnowledge(basicHand, values, colours);
 
         assertEquals(expected, basicHand.hasColour(testColour));
     }
 
     public Object[] parametersForTestHasValue() {
         return $(
-                $(v(1, 2, 3, 4), 1, true),
-                $(v(1, 2, 3, 4), 2, true),
-                $(v(1, 2, 3, 4), 3, true),
-                $(v(1, 2, 3, 4), 4, true),
-                $(v(1, 2, 3, 4), 5, false)
+                $(c(BLUE, RED, RED, ORANGE), v(1, 2, 3, 4), 1, true),
+                $(c(BLUE, RED, RED, ORANGE), v(1, 2, 3, 4), 2, true),
+                $(c(BLUE, RED, RED, ORANGE), v(1, 2, 3, 4), 3, true),
+                $(c(BLUE, RED, RED, ORANGE), v(1, 2, 3, 4), 4, true),
+                $(c(BLUE, RED, RED, ORANGE), v(1, 2, 3, 4), 5, false)
         );
     }
 
     @Test
     @Parameters(method = "parametersForTestHasValue")
-    public void testHasValue(Integer[] values, int testValue, boolean expected) {
-        for (int i = 0; i < values.length; i++) {
-            basicHand.setKnownValue(values[i], new Integer[]{i});
-        }
+    public void testHasValue(CardColour[] colours, Integer[] values, int testValue, boolean expected) {
+//        for (int i = 0; i < values.length; i++) {
+//            basicHand.setKnownValue(values[i], new Integer[]{i});
+//        }
+
+        setKnowledge(basicHand, values, colours);
 
         assertEquals(expected, basicHand.hasValue(testValue));
     }

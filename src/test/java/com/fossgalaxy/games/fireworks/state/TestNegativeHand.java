@@ -111,8 +111,8 @@ public class TestNegativeHand {
     public Object[] parametersForTestIsPossible() {
         return $(
                 $(0, new Card(1, BLUE), v(1, null, null, null), c(BLUE, null, null, null), true),
-                $(0, new Card(1, BLUE), v(1, 1, 2, 3, 2), c(BLUE, RED, BLUE, RED, ORANGE), true),
-                $(0, new Card(1, BLUE), v(null, 2, 3, 4, 5), c(BLUE, RED, BLUE, RED, ORANGE), true)
+                $(0, new Card(1, BLUE), v(1, 5, 2, 3, 2), c(BLUE, RED, WHITE, GREEN, ORANGE), true),
+                $(0, new Card(1, BLUE), v(null, 2, 3, 4, 5), c(BLUE, RED, WHITE, GREEN, ORANGE), true)
         );
     }
 

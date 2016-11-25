@@ -134,7 +134,17 @@ public interface Hand {
      */
     CardColour[] getPossibleColours(int slot);
 
+    /**
+     * Has a card of that colour that it knows exactly about
+     * @param colour The colour to check
+     * @return Wether there is a card of that colour in the hand
+     */
     boolean hasColour(CardColour colour);
 
+    /**
+     * Has a card of that value that it knows exactly about
+     * @param value The value to check
+     * @return Wether there is a card of that value in the hand
+     */
     boolean hasValue(Integer value);
 }
