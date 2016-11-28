@@ -67,12 +67,12 @@ public class MCTSNode {
 
     public void backup(double score) {
         MCTSNode current = this;
-        double discount = 1;
+//        double discount = 1;
         while (current != null) {
-            current.score += score * discount;
+            current.score += score * Math.pow(.95, (current.getDepth() - 1));
             current.visits++;
             current = current.parent;
-            discount *= 0.95;
+//            discount *= 0.95;
         }
     }
 
