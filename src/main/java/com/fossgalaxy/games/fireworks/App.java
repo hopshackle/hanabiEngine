@@ -24,7 +24,7 @@ public class App {
         int games = 0;
         System.out.println("Start");
 
-        for (int run = 0; run < 1000; run++) {
+        for (int run = 0; run < 1; run++) {
             GameStats stats = playGame();
             sum += stats.score;
             games++;
