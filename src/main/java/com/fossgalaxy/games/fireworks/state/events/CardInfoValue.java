@@ -41,7 +41,7 @@ public class CardInfoValue extends GameEvent {
     public void apply(GameState state) {
         Hand playerHand = state.getHand(playerId);
         playerHand.setKnownValue(value, slots);
-        state.setInfomation(state.getInfomation() - 1);
+        state.setInformation(state.getInfomation() - 1);
     }
 
     @Override

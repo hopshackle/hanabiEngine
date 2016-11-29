@@ -22,7 +22,7 @@ public class TestDiscardIfCertain {
     @Before
     public void setup(){
         state = new BasicState(2);
-        state.setInfomation(7);
+        state.setInformation(7);
         instance = new DiscardIfCertain();
     }
 

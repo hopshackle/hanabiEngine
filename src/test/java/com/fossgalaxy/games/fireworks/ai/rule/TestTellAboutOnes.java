@@ -6,8 +6,6 @@ import com.fossgalaxy.games.fireworks.state.CardColour;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -21,7 +19,7 @@ public class TestTellAboutOnes {
     @Before
     public void setup() {
         state = new BasicState(2);
-        state.setInfomation(8);
+        state.setInformation(8);
         instance = new TellAboutOnes();
     }
 
@@ -30,7 +28,7 @@ public class TestTellAboutOnes {
      */
     @Test
     public void tellIsIllegalWithNoInfo() {
-        state.setInfomation(0);
+        state.setInformation(0);
 
         boolean result = instance.canFire(0, state);
 

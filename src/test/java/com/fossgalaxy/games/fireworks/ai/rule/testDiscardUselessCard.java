@@ -28,7 +28,7 @@ public class testDiscardUselessCard {
     public void setup() {
         state = new BasicState(2);
         instance = new DiscardUselessCard();
-        state.setInfomation(7);
+        state.setInformation(7);
     }
 
     public Object[] parametersForHighestScorePossible() {

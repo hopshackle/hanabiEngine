@@ -22,7 +22,7 @@ public class TestTellRandomly {
     public void setup(){
         state = new BasicState(2);
         instance = new TellRandomly();
-        state.setInfomation(8);
+        state.setInformation(8);
         state.init();
     }
 

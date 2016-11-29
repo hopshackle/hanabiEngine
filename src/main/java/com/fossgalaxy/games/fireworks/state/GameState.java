@@ -47,7 +47,7 @@ public interface GameState {
 
     void setCardAt(int player, int slot, Card newCard);
 
-    void setInfomation(int newValue);
+    void setInformation(int newValue);
 
     // update the state
     @Deprecated

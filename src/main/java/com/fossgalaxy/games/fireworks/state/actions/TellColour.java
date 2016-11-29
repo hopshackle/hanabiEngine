@@ -39,16 +39,16 @@ public class TellColour implements Action {
             throw new RulesViolation("you cannot tell a player about a lack of cards", this);
         }
 
-        int infomation = game.getInfomation();
-        if (infomation <= 0) {
-            throw new RulesViolation("you have no infomation left", this);
+        int information = game.getInfomation();
+        if (information <= 0) {
+            throw new RulesViolation("you have no information left", this);
         }
 
-        game.setInfomation(infomation - 1);
+        game.setInformation(information - 1);
         hand.setKnownColour(colour, slots.toArray(new Integer[slots.size()]));
 
-        GameEvent cardInfomation = new CardInfoColour(playerID, player, colour, slots);
-        return Arrays.asList(cardInfomation);
+        GameEvent cardInformation = new CardInfoColour(playerID, player, colour, slots);
+        return Arrays.asList(cardInformation);
     }
 
     @Override

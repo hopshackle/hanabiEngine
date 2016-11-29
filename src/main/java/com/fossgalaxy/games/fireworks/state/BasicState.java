@@ -201,7 +201,7 @@ public class BasicState implements GameState {
     }
 
     @Override
-    public void setInfomation(int newValue) {
+    public void setInformation(int newValue) {
         assert newValue <= MAX_INFOMATION;
         assert newValue >= 0;
         information = newValue;

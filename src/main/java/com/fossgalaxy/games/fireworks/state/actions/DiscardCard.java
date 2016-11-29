@@ -31,7 +31,7 @@ public class DiscardCard implements Action {
         game.addToDiscard(oldCard);
 
         // the players gain one information back
-        game.setInfomation(currentInfo + 1);
+        game.setInformation(currentInfo + 1);
 
         ArrayList<GameEvent> events = new ArrayList<>();
         events.add(new CardDiscarded(playerID, slot, oldCard.colour, oldCard.value));

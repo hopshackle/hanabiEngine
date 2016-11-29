@@ -41,7 +41,7 @@ public class CardPlayed extends GameEvent {
                 int maxInfo = state.getStartingInfomation();
 
                 if (maxInfo != currInfo) {
-                    state.setInfomation(currInfo + 1);
+                    state.setInformation(currInfo + 1);
                 }
             }
         }

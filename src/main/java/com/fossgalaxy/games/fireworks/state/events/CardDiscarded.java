@@ -25,7 +25,7 @@ public class CardDiscarded extends GameEvent {
     public void apply(GameState state) {
         state.addToDiscard(new Card(value, colour));
         state.setCardAt(playerId, slotId, null);
-        state.setInfomation(state.getInfomation() + 1);
+        state.setInformation(state.getInfomation() + 1);
     }
 
     @Override

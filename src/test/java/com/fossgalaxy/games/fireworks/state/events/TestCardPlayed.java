@@ -3,7 +3,6 @@ package com.fossgalaxy.games.fireworks.state.events;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
-import org.hamcrest.BaseDescription;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +52,7 @@ public class TestCardPlayed {
     public void testPlayFive(){
         state.getHand(0).setCard(0, new Card(5, CardColour.BLUE));
         state.setTableValue(CardColour.BLUE, 4);
-        state.setInfomation(7);
+        state.setInformation(7);
         CardPlayed cardPlayed = new CardPlayed(0, 0, CardColour.BLUE, 5);
         cardPlayed.apply(state);
         assertEquals(5, state.getScore());

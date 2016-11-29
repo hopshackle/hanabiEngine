@@ -64,12 +64,12 @@ public class TestProductionRuleAgent {
             state.setTableValue(colour, 1);
         }
 
-        state.setInfomation(7);
+        state.setInformation(7);
         Action action = agent.doMove(0, state);
         assertEquals(true, action != null);
         assertEquals(DiscardCard.class, action.getClass());
 
-        state.setInfomation(8);
+        state.setInformation(8);
         action = agent.doMove(0, state);
         assertEquals(true, action != null);
         assertEquals(PlayCard.class, action.getClass());

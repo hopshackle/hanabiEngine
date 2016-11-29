@@ -17,7 +17,7 @@ public class TestDiscardRandomly {
     public void testDiscardRandomly(){
         BasicState state = new BasicState(2);
         state.init();
-        state.setInfomation(7);
+        state.setInformation(7);
 
         DiscardRandomly instance = new DiscardRandomly();
         assertEquals(true, instance.canFire(0, state));

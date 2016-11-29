@@ -5,9 +5,6 @@ import static org.junit.Assert.assertEquals;
 import com.fossgalaxy.games.fireworks.state.*;
 import org.junit.Test;
 
-import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
-
 /**
  * High level game-play tests for play action.
  */
@@ -29,7 +26,7 @@ public class PlayActionRules {
 
 		// the table has a 4 of the correct colour on it
 		state.setTableValue(colour, 4);
-		state.setInfomation(0);
+		state.setInformation(0);
 
 		// checks for invariants
 		int lives = state.getLives();
@@ -65,7 +62,7 @@ public class PlayActionRules {
 
 		// the table has a 4 of the correct colour on it
 		state.setTableValue(colour, 4);
-		state.setInfomation(state.getStartingInfomation());
+		state.setInformation(state.getStartingInfomation());
 
 		// checks for invariants
 		int lives = state.getLives();
