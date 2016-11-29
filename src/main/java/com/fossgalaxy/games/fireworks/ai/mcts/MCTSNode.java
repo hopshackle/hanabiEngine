@@ -23,6 +23,7 @@ public class MCTSNode {
     private final List<MCTSNode> children;
     private final Collection<Action> allUnexpandedActions;
     private final Random random;
+    private final int depth;
 
     private double score;
     private int visits;
@@ -45,6 +46,7 @@ public class MCTSNode {
         this.children = new ArrayList<>();
         this.allUnexpandedActions = new ArrayList<>(allUnexpandedActions);
         this.random = new Random();
+        this.depth = (parent == null) ? 0 : parent.depth + 1;
         assert (parent != null && moveToState != null) || (parent == null && moveToState == null);
     }
 
@@ -129,10 +131,7 @@ public class MCTSNode {
     }
 
     public int getDepth() {
-        if (parent == null) {
-            return 0;
-        }
-        return 1 + parent.getDepth();
+        return depth;
     }
 
     @Override
