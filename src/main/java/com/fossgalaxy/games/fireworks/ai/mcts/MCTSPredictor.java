@@ -48,7 +48,7 @@ public class MCTSPredictor extends MCTS {
 
                 //trip if the move is illegal
                 if (!next.getAction().isLegal(next.getAgent(), state)) {
-                    System.err.println("INVALID NODE SELECTED?! ");
+                    log.println("INVALID NODE SELECTED?! ");
                 }
 
                 if (numChildren != current.getChildSize()) {

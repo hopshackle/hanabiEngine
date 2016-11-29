@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,12 +29,15 @@ public class MCTSNode {
     private int visits;
     private int parentWasVisitedAndIWasLegal;
 
+    private PrintStream log;
+
     public MCTSNode(Collection<Action> allUnexpandedActions) {
         this(null, -1, null, allUnexpandedActions);
     }
 
     public MCTSNode(int agentID, Action moveToState, Collection<Action> allUnexpandedActions) {
         this(null, agentID, moveToState, allUnexpandedActions);
+        this.log = System.err;
     }
 
     public MCTSNode(MCTSNode parent, int agentId, Action moveToState, Collection<Action> allUnexpandedActions) {
@@ -182,10 +186,10 @@ public class MCTSNode {
     }
 
     public void printChildren() {
-        System.err.format("\t %35s\t%-10s\t%-10s\t%-9s%n", "action", "visits", "score", "avg");
+        log.format("\t %35s\t%-10s\t%-10s\t%-9s%n", "action", "visits", "score", "avg");
         for (MCTSNode child : children) {
-            System.err.format("\t %35s\t%-10d\t%-6.3f\t%6.3f%n", child.getAction(), child.visits, child.score, child.score / child.visits);
+            log.format("\t %35s\t%-10d\t%-6.3f\t%6.3f%n", child.getAction(), child.visits, child.score, child.score / child.visits);
         }
-        System.err.println();
+        log.println();
     }
 }

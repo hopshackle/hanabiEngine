@@ -22,7 +22,7 @@ public class MCTS implements Agent {
     protected final int treeDepthMul;
     protected Random random;
 
-    private PrintStream log;
+    protected PrintStream log;
 
     /**
      * Create a default MCTS implementation.
@@ -73,12 +73,12 @@ public class MCTS implements Agent {
             log.println("Guaranteed Cards");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().size() == 1)
-                    .forEach(MCTS::printCard);
+                    .forEach(this::printCard);
 
             log.println("We know the value of these");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
-                    .forEach(MCTS::printCard);
+                    .forEach(this::printCard);
 
             DebugUtils.printTable(log, state);
             log.println();
@@ -231,8 +231,8 @@ public class MCTS implements Agent {
         return "MCTS";
     }
 
-    private static void printCard(Map.Entry<Integer, List<Card>> entry) {
-        System.out.println("\t" + entry.getKey() + ":" + entry.getValue());
+    private void printCard(Map.Entry<Integer, List<Card>> entry) {
+        log.println("\t" + entry.getKey() + ":" + entry.getValue());
     }
 
 }
