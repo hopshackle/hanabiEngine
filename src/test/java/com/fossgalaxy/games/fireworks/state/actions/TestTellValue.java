@@ -4,7 +4,6 @@ import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.RulesViolation;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -57,7 +56,7 @@ public class TestTellValue {
 
     @Test(expected = RulesViolation.class)
     public void testTellingNoInformation() {
-        state.setInfomation(0);
+        state.setInformation(0);
         state.getHand(1).setCard(0, new Card(1, CardColour.BLUE));
         TellValue tellValue = new TellValue(1, 1);
         tellValue.apply(0, state);

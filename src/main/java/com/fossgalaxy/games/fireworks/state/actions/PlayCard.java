@@ -40,7 +40,7 @@ public class PlayCard implements Action {
                 int currentInfo = game.getInfomation();
                 int maxInfo = game.getStartingInfomation();
                 if (currentInfo < maxInfo) {
-                    game.setInfomation(currentInfo + 1);
+                    game.setInformation(currentInfo + 1);
                 }
             }
 

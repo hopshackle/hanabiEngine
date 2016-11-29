@@ -2,7 +2,6 @@ package com.fossgalaxy.games.fireworks.state.events;
 
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +17,7 @@ public class TestCardDiscarded {
     @Before
     public void setup(){
         state = new BasicState(2);
-        state.setInfomation(7);
+        state.setInformation(7);
         state.init();
     }
 

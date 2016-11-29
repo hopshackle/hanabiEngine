@@ -44,7 +44,7 @@ public class CardInfoColour extends GameEvent {
 
         Hand playerHand = state.getHand(playerId);
         playerHand.setKnownColour(colour, slots);
-        state.setInfomation(state.getInfomation() - 1);
+        state.setInformation(state.getInfomation() - 1);
 
         assert state.getInfomation() >= 0 : "negative infomation happend?!";
     }

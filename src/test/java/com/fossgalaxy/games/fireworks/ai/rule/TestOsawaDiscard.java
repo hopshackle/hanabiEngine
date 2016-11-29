@@ -24,7 +24,7 @@ public class TestOsawaDiscard {
     public void setup(){
         state = new BasicState(2);
         state.init();
-        state.setInfomation(7);
+        state.setInformation(7);
         instance = new OsawaDiscard();
     }
 

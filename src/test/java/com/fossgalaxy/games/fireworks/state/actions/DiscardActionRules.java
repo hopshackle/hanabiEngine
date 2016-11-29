@@ -5,9 +5,6 @@ import static org.junit.Assert.assertEquals;
 import com.fossgalaxy.games.fireworks.state.*;
 import org.junit.Test;
 
-import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
-
 /**
  * High level game-play tests for play action.
  */
@@ -23,7 +20,7 @@ public class DiscardActionRules {
         // setup
         GameState state = new BasicState(2, 5);
         state.setCardAt(player, slot, new Card(4, colour));
-        state.setInfomation(1);
+        state.setInformation(1);
 
         // checks for invariants
         int lives = state.getLives();
@@ -59,7 +56,7 @@ public class DiscardActionRules {
         Deck deck = state.getDeck();
         deck.add(nextCard);
 
-        state.setInfomation(1);
+        state.setInformation(1);
 
         // checks for invariants
         int lives = state.getLives();
@@ -126,7 +123,7 @@ public class DiscardActionRules {
 
         GameState state = new BasicState(2, 5);
         state.setCardAt(player, slot, new Card(4, colour));
-        state.setInfomation(0);
+        state.setInformation(0);
 
         Action discard = new DiscardCard(slot);
         assertEquals(true, discard.isLegal(player, state));
