@@ -2,6 +2,8 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
  * Created by webpigeon on 22/08/16.
  */
 public class MCTSNode {
+
     private static final double EXP_CONST = Math.sqrt(2);
     private static final int MAX_SCORE = 25;
     private static final double EPSILON = 1e-6;
