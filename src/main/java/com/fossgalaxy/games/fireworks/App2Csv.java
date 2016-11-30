@@ -9,8 +9,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Hello world!
@@ -19,7 +21,9 @@ import java.util.UUID;
 public class App2Csv {
     public static final Integer GAME_SIZE = 3;
     public static final Integer DEFAULT_NUM_RUNS = 100;
-    protected static final String[] AGENT_NAMES = {"pure_random", "internal", "outer", "legal_random", "cautious", "mcts", "cautiousMCTS"};
+
+    //pure games - Careful.
+    protected static final String[] AGENT_NAMES = {"pure_random", "internal", "outer", "legal_random", "cautious", "mctsND", "cautiousMCTSND"};
 
     //Utility class - instances not permitted.
     private App2Csv() {

@@ -15,7 +15,6 @@ import java.util.Objects;
  * used by game playing agents (get a state, return an action).
  */
 public class AgentPlayer implements Player {
-
     private final String name;
     private final Agent policy;
 
@@ -38,18 +37,15 @@ public class AgentPlayer implements Player {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
     public Action getAction() {
         return policy.doMove(playerID, state);
     }
 
     @Override
     public void sendMessage(GameEvent msg) {
-        assert msg != null;
+        assert state != null : "You didn't call setID before I got a message!";
+        assert msg != null : "You passed me a null message";
+
         msg.apply(state);
         policy.receiveEvent(msg);
     }
@@ -63,6 +59,11 @@ public class AgentPlayer implements Player {
         this.state = new BasicState(nPlayers);
         policy.receiveID(id);
         policy.onState(state);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

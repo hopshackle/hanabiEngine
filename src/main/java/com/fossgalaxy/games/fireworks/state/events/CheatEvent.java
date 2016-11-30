@@ -59,4 +59,9 @@ public class CheatEvent extends GameEvent {
     public String toTextProtocol() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Cheating: sending hand of %d", playerID);
+    }
 }
