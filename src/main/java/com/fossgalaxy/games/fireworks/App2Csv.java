@@ -66,6 +66,7 @@ public class App2Csv {
         }
     }
 
+    @Deprecated
     public static GameStats playGame(String[] names, Long seed, Player... players) {
         UUID id = UUID.randomUUID();
         try (
@@ -89,11 +90,90 @@ public class App2Csv {
         return null;
     }
 
-    public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Player... players) {
-        UUID id = UUID.randomUUID();
-        try {
-            GameRunner runner = new GameRunner(id, players.length);
+    /**
+     * Play a standard Hanabi game with agents.
+     *
+     * This is a convenience wrapper around the player version of this function.
+     *
+     * @param gameID The gameID to log this game under
+     * @param name the names of the agents that are playing
+     * @param seed the seed to use for deck ordering
+     * @param agents the agents to use for the game
+     * @return the outcome of the game
+     */
+    public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Agent... agents) {
+        return playGameErrTrace(gameID, name, seed, toPlayers(agents));
+    }
 
+    @Deprecated
+    public static GameStats playGame(String[] name, Long seed, Agent... agents) {
+        return playGame(name, seed, toPlayers(agents));
+    }
+
+    /**
+     * Wrap agents into players.
+     *
+     * The agent class provides a high level interface for the game that tracks game state for the agent.
+     * Player is a lower level API used internally by the game system that does not store any game state directly, this
+     * is to allow networked or remote players in the future.
+     *
+     * For the agents to play the game, a wrapper is needed to convert the low level (event based) player API into the
+     * higher level (polling based) API for agents.
+     *
+     * @param agents the agents to convert
+     * @return player versions of the agents
+     */
+    public static Player[] toPlayers(Agent ... agents) {
+        Player[] wrapper = new Player[agents.length];
+        for (int i = 0; i < agents.length; i++) {
+            wrapper[i] = new AgentPlayer(i, agents[i]);
+        }
+        return wrapper;
+    }
+
+    /**
+     * Play a standard version of hanabi.
+     *
+     * This is the default game rules that the game comes with.
+     *
+     * @param gameID The gameID to log this game under
+     * @param name the names of the agents that are playing
+     * @param seed the seed to use for deck ordering
+     * @param players the players to use for the game
+     * @return the outcome of the game
+     */
+    public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Player... players) {
+        GameRunner runner = new GameRunner(gameID, players.length);
+        return playGame(gameID, name, seed, runner, players);
+    }
+
+    /**
+     * Play a complete information (cheated) version of Hanabi
+     *
+     * @param gameID The gameID to log this game under
+     * @param name the names of the agents that are playing
+     * @param seed the seed to use for deck ordering
+     * @param players the players to use for the game
+     * @return the outcome of the game
+     */
+    public static GameStats playCheatGame(String gameID, String[] name, Long seed, Player ... players) {
+        UUID id = UUID.randomUUID();
+        GameRunner cheatRunner = new GameRunnerCheat(id, players.length, System.err);
+        return playGame(gameID, name, seed, cheatRunner, players);
+    }
+
+    /**
+     * Utility function that handles running and logging of the game to stdout in csv format
+     *
+     * @param gameID The gameID to log this game under
+     * @param name the name of the agents that are playing
+     * @param seed the seed to use for the deck ordering
+     * @param runner the runner to use for this game
+     * @param players the players that will be playing this game
+     * @return the outcome of the game
+     */
+    private static GameStats playGame(String gameID, String[] name, Long seed, GameRunner runner, Player... players) {
+        try {
             for (int i = -0; i < players.length; i++) {
                 runner.addPlayer(players[i]);
                 players[i].setID(i, players.length);
@@ -107,22 +187,5 @@ public class App2Csv {
         }
         return null;
     }
-
-    public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Agent... agents) {
-        Player[] wrapper = new Player[agents.length];
-        for (int i = 0; i < agents.length; i++) {
-            wrapper[i] = new AgentPlayer(name[i], agents[i]);
-        }
-        return playGameErrTrace(gameID, name, seed, wrapper);
-    }
-
-    public static GameStats playGame(String[] name, Long seed, Agent... agents) {
-        Player[] wrapper = new Player[agents.length];
-        for (int i = 0; i < agents.length; i++) {
-            wrapper[i] = new AgentPlayer(name[i], agents[i]);
-        }
-        return playGame(name, seed, wrapper);
-    }
-
 
 }

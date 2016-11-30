@@ -7,12 +7,15 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
+import java.io.PrintStream;
+
 /**
  * A runner capable of playing the games for every legal hand size
  * <p>
  * This runner paired with
  */
 public class MixedAgentGameSingle {
+    private static final String SPACER = "###########################";
 
     private MixedAgentGameSingle() {
 
@@ -28,6 +31,7 @@ public class MixedAgentGameSingle {
         long seed = Long.parseLong(args[2]);
 
         String taskId = System.getenv("SGE_TASK_ID");
+        PrintStream log = System.err;
 
         for (int run = 0; run < repeats; run++) {
             for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
@@ -41,9 +45,9 @@ public class MixedAgentGameSingle {
                     gameID = String.format("%s-%d-%d", taskId, nPlayers, run);
                 }
 
-                System.err.println("###########################");
-                System.err.println("# begin game " + gameID);
-                System.err.println("###########################");
+                log.println(SPACER);
+                log.println("# begin game " + gameID);
+                log.println(SPACER);
 
                 Agent[] agents = new Agent[nPlayers];
                 String[] agentStr = new String[5];
@@ -56,12 +60,11 @@ public class MixedAgentGameSingle {
                     agentStr[i] = agentPaired;
                 }
 
-                //System.out.println("name,seed,players,information,lives,moves,score");
                 App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
 
-                System.err.println("###########################");
-                System.err.println("# end game " + gameID);
-                System.err.println("###########################");
+                log.println(SPACER);
+                log.println("# end game " + gameID);
+                log.println(SPACER);
             }
         }
     }
