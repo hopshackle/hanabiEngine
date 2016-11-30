@@ -14,6 +14,7 @@ import java.util.UUID;
 /**
  * Hello world!
  */
+@Deprecated
 public class App2Csv {
     public static final Integer GAME_SIZE = 3;
     public static final Integer DEFAULT_NUM_RUNS = 100;

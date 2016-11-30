@@ -7,6 +7,7 @@ import java.util.Random;
 /**
  * A runner capable of playing the games for every legal hand size
  */
+@Deprecated
 public class App2CsvMulti {
 
     //utility class - no instances permitted.
