@@ -1,6 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
@@ -12,16 +12,16 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.util.*;
 
 /**
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
-    private static final int DEFAULT_ITERATIONS = 50_000;
-    private static final int DEFAULT_ROLLOUT_DEPTH = 18;
-    private static final int DEFAULT_TREE_DEPTH_MUL = 1;
+    public static final int DEFAULT_ITERATIONS = 50_000;
+    public static final int DEFAULT_ROLLOUT_DEPTH = 18;
+    public static final int DEFAULT_TREE_DEPTH_MUL = 1;
+    public static final int NO_LIMIT = 100;
 
     protected final int roundLength;
     protected final int rolloutDepth;

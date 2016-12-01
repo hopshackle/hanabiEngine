@@ -1,6 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Deprecated
 public class Simulator {
     private static final Logger logger = LoggerFactory.getLogger(Simulator.class);
 

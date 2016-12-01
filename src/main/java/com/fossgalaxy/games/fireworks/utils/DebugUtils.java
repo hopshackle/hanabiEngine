@@ -1,4 +1,4 @@
-package com.fossgalaxy.games.fireworks;
+package com.fossgalaxy.games.fireworks.utils;
 
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;

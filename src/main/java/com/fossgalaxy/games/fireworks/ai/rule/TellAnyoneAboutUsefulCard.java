@@ -1,9 +1,5 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
-import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
-import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
