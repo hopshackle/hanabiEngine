@@ -28,12 +28,11 @@ public class MCTSNode {
     private final Collection<Action> allUnexpandedActions;
     private final Random random;
     private final int depth;
+    private final Logger logger = LoggerFactory.getLogger(MCTSNode.class);
 
     private double score;
     private int visits;
     private int parentWasVisitedAndIWasLegal;
-
-    private PrintStream log;
 
     public MCTSNode(Collection<Action> allUnexpandedActions) {
         this(null, -1, null, allUnexpandedActions);
@@ -41,7 +40,6 @@ public class MCTSNode {
 
     public MCTSNode(int agentID, Action moveToState, Collection<Action> allUnexpandedActions) {
         this(null, agentID, moveToState, allUnexpandedActions);
-        this.log = System.err;
     }
 
     public MCTSNode(MCTSNode parent, int agentId, Action moveToState, Collection<Action> allUnexpandedActions) {
@@ -188,10 +186,9 @@ public class MCTSNode {
     }
 
     public void printChildren() {
-        log.format("\t %35s\t%-10s\t%-10s\t%-9s%n", "action", "visits", "score", "avg");
+        logger.trace("\t {}\t {}\t {}\t {}", "action", "visits", "score", "avg");
         for (MCTSNode child : children) {
-            log.format("\t %35s\t%-10d\t%-6.3f\t%6.3f%n", child.getAction(), child.visits, child.score, child.score / child.visits);
+            logger.trace("\t{}\t{}\t{}\t{}", child.getAction(), child.visits, child.score, child.score / child.visits);
         }
-        log.println();
     }
 }
