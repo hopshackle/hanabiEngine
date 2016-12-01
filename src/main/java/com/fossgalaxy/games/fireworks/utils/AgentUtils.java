@@ -5,7 +5,6 @@ import com.fossgalaxy.games.fireworks.ai.RandomAgent;
 import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
-import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 
 import java.util.HashMap;

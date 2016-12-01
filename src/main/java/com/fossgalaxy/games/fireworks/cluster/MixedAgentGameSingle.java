@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.cluster;
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 /**
@@ -11,7 +12,7 @@ import com.fossgalaxy.games.fireworks.utils.SetupUtils;
  * This runner paired with
  */
 public class MixedAgentGameSingle {
-    
+
     public static void main(String[] args) {
 
         int repeats = SetupUtils.getRepeatCount();
@@ -46,7 +47,7 @@ public class MixedAgentGameSingle {
                 agents[0] = App.buildAgent(agentUnderTest, 0, agentPaired, nPlayers);
                 agentStr[0] = agentUnderTest;
                 for (int i = 1; i < nPlayers; i++) {
-                    agents[i] = App.buildAgent(agentPaired);
+                    agents[i] = AgentUtils.buildAgent(agentPaired);
                     agentStr[i] = agentPaired;
                 }
 

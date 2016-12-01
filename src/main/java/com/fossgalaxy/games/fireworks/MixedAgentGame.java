@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
@@ -48,7 +49,7 @@ public class MixedAgentGame {
                         agents[0] = App.buildAgent(name, 0, paired, i);
                         agentStr[0] = name;
                         for (int agent = 1; agent < agents.length; agent++) {
-                            agents[agent] = App.buildAgent(paired);
+                            agents[agent] = AgentUtils.buildAgent(paired);
                             agentStr[agent] = paired;
                         }
 

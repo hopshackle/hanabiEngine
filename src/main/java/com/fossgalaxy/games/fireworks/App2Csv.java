@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.players.Player;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class App2Csv {
 
             for (int i = 0; i < agents.length; i++) {
                 for (int agent = 0; agent < agents.length; agent++) {
-                    agents[agent] = App.buildAgent(agentNames[i]);
+                    agents[agent] = AgentUtils.buildAgent(agentNames[i]);
                     agentStr[agent] = agentNames[i];
                 }
 

@@ -2,12 +2,9 @@ package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
-import com.fossgalaxy.games.fireworks.ai.RandomAgent;
-import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
-import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 import java.util.UUID;
@@ -53,43 +50,6 @@ public class App {
         GameStats stats = runner.playGame(null);
         System.out.println("the agents scored: " + stats);
         return stats;
-    }
-
-    @Deprecated
-    public static Agent buildAgent(String name) {
-        switch (name) {
-            case "pure_random":
-                return new RandomAgent();
-            case "random":
-                return OsawaFactory.buildRandom();
-            case "internal":
-                return OsawaFactory.buildInternalState();
-            case "outer":
-                return OsawaFactory.buildOuterState();
-            case "cautious":
-                return IGGIFactory.buildCautious();
-            case "iggi":
-                return IGGIFactory.buildIGGIPlayer();
-            case "legal_random":
-                return IGGIFactory.buildRandom();
-            case "mcts":
-                return new MCTS();
-            case "mctsND":
-                return new MCTS(50_000, 100, 100);
-            case "cautiousMCTS":
-            case "cautiousMCTSND":
-                Agent[] a = new Agent[]{buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious")};
-                if (name.contains("ND")) {
-                    return new MCTSPredictor(a, 50_000, 100, 100);
-                }
-                return new MCTSPredictor(a);
-            case "iggi_risky":
-                return IGGIFactory.buildRiskyPlayer();
-            case "hat":
-                return new HatGuessing();
-        }
-
-        throw new IllegalArgumentException("unknown agent type " + name);
     }
 
     public static Agent buildAgent(String name, int agentID, String paired, int size) {
