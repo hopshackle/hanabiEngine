@@ -6,6 +6,8 @@ import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
+import com.fossgalaxy.games.fireworks.utils.GameUtils;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.UUID;
 
@@ -39,15 +41,14 @@ public class App {
     }
 
     public static GameStats playGame() {
-        GameRunner runner = new GameRunner(UUID.randomUUID(), 5);
-
+        String[] names = new String[5];
+        Agent[] players = new Agent[5];
         for (int i=0; i<5; i++) {
-            AgentPlayer player = new AgentPlayer("hat", AgentUtils.buildAgent("iggi"));
-            player.setID(i, 5);
-            runner.addPlayer(player);
+            names[i] = "iggi";
+            players[i] = AgentUtils.buildAgent(names[i]);
         }
 
-        GameStats stats = runner.playGame(null);
+        GameStats stats = GameUtils.runGame("", null, SetupUtils.toPlayers(names, players));
         System.out.println("the agents scored: " + stats);
         return stats;
     }

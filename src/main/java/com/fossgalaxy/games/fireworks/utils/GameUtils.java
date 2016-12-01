@@ -13,7 +13,7 @@ public final class GameUtils {
 
     }
 
-    public static GameStats runGame(String gameID, long seed, Player... players) {
+    public static GameStats runGame(String gameID, Long seed, Player... players) {
         assert gameID != null;
         assert players != null;
 
