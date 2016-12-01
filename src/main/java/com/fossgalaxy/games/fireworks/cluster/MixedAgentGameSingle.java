@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.cluster;
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 /**
  * A runner capable of playing the games for every legal hand size
@@ -10,15 +11,10 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
  * This runner paired with
  */
 public class MixedAgentGameSingle {
-
+    
     public static void main(String[] args) {
 
-        int runCount = App2Csv.DEFAULT_NUM_RUNS;
-        //allow setting of run count via env variable
-        String runCountEnv = System.getenv("FIREWORKS_RUN_COUNT");
-        if (runCountEnv != null) {
-            runCount = Integer.parseInt(runCountEnv);
-        }
+        int repeats = SetupUtils.getRepeatCount();
 
         //arguments for script
         String agentUnderTest = args[0];
@@ -27,7 +23,7 @@ public class MixedAgentGameSingle {
 
         String taskId = System.getenv("SGE_TASK_ID");
 
-        for (int run = 0; run < runCount; run++) {
+        for (int run = 0; run < repeats; run++) {
             for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
 
                 //figure out if we need to generate a taskID or if one was provided by the runner

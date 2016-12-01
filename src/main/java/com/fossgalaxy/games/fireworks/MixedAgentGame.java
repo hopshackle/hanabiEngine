@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
 
@@ -10,30 +11,10 @@ import java.util.Random;
  * This runner paired with
  */
 public class MixedAgentGame {
-    private static final String[] AGENT_PAIRED = {"iggi", "internal", "outer", "legal_random", "cautious"};
-    private static final String[] AGENT_NAMES = {"cautious", "outer", "legal_random", "mcts", "predictorMCTS"};
 
     //utility class - no instances required.
     private MixedAgentGame() {
 
-    }
-
-    public static String[] getAgentNames() {
-        String[] agentNames = AGENT_NAMES;
-        String envAgents = System.getenv("FIREWORKS_AGENTS");
-        if (envAgents != null) {
-            agentNames = envAgents.split(",");
-        }
-        return agentNames;
-    }
-
-    public static String[] getPartnerNames() {
-        String[] agentNames = AGENT_PAIRED;
-        String envAgents = System.getenv("FIREWORKS_AGENTS_PAIRED");
-        if (envAgents != null) {
-            agentNames = envAgents.split(",");
-        }
-        return agentNames;
     }
 
     public static void main(String[] args) {
@@ -47,8 +28,8 @@ public class MixedAgentGame {
         }
 
 
-        String[] agentNames = getAgentNames();
-        String[] agentsPaired = getPartnerNames();
+        String[] agentNames = SetupUtils.getAgentNames();
+        String[] agentsPaired = SetupUtils.getPairedNames();
 
         Random random = new Random();
 

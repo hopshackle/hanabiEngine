@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 
 public class GameRunner {
@@ -19,25 +20,27 @@ public class GameRunner {
     private static final int RULE_STRIKES = 3; //how many times can a player return an illegal move before we give up?
     private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
 
+    private final String gameID;
     private final Player[] players;
     private final GameState state;
 
-    private final PrintStream gameOut;
-    private final UUID gameID;
 
     private int nPlayers;
     private int moves;
 
     private int nextPlayer;
 
-    public GameRunner(UUID gameID, int expectedPlayers, PrintStream gameOut) {
+    public GameRunner(UUID id, int playersCount){
+        this(id.toString(), playersCount);
+    }
+
+    public GameRunner(String gameID, int expectedPlayers) {
         assert expectedPlayers > 2 : "too few players";
         assert expectedPlayers < HAND_SIZE.length : "too many players";
 
         this.players = new Player[expectedPlayers];
         this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
         this.nPlayers = 0;
-        this.gameOut = gameOut;
 
         this.nextPlayer = 0;
         this.moves = 0;
@@ -46,12 +49,18 @@ public class GameRunner {
 
     public void addPlayer(Player player) {
         logger.info("player {} is {}", nPlayers, player);
-        players[nPlayers++] = player;
+        players[nPlayers++] = Objects.requireNonNull(player);
     }
 
     public void init(Long seed) {
         logger.info("game init started - {} player game with seed {}", players.length, seed);
         long startTime = getTick();
+
+        //step 1: tell all players their IDs
+        for (int i=0; i<players.length; i++) {
+            logger.info("player {} is {}", i, players[i]);
+            players[i].setID(i, players.length);
+        }
 
         state.init(seed);
 
@@ -74,11 +83,11 @@ public class GameRunner {
 
     //TODO find a better way of doing this logging.
     private void writeState(GameState state) {
-        if (gameOut == null) {
+       /* if (gameOut == null) {
             return;
         }
 
-        DebugUtils.printState(gameOut, state);
+        DebugUtils.printState(gameOut, state);*/
     }
 
     private long getTick() {

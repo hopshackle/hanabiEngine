@@ -15,6 +15,11 @@ public class RandomPlayer implements Player {
     }
 
     @Override
+    public String getName() {
+        return "RandomPlayer";
+    }
+
+    @Override
     public Action getAction() {
         return TextProtocol.stringToAction(getTextAction());
     }
@@ -34,14 +39,11 @@ public class RandomPlayer implements Player {
 
     @Override
     public void sendMessage(GameEvent msg) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void setID(int id, int nPlayers) {
-        // TODO Auto-generated method stub
-
     }
 
 }

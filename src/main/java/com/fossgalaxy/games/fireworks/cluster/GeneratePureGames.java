@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.MixedAgentGame;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 /**
  * Generate matchups between an agent and itself.
@@ -10,14 +11,8 @@ import com.fossgalaxy.games.fireworks.MixedAgentGame;
 public class GeneratePureGames {
 
     public static void main(String[] args) {
-        String[] agentsUnderTest = MixedAgentGame.getAgentNames();
-
-        //number of seeds
-        String numSeedsEnv = System.getenv("FIREWORKS_NUM_SEEDS");
-        int numSeeds = 10;
-        if (numSeedsEnv != null) {
-            numSeeds = Integer.parseInt(numSeedsEnv);
-        }
+        String[] agentsUnderTest = SetupUtils.getAgentNames();
+        int numSeeds = SetupUtils.getSeedCount();
 
         GenerateGames.printMatchups(agentsUnderTest, agentsUnderTest, numSeeds);
     }
