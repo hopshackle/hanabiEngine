@@ -83,11 +83,7 @@ public class GameRunner {
 
     //TODO find a better way of doing this logging.
     private void writeState(GameState state) {
-       /* if (gameOut == null) {
-            return;
-        }
-
-        DebugUtils.printState(gameOut, state);*/
+        DebugUtils.printState(System.out, state);
     }
 
     private long getTick() {
@@ -131,9 +127,9 @@ public class GameRunner {
         int strikes = 0;
         while (!state.isGameOver()) {
             try {
+                state.tick();
                 writeState(state);
                 nextMove();
-                state.tick();
             } catch (RulesViolation rv) {
                 logger.warn("got rules violation when processing move", rv);
                 strikes++;

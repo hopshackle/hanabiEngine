@@ -44,7 +44,7 @@ public class App {
         GameRunner runner = new GameRunner(UUID.randomUUID(), 5);
 
         for (int i=0; i<5; i++) {
-            AgentPlayer player = new AgentPlayer("hat", buildAgent("hat"));
+            AgentPlayer player = new AgentPlayer("hat", buildAgent("iggi"));
             player.setID(i, 5);
             runner.addPlayer(player);
         }
