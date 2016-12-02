@@ -31,29 +31,6 @@ public class testDiscardUselessCard {
         state.setInformation(7);
     }
 
-    public Object[] parametersForHighestScorePossible() {
-        return $(
-                $(1, 0, 5),
-                $(1, 3, 0),
-                $(2, 2, 1),
-                $(3, 2, 2),
-                $(4, 2, 3),
-                $(5, 1, 4)
-        );
-    }
-
-    @Test
-    @Parameters(method = "parametersForHighestScorePossible")
-    public void testHighestScorePossible(int cardValue, int numToRemove, int maxScore) {
-        state.init();
-        final CardColour colour = CardColour.BLUE;
-        for (int i = 0; i < numToRemove; i++) {
-            state.addToDiscard(new Card(cardValue, colour));
-        }
-
-        assertEquals(maxScore, instance.getHighestScore(state, colour));
-    }
-
     @Test
     public void testAll3sDiscardedSoWillDiscard4() {
 
