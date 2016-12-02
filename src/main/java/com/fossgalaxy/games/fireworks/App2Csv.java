@@ -130,7 +130,7 @@ public class App2Csv {
     public static Player[] toPlayers(Agent ... agents) {
         Player[] wrapper = new Player[agents.length];
         for (int i = 0; i < agents.length; i++) {
-            wrapper[i] = new AgentPlayer(i, agents[i]);
+            wrapper[i] = new AgentPlayer(agents[i].getClass().getSimpleName(), agents[i]);
         }
         return wrapper;
     }
