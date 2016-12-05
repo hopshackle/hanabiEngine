@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.actions;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
@@ -57,10 +56,6 @@ public class TellColour implements Action {
     }
 
     @Override
-    public String toProtocol() {
-        return String.format("%s %d %s", TextProtocol.ACTION_TELL_COLOUR, player, colour);
-    }
-
     public String toString() {
         return String.format("tell %d about their %ss", player, colour);
     }

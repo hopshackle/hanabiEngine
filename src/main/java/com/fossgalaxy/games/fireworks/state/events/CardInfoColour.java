@@ -1,14 +1,11 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class CardInfoColour extends GameEvent {
     private final static String CARD_FORMAT = "player %d has %s cards, in slot(s) %s.";
@@ -52,17 +49,6 @@ public class CardInfoColour extends GameEvent {
     @Override
     public String toString() {
         return String.format(CARD_FORMAT, playerId, colour, Arrays.toString(slots));
-    }
-
-    @Override
-    public String toTextProtocol() {
-        // I've not gone mad, Arrays.asList returns List<int[]> x.x
-        List<Integer> slotList = new ArrayList<Integer>();
-        for (int slot : slots) {
-            slotList.add(slot);
-        }
-
-        return TextProtocol.tellPlayer(performer, playerId, colour, slotList);
     }
 
     public int getPerformer() {

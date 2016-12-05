@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -52,11 +51,6 @@ public class CardPlayed extends GameEvent {
     @Override
     public String toString() {
         return String.format(CARD_FORMAT, playerId, slotId, colour, value);
-    }
-
-    @Override
-    public String toTextProtocol() {
-        return TextProtocol.playCard(playerId, slotId, new Card(value, colour));
     }
 
 }

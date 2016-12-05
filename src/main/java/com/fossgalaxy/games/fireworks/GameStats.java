@@ -21,7 +21,7 @@ public class GameStats {
         this.disqal = disqual;
     }
 
-
+    @Override
     public String toString() {
         return String.format("%d in %d moves (%d lives left)", score, moves, lives);
     }

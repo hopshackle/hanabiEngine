@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.actions;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
@@ -59,10 +58,6 @@ public class TellValue implements Action {
     }
 
     @Override
-    public String toProtocol() {
-        return String.format("%s %d %d", TextProtocol.ACTION_TELL_VALUE, player, value);
-    }
-
     public String toString() {
         return String.format("tell %d about their %ss", player, value);
     }

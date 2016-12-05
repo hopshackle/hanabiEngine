@@ -12,6 +12,4 @@ public interface Action extends Serializable {
 
     boolean isLegal(int playerID, GameState state);
 
-    String toProtocol();
-
 }

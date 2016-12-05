@@ -21,6 +21,4 @@ public abstract class GameEvent implements Serializable {
         return true;
     }
 
-    public abstract String toTextProtocol();
-
 }

@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.actions;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.RulesViolation;
@@ -72,10 +71,6 @@ public class PlayCard implements Action {
     }
 
     @Override
-    public String toProtocol() {
-        return String.format("%s %d", TextProtocol.ACTION_PLAY, slot);
-    }
-
     public String toString() {
         return String.format("play %d", slot);
     }

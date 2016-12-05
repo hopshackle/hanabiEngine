@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.Deck;
@@ -33,11 +32,6 @@ public class CardDrawn extends GameEvent {
     @Override
     public boolean isVisibleTo(int playerID) {
         return playerID != this.playerId;
-    }
-
-    @Override
-    public String toTextProtocol() {
-        return TextProtocol.drawMessage(playerId, slotId, colour, cardValue);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
-import com.fossgalaxy.games.fireworks.TextProtocol;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
 public class GameInformation extends GameEvent {
@@ -22,12 +21,6 @@ public class GameInformation extends GameEvent {
         state.setInformation(infoTokens);
         state.setLives(lives);
         state.getDeck().init();
-    }
-
-    @Override
-    public String toTextProtocol() {
-        return TextProtocol.buildMessage(0, TextProtocol.EFFECT_GAMEINFO,
-                players + " " + handSize + " " + infoTokens + " " + lives);
     }
 
     @Override
