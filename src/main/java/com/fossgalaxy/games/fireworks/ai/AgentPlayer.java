@@ -22,6 +22,12 @@ public class AgentPlayer implements Player {
     private GameState state;
     private int playerID;
 
+    /**
+     * Create a player with a given name and policy.
+     *
+     * @param name the name of this player
+     * @param policy the policy this player should use
+     */
     public AgentPlayer(String name, Agent policy) {
         this.name = Objects.requireNonNull(name);
         this.policy = Objects.requireNonNull(policy);

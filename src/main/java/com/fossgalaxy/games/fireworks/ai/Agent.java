@@ -4,6 +4,15 @@ import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
+/**
+ * An agent is a policy for playing the Hanabi game.
+ *
+ * We make the following (general) assumptions about agents:
+ * 1) they store no internal state between rounds
+ * 2) given a game state, they are able to return a move
+ * 3) the game state will be tracked for them on their behalf.
+ */
+@FunctionalInterface
 public interface Agent {
 
     /**

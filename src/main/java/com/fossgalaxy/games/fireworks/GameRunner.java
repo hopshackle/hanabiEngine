@@ -14,6 +14,9 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * A basic runner for the game of Hanabi.
+ */
 public class GameRunner {
     private final Logger logger = LoggerFactory.getLogger(GameRunner.class);
     private static final int RULE_STRIKES = 3; //how many times can a player return an illegal move before we give up?
@@ -29,10 +32,24 @@ public class GameRunner {
 
     private int nextPlayer;
 
+    /**
+     * Create a game runner with a given ID and a number of players.
+     *
+     * @param id the Id of the game
+     * @param playersCount the number of players that will be playing
+     * @deprecated use string IDs instead
+     */
+    @Deprecated
     public GameRunner(UUID id, int playersCount) {
         this(id.toString(), playersCount);
     }
 
+    /**
+     * Create a game runner with a given ID and number of players.
+     *
+     * @param gameID the ID of the game
+     * @param expectedPlayers the number of players we expect to be playing.
+     */
     public GameRunner(String gameID, int expectedPlayers) {
         assert expectedPlayers > 2 : "too few players";
         assert expectedPlayers < HAND_SIZE.length : "too many players";
@@ -46,12 +63,34 @@ public class GameRunner {
         this.gameID = gameID;
     }
 
+    /**
+     * Add a player to the game.
+     *
+     * This should not be attempted once the game has started.
+     *
+     * @param player the player to add to the game
+     */
     public void addPlayer(Player player) {
         logger.info("player {} is {}", nPlayers, player);
         players[nPlayers++] = Objects.requireNonNull(player);
     }
 
-    public void init(Long seed) {
+    /**
+     * Initialise the game for the players.
+     *
+     * This method does the setup phase for the game.
+     *
+     * this method is responsible for:
+     * 1) telling player their IDs
+     * 2) initialising the game state and deck order
+     * 3) informing players about the number of players and starting resource values
+     * 4) dealing and declaring the values in the player's initial hands.
+     *
+     * You should <b>not</b> call this method directly - calling playGame calls it for you on your behalf!
+     *
+     * @param seed the random seed to use for deck ordering.
+     */
+    protected void init(Long seed) {
         logger.info("game init started - {} player game with seed {}", players.length, seed);
         long startTime = getTick();
 
@@ -90,7 +129,11 @@ public class GameRunner {
     }
 
     //TODO time limit the agent
-    public void nextMove() {
+
+    /**
+     * Ask the next player for their move.
+     */
+    protected void nextMove() {
         Player player = players[nextPlayer];
         assert player != null : "that player is not valid";
 
@@ -119,6 +162,14 @@ public class GameRunner {
         nextPlayer = (nextPlayer + 1) % players.length;
     }
 
+    /**
+     * Play the game and generate the outcome.
+     *
+     * This will play the game and generate a result.
+     *
+     * @param seed the seed to use for deck ordering
+     * @return the result of the game
+     */
     public GameStats playGame(Long seed) {
         assert nPlayers == players.length;
         init(seed);
