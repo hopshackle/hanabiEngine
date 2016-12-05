@@ -12,13 +12,14 @@ import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Created by piers on 11/11/16.
  */
 public class HatGuessing implements Agent {
     private static final int NOT_FOUND = 99;
-    private static final int[] copies = {0,3,2,2,2,1};
+    private static final int[] copies = {0, 3, 2, 2, 2, 1};
 
     private int playerID;
 
@@ -35,16 +36,18 @@ public class HatGuessing implements Agent {
     @Override
     public Action doMove(int agentID, GameState state) {
 
-        // 1. If the most recent recommendation was to play a card and no card has been played since the lat hint, player the recommended card
-        if (lastToldAction != null && lastToldAction.isPlay()) {
-            if (cardsPlayedSinceHint == 0 || state.getLives() != 1) {
-                return lastToldAction.recommended;
-            }
-        }
-
+        // 1. If the most recent recommendation was to play a card and no card has been played since the lat hint, play the recommended card
         // 2. If the most recent recommendation was to play a card, one card has been played
         //    since the hint was given, and the players have made fewer than two errors, play the
         //    recommended card
+        if (lastToldAction != null && lastToldAction.isPlay()) {
+            if (cardsPlayedSinceHint == 0) {
+                return lastToldAction.recommended;
+            }
+            if (cardsPlayedSinceHint == 1 && state.getLives() > 1) {
+                return lastToldAction.recommended;
+            }
+        }
 
         // 3. If the players have a hint token, give a hint.
         if (state.getInfomation() > 0) {
@@ -67,11 +70,11 @@ public class HatGuessing implements Agent {
     }
 
     public boolean isDead(GameState state, Card card) {
-	return state.getTableValue(card.colour) >= card.value; 
+        return state.getTableValue(card.colour) >= card.value;
     }
 
     public boolean isPlayable(GameState state, Card card) {
-	return state.getTableValue(card.colour) == card.value - 1;
+        return state.getTableValue(card.colour) == card.value - 1;
     }
 
 
@@ -99,7 +102,7 @@ public class HatGuessing implements Agent {
         //figure out how many copies have already been discarded/played incorrectly
         int totalCopies = copies[card.value];
         long copiesIsDiscard = state.getDiscards().stream().filter(card::equals).count();
-        if (copiesIsDiscard < totalCopies-1 ) {
+        if (copiesIsDiscard < totalCopies - 1) {
             return false; //we've can't account for all of them in either the discard - they're still in play somewhere
         }
 
@@ -123,13 +126,13 @@ public class HatGuessing implements Agent {
      */
     public Recommendation doRecommend(int agentID, GameState state) {
         int agentToTell = (agentID + 1) % state.getPlayerCount();
-        TimedHand hand = (TimedHand)state.getHand(agentToTell);
+        TimedHand hand = (TimedHand) state.getHand(agentToTell);
 
-        //order the hand fro oldest to newest
+        //order the hand from oldest to newest
         //whenever the rules talk about "lowest index" they mean oldest due to
         //the way this paper manages the hands.
-        Integer[] handOrder = new Integer[]{0,1,2,3};
-        Arrays.sort(handOrder, (c1, c2) -> Integer.compare(hand.getAge(c1), hand.getAge(c2)));
+        Integer[] handOrder = new Integer[]{0, 1, 2, 3};
+        Arrays.sort(handOrder, Comparator.comparingInt(hand::getAge));
 
 
         //track the stuff we'll need for the rules
@@ -169,7 +172,7 @@ public class HatGuessing implements Agent {
             }
 
             //highest rank dispensible (not indispensable)
-            if (card.value > highestDispensibleValue && !isIndispensable(state, card)){
+            if (card.value > highestDispensibleValue && !isIndispensable(state, card)) {
                 highestDispensible = slot;
                 highestDispensibleValue = card.value;
             }
@@ -225,7 +228,7 @@ public class HatGuessing implements Agent {
     private int getEncodedValue(int whoTold, int toldWho) {
         int[] tellArray = new int[5];
         int pid = 0;
-        for (int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             if (i != whoTold) {
                 tellArray[i] = pid++;
             } else {
