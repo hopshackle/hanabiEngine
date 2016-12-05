@@ -64,10 +64,13 @@ public class TestHandEquals {
     @Test
     @Parameters(method = "parametersForTestEquals")
     public void testShieldedHandEquals(int size1, Integer[] values1, CardColour[] colours1, int size2, Integer[] values2, CardColour[] colours2, boolean expected) {
-        Hand hand1 = new ShieldedHand(new BasicHand(size1));
-        Hand hand2 = new ShieldedHand(new BasicHand(size2));
-        setKnowledge(hand1, values1, colours1);
-        setKnowledge(hand2, values2, colours2);
+        BasicHand h1 = new BasicHand(size1);
+        BasicHand h2 = new BasicHand(size2);
+
+        Hand hand1 = new ShieldedHand(h1);
+        Hand hand2 = new ShieldedHand(h2);
+        setKnowledge(h1, values1, colours1);
+        setKnowledge(h2, values2, colours2);
 
         assertEquals(expected, hand1.equals(hand2));
     }

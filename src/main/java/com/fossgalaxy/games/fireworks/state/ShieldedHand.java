@@ -14,12 +14,12 @@ public class ShieldedHand implements Hand {
 
     @Override
     public void init() {
-
+        throw new UnsupportedOperationException("Card views do not require init");
     }
 
     @Override
     public Card getCard(int slot) {
-        return null;
+        throw new UnsupportedOperationException("Accessing of complete information is not permitted");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ShieldedHand implements Hand {
 
     @Override
     public void setCard(int slot, Card card) {
-        //nope.
+        throw new UnsupportedOperationException("Setting of cards is not permitted.");
     }
 
     @Override
@@ -49,18 +49,17 @@ public class ShieldedHand implements Hand {
 
     @Override
     public void setKnownColour(CardColour colour, Integer[] slots) {
-        //nope.
+        throw new UnsupportedOperationException("Setting of card colours is not permitted");
     }
 
     @Override
     public void setKnownValue(Integer value, Integer[] slots) {
-        //nope.
+        throw new UnsupportedOperationException("Setting of card values is not permitted");
     }
 
     @Override
     public boolean isCompletePossible(int slot, Card card) {
-        //complete information is banned.
-        return false;
+        throw new UnsupportedOperationException("Accessing of complete information is not permitted");
     }
 
     @Override
