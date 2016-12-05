@@ -20,6 +20,10 @@ import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
  */
 public class OsawaFactory {
 
+    private OsawaFactory() {
+
+    }
+
     /**
      * Internal-State Strategy as described by Osawa
      *

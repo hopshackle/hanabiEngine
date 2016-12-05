@@ -11,6 +11,10 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
  */
 public class FreeForAllGameSingle {
 
+    private FreeForAllGameSingle() {
+
+    }
+
     public static void main(String[] args) {
 
         int runCount = App2Csv.DEFAULT_NUM_RUNS;

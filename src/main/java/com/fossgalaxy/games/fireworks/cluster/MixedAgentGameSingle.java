@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
+import com.fossgalaxy.games.fireworks.MixedAgentGame;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
@@ -12,6 +13,10 @@ import com.fossgalaxy.games.fireworks.utils.SetupUtils;
  * This runner paired with
  */
 public class MixedAgentGameSingle {
+
+    private MixedAgentGameSingle() {
+
+    }
 
     public static void main(String[] args) {
 

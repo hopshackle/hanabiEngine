@@ -9,6 +9,10 @@ import java.util.Random;
  */
 public class GenerateGames {
 
+    private GenerateGames() {
+
+    }
+
     public static void main(String[] args) {
         String[] agentsUnderTest = SetupUtils.getAgentNames();
         String[] agentsPaired = SetupUtils.getPairedNames();

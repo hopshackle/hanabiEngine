@@ -7,6 +7,10 @@ import java.util.Random;
  */
 public class GenerateValidation {
 
+    private GenerateValidation() {
+
+    }
+
     public static void main(String[] args) {
 
         //allow generation of known seeds (useful for comparisons between pure and mixed games)

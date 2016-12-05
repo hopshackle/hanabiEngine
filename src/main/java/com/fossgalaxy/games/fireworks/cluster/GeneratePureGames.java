@@ -9,6 +9,10 @@ import com.fossgalaxy.games.fireworks.utils.SetupUtils;
  */
 public class GeneratePureGames {
 
+    private GeneratePureGames() {
+
+    }
+
     public static void main(String[] args) {
         String[] agentsUnderTest = SetupUtils.getAgentNames();
         int numSeeds = SetupUtils.getSeedCount();

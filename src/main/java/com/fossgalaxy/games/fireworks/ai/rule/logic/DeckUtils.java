@@ -1,15 +1,16 @@
 package com.fossgalaxy.games.fireworks.ai.rule.logic;
 
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
-import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
+import com.fossgalaxy.games.fireworks.state.*;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DeckUtils {
+
+    private DeckUtils() {
+
+    }
 
     public static Map<Integer, List<Card>> bindCard(int player, Hand hand, List<Card> deck) {
 

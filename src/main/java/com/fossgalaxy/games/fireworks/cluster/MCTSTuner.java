@@ -9,6 +9,11 @@ import com.fossgalaxy.games.fireworks.utils.AgentUtils;
  * Created by piers on 18/10/16.
  */
 public class MCTSTuner {
+
+    private MCTSTuner() {
+
+    }
+
     /*
     Pass in the same arguments as MixedAgentGameSingle
 

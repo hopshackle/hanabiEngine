@@ -10,6 +10,10 @@ import java.util.Random;
  */
 public class GenerateFFAGames {
 
+    private GenerateFFAGames() {
+
+    }
+
     public static void main(String[] args) {
         String[] agentsUnderTest = SetupUtils.getAgentNames();
         String[] agentsPaired = SetupUtils.getPairedNames();
