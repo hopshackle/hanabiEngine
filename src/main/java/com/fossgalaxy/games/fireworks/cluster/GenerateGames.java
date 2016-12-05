@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
-import com.fossgalaxy.games.fireworks.MixedAgentGame;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;

@@ -1,15 +1,12 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
-
-import java.util.UUID;
 
 /**
  * Hello world!
@@ -43,7 +40,7 @@ public class App {
     public static GameStats playGame() {
         String[] names = new String[5];
         Agent[] players = new Agent[5];
-        for (int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             names[i] = "hat";
             players[i] = AgentUtils.buildAgent(names[i]);
         }
@@ -108,8 +105,8 @@ public class App {
         }
     }
 
-    public static Agent buildAgent(String name, double threshold){
-        switch(name){
+    public static Agent buildAgent(String name, double threshold) {
+        switch (name) {
             case "iggi_risky":
                 return IGGIFactory.buildRiskyPlayer(threshold);
             default:

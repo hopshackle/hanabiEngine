@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
-import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
@@ -9,6 +8,7 @@ import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class MCTS implements Agent {
 
     /**
      * Create a default MCTS implementation.
-     *
+     * <p>
      * This creates an MCTS agent that has a default roll-out length of 50_000 iterations, a depth of 18 and a tree
      * multiplier of 1.
      */
@@ -113,7 +113,7 @@ public class MCTS implements Agent {
         if (logger.isTraceEnabled()) {
             logger.trace("next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
-                logger.trace("{}'s children",  level1.getAction());
+                logger.trace("{}'s children", level1.getAction());
                 level1.printChildren();
             }
         }
@@ -156,7 +156,7 @@ public class MCTS implements Agent {
                 if (state.getLives() < lives) {
                     iterationObject.incrementLivesLostMyGo();
                 }
-                if (state.getScore() > score){
+                if (state.getScore() > score) {
                     iterationObject.incrementPointsGainedMyGo();
                 }
             }

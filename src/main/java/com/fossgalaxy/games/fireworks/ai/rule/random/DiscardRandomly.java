@@ -1,7 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule.random;
 
 import com.fossgalaxy.games.fireworks.ai.rule.AbstractDiscardRule;
-import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;

@@ -14,16 +14,16 @@ public final class SetupUtils {
     private static final Integer DEFAULT_SEED_COUNT = 10;
     private static final Integer DEFAULT_RUN_COUNT = 2;
 
-    private SetupUtils () {
+    private SetupUtils() {
 
     }
 
     /**
      * Get the list of agents to use for evaluation.
-     *
+     * <p>
      * This can be overridden using the environment variable FIREWORKS_AGENTS. These names will be passed into the
      * agent factory in order to be created.
-     *
+     * <p>
      * These are the agents that are to be considered under test.
      *
      * @return A list of agent names to be used in the evaluation
@@ -39,10 +39,10 @@ public final class SetupUtils {
 
     /**
      * Get the list of agents to use for pairing with evaluation.
-     *
+     * <p>
      * These are the agents that should be used as the agents to evaluate the agents under test with. These can be
      * set using the FIREWORKS_AGENTS_PAIRED environment variable - if this is not set, it will use some sane defaults.
-     *
+     * <p>
      * These are the agents that are used for testing the agents.
      *
      * @return a list of agent names to be paired with for evaluation
@@ -59,7 +59,7 @@ public final class SetupUtils {
 
     /**
      * Get the number of seeds we should be using.
-     *
+     * <p>
      * You can set this using the FIREWORKS_NUM_SEEDS envrioment variable, if not set it will return a sensible default.
      *
      * @return the number of seeds to use for this run.
@@ -74,10 +74,10 @@ public final class SetupUtils {
 
     /**
      * Get the default number of repeats to do.
-     *
+     * <p>
      * This controls how many times a game should be repeated, the environment variable FIREWORKS_REPEAT_COUNT controls
      * this value. If not set, it will default to a sane value.
-     *
+     * <p>
      * A repeat is the same agents running on the same seed.
      *
      * @return the number of runs to do.
@@ -95,7 +95,7 @@ public final class SetupUtils {
         assert names.length == policies.length : "agent names and policies are different lengths";
 
         Player[] players = new Player[names.length];
-        for (int i=0; i<players.length; i++) {
+        for (int i = 0; i < players.length; i++) {
             players[i] = new AgentPlayer(names[i], policies[i]);
         }
         return players;

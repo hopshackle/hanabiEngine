@@ -1,12 +1,12 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
-import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

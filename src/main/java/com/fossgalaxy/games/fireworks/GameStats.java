@@ -1,7 +1,5 @@
 package com.fossgalaxy.games.fireworks;
 
-import java.util.UUID;
-
 public class GameStats {
     public final String gameID;
     public final int nPlayers;

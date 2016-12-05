@@ -136,6 +136,7 @@ public interface Hand {
 
     /**
      * Has a card of that colour that it knows exactly about
+     *
      * @param colour The colour to check
      * @return Wether there is a card of that colour in the hand
      */
@@ -143,6 +144,7 @@ public interface Hand {
 
     /**
      * Has a card of that value that it knows exactly about
+     *
      * @param value The value to check
      * @return Wether there is a card of that value in the hand
      */

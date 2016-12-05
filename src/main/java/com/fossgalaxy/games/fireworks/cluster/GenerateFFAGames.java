@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
-import com.fossgalaxy.games.fireworks.MixedAgentGame;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
@@ -42,21 +41,21 @@ public class GenerateFFAGames {
 
         for (int seedID = 0; seedID < numSeeds; seedID++) {
             long seed = r.nextLong();
-            int numPlayers = r.nextInt(3)+2;
+            int numPlayers = r.nextInt(3) + 2;
 
-                int myAgent = r.nextInt(numPlayers);
+            int myAgent = r.nextInt(numPlayers);
 
-                for (String agentPaired : agentsPaired) {
-                    for (String agentUnderTest : agentsUnderTest) {
+            for (String agentPaired : agentsPaired) {
+                for (String agentUnderTest : agentsUnderTest) {
 
-                        String[] agentStr = new String[numPlayers];
-                        for (int i = 0; i < numPlayers; i++) {
-                            agentStr[i] = (myAgent == i) ? agentUnderTest : agentPaired;
-                        }
-
-                        System.out.println(String.format("%d %d %s", numPlayers, seed, String.join(" ", agentStr)));
+                    String[] agentStr = new String[numPlayers];
+                    for (int i = 0; i < numPlayers; i++) {
+                        agentStr[i] = (myAgent == i) ? agentUnderTest : agentPaired;
                     }
+
+                    System.out.println(String.format("%d %d %s", numPlayers, seed, String.join(" ", agentStr)));
                 }
+            }
         }
 
     }

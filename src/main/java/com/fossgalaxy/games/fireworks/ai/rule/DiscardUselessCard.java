@@ -31,7 +31,7 @@ public class DiscardUselessCard extends AbstractDiscardRule {
 
             int highestPossible = HandUtils.getHighestScorePossible(state, c);
             Integer knownValue = myHand.getKnownValue(slot);
-            if(HandUtils.isSafeToDiscardHigherThanPossible(state, c, knownValue)){
+            if (HandUtils.isSafeToDiscardHigherThanPossible(state, c, knownValue)) {
                 return new DiscardCard(slot);
             }
 

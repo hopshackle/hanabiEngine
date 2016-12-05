@@ -4,7 +4,10 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
-import com.fossgalaxy.games.fireworks.ai.rule.*;
+import com.fossgalaxy.games.fireworks.ai.rule.DiscardOldestFirst;
+import com.fossgalaxy.games.fireworks.ai.rule.PlaySafeCard;
+import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
+import com.fossgalaxy.games.fireworks.ai.rule.TellAnyoneAboutUsefulCard;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
@@ -49,7 +52,7 @@ public class IGGIFactory {
         return pra;
     }
 
-    public static Agent buildRiskyPlayer(double threshold){
+    public static Agent buildRiskyPlayer(double threshold) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new PlayIfCertain());
         pra.addRule(new PlayProbablySafeCard(threshold));
@@ -59,7 +62,7 @@ public class IGGIFactory {
         return pra;
     }
 
-    public static Agent buildRiskyPlayer(){
+    public static Agent buildRiskyPlayer() {
         return buildRiskyPlayer(0.75);
     }
 

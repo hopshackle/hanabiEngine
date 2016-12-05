@@ -1,9 +1,13 @@
 package com.fossgalaxy.games.fireworks.ai.rule.logic;
 
-import com.fossgalaxy.games.fireworks.state.*;
-import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
+import com.fossgalaxy.games.fireworks.state.Card;
+import com.fossgalaxy.games.fireworks.state.CardColour;
+import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.Hand;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by piers on 01/12/16.

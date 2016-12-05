@@ -36,7 +36,7 @@ public class AgentUtils {
         map.put("hat", HatGuessing::new);
 
         //Non-depth limited mcts versions
-        map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT) );
+        map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT));
 
         return map;
     }
@@ -62,7 +62,7 @@ public class AgentUtils {
         return agents;
     }
 
-    public static Agent[] buildPredictors(int myID, String ... paired) {
+    public static Agent[] buildPredictors(int myID, String... paired) {
         Agent[] agents = new Agent[paired.length];
         for (int i = 0; i < paired.length; i++) {
             if (i == myID) {

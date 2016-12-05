@@ -17,7 +17,7 @@ public class PlayProbablySafeCard extends AbstractRule {
 
     private final double threshold;
 
-    public PlayProbablySafeCard(){
+    public PlayProbablySafeCard() {
         this.threshold = 0.95;
     }
 

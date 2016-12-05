@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Wrapper for an agent policy to player.
- *
+ * <p>
  * This keeps track of state on behalf of the policy so that the agent can implement the standard interface generally
  * used by game playing agents (get a state, return an action).
  */

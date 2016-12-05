@@ -29,7 +29,7 @@ public class GameRunner {
 
     private int nextPlayer;
 
-    public GameRunner(UUID id, int playersCount){
+    public GameRunner(UUID id, int playersCount) {
         this(id.toString(), playersCount);
     }
 
@@ -56,7 +56,7 @@ public class GameRunner {
         long startTime = getTick();
 
         //step 1: tell all players their IDs
-        for (int i=0; i<players.length; i++) {
+        for (int i = 0; i < players.length; i++) {
             logger.info("player {} is {}", i, players[i]);
             players[i].setID(i, players.length);
         }
@@ -101,7 +101,7 @@ public class GameRunner {
         Action action = player.getAction();
 
         long endTime = getTick();
-        logger.debug("agent {} took {} ms to make their move", nextPlayer, endTime-startTime);
+        logger.debug("agent {} took {} ms to make their move", nextPlayer, endTime - startTime);
         logger.debug("move {}: player {} made move {}", moves, nextPlayer, action);
 
         //if the more was illegal, throw a rules violation

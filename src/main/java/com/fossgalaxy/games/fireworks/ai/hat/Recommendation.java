@@ -1,7 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.hat;
 
 import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.*;
 
