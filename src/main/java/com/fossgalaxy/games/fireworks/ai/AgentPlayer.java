@@ -56,6 +56,7 @@ public class AgentPlayer implements Player {
         this.playerID = id;
         this.state = new BasicState(nPlayers);
         policy.receiveID(id);
+        policy.onState(state);
     }
 
     @Override

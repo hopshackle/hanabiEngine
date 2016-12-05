@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.hat;
 
+import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.*;
@@ -29,28 +30,30 @@ public enum Recommendation {
         //in order to avoid rule violations, we need to make sure our
         //tell actions are legal, thus we need to use a card in the
         //hand to do this.
-
-        //work out who we are allowed to tell
-        int[] peopleWhoAreNotMe = new int[4];
-        int size = 0;
-        for (int i=0; i<5; i++) {
-            if (i == myID) {
-                continue;
-            }
-            peopleWhoAreNotMe[size++] = i;
-        }
-
         if (recommendation.ordinal() < 4) {
             //first four, encode as rank (value)
-            int playerID = peopleWhoAreNotMe[recommendation.ordinal()];
-            int valueToUse = state.getHand(playerID).getCard(0).value;
-            return new TellValue(playerID, valueToUse);
+            for (int playerID = 0; playerID < HatGuessing.ENCODING[myID].length; playerID++) {
+                if (HatGuessing.ENCODING[myID][playerID] == recommendation.ordinal()) {
+                    for (int i = 0; i < 4; i++) {
+                        Card cardToUse = state.getHand(playerID).getCard(i);
+                        if (cardToUse == null) continue;
+                        return new TellValue(playerID, cardToUse.value);
+                    }
+                }
+            }
         } else {
             //second four, encode has suit (colour)
-            int playerID = peopleWhoAreNotMe[recommendation.ordinal() - 4];
-            CardColour colourToUse = state.getHand(playerID).getCard(0).colour;
-            return new TellColour(playerID, colourToUse);
+            for (int playerID = 0; playerID < HatGuessing.ENCODING[myID].length; playerID++) {
+                if (HatGuessing.ENCODING[myID][playerID] == recommendation.ordinal() - 4) {
+                    for (int i = 0; i < 4; i++) {
+                        Card cardToUse = state.getHand(playerID).getCard(i);
+                        if (cardToUse == null) continue;
+                        return new TellColour(playerID, cardToUse.colour);
+                    }
+                }
+            }
         }
+        throw new IllegalStateException("This guy had no cards - is he actually playing or spectating?");
     }
 
     public static Recommendation playSlot(int slot) {
@@ -58,9 +61,9 @@ public enum Recommendation {
         return recs[slot];
     }
 
-    public static Recommendation discardSlot(int slot){
+    public static Recommendation discardSlot(int slot) {
         Recommendation[] recs = Recommendation.values();
-        return recs[4+slot];
+        return recs[4 + slot];
     }
 
     public boolean isPlay() {

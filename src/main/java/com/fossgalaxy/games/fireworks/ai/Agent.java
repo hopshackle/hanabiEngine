@@ -35,4 +35,8 @@ public interface Agent {
     default void receiveID(int agentID){
 
     }
+
+    default void onState(GameState state){
+
+    }
 }

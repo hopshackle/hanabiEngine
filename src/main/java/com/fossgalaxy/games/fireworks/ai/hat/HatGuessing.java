@@ -27,6 +27,7 @@ public class HatGuessing implements Agent {
     private int cardsPlayedSinceHint = 0;
 
     private Rule discardOldest;
+    private GameState state;
 
     public HatGuessing() {
         this.discardOldest = new DiscardOldestFirst();
@@ -110,27 +111,9 @@ public class HatGuessing implements Agent {
         return true;
     }
 
+    public int getRecommendationForAHand(int agentToTell, GameState state) {
 
-    /**
-     * Playable: a card that can be successfully played with the current game state.
-     * <p>
-     * Dead: a card that has the same rank and suit of a successfully played card.
-     * <p>
-     * Indispensable: a card for which all other identical copies have been removed from
-     * the game, i.e. a card that if removed from the game will imply a perfect score cannot
-     * be obtained.
-     *
-     * @param agentID
-     * @param state
-     * @return
-     */
-    public Recommendation doRecommend(int agentID, GameState state) {
-        int agentToTell = (agentID + 1) % state.getPlayerCount();
         TimedHand hand = (TimedHand) state.getHand(agentToTell);
-
-        //order the hand from oldest to newest
-        //whenever the rules talk about "lowest index" they mean oldest due to
-        //the way this paper manages the hands.
         Integer[] handOrder = new Integer[]{0, 1, 2, 3};
         Arrays.sort(handOrder, Comparator.comparingInt(hand::getAge));
 
@@ -157,7 +140,7 @@ public class HatGuessing implements Agent {
             // 1. Recommend that the playable card of rank 5 with lowest index be played.
             // we can shortcut everything else, we know we're going to do this.
             if (card.value == 5 && isPlayable(state, card)) {
-                return Recommendation.playSlot(slot);
+                return slot;
             }
 
             //oldest playable
@@ -181,22 +164,46 @@ public class HatGuessing implements Agent {
         // 2. Recommend that the playable card with lowest rank (value) be played. If there is a tie for
         //    lowest rank, recommend the one with lowest index.
         if (lowestPlayable != NOT_FOUND) {
-            return Recommendation.playSlot(lowestPlayable);
+            return lowestPlayable;
         }
 
         // 3. Recommend that the dead card with lowest index (oldest) be discarded.
         if (lowestDead != NOT_FOUND) {
-            return Recommendation.discardSlot(lowestDead);
+            return lowestDead + 4;
         }
 
         // 4. Recommend that the card with highest rank (value) that is not indispensable be discarded.
         //    If there is a tie, recommend the one with lowest index.
         if (highestDispensible != NOT_FOUND) {
-            return Recommendation.discardSlot(highestDispensible);
+            return highestDispensible + 4;
         }
 
         // 5. Recommend that oldest (c1) be Discarded
-        return Recommendation.discardSlot(handOrder[0]);
+        return handOrder[0] + 4;
+    }
+
+
+    /**
+     * Playable: a card that can be successfully played with the current game state.
+     * <p>
+     * Dead: a card that has the same rank and suit of a successfully played card.
+     * <p>
+     * Indispensable: a card for which all other identical copies have been removed from
+     * the game, i.e. a card that if removed from the game will imply a perfect score cannot
+     * be obtained.
+     *
+     * @param agentID
+     * @param state
+     * @return
+     */
+    public Recommendation doRecommend(int agentID, GameState state) {
+
+        int sum = 0;
+        for (int position = 0; position < 5; position++) {
+            if (position == agentID) continue;
+            sum += getRecommendationForAHand(position, state);
+        }
+        return Recommendation.values()[sum % 8];
     }
 
 
@@ -205,36 +212,58 @@ public class HatGuessing implements Agent {
         playerID = agentID;
     }
 
+
+    public int getMissingPiece(int whoTold, int treasureChest) {
+        int sum = 0;
+        for (int position = 0; position < 5; position++) {
+            if (position == playerID || position == whoTold) continue;
+            sum += getRecommendationForAHand(position, state);
+
+        }
+
+        //find our piece
+        for (int i = 0; i < 8; i++) {
+            if ((sum + i) % 8 == treasureChest) return i;
+        }
+        throw new IllegalStateException("There was no treasure me hearties");
+    }
+
     @Override
     public void receiveEvent(GameEvent event) {
         switch (event.getEvent()) {
-            case CARD_INFO_COLOUR:
+            case CARD_INFO_COLOUR: {
                 CardInfoColour tellColour = (CardInfoColour) event;
                 int recommendation = 4 + getEncodedValue(tellColour.getPerformer(), tellColour.getPlayerId());
-                lastToldAction = Recommendation.values()[recommendation];
+                lastToldAction = Recommendation.values()[getMissingPiece(tellColour.getPerformer(), recommendation)];
                 cardsPlayedSinceHint = 0;
                 break;
-            case CARD_INFO_VALUE:
+            }
+            case CARD_INFO_VALUE: {
                 CardInfoValue tellValue = (CardInfoValue) event;
-                int recommendation2 = getEncodedValue(tellValue.getPerformer(), tellValue.getPlayerId());
-                lastToldAction = Recommendation.values()[recommendation2];
+                int recommendation = getEncodedValue(tellValue.getPerformer(), tellValue.getPlayerId());
+                lastToldAction = Recommendation.values()[getMissingPiece(tellValue.getPerformer(), recommendation)];
                 cardsPlayedSinceHint = 0;
                 break;
+            }
             case CARD_PLAYED:
                 cardsPlayedSinceHint++;
         }
     }
 
-    private int getEncodedValue(int whoTold, int toldWho) {
-        int[] tellArray = new int[5];
-        int pid = 0;
-        for (int i = 0; i < 5; i++) {
-            if (i != whoTold) {
-                tellArray[i] = pid++;
-            } else {
-                tellArray[i] = 99;
-            }
-        }
-        return tellArray[toldWho];
+    public int getEncodedValue(int whoTold, int toldWho) {
+        return ENCODING[whoTold][toldWho];
+    }
+
+    static final int[][] ENCODING = new int[][]{
+            new int[]{99, 0, 1, 2, 3},
+            new int[]{3, 99, 0, 1, 2},
+            new int[]{2, 3, 99, 0, 1},
+            new int[]{1, 2, 3, 99, 0},
+            new int[]{0, 1, 2, 3, 99},
+    };
+
+    @Override
+    public void onState(GameState state) {
+        this.state = state;
     }
 }
