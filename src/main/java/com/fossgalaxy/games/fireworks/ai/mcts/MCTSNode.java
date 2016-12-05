@@ -73,12 +73,10 @@ public class MCTSNode {
 
     public void backup(double score) {
         MCTSNode current = this;
-//        double discount = 1;
         while (current != null) {
             current.score += score * Math.pow(.95, (current.getDepth() - 1));
             current.visits++;
             current = current.parent;
-//            discount *= 0.95;
         }
     }
 
@@ -87,8 +85,6 @@ public class MCTSNode {
     }
 
     public MCTSNode getUCTNode(GameState state) {
-        assert !children.isEmpty() : "no valid child nodes";
-
         double bestScore = -Double.MAX_VALUE;
         MCTSNode bestChild = null;
 
@@ -149,14 +145,18 @@ public class MCTSNode {
 
     public boolean containsChild(Action moveToChild) {
         for (MCTSNode child : children) {
-            if (child.moveToState.equals(moveToChild)) return true;
+            if (child.moveToState.equals(moveToChild)) {
+                return true;
+            }
         }
         return false;
     }
 
     public MCTSNode getChild(Action action) {
         for (MCTSNode child : children) {
-            if (child.moveToState.equals(action)) return child;
+            if (child.moveToState.equals(action)) {
+                return child;
+            }
         }
         return null;
     }
@@ -166,10 +166,14 @@ public class MCTSNode {
     }
 
     public boolean fullyExpanded(GameState state, int nextId) {
-        if (allUnexpandedActions.isEmpty()) return true;
+        if (allUnexpandedActions.isEmpty()) {
+            return true;
+        }
 
         for (Action action : allUnexpandedActions) {
-            if (action.isLegal(nextId, state)) return false;
+            if (action.isLegal(nextId, state)) {
+                return false;
+            }
         }
         return true;
     }

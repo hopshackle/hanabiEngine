@@ -54,4 +54,25 @@ public class TimedHand extends NegativeHand {
     public int getAge(Integer i) {
         return time[i];
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TimedHand cards = (TimedHand) o;
+
+        if (drawTime != cards.drawTime) return false;
+        return Arrays.equals(time, cards.time);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + Arrays.hashCode(time);
+        result = 31 * result + drawTime;
+        return result;
+    }
 }

@@ -104,8 +104,6 @@ public class DeckUtils {
                 possible.remove(card);
             }
 
-            assert !possible.isEmpty() : "no cards to bind?! " + slot + " " + hand + " " + possible + " " + possibleCards;
-
             Card selected = possible.get(r.nextInt(possible.size()));
             hand.put(slot, selected);
             removed.add(selected);

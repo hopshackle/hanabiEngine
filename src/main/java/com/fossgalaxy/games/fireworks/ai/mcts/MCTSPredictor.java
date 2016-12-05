@@ -12,7 +12,6 @@ import java.util.Arrays;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTSPredictor extends MCTS {
-    private final Logger logger = LoggerFactory.getLogger(MCTSPredictor.class);
     private Agent[] agents;
 
     public MCTSPredictor(Agent[] others) {
@@ -60,7 +59,9 @@ public class MCTSPredictor extends MCTS {
                 }
             }
             // Forward the state
-            if (next == null) return current;
+            if (next == null) {
+                return current;
+            }
             current = next;
 
             int score = state.getScore();
@@ -93,8 +94,7 @@ public class MCTSPredictor extends MCTS {
             return super.selectActionForExpand(state, node, agentID);
         }
 
-        Action choice = agents[agentID].doMove(agentID, state.getCopy());
-        return choice;
+        return agents[agentID].doMove(agentID, state.getCopy());
     }
 
     @Override

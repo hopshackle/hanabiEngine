@@ -59,7 +59,6 @@ public class MCTS implements Agent {
 
     @Override
     public Action doMove(int agentID, GameState state) {
-        assert !state.isGameOver() : "why are you asking me for a move?";
         MCTSNode root = new MCTSNode(
                 (agentID + state.getPlayerCount() - 1) % state.getPlayerCount(),
                 null,
