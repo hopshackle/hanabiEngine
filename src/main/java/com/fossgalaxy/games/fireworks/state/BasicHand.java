@@ -9,8 +9,7 @@ import java.util.Iterator;
  * This only keeps track of only explicitly told information (performs no deduction)
  */
 public class BasicHand implements Iterable<Card>, Hand {
-    private int size;
-
+    private final int size;
     private final CardColour[] colours;
     private final Integer[] values;
     private final Card[] cards;

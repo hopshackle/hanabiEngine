@@ -9,7 +9,7 @@ import java.util.Random;
  * Represents a deck of Hanabi cards.
  */
 public class Deck {
-    private LinkedList<Card> cards;
+    private final LinkedList<Card> cards;
 
     public Deck() {
         this.cards = new LinkedList<>();
