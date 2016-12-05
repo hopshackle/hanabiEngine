@@ -1,6 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
@@ -9,20 +9,25 @@ import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.util.*;
 
 /**
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTS implements Agent {
+    public static final int DEFAULT_ITERATIONS = 50_000;
+    public static final int DEFAULT_ROLLOUT_DEPTH = 18;
+    public static final int DEFAULT_TREE_DEPTH_MUL = 1;
+    public static final int NO_LIMIT = 100;
+
     protected final int roundLength;
     protected final int rolloutDepth;
     protected final int treeDepthMul;
-    protected Random random;
-
-    protected PrintStream log;
+    protected final Random random;
+    protected final Logger logger = LoggerFactory.getLogger(MCTS.class);
 
     /**
      * Create a default MCTS implementation.
@@ -31,11 +36,11 @@ public class MCTS implements Agent {
      * multiplier of 1.
      */
     public MCTS() {
-        this(50_000, 18, 1);
+        this(DEFAULT_ITERATIONS, DEFAULT_ROLLOUT_DEPTH, DEFAULT_TREE_DEPTH_MUL);
     }
 
     public MCTS(int roundLength) {
-        this(roundLength, 18, 1);
+        this(roundLength, DEFAULT_ROLLOUT_DEPTH, DEFAULT_TREE_DEPTH_MUL);
     }
 
     /**
@@ -50,7 +55,6 @@ public class MCTS implements Agent {
         this.rolloutDepth = rolloutDepth;
         this.treeDepthMul = treeDepthMul;
         this.random = new Random();
-        this.log = System.err;
     }
 
     @Override
@@ -65,23 +69,24 @@ public class MCTS implements Agent {
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
-        if (log != null) {
-            log.println("possible bindings");
-            possibleCards.forEach((slot, cards) -> log.format("\t %d %s%n", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
+
+        if (logger.isTraceEnabled()) {
+            logger.trace("Possible bindings: ");
+            possibleCards.forEach((slot, cards) -> logger.trace("\t {} {}", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
 
             // Guaranteed cards
-            log.println("Guaranteed Cards");
+            logger.trace("Guaranteed Cards");
+
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().size() == 1)
                     .forEach(this::printCard);
 
-            log.println("We know the value of these");
+            logger.trace("We know the value of these");
             possibleCards.entrySet().stream()
                     .filter(x -> x.getValue().stream().allMatch(y -> y.value.equals(x.getValue().get(0).value)))
                     .forEach(this::printCard);
 
-            DebugUtils.printTable(log, state);
-            log.println();
+            DebugUtils.printTable(logger, state);
         }
 
         for (int round = 0; round < roundLength; round++) {
@@ -105,18 +110,17 @@ public class MCTS implements Agent {
             current.backup(score);
         }
 
-        if (log != null) {
-            log.println("\t next player's moves considerations: ");
+        if (logger.isTraceEnabled()) {
+            logger.trace("next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
-                log.println(level1.getAction() + "'s children");
+                logger.trace("{}'s children",  level1.getAction());
                 level1.printChildren();
             }
         }
 
         Action chosenOne = root.getBestNode().getAction();
-        if (log != null) {
-            log.format("Move Chosen by %d was %s", agentID, chosenOne);
-            log.println();
+        if (logger.isTraceEnabled()) {
+            logger.trace("Move Chosen by {} was {}", agentID, chosenOne);
             root.printChildren();
         }
         return chosenOne;
@@ -222,17 +226,13 @@ public class MCTS implements Agent {
         return state.getScore();
     }
 
-    public void setPrintDebug(boolean printDebug) {
-        this.log = printDebug ? System.err : null;
-    }
-
     @Override
     public String toString() {
         return "MCTS";
     }
 
     private void printCard(Map.Entry<Integer, List<Card>> entry) {
-        log.println("\t" + entry.getKey() + ":" + entry.getValue());
+        logger.trace("{} : {}", entry.getKey(), entry.getValue());
     }
 
 }

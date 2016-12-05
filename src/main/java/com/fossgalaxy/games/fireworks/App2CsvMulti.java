@@ -1,12 +1,14 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 import java.util.Random;
 
 /**
  * A runner capable of playing the games for every legal hand size
  */
+@Deprecated
 public class App2CsvMulti {
 
     //utility class - no instances permitted.
@@ -45,7 +47,7 @@ public class App2CsvMulti {
 
                     //populate list of agents
                     for (int agent = 0; agent < agents.length; agent++) {
-                        agents[agent] = App.buildAgent(name);
+                        agents[agent] = AgentUtils.buildAgent(name);
                         agentStr[agent] = name;
                     }
 

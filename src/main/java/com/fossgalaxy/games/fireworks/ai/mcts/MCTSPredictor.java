@@ -3,6 +3,8 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -10,6 +12,7 @@ import java.util.Arrays;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTSPredictor extends MCTS {
+    private final Logger logger = LoggerFactory.getLogger(MCTSPredictor.class);
     private Agent[] agents;
 
     public MCTSPredictor(Agent[] others) {
@@ -48,7 +51,7 @@ public class MCTSPredictor extends MCTS {
 
                 //trip if the move is illegal
                 if (!next.getAction().isLegal(next.getAgent(), state)) {
-                    log.println("INVALID NODE SELECTED?! ");
+                    logger.error("Illegal move {} selected during select", next.getAction());
                 }
 
                 if (numChildren != current.getChildSize()) {

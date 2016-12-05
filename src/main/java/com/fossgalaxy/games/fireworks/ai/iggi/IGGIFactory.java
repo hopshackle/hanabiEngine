@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
@@ -8,6 +9,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 /**
  * Stratergies used/theorised about by IGGI students.
@@ -76,4 +78,8 @@ public class IGGIFactory {
         return pra;
     }
 
+    public static Agent buildCautiousMCTS() {
+        Agent[] agents = AgentUtils.buildPredictors(-1, 5, "cautious");
+        return new MCTSPredictor(agents);
+    }
 }

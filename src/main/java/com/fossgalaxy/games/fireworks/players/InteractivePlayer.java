@@ -23,6 +23,11 @@ public class InteractivePlayer implements Player {
     }
 
     @Override
+    public String getName() {
+        return "interactive";
+    }
+
+    @Override
     public Action getAction() {
 
         out.println("Your move");
