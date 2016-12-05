@@ -22,7 +22,7 @@ public class TellColour implements Action {
 
         Hand hand = game.getHand(player);
 
-        List<Integer> slots = new ArrayList<Integer>();
+        List<Integer> slots = new ArrayList<>();
         for (int i = 0; i < hand.getSize(); i++) {
             Card card = hand.getCard(i);
             if (card != null && colour.equals(card.colour)) {

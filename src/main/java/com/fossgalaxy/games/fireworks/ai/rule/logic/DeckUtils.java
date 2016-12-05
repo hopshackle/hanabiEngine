@@ -83,12 +83,7 @@ public class DeckUtils {
     public static List<Integer> bindOrder(Map<Integer, List<Card>> possibleCards) {
 
         List<Integer> ordering = new ArrayList<>(possibleCards.keySet());
-        Collections.sort(ordering, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return Integer.compare(possibleCards.get(o1).size(), possibleCards.get(o2).size());
-            }
-        });
+        Collections.sort(ordering, (o1, o2) -> Integer.compare(possibleCards.get(o1).size(), possibleCards.get(o2).size()));
 
         return ordering;
     }
@@ -96,9 +91,9 @@ public class DeckUtils {
     public static Map<Integer, Card> bindCards(List<Integer> order, Map<Integer, List<Card>> possibleCards) {
 
         Random r = new Random();
-        List<Card> removed = new ArrayList<Card>();
+        List<Card> removed = new ArrayList<>();
 
-        Map<Integer, Card> hand = new HashMap<Integer, Card>();
+        Map<Integer, Card> hand = new HashMap<>();
         for (Integer slot : order) {
             List<Card> possible = new ArrayList<>(possibleCards.get(slot));
             for (Card card : removed) {
