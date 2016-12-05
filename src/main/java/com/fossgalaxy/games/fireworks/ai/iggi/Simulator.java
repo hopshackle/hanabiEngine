@@ -1,23 +1,26 @@
 package com.fossgalaxy.games.fireworks.ai.iggi;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Deprecated
 public class Simulator {
-
+    private static final Logger logger = LoggerFactory.getLogger(Simulator.class);
 
     public static void main(String[] args) {
         GameState state = new BasicState(5, 3);
         state.init();
 
-        DebugUtils.printState(System.err, state);
+        DebugUtils.printState(logger, state);
 
         Deck deck = state.getDeck();
 

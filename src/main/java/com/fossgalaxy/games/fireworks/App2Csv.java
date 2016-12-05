@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.players.Player;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.UUID;
 /**
  * Hello world!
  */
+@Deprecated
 public class App2Csv {
     public static final Integer GAME_SIZE = 3;
     public static final Integer DEFAULT_NUM_RUNS = 100;
@@ -55,7 +57,7 @@ public class App2Csv {
 
             for (int i = 0; i < agents.length; i++) {
                 for (int agent = 0; agent < agents.length; agent++) {
-                    agents[agent] = App.buildAgent(agentNames[i]);
+                    agents[agent] = AgentUtils.buildAgent(agentNames[i]);
                     agentStr[agent] = agentNames[i];
                 }
 
@@ -70,7 +72,7 @@ public class App2Csv {
                 FileOutputStream fos = new FileOutputStream(String.format("trace_%s.csv", id));
                 PrintStream ps = new PrintStream(fos)
         ) {
-            GameRunner runner = new GameRunner(id, players.length, null);
+            GameRunner runner = new GameRunner(id, players.length);
 
             for (int i = -0; i < players.length; i++) {
                 runner.addPlayer(players[i]);
@@ -90,7 +92,7 @@ public class App2Csv {
     public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Player... players) {
         UUID id = UUID.randomUUID();
         try {
-            GameRunner runner = new GameRunner(id, players.length, System.err);
+            GameRunner runner = new GameRunner(id, players.length);
 
             for (int i = -0; i < players.length; i++) {
                 runner.addPlayer(players[i]);
@@ -109,7 +111,7 @@ public class App2Csv {
     public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Agent... agents) {
         Player[] wrapper = new Player[agents.length];
         for (int i = 0; i < agents.length; i++) {
-            wrapper[i] = new AgentPlayer(i, agents[i]);
+            wrapper[i] = new AgentPlayer(name[i], agents[i]);
         }
         return playGameErrTrace(gameID, name, seed, wrapper);
     }
@@ -117,7 +119,7 @@ public class App2Csv {
     public static GameStats playGame(String[] name, Long seed, Agent... agents) {
         Player[] wrapper = new Player[agents.length];
         for (int i = 0; i < agents.length; i++) {
-            wrapper[i] = new AgentPlayer(i, agents[i]);
+            wrapper[i] = new AgentPlayer(name[i], agents[i]);
         }
         return playGame(name, seed, wrapper);
     }

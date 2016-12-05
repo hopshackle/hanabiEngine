@@ -1,8 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
-import com.fossgalaxy.games.fireworks.DebugUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
-import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;

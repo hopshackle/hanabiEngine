@@ -6,6 +6,7 @@ public class BasicState implements GameState {
     private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
     private static final int MAX_INFOMATION = 8;
     private static final int MAX_LIVES = 3;
+    private static final int MAX_SCORE = CardColour.values().length * 5;
 
     private final int handSize;
 
@@ -182,15 +183,22 @@ public class BasicState implements GameState {
 
     @Override
     public boolean isGameOver() {
+        //check if we have run out of lives
         if (lives <= 0) {
             return true;
         }
 
-        if (!deck.hasCardsLeft() && movesLeft != 0) {
+        //check that the deck is empty, and all players have had last go
+        if (!deck.hasCardsLeft() && movesLeft == 0) {
             return true;
         }
 
-        return lives <= 0 || !deck.hasCardsLeft();
+        //if we have a maximum score, we win!
+        if (getScore() == MAX_SCORE) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

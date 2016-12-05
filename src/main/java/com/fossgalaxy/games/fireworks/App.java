@@ -2,12 +2,12 @@ package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
-import com.fossgalaxy.games.fireworks.ai.RandomAgent;
-import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
-import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
+import com.fossgalaxy.games.fireworks.utils.GameUtils;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.UUID;
 
@@ -41,89 +41,29 @@ public class App {
     }
 
     public static GameStats playGame() {
-        GameRunner runner = new GameRunner(UUID.randomUUID(), 5, null);
-
+        String[] names = new String[5];
+        Agent[] players = new Agent[5];
         for (int i=0; i<5; i++) {
-            AgentPlayer player = new AgentPlayer(i, buildAgent("hat"));
-            player.setID(i, 5);
-            runner.addPlayer(player);
+            names[i] = "iggi";
+            players[i] = AgentUtils.buildAgent(names[i]);
         }
 
-
-        //runner.addPlayer(new AgentPlayer(0, new RandomAgent()));
-//		runner.addPlayer(new AgentPlayer(0, new ProductionRuleAgent()));
-        //runner.addPlayer(new AgentPlayer(1, new RandomAgent()));
-      //  runner.addPlayer(new AgentPlayer(0, new MCTS()));
-//		runner.addPlayer(new AgentPlayer(0, new MCTSPredictor(new Agent[]{null, IGGIFactory.buildCautious(), IGGIFactory.buildCautious(), IGGIFactory.buildCautious()})));
-     //   runner.addPlayer(new AgentPlayer(1, IGGIFactory.buildCautious()));
-       // runner.addPlayer(new AgentPlayer(2, IGGIFactory.buildCautious()));
-        //runner.addPlayer(new AgentPlayer(3, IGGIFactory.buildCautious()));
-//		runner.addPlayer(new AgentPlayer(1, new ProductionRuleAgent()));
-//		runner.addPlayer(new AgentPlayer(2, new ProductionRuleAgent()));
-//		runner.addPlayer(new AgentPlayer(3, new ProductionRuleAgent()));
-        //runner.addPlayer(new AgentPlayer(2, new RandomAgent()));
-//		runner.addPlayer(new AgentPlayer(1, new MCTS()));
-//		runner.addPlayer(new AgentPlayer(2, new MCTS()));
-//		runner.addPlayer(new AgentPlayer(3, new MCTS()));
-
-        GameStats stats = runner.playGame(null);
+        GameStats stats = GameUtils.runGame("", null, SetupUtils.toPlayers(names, players));
         System.out.println("the agents scored: " + stats);
         return stats;
-    }
-
-    public static Agent buildAgent(String name) {
-        switch (name) {
-            case "pure_random":
-                return new RandomAgent();
-            case "random":
-                return OsawaFactory.buildRandom();
-            case "internal":
-                return OsawaFactory.buildInternalState();
-            case "outer":
-                return OsawaFactory.buildOuterState();
-            case "cautious":
-                return IGGIFactory.buildCautious();
-            case "iggi":
-                return IGGIFactory.buildIGGIPlayer();
-            case "legal_random":
-                return IGGIFactory.buildRandom();
-            case "mcts":
-                return new MCTS();
-            case "mctsND":
-                return new MCTS(50_000, 100, 100);
-            case "cautiousMCTS":
-            case "cautiousMCTSND":
-                Agent[] a = new Agent[]{buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious"), buildAgent("cautious")};
-                if (name.contains("ND")) {
-                    return new MCTSPredictor(a, 50_000, 100, 100);
-                }
-                return new MCTSPredictor(a);
-            case "iggi_risky":
-                return IGGIFactory.buildRiskyPlayer();
-            case "hat":
-                return new HatGuessing();
-        }
-
-        throw new IllegalArgumentException("unknown agent type " + name);
     }
 
     public static Agent buildAgent(String name, int agentID, String paired, int size) {
         switch (name) {
             case "predictorMCTS":
             case "predictorMCTSND":
-                Agent[] agents = new Agent[size];
-                for (int i = 0; i < size; i++) {
-                    if (i == agentID) {
-                        agents[i] = null;
-                    }
-                    agents[i] = buildAgent(paired);
-                }
+                Agent[] agents = AgentUtils.buildPredictors(agentID, size, paired);
                 if (name.contains("ND")) {
                     return new MCTSPredictor(agents, 50_000, 100, 100);
                 }
                 return new MCTSPredictor(agents);
             default:
-                return buildAgent(name);
+                return AgentUtils.buildAgent(name);
         }
     }
 
@@ -131,21 +71,13 @@ public class App {
         switch (name) {
             case "predictorMCTS":
             case "predictorMCTSND":
-                Agent[] agents = new Agent[size];
-                for (int i = 0; i < size; i++) {
-                    if (i == agentID) {
-                        agents[i] = null;
-                    } else {
-                        agents[i] = buildAgent(paired[i]);
-                    }
-                }
-
+                Agent[] agents = AgentUtils.buildPredictors(agentID, paired);
                 if (name.contains("ND")) {
                     return new MCTSPredictor(agents, 50_000, 100, 100);
                 }
                 return new MCTSPredictor(agents);
             default:
-                return buildAgent(name);
+                return AgentUtils.buildAgent(name);
         }
     }
 
@@ -155,7 +87,7 @@ public class App {
             case "mcts":
                 return new MCTS(roundLength, rolloutDepth, treeDepth);
             default:
-                return buildAgent(name);
+                return AgentUtils.buildAgent(name);
         }
     }
 
@@ -167,11 +99,12 @@ public class App {
                     if (i == agentID) {
                         agents[i] = null;
                     }
+                    //TODO is this ever paired with MCTS? if not this should be AgentUtils.buildAgent(agentID, size, paired)
                     agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
                 }
                 return new MCTSPredictor(agents);
             default:
-                return buildAgent(name);
+                return AgentUtils.buildAgent(name);
         }
     }
 
@@ -180,7 +113,7 @@ public class App {
             case "iggi_risky":
                 return IGGIFactory.buildRiskyPlayer(threshold);
             default:
-                return buildAgent(name);
+                return AgentUtils.buildAgent(name);
         }
     }
 }

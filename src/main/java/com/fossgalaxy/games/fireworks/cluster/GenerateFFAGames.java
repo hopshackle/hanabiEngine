@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.MixedAgentGame;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
 
@@ -11,8 +12,8 @@ import java.util.Random;
 public class GenerateFFAGames {
 
     public static void main(String[] args) {
-        String[] agentsUnderTest = MixedAgentGame.getAgentNames();
-        String[] agentsPaired = MixedAgentGame.getPartnerNames();
+        String[] agentsUnderTest = SetupUtils.getAgentNames();
+        String[] agentsPaired = SetupUtils.getPairedNames();
 
         //number of seeds
         String numSeedsEnv = System.getenv("FIREWORKS_NUM_SEEDS");

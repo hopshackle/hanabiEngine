@@ -5,6 +5,8 @@ import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
 public interface Player {
 
+    String getName();
+
     Action getAction();
 
     void sendMessage(GameEvent msg);

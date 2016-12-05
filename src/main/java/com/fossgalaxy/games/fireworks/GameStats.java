@@ -3,7 +3,7 @@ package com.fossgalaxy.games.fireworks;
 import java.util.UUID;
 
 public class GameStats {
-    public final UUID gameID;
+    public final String gameID;
     public final int nPlayers;
 
     public final int score;
@@ -13,7 +13,7 @@ public class GameStats {
     public final int infomation;
     public final int disqal;
 
-    public GameStats(UUID gameID, int players, int score, int lives, int moves, int information, int disqual) {
+    public GameStats(String gameID, int players, int score, int lives, int moves, int information, int disqual) {
         this.gameID = gameID;
         this.nPlayers = players;
         this.score = score;
