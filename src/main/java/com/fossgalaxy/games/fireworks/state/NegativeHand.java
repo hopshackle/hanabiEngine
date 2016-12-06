@@ -24,6 +24,7 @@ public class NegativeHand extends BasicHand {
     /**
      * Reset all information about a slot
      */
+    @Override
     void clear(int slot) {
         super.clear(slot);
         possibleColours.put(slot, EnumSet.allOf(CardColour.class));
@@ -32,6 +33,7 @@ public class NegativeHand extends BasicHand {
 
 
     // From this players perspective
+    @Override
     public CardColour getKnownColour(int slot) {
         Set<CardColour> c = possibleColours.get(slot);
         if (c != null && c.size() == 1) {
@@ -40,6 +42,7 @@ public class NegativeHand extends BasicHand {
         return super.getKnownColour(slot);
     }
 
+    @Override
     public Integer getKnownValue(int slot) {
         Set<Integer> c = possibleValues.get(slot);
         if (c != null && c.size() == 1) {
@@ -48,6 +51,7 @@ public class NegativeHand extends BasicHand {
         return super.getKnownValue(slot);
     }
 
+    @Override
     public void setKnownColour(CardColour colour, Integer[] slots) {
         int index = 0;
         for (int slot = 0; slot < getSize(); slot++) {
@@ -65,6 +69,7 @@ public class NegativeHand extends BasicHand {
         super.setKnownColour(colour, slots);
     }
 
+    @Override
     public void setKnownValue(Integer value, Integer[] slots) {
         int index = 0;
         for (int slot = 0; slot < getSize(); slot++) {
@@ -82,6 +87,7 @@ public class NegativeHand extends BasicHand {
         super.setKnownValue(value, slots);
     }
 
+    @Override
     public int[] getPossibleValues(int slot) {
         Set<Integer> possible = possibleValues.get(slot);
         if (possible == null) {
@@ -97,6 +103,7 @@ public class NegativeHand extends BasicHand {
         return possibleArr;
     }
 
+    @Override
     public CardColour[] getPossibleColours(int slot) {
 
         Set<CardColour> possible = possibleColours.get(slot);
@@ -113,6 +120,7 @@ public class NegativeHand extends BasicHand {
         return possibleArr;
     }
 
+    @Override
     public boolean isPossible(int slot, Card card) {
         Set<CardColour> possibleColour = possibleColours.get(slot);
         Set<Integer> possibleValue = possibleValues.get(slot);
