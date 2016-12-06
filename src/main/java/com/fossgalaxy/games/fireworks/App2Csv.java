@@ -161,8 +161,7 @@ public class App2Csv {
      * @return the outcome of the game
      */
     public static GameStats playCheatGame(String gameID, String[] name, Long seed, Player ... players) {
-        UUID id = UUID.randomUUID();
-        GameRunner cheatRunner = new GameRunnerCheat(id, players.length, System.err);
+        GameRunner cheatRunner = new GameRunnerCheat(gameID, players.length);
         return playGame(gameID, name, seed, cheatRunner, players);
     }
 

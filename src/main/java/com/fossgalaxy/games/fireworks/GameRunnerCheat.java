@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class GameRunnerCheat extends GameRunner {
 
-    public GameRunnerCheat(UUID gameID, int expectedPlayers) {
+    public GameRunnerCheat(String gameID, int expectedPlayers) {
         super(gameID, expectedPlayers);
     }
 
@@ -26,7 +26,6 @@ public class GameRunnerCheat extends GameRunner {
      */
     @Override
     protected void send(GameEvent event) {
-        //writeEvent(event);
         for (int i = 0; i < players.length; i++) {
             if (event.isVisibleTo(i)) {
                 players[i].sendMessage(event);
