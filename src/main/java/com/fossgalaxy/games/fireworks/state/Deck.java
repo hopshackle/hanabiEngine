@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Random;
 /**
  * Represents a deck of Hanabi cards.
  */
-public class Deck {
+public class Deck implements Serializable {
     private final LinkedList<Card> cards;
 
     public Deck() {
