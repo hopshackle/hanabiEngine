@@ -86,6 +86,7 @@ package:jdk8:
   artifacts:
     paths:
     - target/staging
+    expire_in: 1 week
   image: maven:3.3.9-jdk-8
 
 mvn_sonar:jdk8:
