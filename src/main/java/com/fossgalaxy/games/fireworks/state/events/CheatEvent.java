@@ -51,7 +51,6 @@ public class CheatEvent extends GameEvent {
 
     @Override
     public boolean isVisibleTo(int playerID) {
-        //return true;
         return playerID == this.playerID;
     }
 
