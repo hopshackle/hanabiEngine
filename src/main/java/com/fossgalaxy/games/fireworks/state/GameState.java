@@ -1,8 +1,9 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public interface GameState {
+public interface GameState extends Serializable {
 
     void init();
 
