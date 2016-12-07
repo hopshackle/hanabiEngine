@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
 import com.fossgalaxy.games.fireworks.ai.rule.logic.HandUtils;
+import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
@@ -20,15 +21,17 @@ public class TellDispensable extends AbstractTellRule {
             if (player == playerID) continue;
             Hand hand = state.getHand(player);
             for (int slot = 0; slot < state.getHandSize(); slot++) {
+                Card actualCard = hand.getCard(slot);
+                if(actualCard == null) continue;
                 CardColour knownColour = hand.getKnownColour(slot);
-                CardColour actualColour = hand.getCard(slot).colour;
+                CardColour actualColour = actualCard.colour;
                 if (knownColour == null) {
                     if (HandUtils.isSafeBecauseFiveAlreadyPlayed(state, actualColour)) {
                         return new TellColour(player, actualColour);
                     }
                 }
                 Integer knownValue = hand.getKnownValue(slot);
-                Integer actualValue = hand.getCard(slot).value;
+                Integer actualValue = actualCard.value;
                 if (knownValue == null) {
                     if (HandUtils.isSafeBecauseValueLowerThanMinOnTable(state, actualValue)) {
                         return new TellValue(player, actualValue);
