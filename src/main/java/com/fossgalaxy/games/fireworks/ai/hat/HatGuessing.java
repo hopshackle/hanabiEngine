@@ -7,12 +7,14 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.TimedHand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.actions.TellColour;
+import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.state.events.MessageType;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Created by piers on 11/11/16.
@@ -20,6 +22,14 @@ import java.util.Comparator;
 public class HatGuessing implements Agent {
     private static final int NOT_FOUND = 99;
     private static final int[] copies = {0, 3, 2, 2, 2, 1};
+    static final int[][] ENCODING = new int[][]{
+            new int[]{99, 0, 1, 2, 3},
+            new int[]{3, 99, 0, 1, 2},
+            new int[]{2, 3, 99, 0, 1},
+            new int[]{1, 2, 3, 99, 0},
+            new int[]{0, 1, 2, 3, 99},
+    };
+
 
     private int playerID;
 
@@ -36,6 +46,21 @@ public class HatGuessing implements Agent {
 
     @Override
     public Action doMove(int agentID, GameState state) {
+
+        LinkedList<GameEvent> history = state.getHistory();
+        ListIterator<GameEvent> itr = history.listIterator(history.size());
+        while(itr.hasPrevious()){
+            GameEvent event = itr.previous();
+            if(event.getEvent() == MessageType.CARD_INFO_COLOUR || event.getEvent() == MessageType.CARD_INFO_VALUE){
+                itr.previous();
+                break;
+            }
+        }
+        while(itr.hasNext()){
+            receiveEvent(itr.next());
+        }
+
+
 
         // 1. If the most recent recommendation was to play a card and no card has been played since the lat hint, play the recommended card
         // 2. If the most recent recommendation was to play a card, one card has been played
@@ -70,21 +95,39 @@ public class HatGuessing implements Agent {
         throw new IllegalStateException("No hat guessing rule fired, no idea what to do...");
     }
 
+    /**
+     * Is the card dead by the Hat Guessing definition
+     *
+     * @param state The current state
+     * @param card  The card we are interested in
+     * @return boolean indicating the deadness of the card
+     */
     public boolean isDead(GameState state, Card card) {
         return state.getTableValue(card.colour) >= card.value;
     }
 
+    /**
+     * Is the card playable by the Hat Guessing definition
+     *
+     * @param state The current state
+     * @param card  The card we are interested in
+     * @return boolean indicating the playableness of the card
+     */
     public boolean isPlayable(GameState state, Card card) {
         return state.getTableValue(card.colour) == card.value - 1;
     }
 
 
-    /*
+    /**
      * places a card can be:
-     *  1) in the deck (still in deck or our hand)
-     *  2) in the discard pile (played incorrectly or discarded cards)
-     *  3) on the table (card is no longer needed, a copy was played successfully)
-     *  4) another player's hand (our copy is not the only one)
+     * 1) in the deck (still in deck or our hand)
+     * 2) in the discard pile (played incorrectly or discarded cards)
+     * 3) on the table (card is no longer needed, a copy was played successfully)
+     * 4) another player's hand (our copy is not the only one)
+     *
+     * @param state The current state
+     * @param card  The card we are interested in
+     * @return boolean indicating if the card is indispensable
      */
     public boolean isIndispensable(GameState state, Card card) {
 
@@ -111,6 +154,15 @@ public class HatGuessing implements Agent {
         return true;
     }
 
+    /**
+     * Gets the integer recomendation for the Hat Guessing algorithm for a single hand
+     * <p>
+     * Used to both calculate the encoding and decoding of a hint.
+     *
+     * @param agentToTell The agent to calculate the hint for
+     * @param state       The current game state
+     * @return The value to tell between 0-7
+     */
     public int getRecommendationForAHand(int agentToTell, GameState state) {
 
         TimedHand hand = (TimedHand) state.getHand(agentToTell);
@@ -200,7 +252,9 @@ public class HatGuessing implements Agent {
 
         int sum = 0;
         for (int position = 0; position < 5; position++) {
-            if (position == agentID) continue;
+            if (position == agentID) {
+                continue;
+            }
             sum += getRecommendationForAHand(position, state);
         }
         return Recommendation.values()[sum % 8];
@@ -216,14 +270,18 @@ public class HatGuessing implements Agent {
     public int getMissingPiece(int whoTold, int treasureChest) {
         int sum = 0;
         for (int position = 0; position < 5; position++) {
-            if (position == playerID || position == whoTold) continue;
+            if (position == playerID || position == whoTold) {
+                continue;
+            }
             sum += getRecommendationForAHand(position, state);
 
         }
 
         //find our piece
         for (int i = 0; i < 8; i++) {
-            if ((sum + i) % 8 == treasureChest) return i;
+            if ((sum + i) % 8 == treasureChest) {
+                return i;
+            }
         }
         throw new IllegalStateException("There was no treasure me hearties");
     }
@@ -250,18 +308,21 @@ public class HatGuessing implements Agent {
         }
     }
 
+    /**
+     * Helper method to understand the hint system
+     * @param whoTold Who told the hint
+     * @param toldWho Who the hint was told to
+     * @return The value
+     */
     public int getEncodedValue(int whoTold, int toldWho) {
         return ENCODING[whoTold][toldWho];
     }
 
-    static final int[][] ENCODING = new int[][]{
-            new int[]{99, 0, 1, 2, 3},
-            new int[]{3, 99, 0, 1, 2},
-            new int[]{2, 3, 99, 0, 1},
-            new int[]{1, 2, 3, 99, 0},
-            new int[]{0, 1, 2, 3, 99},
-    };
 
+    /**
+     * Receives and stores the current state.
+     * @param state The state
+     */
     @Override
     public void onState(GameState state) {
         this.state = state;

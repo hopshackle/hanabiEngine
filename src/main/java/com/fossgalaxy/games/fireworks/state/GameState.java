@@ -1,6 +1,10 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public interface GameState {
 
@@ -58,4 +62,8 @@ public interface GameState {
     void setTableValue(CardColour c, int nextValue);
 
     void tick();
+
+    void addEvent(GameEvent event);
+
+    LinkedList<GameEvent> getHistory();
 }

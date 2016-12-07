@@ -1,5 +1,7 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+
 import java.util.*;
 
 public class BasicState implements GameState {
@@ -14,6 +16,7 @@ public class BasicState implements GameState {
     private final Deck deck;
     private final Map<CardColour, Integer> table;
     private final List<Card> discard;
+    private final LinkedList<GameEvent> history;
 
     private int information;
     private int lives;
@@ -26,6 +29,8 @@ public class BasicState implements GameState {
         this.information = state.information;
         this.lives = state.lives;
         this.movesLeft = state.movesLeft;
+        this.history = new LinkedList<>();
+        this.history.addAll(state.history);
 
         this.table = new EnumMap<>(state.table);
 
@@ -46,6 +51,7 @@ public class BasicState implements GameState {
         this.table = new EnumMap<>(CardColour.class);
         this.discard = new ArrayList<>();
         this.movesLeft = playerCount;
+        this.history = new LinkedList<>();
 
         this.information = MAX_INFOMATION;
         this.lives = MAX_LIVES;
@@ -280,5 +286,15 @@ public class BasicState implements GameState {
         result = 31 * result + lives;
         result = 31 * result + movesLeft;
         return result;
+    }
+
+    @Override
+    public void addEvent(GameEvent event){
+        history.add(event);
+    }
+
+    @Override
+    public LinkedList<GameEvent> getHistory() {
+        return history;
     }
 }

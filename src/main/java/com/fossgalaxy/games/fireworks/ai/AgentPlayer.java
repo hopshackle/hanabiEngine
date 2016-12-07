@@ -51,6 +51,7 @@ public class AgentPlayer implements Player {
     public void sendMessage(GameEvent msg) {
         assert msg != null;
         msg.apply(state);
+        state.addEvent(msg);
         policy.receiveEvent(msg);
     }
 
