@@ -4,14 +4,13 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
-import com.fossgalaxy.games.fireworks.ai.rule.DiscardOldestFirst;
-import com.fossgalaxy.games.fireworks.ai.rule.PlaySafeCard;
-import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
-import com.fossgalaxy.games.fireworks.ai.rule.TellAnyoneAboutUsefulCard;
+import com.fossgalaxy.games.fireworks.ai.rule.*;
+import com.fossgalaxy.games.fireworks.ai.rule.logic.HandUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
+import com.fossgalaxy.games.fireworks.ai.rule.wrapper.IfRule;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 /**
@@ -49,6 +48,27 @@ public class IGGIFactory {
         pra.addRule(new OsawaDiscard());
         pra.addRule(new DiscardOldestFirst());
 
+        return pra;
+    }
+
+    public static Agent buildPiersPlayer() {
+        ProductionRuleAgent pra = new ProductionRuleAgent();
+        pra.addRule(new PlaySafeCard());
+        pra.addRule(
+                new IfRule(
+                        (id, state) -> state.getLives() > 1,
+                        new PlayProbablySafeCard(.6)
+                )
+        );
+        pra.addRule(new TellAnyoneAboutUsefulCard());
+        pra.addRule(
+                new IfRule(
+                        (id, state) -> state.getInfomation() < 4,
+                        new TellDispensable()
+                )
+        );
+        pra.addRule(new OsawaDiscard());
+        pra.addRule(new DiscardOldestFirst());
         return pra;
     }
 

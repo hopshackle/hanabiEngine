@@ -1,6 +1,9 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
+import com.fossgalaxy.games.fireworks.utils.GameUtils;
+import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
 
@@ -9,9 +12,20 @@ import java.util.Random;
  */
 public class RiskyRunner {
 
+    public static final String IGGI_RISKY = "iggi_risky";
+
+    private RiskyRunner(){
+
+    }
+
+    /**
+     * Runs an experiment calculating for each threshold the average score a game of 2-5 players achieved
+     * if they are all risky players.
+     * @param args Not used.
+     */
     public static void main(String[] args) {
 
-        int runCount = App2Csv.DEFAULT_NUM_RUNS;
+        int runCount = 1000;
 
         //allow setting of run count via env variable
         String runCountEnv = System.getenv("FIREWORKS_RUN_COUNT");
@@ -30,15 +44,16 @@ public class RiskyRunner {
                     Agent[] agents = new Agent[i];
                     String[] agentStr = new String[5];
 
-                    agents[0] = App.buildAgent("iggi_risky", threshold);
-                    agentStr[0] = "iggi_risky" + "," + threshold;
+                    agents[0] = App.buildAgent(IGGI_RISKY, threshold);
+                    agentStr[0] = IGGI_RISKY + "," + threshold;
                     //populate list of agents
                     for (int agent = 1; agent < agents.length; agent++) {
-                        agents[agent] = App.buildAgent("iggi_risky", threshold);
+                        agents[agent] = App.buildAgent(IGGI_RISKY, threshold);
                         agentStr[agent] = "iggi";
                     }
+                    GameStats stats = GameUtils.runGame(agentStr[0], seed, SetupUtils.toPlayers(agentStr, agents));
+                    System.out.println(stats);
 
-                    App2Csv.playGame(agentStr, seed, agents);
                 }
             }
         }

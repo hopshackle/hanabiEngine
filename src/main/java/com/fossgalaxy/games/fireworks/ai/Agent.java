@@ -46,6 +46,10 @@ public interface Agent {
 
     }
 
+    /**
+     * optional hook for when an agent needs to pass a state to something else
+     * @param state The state
+     */
     default void onState(GameState state) {
 
     }

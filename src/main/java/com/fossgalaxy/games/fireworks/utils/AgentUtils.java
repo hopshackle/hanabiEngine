@@ -34,6 +34,7 @@ public class AgentUtils {
         map.put("mcts", MCTS::new);
         map.put("cautiousMCTS", IGGIFactory::buildCautiousMCTS);
         map.put("hat", HatGuessing::new);
+        map.put("piers", IGGIFactory::buildPiersPlayer);
 
         //Non-depth limited mcts versions
         map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT));
