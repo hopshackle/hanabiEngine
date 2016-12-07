@@ -41,7 +41,7 @@ public class App {
         String[] names = new String[5];
         Agent[] players = new Agent[5];
         for (int i = 0; i < 5; i++) {
-            names[i] = "piers";
+            names[i] = "hat";
             players[i] = AgentUtils.buildAgent(names[i]);
         }
 

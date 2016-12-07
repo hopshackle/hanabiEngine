@@ -52,7 +52,6 @@ public class AgentPlayer implements Player {
         assert msg != null;
         msg.apply(state);
         state.addEvent(msg);
-        policy.receiveEvent(msg);
     }
 
     @Override
@@ -63,7 +62,6 @@ public class AgentPlayer implements Player {
         this.playerID = id;
         this.state = new BasicState(nPlayers);
         policy.receiveID(id);
-        policy.onState(state);
     }
 
     @Override

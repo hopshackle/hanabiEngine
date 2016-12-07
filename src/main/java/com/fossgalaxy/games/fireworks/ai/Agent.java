@@ -27,15 +27,6 @@ public interface Agent {
     Action doMove(int agentID, GameState state);
 
     /**
-     * optional hook to allow the agent to act on event data
-     *
-     * @param event the event that the agent received.
-     */
-    default void receiveEvent(GameEvent event) {
-
-    }
-
-    /**
      * optional hook for when the agent gets their ID.
      * <p>
      * This indicates that the game has started.
@@ -46,11 +37,4 @@ public interface Agent {
 
     }
 
-    /**
-     * optional hook for when an agent needs to pass a state to something else
-     * @param state The state
-     */
-    default void onState(GameState state) {
-
-    }
 }

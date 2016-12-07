@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.ai.hat;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.rule.DiscardOldestFirst;
 import com.fossgalaxy.games.fireworks.ai.rule.Rule;
+import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.TimedHand;
@@ -37,30 +38,17 @@ public class HatGuessing implements Agent {
     private int cardsPlayedSinceHint = 0;
 
     private Rule discardOldest;
-    private GameState state;
 
     public HatGuessing() {
         this.discardOldest = new DiscardOldestFirst();
         this.lastToldAction = null;
     }
 
+
     @Override
     public Action doMove(int agentID, GameState state) {
-
-        LinkedList<GameEvent> history = state.getHistory();
-        ListIterator<GameEvent> itr = history.listIterator(history.size());
-        while(itr.hasPrevious()){
-            GameEvent event = itr.previous();
-            if(event.getEvent() == MessageType.CARD_INFO_COLOUR || event.getEvent() == MessageType.CARD_INFO_VALUE){
-                itr.previous();
-                break;
-            }
-        }
-        while(itr.hasNext()){
-            receiveEvent(itr.next());
-        }
-
-
+        //we're not allowed internal state - so re-play the game to figure out what it should look like
+        replayHistory(state);
 
         // 1. If the most recent recommendation was to play a card and no card has been played since the lat hint, play the recommended card
         // 2. If the most recent recommendation was to play a card, one card has been played
@@ -152,6 +140,26 @@ public class HatGuessing implements Agent {
 
         //
         return true;
+    }
+
+    private GameState replayHistory(GameState state) {
+        return fastForward(state.getHistory(), state.getPlayerCount());
+    }
+
+    private GameState fastForward(List<GameEvent> events, int nPlayers) {
+        //create a game state
+        GameState ff = new BasicState(nPlayers);
+
+        //reset history
+        lastToldAction = null;
+        cardsPlayedSinceHint = 0;
+
+        for (GameEvent event : events) {
+            event.apply(ff);
+            applyEffect(ff, event);
+        }
+
+        return ff;
     }
 
     /**
@@ -267,7 +275,7 @@ public class HatGuessing implements Agent {
     }
 
 
-    public int getMissingPiece(int whoTold, int treasureChest) {
+    public int getMissingPiece(GameState state, int whoTold, int treasureChest) {
         int sum = 0;
         for (int position = 0; position < 5; position++) {
             if (position == playerID || position == whoTold) {
@@ -286,20 +294,19 @@ public class HatGuessing implements Agent {
         throw new IllegalStateException("There was no treasure me hearties");
     }
 
-    @Override
-    public void receiveEvent(GameEvent event) {
+    public void applyEffect(GameState state, GameEvent event) {
         switch (event.getEvent()) {
             case CARD_INFO_COLOUR: {
                 CardInfoColour tellColour = (CardInfoColour) event;
                 int recommendation = 4 + getEncodedValue(tellColour.getPerformer(), tellColour.getPlayerId());
-                lastToldAction = Recommendation.values()[getMissingPiece(tellColour.getPerformer(), recommendation)];
+                lastToldAction = Recommendation.values()[getMissingPiece(state, tellColour.getPerformer(), recommendation)];
                 cardsPlayedSinceHint = 0;
                 break;
             }
             case CARD_INFO_VALUE: {
                 CardInfoValue tellValue = (CardInfoValue) event;
                 int recommendation = getEncodedValue(tellValue.getPerformer(), tellValue.getPlayerId());
-                lastToldAction = Recommendation.values()[getMissingPiece(tellValue.getPerformer(), recommendation)];
+                lastToldAction = Recommendation.values()[getMissingPiece(state, tellValue.getPerformer(), recommendation)];
                 cardsPlayedSinceHint = 0;
                 break;
             }
@@ -318,13 +325,4 @@ public class HatGuessing implements Agent {
         return ENCODING[whoTold][toldWho];
     }
 
-
-    /**
-     * Receives and stores the current state.
-     * @param state The state
-     */
-    @Override
-    public void onState(GameState state) {
-        this.state = state;
-    }
 }
