@@ -8,6 +8,8 @@ import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
+import java.util.Random;
+
 /**
  * Hello world!
  */
@@ -24,8 +26,8 @@ public class App {
         int games = 0;
         System.out.println("Start");
 
-        for (int run = 0; run < 1000; run++) {
-            GameStats stats = playGame();
+        for (int run = 0; run < 10_000; run++) {
+            GameStats stats = playMixed("mctsND", "hat");
             sum += stats.score;
             games++;
         }
@@ -37,12 +39,31 @@ public class App {
         System.out.println("avg: " + sum / games);
     }
 
-    public static GameStats playGame() {
+    public static GameStats playGame(String agent) {
         String[] names = new String[5];
         Agent[] players = new Agent[5];
         for (int i = 0; i < 5; i++) {
-            names[i] = "hat";
+            names[i] = agent;
             players[i] = AgentUtils.buildAgent(names[i]);
+        }
+
+        GameStats stats = GameUtils.runGame("", null, SetupUtils.toPlayers(names, players));
+        System.out.println("the agents scored: " + stats);
+        return stats;
+    }
+
+    public static GameStats playMixed(String agentUnderTest, String agent) {
+        Random r = new Random();
+        int whereToPlace = r.nextInt(5);
+
+        String[] names = new String[5];
+        for (int i=0; i<names.length; i++){
+            names[i] = whereToPlace == i ? agentUnderTest : agent;
+        }
+
+        Agent[] players = new Agent[5];
+        for (int i = 0; i < names.length; i++) {
+            players[i] = buildAgent(names[i], i, agent, names.length);
         }
 
         GameStats stats = GameUtils.runGame("", null, SetupUtils.toPlayers(names, players));

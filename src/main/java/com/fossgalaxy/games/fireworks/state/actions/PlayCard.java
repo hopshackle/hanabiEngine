@@ -67,7 +67,8 @@ public class PlayCard implements Action {
 
     @Override
     public boolean isLegal(int playerID, GameState state) {
-        return true;
+        Card card = state.getHand(playerID).getCard(slot);
+        return card != null;
     }
 
     @Override

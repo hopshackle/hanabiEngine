@@ -50,6 +50,11 @@ public class DiscardCard implements Action {
 
     @Override
     public boolean isLegal(int playerID, GameState state) {
+        Card card = state.getHand(playerID).getCard(slot);
+        if (card == null) {
+            return false;
+        }
+
         return state.getInfomation() != state.getStartingInfomation();
     }
 
