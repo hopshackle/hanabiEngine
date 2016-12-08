@@ -14,6 +14,7 @@ import java.util.Random;
  * This runner paired with
  */
 public class MixedAgentGameSingle {
+    private static final String SEPERATOR = "###########################";
 
     private MixedAgentGameSingle() {
 
@@ -45,9 +46,9 @@ public class MixedAgentGameSingle {
                     gameID = String.format("%s-%d-%d", taskId, nPlayers, run);
                 }
 
-                System.err.println("###########################");
+                System.err.println(SEPERATOR);
                 System.err.println("# begin game " + gameID);
-                System.err.println("###########################");
+                System.err.println(SEPERATOR);
 
                 Agent[] agents = new Agent[nPlayers];
                 String[] agentStr = new String[5];
@@ -66,9 +67,9 @@ public class MixedAgentGameSingle {
                 //System.out.println("name,seed,players,information,lives,moves,score");
                 App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
 
-                System.err.println("###########################");
+                System.err.println(SEPERATOR);
                 System.err.println("# end game " + gameID);
-                System.err.println("###########################");
+                System.err.println(SEPERATOR);
             }
         }
     }
