@@ -47,12 +47,13 @@ public class Utils {
     public static Collection<Action> generateActions(int playerID, GameState state) {
         HashSet<Action> list = new HashSet<>();
 
-        //TODO handle null cards
         Hand myHand = state.getHand(playerID);
         for (int slot = 0; slot < myHand.getSize(); slot++) {
-            list.add(new PlayCard(slot));
-            if (state.getInfomation() != state.getStartingInfomation()) {
-                list.add(new DiscardCard(slot));
+            if (myHand.hasCard(slot)) {
+                list.add(new PlayCard(slot));
+                if (state.getInfomation() != state.getStartingInfomation()) {
+                    list.add(new DiscardCard(slot));
+                }
             }
         }
 
@@ -84,11 +85,14 @@ public class Utils {
     public static Collection<Action> generateSuitableActions(int playerID, GameState state) {
         HashSet<Action> list = new HashSet<>();
 
-        //TODO handle null cards
         Hand myHand = state.getHand(playerID);
         for (int slot = 0; slot < myHand.getSize(); slot++) {
-            list.add(new PlayCard(slot));
-            list.add(new DiscardCard(slot));
+            if (myHand.hasCard(slot)) {
+                list.add(new PlayCard(slot));
+                if (state.getInfomation() != state.getStartingInfomation()) {
+                    list.add(new DiscardCard(slot));
+                }
+            }
         }
 
         //Legal Information Actions
