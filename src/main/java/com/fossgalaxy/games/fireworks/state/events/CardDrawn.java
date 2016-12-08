@@ -6,10 +6,10 @@ import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
 public class CardDrawn extends GameEvent {
-    public final int playerId;
-    public final int slotId;
-    public final int cardValue;
-    public final CardColour colour;
+    private final int playerId;
+    private final int slotId;
+    private final int cardValue;
+    private final CardColour colour;
 
     public CardDrawn(int playerId, int slotId, CardColour colour, int cardValue) {
         super(MessageType.CARD_DRAWN);

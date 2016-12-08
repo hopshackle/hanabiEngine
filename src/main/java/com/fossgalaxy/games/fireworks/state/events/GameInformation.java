@@ -3,10 +3,10 @@ package com.fossgalaxy.games.fireworks.state.events;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
 public class GameInformation extends GameEvent {
-    public final int players;
-    public final int handSize;
-    public final int infoTokens;
-    public final int lives;
+    private final int players;
+    private final int handSize;
+    private final int infoTokens;
+    private final int lives;
 
     public GameInformation(int players, int handSize, int infoTokens, int lives) {
         super(MessageType.GAME_INFO);
