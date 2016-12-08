@@ -47,7 +47,7 @@ public class FreeForAllGameSingle {
 
                 //generate agent under test
                 for (int i = 0; i < numPlayers; i++) {
-                    agents[i] = App.buildAgent(agentStr[i], i, agentStr, numPlayers);
+                    agents[i] = App.buildAgent(agentStr[i], i, agentStr);
                 }
 
                 //System.out.println("name,seed,players,information,lives,moves,score");

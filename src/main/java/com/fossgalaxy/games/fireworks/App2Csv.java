@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Hello world!
+ *@deprecated This class should be migrated away from
  */
 @Deprecated
 public class App2Csv {
