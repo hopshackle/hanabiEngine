@@ -22,7 +22,7 @@ public class TellDispensable extends AbstractTellRule {
             Hand hand = state.getHand(player);
             for (int slot = 0; slot < state.getHandSize(); slot++) {
                 Card actualCard = hand.getCard(slot);
-                if(actualCard == null) continue;
+                if (actualCard == null) continue;
                 CardColour knownColour = hand.getKnownColour(slot);
                 CardColour actualColour = actualCard.colour;
                 if (knownColour == null) {

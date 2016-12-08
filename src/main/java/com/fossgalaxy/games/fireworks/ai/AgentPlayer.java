@@ -25,7 +25,7 @@ public class AgentPlayer implements Player {
     /**
      * Create a player with a given name and policy.
      *
-     * @param name the name of this player
+     * @param name   the name of this player
      * @param policy the policy this player should use
      */
     public AgentPlayer(String name, Agent policy) {

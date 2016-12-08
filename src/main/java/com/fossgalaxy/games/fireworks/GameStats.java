@@ -18,7 +18,7 @@ public class GameStats {
 
     /**
      * The number of lives remaining at the end of the game.
-     *
+     * <p>
      * This value being zero indicates that the game ended due to the player's losing their lives
      */
     public final int lives;
@@ -35,7 +35,7 @@ public class GameStats {
 
     /**
      * The number of illegal (cheating) moves made during this game.
-     *
+     * <p>
      * If this value is greater than zero, then at least one agent in the game should be considered buggy.
      */
     public final int disqal;

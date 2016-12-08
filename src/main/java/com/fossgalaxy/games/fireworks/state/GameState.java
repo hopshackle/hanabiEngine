@@ -4,7 +4,6 @@ import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 public interface GameState {
 
@@ -36,6 +35,8 @@ public interface GameState {
 
     int getLives();
 
+    void setLives(int newValue);
+
     // meta data
     int getPlayerCount();
 
@@ -56,8 +57,6 @@ public interface GameState {
     // update the state
     @Deprecated
     void setKnownValue(int player, int slot, Integer value, CardColour colour);
-
-    void setLives(int newValue);
 
     void setTableValue(CardColour c, int nextValue);
 

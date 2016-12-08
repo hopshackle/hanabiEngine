@@ -1,7 +1,6 @@
 package com.fossgalaxy.games.fireworks;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
@@ -14,13 +13,14 @@ public class RiskyRunner {
 
     public static final String IGGI_RISKY = "iggi_risky";
 
-    private RiskyRunner(){
+    private RiskyRunner() {
 
     }
 
     /**
      * Runs an experiment calculating for each threshold the average score a game of 2-5 players achieved
      * if they are all risky players.
+     *
      * @param args Not used.
      */
     public static void main(String[] args) {

@@ -30,17 +30,17 @@ public class IfRule implements Rule {
     public boolean canFire(int playerID, GameState state) {
         if (predicate.apply(playerID, state)) {
             return success.canFire(playerID, state);
-        }else {
+        } else {
             return failure != null && failure.canFire(playerID, state);
         }
     }
 
     @Override
     public Action execute(int playerID, GameState state) {
-        if(predicate.apply(playerID, state)){
+        if (predicate.apply(playerID, state)) {
             return success.execute(playerID, state);
-        }else{
-            if(failure != null){
+        } else {
+            if (failure != null) {
                 return failure.execute(playerID, state);
             }
         }

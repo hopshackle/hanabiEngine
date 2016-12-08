@@ -8,21 +8,18 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.TimedHand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
-import com.fossgalaxy.games.fireworks.state.events.MessageType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by piers on 11/11/16.
  */
 public class HatGuessing implements Agent {
-    private static final int NOT_FOUND = 99;
-    private static final int[] copies = {0, 3, 2, 2, 2, 1};
     static final int[][] ENCODING = new int[][]{
             new int[]{99, 0, 1, 2, 3},
             new int[]{3, 99, 0, 1, 2},
@@ -30,8 +27,8 @@ public class HatGuessing implements Agent {
             new int[]{1, 2, 3, 99, 0},
             new int[]{0, 1, 2, 3, 99},
     };
-
-
+    private static final int NOT_FOUND = 99;
+    private static final int[] copies = {0, 3, 2, 2, 2, 1};
     private int playerID;
 
     private Recommendation lastToldAction;
@@ -317,6 +314,7 @@ public class HatGuessing implements Agent {
 
     /**
      * Helper method to understand the hint system
+     *
      * @param whoTold Who told the hint
      * @param toldWho Who the hint was told to
      * @return The value

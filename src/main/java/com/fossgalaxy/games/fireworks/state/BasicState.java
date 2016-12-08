@@ -156,6 +156,13 @@ public class BasicState implements GameState {
     }
 
     @Override
+    public void setLives(int newValue) {
+        assert newValue <= MAX_LIVES;
+        assert newValue >= 0;
+        lives = newValue;
+    }
+
+    @Override
     public int getPlayerCount() {
         return hands.length;
     }
@@ -231,13 +238,6 @@ public class BasicState implements GameState {
     }
 
     @Override
-    public void setLives(int newValue) {
-        assert newValue <= MAX_LIVES;
-        assert newValue >= 0;
-        lives = newValue;
-    }
-
-    @Override
     public void setTableValue(CardColour colour, int value) {
         table.put(colour, value);
     }
@@ -289,7 +289,7 @@ public class BasicState implements GameState {
     }
 
     @Override
-    public void addEvent(GameEvent event){
+    public void addEvent(GameEvent event) {
         history.add(event);
     }
 

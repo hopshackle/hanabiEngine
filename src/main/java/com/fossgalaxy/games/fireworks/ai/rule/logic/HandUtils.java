@@ -14,11 +14,11 @@ import java.util.Collections;
  */
 public class HandUtils {
 
+    private final static int[] NUM_CARDS = {0, 3, 2, 2, 2, 1};
+
     private HandUtils() {
 
     }
-
-    private final static int[] NUM_CARDS = {0, 3, 2, 2, 2, 1};
 
     /**
      * Calculates the maximum possible score obtainable for the given colour

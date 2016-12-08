@@ -18,10 +18,9 @@ import java.util.UUID;
  * A basic runner for the game of Hanabi.
  */
 public class GameRunner {
-    private final Logger logger = LoggerFactory.getLogger(GameRunner.class);
     private static final int RULE_STRIKES = 3; //how many times can a player return an illegal move before we give up?
     private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
-
+    private final Logger logger = LoggerFactory.getLogger(GameRunner.class);
     private final String gameID;
     private final Player[] players;
     private final GameState state;
@@ -35,7 +34,7 @@ public class GameRunner {
     /**
      * Create a game runner with a given ID and a number of players.
      *
-     * @param id the Id of the game
+     * @param id           the Id of the game
      * @param playersCount the number of players that will be playing
      * @deprecated use string IDs instead
      */
@@ -47,7 +46,7 @@ public class GameRunner {
     /**
      * Create a game runner with a given ID and number of players.
      *
-     * @param gameID the ID of the game
+     * @param gameID          the ID of the game
      * @param expectedPlayers the number of players we expect to be playing.
      */
     public GameRunner(String gameID, int expectedPlayers) {
@@ -65,7 +64,7 @@ public class GameRunner {
 
     /**
      * Add a player to the game.
-     *
+     * <p>
      * This should not be attempted once the game has started.
      *
      * @param player the player to add to the game
@@ -77,15 +76,15 @@ public class GameRunner {
 
     /**
      * Initialise the game for the players.
-     *
+     * <p>
      * This method does the setup phase for the game.
-     *
+     * <p>
      * this method is responsible for:
      * 1) telling player their IDs
      * 2) initialising the game state and deck order
      * 3) informing players about the number of players and starting resource values
      * 4) dealing and declaring the values in the player's initial hands.
-     *
+     * <p>
      * You should <b>not</b> call this method directly - calling playGame calls it for you on your behalf!
      *
      * @param seed the random seed to use for deck ordering.
@@ -164,7 +163,7 @@ public class GameRunner {
 
     /**
      * Play the game and generate the outcome.
-     *
+     * <p>
      * This will play the game and generate a result.
      *
      * @param seed the seed to use for deck ordering

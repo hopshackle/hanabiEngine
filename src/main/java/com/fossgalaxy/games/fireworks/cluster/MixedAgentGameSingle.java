@@ -2,7 +2,6 @@ package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.App2Csv;
-import com.fossgalaxy.games.fireworks.MixedAgentGame;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;

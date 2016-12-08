@@ -21,6 +21,22 @@ public class NegativeHand extends BasicHand {
         this.possibleValues = new HashMap<>();
     }
 
+    private static <T> Map<Integer, Set<T>> copyMap(Map<Integer, Set<T>> map) {
+        Map<Integer, Set<T>> mapCopy = new HashMap<>();
+        for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
+            mapCopy.put(entry.getKey(), new HashSet<>(entry.getValue()));
+        }
+        return mapCopy;
+    }
+
+    private static <T extends Enum> Map<Integer, Set<T>> copyEnumMap(Map<Integer, Set<T>> map) {
+        Map<Integer, Set<T>> mapCopy = new HashMap<>();
+        for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
+            mapCopy.put(entry.getKey(), EnumSet.copyOf(entry.getValue()));
+        }
+        return mapCopy;
+    }
+
     /**
      * Reset all information about a slot
      */
@@ -30,7 +46,6 @@ public class NegativeHand extends BasicHand {
         possibleColours.put(slot, EnumSet.allOf(CardColour.class));
         possibleValues.put(slot, new HashSet<>(Arrays.asList(1, 2, 3, 4, 5)));
     }
-
 
     // From this players perspective
     @Override
@@ -125,22 +140,6 @@ public class NegativeHand extends BasicHand {
         Set<CardColour> possibleColour = possibleColours.get(slot);
         Set<Integer> possibleValue = possibleValues.get(slot);
         return possibleColour.contains(card.colour) && possibleValue.contains(card.value);
-    }
-
-    private static <T> Map<Integer, Set<T>> copyMap(Map<Integer, Set<T>> map) {
-        Map<Integer, Set<T>> mapCopy = new HashMap<>();
-        for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
-            mapCopy.put(entry.getKey(), new HashSet<>(entry.getValue()));
-        }
-        return mapCopy;
-    }
-
-    private static <T extends Enum> Map<Integer, Set<T>> copyEnumMap(Map<Integer, Set<T>> map) {
-        Map<Integer, Set<T>> mapCopy = new HashMap<>();
-        for (Map.Entry<Integer, Set<T>> entry : map.entrySet()) {
-            mapCopy.put(entry.getKey(), EnumSet.copyOf(entry.getValue()));
-        }
-        return mapCopy;
     }
 
     @Override
