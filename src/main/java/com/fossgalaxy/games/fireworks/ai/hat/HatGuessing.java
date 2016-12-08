@@ -160,7 +160,7 @@ public class HatGuessing implements Agent {
     }
 
     /**
-     * Gets the integer recomendation for the Hat Guessing algorithm for a single hand
+     * Gets the integer recommendation for the Hat Guessing algorithm for a single hand
      * <p>
      * Used to both calculate the encoding and decoding of a hint.
      *
@@ -323,4 +323,8 @@ public class HatGuessing implements Agent {
         return ENCODING[whoTold][toldWho];
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s", "HatGuessing");
+    }
 }

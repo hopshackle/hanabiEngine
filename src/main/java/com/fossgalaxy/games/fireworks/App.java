@@ -37,7 +37,7 @@ public class App {
         System.out.println("Start");
 
         for (int run = 0; run < 10_000; run++) {
-            GameStats stats = playMixed("mctsND", "hat");
+            GameStats stats = playMixed("predictorMCTSND", "hat");
             sum += stats.score;
             games++;
         }
