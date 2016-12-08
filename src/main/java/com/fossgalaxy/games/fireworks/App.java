@@ -20,6 +20,10 @@ public class App {
 
     }
 
+    /**
+     * Plays a series of games with a single agent mixed with another agent
+     * @param args Ignored
+     */
     public static void main(String[] args) {
 
         double sum = 0;
@@ -39,6 +43,11 @@ public class App {
         System.out.println("avg: " + sum / games);
     }
 
+    /**
+     * Plays a game with the given agent
+     * @param agent The given agent to play the game
+     * @return GameStats for the game.
+     */
     public static GameStats playGame(String agent) {
         String[] names = new String[5];
         Agent[] players = new Agent[5];
@@ -52,6 +61,12 @@ public class App {
         return stats;
     }
 
+    /**
+     *Plays a mixed game with the agent under test and all other agents as the agent
+     * @param agentUnderTest The agent to be player 0
+     * @param agent The agent to make all the others
+     * @return GameStats for the game
+     */
     public static GameStats playMixed(String agentUnderTest, String agent) {
         Random r = new Random();
         int whereToPlace = r.nextInt(5);
@@ -71,6 +86,14 @@ public class App {
         return stats;
     }
 
+    /**
+     *Build an agent
+     * @param name The name the agent will believe it has
+     * @param agentID The AgentID it will have
+     * @param paired Who it is paired with
+     * @param size The size of the game
+     * @return The agent created
+     */
     public static Agent buildAgent(String name, int agentID, String paired, int size) {
         switch (name) {
             case "predictorMCTS":
@@ -85,6 +108,14 @@ public class App {
         }
     }
 
+    /**
+     *Build an agent
+     * @param name The name the agent will believe it has
+     * @param agentID The AgentID it will have
+     * @param paired Who it is paired with
+     * @param size The size of the game
+     * @return The agent created
+     */
     public static Agent buildAgent(String name, int agentID, String[] paired, int size) {
         switch (name) {
             case "predictorMCTS":
@@ -100,6 +131,14 @@ public class App {
     }
 
 
+    /**
+     * Allows for creating MCTS specifically with some fields
+     * @param name The name of the agent
+     * @param roundLength The round length to use for MCTS
+     * @param rolloutDepth The rollout depth to use for MCTS
+     * @param treeDepth The tree depth to use for MCTS
+     * @return The Agent
+     */
     public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth) {
         switch (name) {
             case "mcts":
@@ -109,6 +148,17 @@ public class App {
         }
     }
 
+    /**
+     *Allows for creating Predictor MCTS with some fields
+     * @param name The name for the agent
+     * @param agentID The agent id
+     * @param paired Who the agent is paired with
+     * @param size The size of the game
+     * @param roundLength The round length to use for MCTS
+     * @param rolloutDepth The rollout depth to use for MCTS
+     * @param treeDepth The tree depth to use for MCTS
+     * @return The agent
+     */
     public static Agent buildAgent(String name, int agentID, String paired, int size, int roundLength, int rolloutDepth, int treeDepth) {
         switch (name) {
             case "predictorMCTS":
@@ -126,6 +176,12 @@ public class App {
         }
     }
 
+    /**
+     * Builds a risky agent with a given threshold
+     * @param name The name for the agent
+     * @param threshold The threshold to give to the agent
+     * @return The agent
+     */
     public static Agent buildAgent(String name, double threshold) {
         switch (name) {
             case "iggi_risky":
