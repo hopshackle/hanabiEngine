@@ -149,4 +149,18 @@ public interface Hand {
      * @return Wether there is a card of that value in the hand
      */
     boolean hasValue(Integer value);
+
+    /**
+     * Does the hand contain a card in this slot?
+     * @param slot The slot to check
+     * @return Whether there is a card in the slot
+     */
+    boolean hasCard(int slot);
+
+    /**
+     * Sets whether the hand has a card in this slot.
+     * @param slot The slot to set
+     * @param value The presence or not of a card
+     */
+    void setHasCard(int slot, boolean value);
 }

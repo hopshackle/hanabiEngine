@@ -102,4 +102,14 @@ public class ShieldedHand implements Hand {
     public int hashCode() {
         return hand != null ? hand.hashCode() : 0;
     }
+
+    @Override
+    public boolean hasCard(int slot) {
+        return hand.hasCard(slot);
+    }
+
+    @Override
+    public void setHasCard(int slot, boolean value) {
+        hand.setHasCard(slot, value);
+    }
 }

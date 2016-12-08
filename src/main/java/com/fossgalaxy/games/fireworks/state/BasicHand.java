@@ -13,6 +13,7 @@ public class BasicHand implements Iterable<Card>, Hand {
     private final CardColour[] colours;
     private final Integer[] values;
     private final Card[] cards;
+    private final boolean[] hasCards;
 
     /**
      * Create a deep copy of a given hand.
@@ -24,6 +25,7 @@ public class BasicHand implements Iterable<Card>, Hand {
         this.colours = Arrays.copyOf(hand.colours, size);
         this.values = Arrays.copyOf(hand.values, size);
         this.cards = Arrays.copyOf(hand.cards, size);
+        this.hasCards = Arrays.copyOf(hand.hasCards, size);
     }
 
     /**
@@ -38,7 +40,7 @@ public class BasicHand implements Iterable<Card>, Hand {
         this.colours = new CardColour[size];
         this.values = new Integer[size];
         this.cards = new Card[size];
-
+        this.hasCards = new boolean[size];
     }
 
     /**
@@ -325,4 +327,15 @@ public class BasicHand implements Iterable<Card>, Hand {
         return false;
     }
 
+    @Override
+    public boolean hasCard(int slot) {
+        return slot < size && hasCards[slot];
+    }
+
+    @Override
+    public void setHasCard(int slot, boolean value) {
+        if(slot < size){
+            hasCards[slot] = value;
+        }
+    }
 }

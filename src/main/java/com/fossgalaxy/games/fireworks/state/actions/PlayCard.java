@@ -5,6 +5,7 @@ import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.RulesViolation;
 import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.CardPlayed;
+import com.fossgalaxy.games.fireworks.state.events.CardReceived;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class PlayCard implements Action {
 
         ArrayList<GameEvent> events = new ArrayList<>();
         events.add(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value));
-
+        events.add(new CardReceived(playerID, slot, game.getDeck().hasCardsLeft()));
         // deal with the new card
         // XXX null pointer exception if next card was null.
         if (game.getDeck().hasCardsLeft()) {
