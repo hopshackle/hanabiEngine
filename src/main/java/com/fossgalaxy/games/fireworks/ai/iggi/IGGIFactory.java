@@ -52,6 +52,13 @@ public class IGGIFactory {
 
     public static Agent buildPiersPlayer() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
+        // Its yolo time
+        pra.addRule(
+                new IfRule(
+                        (id, state) -> state.getLives() > 1 && !state.getDeck().hasCardsLeft(),
+                        new PlayProbablySafeCard(0.0)
+                )
+        );
         pra.addRule(new PlaySafeCard());
         pra.addRule(
                 new IfRule(
