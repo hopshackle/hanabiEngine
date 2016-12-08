@@ -15,6 +15,11 @@ import java.util.Random;
  */
 public class App {
 
+    public static final String PREDICTOR_MCTS = "predictorMCTS";
+    public static final String IGGI_RISKY = "iggi_risky";
+    public static final String MCTS = "mcts";
+    public static final String PREDICTOR_MCTSND = "predictorMCTSND";
+
     //utility class - don't create instances of it
     private App() {
 
@@ -22,6 +27,7 @@ public class App {
 
     /**
      * Plays a series of games with a single agent mixed with another agent
+     *
      * @param args Ignored
      */
     public static void main(String[] args) {
@@ -45,6 +51,7 @@ public class App {
 
     /**
      * Plays a game with the given agent
+     *
      * @param agent The given agent to play the game
      * @return GameStats for the game.
      */
@@ -62,9 +69,10 @@ public class App {
     }
 
     /**
-     *Plays a mixed game with the agent under test and all other agents as the agent
+     * Plays a mixed game with the agent under test and all other agents as the agent
+     *
      * @param agentUnderTest The agent to be player 0
-     * @param agent The agent to make all the others
+     * @param agent          The agent to make all the others
      * @return GameStats for the game
      */
     public static GameStats playMixed(String agentUnderTest, String agent) {
@@ -72,7 +80,7 @@ public class App {
         int whereToPlace = r.nextInt(5);
 
         String[] names = new String[5];
-        for (int i=0; i<names.length; i++){
+        for (int i = 0; i < names.length; i++) {
             names[i] = whereToPlace == i ? agentUnderTest : agent;
         }
 
@@ -87,17 +95,18 @@ public class App {
     }
 
     /**
-     *Build an agent
-     * @param name The name the agent will believe it has
+     * Build an agent
+     *
+     * @param name    The name the agent will believe it has
      * @param agentID The AgentID it will have
-     * @param paired Who it is paired with
-     * @param size The size of the game
+     * @param paired  Who it is paired with
+     * @param size    The size of the game
      * @return The agent created
      */
     public static Agent buildAgent(String name, int agentID, String paired, int size) {
         switch (name) {
-            case "predictorMCTS":
-            case "predictorMCTSND":
+            case PREDICTOR_MCTS:
+            case PREDICTOR_MCTSND:
                 Agent[] agents = AgentUtils.buildPredictors(agentID, size, paired);
                 if (name.contains("ND")) {
                     return new MCTSPredictor(agents, 50_000, 100, 100);
@@ -109,17 +118,17 @@ public class App {
     }
 
     /**
-     *Build an agent
-     * @param name The name the agent will believe it has
+     * Build an agent
+     *
+     * @param name    The name the agent will believe it has
      * @param agentID The AgentID it will have
-     * @param paired Who it is paired with
-     * @param size The size of the game
+     * @param paired  Who it is paired with
      * @return The agent created
      */
-    public static Agent buildAgent(String name, int agentID, String[] paired, int size) {
+    public static Agent buildAgent(String name, int agentID, String[] paired) {
         switch (name) {
-            case "predictorMCTS":
-            case "predictorMCTSND":
+            case PREDICTOR_MCTS:
+            case PREDICTOR_MCTSND:
                 Agent[] agents = AgentUtils.buildPredictors(agentID, paired);
                 if (name.contains("ND")) {
                     return new MCTSPredictor(agents, 50_000, 100, 100);
@@ -133,61 +142,52 @@ public class App {
 
     /**
      * Allows for creating MCTS specifically with some fields
-     * @param name The name of the agent
-     * @param roundLength The round length to use for MCTS
+     *
+     * @param name         The name of the agent
+     * @param roundLength  The round length to use for MCTS
      * @param rolloutDepth The rollout depth to use for MCTS
-     * @param treeDepth The tree depth to use for MCTS
+     * @param treeDepth    The tree depth to use for MCTS
      * @return The Agent
      */
     public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth) {
-        switch (name) {
-            case "mcts":
-                return new MCTS(roundLength, rolloutDepth, treeDepth);
-            default:
-                return AgentUtils.buildAgent(name);
-        }
+        return MCTS.equals(name) ? new MCTS(roundLength, rolloutDepth, treeDepth) : AgentUtils.buildAgent(name);
     }
 
     /**
-     *Allows for creating Predictor MCTS with some fields
-     * @param name The name for the agent
-     * @param agentID The agent id
-     * @param paired Who the agent is paired with
-     * @param size The size of the game
-     * @param roundLength The round length to use for MCTS
+     * Allows for creating Predictor MCTS with some fields
+     *
+     * @param name         The name for the agent
+     * @param agentID      The agent id
+     * @param paired       Who the agent is paired with
+     * @param size         The size of the game
+     * @param roundLength  The round length to use for MCTS
      * @param rolloutDepth The rollout depth to use for MCTS
-     * @param treeDepth The tree depth to use for MCTS
+     * @param treeDepth    The tree depth to use for MCTS
      * @return The agent
      */
     public static Agent buildAgent(String name, int agentID, String paired, int size, int roundLength, int rolloutDepth, int treeDepth) {
-        switch (name) {
-            case "predictorMCTS":
-                Agent[] agents = new Agent[size];
-                for (int i = 0; i < size; i++) {
-                    if (i == agentID) {
-                        agents[i] = null;
-                    }
-                    //TODO is this ever paired with MCTS? if not this should be AgentUtils.buildAgent(agentID, size, paired)
-                    agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
-                }
-                return new MCTSPredictor(agents);
-            default:
-                return AgentUtils.buildAgent(name);
+        if (!PREDICTOR_MCTS.equals(name)) {
+            return AgentUtils.buildAgent(name);
         }
+        Agent[] agents = new Agent[size];
+        for (int i = 0; i < size; i++) {
+            if (i == agentID) {
+                agents[i] = null;
+            }
+            //TODO is this ever paired with MCTS? if not this should be AgentUtils.buildAgent(agentID, size, paired)
+            agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
+        }
+        return new MCTSPredictor(agents);
     }
 
     /**
      * Builds a risky agent with a given threshold
-     * @param name The name for the agent
+     *
+     * @param name      The name for the agent
      * @param threshold The threshold to give to the agent
      * @return The agent
      */
     public static Agent buildAgent(String name, double threshold) {
-        switch (name) {
-            case "iggi_risky":
-                return IGGIFactory.buildRiskyPlayer(threshold);
-            default:
-                return AgentUtils.buildAgent(name);
-        }
+        return IGGI_RISKY.equals(name) ? IGGIFactory.buildRiskyPlayer(threshold) : AgentUtils.buildAgent(name);
     }
 }
