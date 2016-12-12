@@ -149,6 +149,7 @@ public class MCTS implements Agent {
             Action action = current.getAction();
             if (action != null) {
                 action.apply(agent, state);
+                state.tick();
             }
 
             if (iterationObject.isMyGo(agent)) {
@@ -219,6 +220,7 @@ public class MCTS implements Agent {
         while (!state.isGameOver() && moves < rolloutDepth) {
             Action action = selectActionForRollout(state, playerID);
             action.apply(playerID, state);
+            state.tick();
             playerID = (playerID + 1) % state.getPlayerCount();
             moves++;
         }

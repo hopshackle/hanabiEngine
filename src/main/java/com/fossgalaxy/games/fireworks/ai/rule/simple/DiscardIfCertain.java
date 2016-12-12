@@ -16,6 +16,10 @@ public class DiscardIfCertain extends AbstractDiscardRule {
     public Action execute(int playerID, GameState state) {
         Hand myHand = state.getHand(playerID);
         for (int slot = 0; slot < state.getHandSize(); slot++) {
+            if (!myHand.hasCard(slot)) {
+                continue;
+            }
+
             CardColour c = myHand.getKnownColour(slot);
             Integer value = myHand.getKnownValue(slot);
 

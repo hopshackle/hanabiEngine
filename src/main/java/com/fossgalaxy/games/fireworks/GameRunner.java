@@ -4,6 +4,7 @@ import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.*;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
+import com.fossgalaxy.games.fireworks.state.events.CardReceived;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.state.events.GameInformation;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
@@ -110,6 +111,7 @@ public class GameRunner {
             for (int slot = 0; slot < hand.getSize(); slot++) {
                 Card cardInSlot = hand.getCard(slot);
                 send(new CardDrawn(player, slot, cardInSlot.colour, cardInSlot.value));
+                send(new CardReceived(player, slot, state.getDeck().hasCardsLeft()));
             }
         }
 

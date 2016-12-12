@@ -137,6 +137,10 @@ public class NegativeHand extends BasicHand {
 
     @Override
     public boolean isPossible(int slot, Card card) {
+        if (!hasCard(slot)) {
+            return false;
+        }
+
         Set<CardColour> possibleColour = possibleColours.get(slot);
         Set<Integer> possibleValue = possibleValues.get(slot);
         return possibleColour.contains(card.colour) && possibleValue.contains(card.value);

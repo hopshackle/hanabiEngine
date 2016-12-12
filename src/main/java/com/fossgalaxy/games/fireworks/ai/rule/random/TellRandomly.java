@@ -8,6 +8,8 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -24,16 +26,16 @@ public class TellRandomly extends AbstractTellRule {
     public Action execute(int playerID, GameState state) {
 
         int nextAgent = selectPlayer(playerID, state);
-        Hand otherHand = state.getHand(nextAgent);
+        Hand hand = state.getHand(nextAgent);
 
-        //Select a random card from the player's hand
-        int slot = random.nextInt(state.getHandSize());
-        Card card = otherHand.getCard(slot);
-
-        //if this card doens't exist, then abort this move (handle this better)
-        if (card == null) {
-            return null;
+        List<Card> possibleCards = new ArrayList<>();
+        for (int slot=0; slot<hand.getSize(); slot++) {
+            if (hand.hasCard(slot)) {
+                possibleCards.add(hand.getCard(slot));
+            }
         }
+
+        Card card = possibleCards.get(random.nextInt(possibleCards.size()));
 
         //decide if we should describe the colour or number
         if (random.nextBoolean()) {

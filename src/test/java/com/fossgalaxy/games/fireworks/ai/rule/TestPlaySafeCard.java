@@ -18,12 +18,16 @@ public class TestPlaySafeCard {
     public void testPlaySafeCard(){
         // Any card that is definately playable - even if we don't know it all
         BasicState state = new BasicState(2);
+        state.init();
+        RuleUtils.setHasCards(state);
+
+        int value = 1;
 
         // This card is playable
-        state.getHand(0).setCard(0, new Card(1, CardColour.BLUE));
+        state.getHand(0).setCard(0, new Card(value, CardColour.BLUE));
 
         // This card is a one - the table is clear so it is playable
-        state.getHand(0).setKnownValue(0, new Integer[]{0});
+        state.getHand(0).setKnownValue(value, new Integer[]{0});
         PlaySafeCard instance = new PlaySafeCard();
 
         assertEquals(true, instance.canFire(0, state));

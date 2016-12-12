@@ -1,5 +1,7 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import com.fossgalaxy.games.fireworks.ai.rule.RuleUtils;
+import com.fossgalaxy.games.fireworks.ai.rule.logic.HandUtils;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -29,6 +31,7 @@ public class TestNegativeHand {
     public void setup() {
         hand = new NegativeHand(5);
         hand.init();
+        RuleUtils.setHasCards(hand);
     }
 
     @Test

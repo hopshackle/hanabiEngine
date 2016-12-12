@@ -12,11 +12,9 @@ import java.util.Random;
 
 public class ProductionRuleAgent implements Agent {
     private List<Rule> rules;
-    private Random random;
 
     public ProductionRuleAgent() {
         this.rules = new ArrayList<>();
-        this.random = new Random();
     }
 
     public void addRule(Rule rule) {
@@ -38,11 +36,7 @@ public class ProductionRuleAgent implements Agent {
 
     //default rule based behaviour, discard random if legal, else play random
     public Action doDefaultBehaviour(int playerID, GameState state) {
-        if (state.getInfomation() != state.getStartingInfomation()) {
-            return new DiscardCard(random.nextInt(state.getHandSize()));
-        } else {
-            return new PlayCard(random.nextInt(state.getHandSize()));
-        }
+       throw new IllegalStateException("No rule fired - your rules are incomplete.");
     }
 
     @Override

@@ -150,6 +150,7 @@ public class BasicHand implements Iterable<Card>, Hand {
     public void setCard(int slot, Card card) {
         clear(slot);
         cards[slot] = card;
+        hasCards[slot] = (card != null);
     }
 
     /**
@@ -248,7 +249,7 @@ public class BasicHand implements Iterable<Card>, Hand {
     public boolean isPossible(int slot, Card card) {
         boolean possibleColour = colours[slot] == null || colours[slot].equals(card.colour);
         boolean possibleValue = values[slot] == null || values[slot].equals(card.value);
-        return possibleColour && possibleValue;
+        return hasCard(slot) && possibleColour && possibleValue;
     }
 
     /**

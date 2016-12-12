@@ -56,7 +56,7 @@ public class TestProductionRuleAgent {
         assertEquals(PlayCard.class, action.getClass());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testDefaultBehaviourOfDiscard(){
         // None of these are useful
         for (CardColour colour : CardColour.values()) {
@@ -64,14 +64,6 @@ public class TestProductionRuleAgent {
             state.setTableValue(colour, 1);
         }
 
-        state.setInformation(7);
-        Action action = agent.doMove(0, state);
-        assertEquals(true, action != null);
-        assertEquals(DiscardCard.class, action.getClass());
-
-        state.setInformation(8);
-        action = agent.doMove(0, state);
-        assertEquals(true, action != null);
-        assertEquals(PlayCard.class, action.getClass());
+        agent.doMove(0, state);
     }
 }

@@ -24,6 +24,10 @@ public class DiscardUselessCard extends AbstractDiscardRule {
         Hand myHand = state.getHand(playerID);
         Map<Integer, List<Card>> possibleCards = null;
         for (int slot = 0; slot < myHand.getSize(); slot++) {
+            if ( !myHand.hasCard(slot) ) {
+                continue;
+            }
+
             CardColour c = myHand.getKnownColour(slot);
             if (c == null) {
                 continue;
@@ -39,7 +43,7 @@ public class DiscardUselessCard extends AbstractDiscardRule {
                 possibleCards = DeckUtils.bindBlindCard(playerID, myHand, state.getDeck().toList());
             }
 
-            if (possibleCards.containsKey(slot)) {
+            if (possibleCards.containsKey(slot) && !possibleCards.get(slot).isEmpty()) {
                 int minimum = possibleCards.get(slot).stream().mapToInt(x -> x.value).min().getAsInt();
                 if (minimum > highestPossible) {
                     return new DiscardCard(slot);

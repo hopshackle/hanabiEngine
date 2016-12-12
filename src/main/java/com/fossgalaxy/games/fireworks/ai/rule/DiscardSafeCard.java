@@ -14,7 +14,7 @@ public class DiscardSafeCard extends AbstractDiscardRule {
     @Override
     public Action execute(int playerID, GameState state) {
         for (int slot = 0; slot < state.getHandSize(); slot++) {
-            if (HandUtils.knowsItIsSafeToDiscard(state, playerID, slot)) {
+            if (state.getHand(playerID).hasCard(slot) && HandUtils.knowsItIsSafeToDiscard(state, playerID, slot)) {
                 return new DiscardCard(slot);
             }
         }

@@ -7,6 +7,7 @@ import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
+import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.wrapper.IfRule;
@@ -36,6 +37,8 @@ public class IGGIFactory {
         pra.addRule(new TellAnyoneAboutUsefulCard());
         pra.addRule(new OsawaDiscard());
         pra.addRule(new DiscardRandomly());
+
+        pra.addRule(new TellRandomly());
         return pra;
     }
 
@@ -45,7 +48,9 @@ public class IGGIFactory {
         pra.addRule(new PlaySafeCard());
         pra.addRule(new TellAnyoneAboutUsefulCard());
         pra.addRule(new OsawaDiscard());
+
         pra.addRule(new DiscardOldestFirst());
+        pra.addRule(new TellRandomly());
 
         return pra;
     }

@@ -54,14 +54,17 @@ public class PlayCard implements Action {
         ArrayList<GameEvent> events = new ArrayList<>();
         events.add(new CardPlayed(playerID, slot, oldCard.colour, oldCard.value));
         events.add(new CardReceived(playerID, slot, game.getDeck().hasCardsLeft()));
+
         // deal with the new card
         // XXX null pointer exception if next card was null.
         if (game.getDeck().hasCardsLeft()) {
             Card newCard = game.drawFromDeck();
             game.setCardAt(playerID, slot, newCard);
+            game.getHand(playerID).setHasCard(slot, true);
             events.add(new CardDrawn(playerID, slot, newCard.colour, newCard.value));
         } else {
             game.setCardAt(playerID, slot, null);
+            game.getHand(playerID).setHasCard(slot, false);
         }
 
         return events;

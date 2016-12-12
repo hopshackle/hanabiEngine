@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import com.fossgalaxy.games.fireworks.ai.rule.RuleUtils;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -23,6 +24,7 @@ public class TestBasicHand {
     public void setup() {
         basicHand = new BasicHand(5);
         basicHand.init();
+        RuleUtils.setHasCards(basicHand);
     }
 
     public static CardColour[] c(CardColour... colours) {

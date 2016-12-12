@@ -22,11 +22,12 @@ public class PlaySafeCard extends AbstractRule {
 
         //figure out what cards are playable
         List<Integer> playableSlots = possibleCards.entrySet().stream()
+                .filter(x -> !x.getValue().isEmpty())
                 .filter(x -> x.getValue().stream().allMatch(y -> isPlayable(y, state)))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        //if nothing is garenteed to be playable, this rule doesn't fire
+        //if nothing is guaranteed to be playable, this rule doesn't fire
         if (playableSlots.isEmpty()) {
             return null;
         }

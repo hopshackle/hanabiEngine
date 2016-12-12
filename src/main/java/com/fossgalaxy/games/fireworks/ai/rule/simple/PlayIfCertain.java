@@ -17,6 +17,10 @@ public class PlayIfCertain extends AbstractRule {
 
         Hand myHand = state.getHand(playerID);
         for (int slot = 0; slot < state.getHandSize(); slot++) {
+            if (!myHand.hasCard(slot)) {
+                continue;
+            }
+
             CardColour c = myHand.getKnownColour(slot);
             Integer value = myHand.getKnownValue(slot);
 
