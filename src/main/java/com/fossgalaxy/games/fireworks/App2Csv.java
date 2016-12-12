@@ -65,13 +65,13 @@ public class App2Csv {
                     agentStr[agent] = agentNames[i];
                 }
 
-                playGame(agentStr, seed, agents);
+                playGame(agentStr[0], agentStr, seed, agents);
             }
         }
     }
 
     @Deprecated
-    public static GameStats playGame(String[] names, Long seed, Player... players) {
+    public static GameStats playGame(String agentUnderTest, String[] names, Long seed, Player... players) {
         UUID id = UUID.randomUUID();
         try (
                 FileOutputStream fos = new FileOutputStream(String.format("trace_%s.csv", id));
@@ -86,7 +86,7 @@ public class App2Csv {
 
             GameStats stats = runner.playGame(seed);
             ps.println("DEBUG,game is over");
-            System.out.println(String.format("%s,%d,%d,%d,%d,%d,%d,%d", String.join(",", Arrays.asList(names)), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+            System.out.println(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d", agentUnderTest, String.join(",", Arrays.asList(names)), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
             return stats;
         } catch (IOException ex) {
             System.err.println("error: " + ex.toString());
@@ -105,13 +105,13 @@ public class App2Csv {
      * @param agents the agents to use for the game
      * @return the outcome of the game
      */
-    public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Agent... agents) {
-        return playGameErrTrace(gameID, name, seed, toPlayers(agents));
+    public static GameStats playGameErrTrace(String gameID, String agentUT, String[] name, Long seed, Agent... agents) {
+        return playGameErrTrace(gameID, agentUT, name, seed, toPlayers(agents));
     }
 
     @Deprecated
-    public static GameStats playGame(String[] name, Long seed, Agent... agents) {
-        return playGame(name, seed, toPlayers(agents));
+    public static GameStats playGame(String agentUnderTest, String[] name, Long seed, Agent... agents) {
+        return playGame(agentUnderTest, name, seed, toPlayers(agents));
     }
 
     /**
@@ -146,9 +146,9 @@ public class App2Csv {
      * @param players the players to use for the game
      * @return the outcome of the game
      */
-    public static GameStats playGameErrTrace(String gameID, String[] name, Long seed, Player... players) {
+    public static GameStats playGameErrTrace(String gameID, String agentUT, String[] name, Long seed, Player... players) {
         GameRunner runner = new GameRunner(gameID, players.length);
-        return playGame(gameID, name, seed, runner, players);
+        return playGame(gameID, agentUT, name, seed, runner, players);
     }
 
     /**
@@ -160,9 +160,9 @@ public class App2Csv {
      * @param players the players to use for the game
      * @return the outcome of the game
      */
-    public static GameStats playCheatGame(String gameID, String[] name, Long seed, Player ... players) {
+    public static GameStats playCheatGame(String gameID, String agentUT, String[] name, Long seed, Player ... players) {
         GameRunner cheatRunner = new GameRunnerCheat(gameID, players.length);
-        return playGame(gameID, name, seed, cheatRunner, players);
+        return playGame(gameID, agentUT, name, seed, cheatRunner, players);
     }
 
     /**
@@ -175,7 +175,7 @@ public class App2Csv {
      * @param players the players that will be playing this game
      * @return the outcome of the game
      */
-    private static GameStats playGame(String gameID, String[] name, Long seed, GameRunner runner, Player... players) {
+    private static GameStats playGame(String gameID, String agentUnderTest, String[] name, Long seed, GameRunner runner, Player... players) {
         try {
             for (int i = -0; i < players.length; i++) {
                 runner.addPlayer(players[i]);
@@ -183,7 +183,7 @@ public class App2Csv {
             }
 
             GameStats stats = runner.playGame(seed);
-            System.out.println(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d", gameID, String.join(",", Arrays.asList(name)), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+            System.out.println(String.format("%s,%s,%s,%d,%d,%d,%d,%d,%d,%d", gameID, agentUnderTest, String.join(",", Arrays.asList(name)), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
             return stats;
         } catch (Exception ex) {
             System.err.println("error: " + ex.toString());

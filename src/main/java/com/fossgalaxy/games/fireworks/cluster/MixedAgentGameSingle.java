@@ -66,7 +66,7 @@ public class MixedAgentGameSingle {
                     agentStr[i] = agentPaired;
                 }
 
-                App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
+                App2Csv.playGameErrTrace(gameID, agentUnderTest, agentStr, seed, agents);
 
                 System.err.println(SEPERATOR);
                 System.err.println("# end game " + gameID);

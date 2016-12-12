@@ -51,7 +51,7 @@ public class App2CsvMulti {
                         agentStr[agent] = name;
                     }
 
-                    App2Csv.playGame(agentStr, seed, agents);
+                    App2Csv.playGame(agentStr[0], agentStr, seed, agents);
                 }
 
             }

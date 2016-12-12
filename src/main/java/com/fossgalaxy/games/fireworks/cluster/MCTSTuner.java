@@ -47,7 +47,7 @@ public class MCTSTuner {
                                 agents[agent] = AgentUtils.buildAgent(agentPaired);
                                 agentStr[agent] = agentPaired;
                             }
-                            App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
+                            App2Csv.playGameErrTrace(gameID, "predictorMCTS", agentStr, seed, agents);
                         }
                     }
                 }

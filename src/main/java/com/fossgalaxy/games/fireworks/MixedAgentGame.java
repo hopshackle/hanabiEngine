@@ -53,7 +53,7 @@ public class MixedAgentGame {
                             agentStr[agent] = paired;
                         }
 
-                        App2Csv.playGame(agentStr, seed, agents);
+                        App2Csv.playGame(agentStr[0], agentStr, seed, agents);
                     }
 
                 }

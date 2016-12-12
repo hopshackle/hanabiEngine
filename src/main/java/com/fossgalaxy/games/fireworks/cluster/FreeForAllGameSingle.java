@@ -51,7 +51,7 @@ public class FreeForAllGameSingle {
                 }
 
                 //System.out.println("name,seed,players,information,lives,moves,score");
-                App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
+                App2Csv.playGameErrTrace(gameID, agentStr[0], agentStr, seed, agents);
             }
         }
     }
