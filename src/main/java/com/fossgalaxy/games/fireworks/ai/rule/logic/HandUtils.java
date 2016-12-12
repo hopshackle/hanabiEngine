@@ -45,8 +45,18 @@ public class HandUtils {
         return 5;
     }
 
+    /**
+     * Returns true if the card is safe to discard because it is higher than what is currently possible for its colour
+     * <p>
+     * I.e if all the Blue 2's have been discarded and none played, then any Blue 3, 4 or 5 is safe to discard
+     *
+     * @param state The game state
+     * @param colour The colour of the card to consider
+     * @param value The value of the card to consider
+     * @return Can we safely discard it for this reason?
+     */
     public static boolean isSafeToDiscardHigherThanPossible(GameState state, CardColour colour, Integer value) {
-        return (value != null && getHighestScorePossible(state, colour) < value);
+        return (value != null  && colour != null && getHighestScorePossible(state, colour) < value);
     }
 
 
@@ -69,6 +79,7 @@ public class HandUtils {
                 isSafeBecauseFiveAlreadyPlayed(state, c)
                         || isSafeBecauseValueLowerThanPlayed(state, c, value)
                         || isSafeBecauseValueLowerThanMinOnTable(state, value)
+                        || isSafeToDiscardHigherThanPossible(state, c, value)
         );
     }
 
