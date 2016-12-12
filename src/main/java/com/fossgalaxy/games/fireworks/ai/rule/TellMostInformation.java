@@ -9,13 +9,23 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Created by piers on 09/12/16.
- *
+ * <p>
  * This will tell the most information to a hand
- * but doesn't at the moment cover what they already know
- *
+ * either new information or information in general
+ * <p>
  * From Van Den Bergh paper
  */
 public class TellMostInformation extends AbstractTellRule {
+
+    private final boolean newInformation;
+
+    public TellMostInformation() {
+        this(false);
+    }
+
+    public TellMostInformation(boolean newInformation) {
+        this.newInformation = newInformation;
+    }
 
     @Override
     public Action execute(int playerID, GameState state) {
@@ -32,8 +42,10 @@ public class TellMostInformation extends AbstractTellRule {
                 int totalAffected = 0;
                 for (int slot = 0; slot < state.getHandSize(); slot++) {
                     if (hand.hasCard(slot)) {
-                        if (hand.getCard(slot).value == i) {
-                            totalAffected++;
+                        if (!newInformation || hand.getKnownValue(slot) == null) {
+                            if (hand.getCard(slot).value == i) {
+                                totalAffected++;
+                            }
                         }
                     }
                 }
@@ -47,12 +59,14 @@ public class TellMostInformation extends AbstractTellRule {
                 int totalAffected = 0;
                 for (int slot = 0; slot < state.getHandSize(); slot++) {
                     if (hand.hasCard(slot)) {
-                        if (hand.getCard(slot).colour == colour) {
-                            totalAffected++;
+                        if(!newInformation || hand.getKnownColour(slot) == null){
+                            if (hand.getCard(slot).colour == colour) {
+                                totalAffected++;
+                            }
                         }
                     }
                 }
-                if(totalAffected > bestAffected){
+                if (totalAffected > bestAffected) {
                     bestAction = new TellColour(player, colour);
                     bestAffected = totalAffected;
                 }
