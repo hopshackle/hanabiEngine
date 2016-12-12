@@ -35,6 +35,8 @@ public class TellRandomly extends AbstractTellRule {
             }
         }
 
+        if(possibleCards.isEmpty()) return null;
+
         Card card = possibleCards.get(random.nextInt(possibleCards.size()));
 
         //decide if we should describe the colour or number

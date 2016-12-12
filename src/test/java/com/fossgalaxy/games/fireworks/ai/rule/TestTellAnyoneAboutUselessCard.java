@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
+import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
@@ -21,21 +22,21 @@ public class TestTellAnyoneAboutUselessCard {
     private TellAnyoneAboutUselessCard instance;
 
     @Before
-    public void setup(){
+    public void setup() {
         this.state = new BasicState(2);
         this.state.init();
         this.state.setInformation(7);
         this.instance = new TellAnyoneAboutUselessCard();
 
-        for(int player = 0;player < state.getPlayerCount(); player++){
-            for(int slot = 0; slot < state.getHandSize(); slot++){
+        for (int player = 0; player < state.getPlayerCount(); player++) {
+            for (int slot = 0; slot < state.getHandSize(); slot++) {
                 state.getHand(player).setHasCard(slot, true);
             }
         }
     }
 
     @Test
-    public void testTellsAboutUselessCard(){
+    public void testTellsAboutAll3sDiscardedSoWillDiscard4() {
         state.getHand(0).setCard(0, new Card(4, CardColour.BLUE));
 //        state.getHand(0).setKnownValue(4, new Integer[]{0});
 //        state.getHand(0).setKnownColour(CardColour.BLUE, new Integer[]{0});
@@ -48,15 +49,30 @@ public class TestTellAnyoneAboutUselessCard {
         Action action = instance.execute(1, state);
         assertNotNull(action);
         assertEquals(true, action instanceof TellColour || action instanceof TellValue);
-        if(action instanceof TellColour){
+        if (action instanceof TellColour) {
             TellColour tellColour = (TellColour) action;
             assertEquals(CardColour.BLUE, tellColour.colour);
             assertEquals(0, tellColour.player);
         }
-        if(action instanceof TellValue){
+        if (action instanceof TellValue) {
             TellValue tellValue = (TellValue) action;
             assertEquals(4, tellValue.value);
             assertEquals(0, tellValue.player);
         }
+    }
+
+    @Test
+    public void testTellsAboutDiscardPossibleCardThatIsUseless() {
+        // Throw away all the ones and take them out the deck
+        Deck deck = state.getDeck();
+
+        for (int i = 0; i < 3; i++) {
+            deck.remove(new Card(1, CardColour.BLUE));
+            state.addToDiscard(new Card(1, CardColour.BLUE));
+        }
+
+        state.getHand(1).setCard(0, new Card(2, CardColour.BLUE));
+
+
     }
 }
