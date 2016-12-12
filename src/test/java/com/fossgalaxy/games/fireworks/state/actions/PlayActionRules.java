@@ -1,6 +1,8 @@
 package com.fossgalaxy.games.fireworks.state.actions;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.fossgalaxy.games.fireworks.state.*;
 import org.junit.Test;
@@ -143,6 +145,76 @@ public class PlayActionRules {
 		assertEquals(lives - 1, state.getLives());
 		assertEquals(infomation, state.getInfomation());
 		assertEquals(null, state.getCardAt(player, slot));
+	}
+
+	@Test
+	public void testIsIllegalIfNullCard() {
+		final int playerID = 1;
+		final int slotID = 1;
+
+		Hand mockHand = mock(Hand.class);
+		when(mockHand.getCard(slotID)).thenReturn(null);
+		when(mockHand.hasCard(slotID)).thenReturn(false);
+
+		GameState state = mock(GameState.class);
+		when(state.getHand(playerID)).thenReturn(mockHand);
+
+		PlayCard instance = new PlayCard(slotID);
+
+		assertEquals(false, instance.isLegal(playerID, state));
+	}
+
+	@Test(expected = RulesViolation.class)
+	public void testIllegalActionTripsException() {
+		final int playerID = 1;
+		final int slotID = 1;
+
+		Hand mockHand = mock(Hand.class);
+		when(mockHand.getCard(slotID)).thenReturn(null);
+		when(mockHand.hasCard(slotID)).thenReturn(false);
+
+		GameState state = mock(GameState.class);
+		when(state.getHand(playerID)).thenReturn(mockHand);
+
+		PlayCard instance = new PlayCard(slotID);
+		instance.apply(playerID, state);
+	}
+
+	@Test
+	public void testTwoActionsWithSameSlotAreEqual() {
+		PlayCard play1 = new PlayCard(1);
+		PlayCard play2 = new PlayCard(1);
+
+		assertEquals(true, play1.equals(play2));
+		assertEquals(true, play2.equals(play1));
+		assertEquals(play1.hashCode(), play2.hashCode());
+	}
+
+	@Test
+	public void testTwoActionsWithDifferentSlotsAreNotEqual() {
+		PlayCard play1 = new PlayCard(1);
+		PlayCard play2 = new PlayCard(2);
+
+		assertEquals(false, play1.equals(play2));
+		assertEquals(false, play2.equals(play1));
+	}
+
+	@Test
+	public void testIslegalIfNullCard() {
+		final int playerID = 1;
+		final int slotID = 1;
+		final Card card = new Card(1, CardColour.BLUE);
+
+		Hand mockHand = mock(Hand.class);
+		when(mockHand.getCard(slotID)).thenReturn(card);
+		when(mockHand.hasCard(slotID)).thenReturn(true);
+
+		GameState state = mock(GameState.class);
+		when(state.getHand(playerID)).thenReturn(mockHand);
+
+		PlayCard instance = new PlayCard(slotID);
+
+		assertEquals(true, instance.isLegal(playerID, state));
 	}
 
 	@Test
