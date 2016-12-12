@@ -7,6 +7,7 @@ import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
+import java.io.PrintStream;
 
 /**
  * A runner capable of playing the games for every legal hand size
@@ -32,6 +33,7 @@ public class MixedAgentGameSingle {
         Random random = new Random();
 
         String taskId = System.getenv("SGE_TASK_ID");
+        PrintStream log = System.err;
 
         for (int run = 0; run < repeats; run++) {
             for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
@@ -64,7 +66,6 @@ public class MixedAgentGameSingle {
                     agentStr[i] = agentPaired;
                 }
 
-                //System.out.println("name,seed,players,information,lives,moves,score");
                 App2Csv.playGameErrTrace(gameID, agentStr, seed, agents);
 
                 System.err.println(SEPERATOR);

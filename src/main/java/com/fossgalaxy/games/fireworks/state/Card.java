@@ -1,9 +1,11 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import java.io.Serializable;
+
 /**
  * A card for the Hanabi card game
  */
-public class Card implements Comparable<Card> {
+public class Card implements Comparable<Card>, Serializable {
     public final Integer value;
     public final CardColour colour;
 

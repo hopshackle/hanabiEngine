@@ -1,9 +1,11 @@
 package com.fossgalaxy.games.fireworks.state;
 
+import java.io.Serializable;
+
 /**
  * Created by webpigeon on 18/10/16.
  */
-public interface Hand {
+public interface Hand extends Serializable {
     /**
      * Initialise all information about the slots.
      * <p>

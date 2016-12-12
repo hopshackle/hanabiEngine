@@ -22,9 +22,8 @@ public class GameRunner {
     private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
     private final Logger logger = LoggerFactory.getLogger(GameRunner.class);
     private final String gameID;
-    private final Player[] players;
-    private final GameState state;
-
+    protected final Player[] players;
+    protected final GameState state;
 
     private int nPlayers;
     private int moves;
@@ -118,6 +117,7 @@ public class GameRunner {
         logger.info("Game init complete: took {} ms", endTime - startTime);
     }
 
+
     //TODO find a better way of doing this logging.
     private void writeState(GameState state) {
         DebugUtils.printState(logger, state);
@@ -195,7 +195,7 @@ public class GameRunner {
     }
 
     //send messages as soon as they are available
-    private void send(GameEvent event) {
+    protected void send(GameEvent event) {
         logger.debug("game sent event: {}", event);
         for (int i = 0; i < players.length; i++) {
             if (event.isVisibleTo(i)) {

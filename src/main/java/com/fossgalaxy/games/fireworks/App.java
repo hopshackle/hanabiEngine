@@ -58,6 +58,7 @@ public class App {
     public static GameStats playGame(String agent) {
         String[] names = new String[5];
         Agent[] players = new Agent[5];
+
         for (int i = 0; i < 5; i++) {
             names[i] = agent;
             players[i] = AgentUtils.buildAgent(names[i]);
