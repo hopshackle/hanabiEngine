@@ -40,12 +40,11 @@ public final class GameUtils {
      * Play a complete information (cheated) version of Hanabi
      *
      * @param gameID The gameID to log this game under
-     * @param name the names of the agents that are playing
      * @param seed the seed to use for deck ordering
      * @param players the players to use for the game
      * @return the outcome of the game
      */
-    public static GameStats runCheatGame(String gameID, String[] name, Long seed, Player ... players) {
+    public static GameStats runCheatGame(String gameID, Long seed, Player ... players) {
         assert gameID != null;
         assert players != null;
 

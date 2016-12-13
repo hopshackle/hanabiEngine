@@ -1,11 +1,13 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.App;
-import com.fossgalaxy.games.fireworks.App2Csv;
+import com.fossgalaxy.games.fireworks.GameStats;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
+import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.io.PrintStream;
 
@@ -16,6 +18,8 @@ import java.io.PrintStream;
  */
 public class MixedAgentGameSingle {
     private static final String SEPERATOR = "###########################";
+    private static final String GAME_NORMAL = "normal";
+    private static final String GAME_CHEAT = "cheat";
 
     private MixedAgentGameSingle() {
 
@@ -29,6 +33,7 @@ public class MixedAgentGameSingle {
         String agentUnderTest = args[0];
         String agentPaired = args[1];
         long seed = Long.parseLong(args[2]);
+        String gameType = args.length > 3 ? args[3] : GAME_NORMAL;
 
         Random random = new Random(seed);
 
@@ -48,12 +53,12 @@ public class MixedAgentGameSingle {
                     gameID = String.format("%s-%d-%d", taskId, nPlayers, run);
                 }
 
-                System.err.println(SEPERATOR);
-                System.err.println("# begin game " + gameID);
-                System.err.println(SEPERATOR);
+                log.println(SEPERATOR);
+                log.println("# begin game " + gameID);
+                log.println(SEPERATOR);
 
                 Agent[] agents = new Agent[nPlayers];
-                String[] agentStr = new String[5];
+                String[] agentStr = new String[nPlayers];
 
                 //generate agent under test
                 agents[agentUnderTestIndex] = App.buildAgent(agentUnderTest, 0, agentPaired, nPlayers);
@@ -66,11 +71,33 @@ public class MixedAgentGameSingle {
                     agentStr[i] = agentPaired;
                 }
 
-                App2Csv.playGameErrTrace(gameID, agentUnderTest, agentStr, seed, agents);
+                GameStats stats;
+                if (gameType.equals(GAME_CHEAT)) {
+                    stats = GameUtils.runCheatGame(gameID, seed, SetupUtils.toPlayers(agentStr, agents));
+                } else {
+                    stats = GameUtils.runGame(gameID, seed, SetupUtils.toPlayers(agentStr, agents));
+                }
 
-                System.err.println(SEPERATOR);
-                System.err.println("# end game " + gameID);
-                System.err.println(SEPERATOR);
+                String agentList = String.join(",", Arrays.asList(agentStr));
+                String csvLine = String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d",
+                        gameID,
+                        agentUnderTest,
+                        agentPaired,
+                        gameType,
+                        agentList,
+                        seed,
+                        stats.nPlayers,
+                        stats.infomation,
+                        stats.lives,
+                        stats.moves,
+                        stats.score,
+                        stats.disqal
+                        );
+                System.out.println(csvLine);
+
+                log.println(SEPERATOR);
+                log.println("# end game " + gameID);
+                log.println(SEPERATOR);
             }
         }
     }
