@@ -17,7 +17,7 @@ public class CheatEvent extends GameEvent {
     public CheatEvent(int playerID, Hand hand) {
         super(MessageType.CHEAT);
         this.playerID = playerID;
-        this.hand = hand;
+        this.hand = Objects.requireNonNull(hand);
     }
 
     @Override
@@ -28,12 +28,14 @@ public class CheatEvent extends GameEvent {
         Map<Integer, List<Integer>> values = new HashMap<>();
         Map<CardColour, List<Integer>> colours = new EnumMap<>(CardColour.class);
 
+        //compute the colours for all cards in hand
         for (int i=0; i<hand.getSize(); i++) {
             Card card = serverHand.getCard(i);
             values.computeIfAbsent(card.value, ArrayList::new).add(i);
             colours.computeIfAbsent(card.colour, (CardColour c) -> new ArrayList()).add(i);
         }
 
+        //report the values of every card in the hand
         for (Map.Entry<Integer, List<Integer>> entry : values.entrySet()) {
             if (entry.getValue().isEmpty()) {
                 continue;
@@ -41,6 +43,7 @@ public class CheatEvent extends GameEvent {
             hand.setKnownValue(entry.getKey(), entry.getValue().toArray(new Integer[0]));
         }
 
+        //report the colours of every card in the hand
         for (Map.Entry<CardColour, List<Integer>> entry : colours.entrySet()) {
             if (entry.getValue().isEmpty()) {
                 continue;
