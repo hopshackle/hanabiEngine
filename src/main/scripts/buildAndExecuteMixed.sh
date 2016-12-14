@@ -10,6 +10,7 @@ VERSION=0.1.0
 SUBJECT=webpigeon
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
 JOB_FILE=mixed.job
+JOB_CHEAT_FILE=mixedCheat.job
 GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames 
 
 # params
@@ -55,8 +56,10 @@ echo "copying files..."
 # drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
 cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
+cp src/main/scripts/$JOB_CHEAT_FILE $TASK_DIR/$JOB_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
 mkdir -p $TASK_DIR/results/ # place to put our data :)
+mkdir -p $TASK_DIR/results-cheat/ # place to put our data :)
 echo "[OK] files in place"
 
 ##
@@ -72,6 +75,13 @@ echo "[OK] generated $ARG_COUNT setups."
 ##
 echo "submitting jobs..."
 cd $TASK_DIR
+
+# normal jobs
 QLOG=$(qsub $JOB_FILE)
 echo $QLOG > qsub.log
+echo "[OK] job file submitted: $QLOG"
+
+# cheat jobs
+QLOG=$(qsub $JOB_CHEAT_FILE)
+echo $QLOG > qsub-cheat.log
 echo "[OK] job file submitted: $QLOG"
