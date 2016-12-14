@@ -56,7 +56,7 @@ echo "copying files..."
 # drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
 cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
-cp src/main/scripts/$JOB_CHEAT_FILE $TASK_DIR/$JOB_FILE
+cp src/main/scripts/$JOB_CHEAT_FILE $TASK_DIR/$JOB_CHEAT_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
 mkdir -p $TASK_DIR/results/ # place to put our data :)
 mkdir -p $TASK_DIR/results-cheat/ # place to put our data :)
