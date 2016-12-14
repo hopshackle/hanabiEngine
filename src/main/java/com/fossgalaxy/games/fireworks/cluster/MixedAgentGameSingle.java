@@ -58,7 +58,7 @@ public class MixedAgentGameSingle {
                 log.println(SEPERATOR);
 
                 Agent[] agents = new Agent[nPlayers];
-                String[] agentStr = new String[nPlayers];
+                String[] agentStr = new String[5];
 
                 //generate agent under test
                 agents[agentUnderTestIndex] = App.buildAgent(agentUnderTest, 0, agentPaired, nPlayers);
