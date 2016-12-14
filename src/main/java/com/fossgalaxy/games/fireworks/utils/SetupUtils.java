@@ -94,7 +94,7 @@ public final class SetupUtils {
     public static Player[] toPlayers(String[] names, Agent[] policies) {
         assert names.length == policies.length : "agent names and policies are different lengths";
 
-        Player[] players = new Player[names.length];
+        Player[] players = new Player[policies.length];
         for (int i = 0; i < players.length; i++) {
             players[i] = new AgentPlayer(names[i], policies[i]);
         }
