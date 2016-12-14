@@ -2,10 +2,7 @@ package com.fossgalaxy.games.fireworks.ai.vanDenBergh;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
-import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardProbablyUselessCard;
-import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
-import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
-import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
+import com.fossgalaxy.games.fireworks.ai.rule.random.*;
 import com.fossgalaxy.games.fireworks.ai.rule.wrapper.IfRule;
 
 /**
@@ -55,7 +52,7 @@ public class VanDenBerghFactory {
                 break;
             case NEXT_USEFUL_THEN_NEXT_USELESS_THEN_MOST_CARDS:
                 pra.addRule(new TellAnyoneAboutUsefulCard());
-                // Add rule for telling next useless card
+                pra.addRule(new TellAnyoneAboutUselessCard());
                 pra.addRule(new TellMostInformation());
                 break;
         }
@@ -68,10 +65,10 @@ public class VanDenBerghFactory {
                 pra.addRule(new DiscardOldestFirst());
                 break;
             case LEAST_LIKELY_TO_BE_NECESSARY:
-                // haha
+                pra.addRule(new DiscardLeastLikelyToBeNecessary());
                 break;
             case MOST_CERTAIN_IS_USELESS:
-                // haha again
+                pra.addRule(new DiscardProbablyUselessCard());
                 break;
         }
         return pra;
