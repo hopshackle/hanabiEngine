@@ -214,8 +214,11 @@ public class MCTS implements Agent {
 
     protected Action selectActionForRollout(GameState state, int playerID) {
         Collection<Action> legalActions = Utils.generateActions(playerID, state);
-        assert !legalActions.isEmpty() : "no legal actions in rollout";
-        return legalActions.iterator().next();
+
+        List<Action> listAction = new ArrayList<>(legalActions);
+        Collections.shuffle(listAction);
+
+        return listAction.get(0);
     }
 
     protected int rollout(GameState state, final int agentID) {
