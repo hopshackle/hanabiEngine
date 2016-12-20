@@ -59,6 +59,7 @@ public class MCTS implements Agent {
 
     @Override
     public Action doMove(int agentID, GameState state) {
+        long finishTime = System.currentTimeMillis() + 1000;
         MCTSNode root = new MCTSNode(
                 (agentID + state.getPlayerCount() - 1) % state.getPlayerCount(),
                 null,
@@ -88,7 +89,8 @@ public class MCTS implements Agent {
             DebugUtils.printTable(logger, state);
         }
 
-        for (int round = 0; round < roundLength; round++) {
+//        for (int round = 0; round < roundLength; round++) {
+        while(System.currentTimeMillis() < finishTime){
             //find a leaf node
             GameState currentState = state.getCopy();
             IterationObject iterationObject = new IterationObject(agentID);
