@@ -35,4 +35,9 @@ public class MonteCarloSearch extends MCTSPredictor {
     protected int calculateTreeDepthLimit(GameState state) {
         return 1;
     }
+
+    @Override
+    public String toString() {
+        return String.format("MCTS(%s)", agents[0].toString());
+    }
 }
