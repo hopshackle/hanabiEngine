@@ -22,7 +22,6 @@ public class VanDenBerghFactory {
                 DiscardRules.MOST_CERTAIN_IS_USELESS
         );
     }
-
     public static Agent buildAgent(double wp, double wd, HintRules hintRule, DiscardRules discardRule) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
 
@@ -68,7 +67,7 @@ public class VanDenBerghFactory {
                 pra.addRule(new DiscardLeastLikelyToBeNecessary());
                 break;
             case MOST_CERTAIN_IS_USELESS:
-                pra.addRule(new DiscardProbablyUselessCard());
+                pra.addRule(new DiscardProbablyUselessCard(0.0));
                 break;
         }
         return pra;
