@@ -4,6 +4,7 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
 import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
+import com.fossgalaxy.games.fireworks.ai.mcs.MonteCarloSearch;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 
@@ -35,12 +36,18 @@ public class AgentUtils {
         map.put("cautiousMCTS", IGGIFactory::buildCautiousMCTS);
         map.put("hat", HatGuessing::new);
         map.put("piers", IGGIFactory::buildPiersPlayer);
+        map.put("flatmc-legal_random", () -> new MonteCarloSearch(buildAgent("legal_random")));
+        map.put("flatmc-inner", () -> new MonteCarloSearch(buildAgent("inner")));
+        map.put("flatmc-iggi", () -> new MonteCarloSearch(buildAgent("iggi")));
+
 
         //Non-depth limited mcts versions
         map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT));
 
         return map;
     }
+
+
 
     public static Agent buildAgent(String name) {
         Supplier<Agent> agentSupplier = agents.get(name);

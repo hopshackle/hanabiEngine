@@ -10,7 +10,7 @@ import java.util.Arrays;
  * Created by WebPigeon on 09/08/2016.
  */
 public class MCTSPredictor extends MCTS {
-    private Agent[] agents;
+    protected Agent[] agents;
 
     public MCTSPredictor(Agent[] others) {
         super();
@@ -33,10 +33,14 @@ public class MCTSPredictor extends MCTS {
         return super.doMove(agentID, state);
     }
 
+    protected Action doSuperMove(int agentID, GameState state){
+        return super.doMove(agentID, state);
+    }
+
     @Override
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
-        int treeDepth = (state.getPlayerCount() * treeDepthMul) + 1;
+        int treeDepth = calculateTreeDepthLimit(state);
 
         while (!state.isGameOver() && current.getDepth() < treeDepth) {
             MCTSNode next;
@@ -109,6 +113,4 @@ public class MCTSPredictor extends MCTS {
     public String toString() {
         return String.format("MCTS(%s)", Arrays.toString(agents));
     }
-
-
 }
