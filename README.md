@@ -39,5 +39,10 @@ The game engine has been designed to make it possible to run on YARCC. In src/ma
 4. use filter.sh to generate results.csv from the job outputs
 5. copy results.csv to somewhere else and analyise it (my analysis scripts will be made public soon)
 
+### Running me on YARCC (new)
+1. checkout this repo
+2. run ./src/main/scripts/buildAndExecuteMixed.sh to do all the above
+3. cat all of your ```*.o*``` files together to form your csv file
+4. copy results.csv to somewhere to analyise it.
 
 [hanabi]: https://boardgamegeek.com/boardgame/98778/hanabi
