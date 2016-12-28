@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.utils;
 
+import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.players.Player;
@@ -10,7 +11,7 @@ import com.fossgalaxy.games.fireworks.players.Player;
 public final class SetupUtils {
 
     private static final String[] DEFAULT_PAIRED = {"iggi", "internal", "outer", "legal_random", "cautious"};
-    private static final String[] DEFAULT_AGENTS = {"cautious", "outer", "legal_random", "mcts", "predictorMCTS"};
+    private static final String[] DEFAULT_AGENTS = {"cautious", "outer", "legal_random", "mctsND", App.PREDICTOR_MCTSND};
     private static final Integer DEFAULT_SEED_COUNT = 10;
     private static final Integer DEFAULT_RUN_COUNT = 2;
 
