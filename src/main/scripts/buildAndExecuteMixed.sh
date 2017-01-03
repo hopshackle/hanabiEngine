@@ -11,7 +11,8 @@ SUBJECT=webpigeon
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
 JOB_FILE=mixed.job
 JOB_CHEAT_FILE=mixedCheat.job
-GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames 
+GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames
+MAX_JOB_SIZE=5000
 
 # params
 export FIREWORKS_NUM_SEEDS=200
@@ -79,12 +80,19 @@ cd $TASK_DIR
 
 CONCURRENT_TASKS=$(($ARG_COUNT<150?$ARG_COUNT:150))
 
-# normal jobs
-QLOG=$(qsub -t 1-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_FILE)
-echo $QLOG > qsub.log
-echo "[OK] job file submitted: $QLOG"
+# Run jobs in batches of MAX_JOB_SIZE
+for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
+ do
+   let LAST_VAL=i+$MAX_JOB_SIZE-1;
+   END_VAL=$(($LAST_VAL<$ARG_COUNT?$LAST_VAL:$ARG_COUNT))
 
-# cheat jobs
-QLOG=$(qsub -t 1-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_CHEAT_FILE)
-echo $QLOG > qsub-cheat.log
-echo "[OK] job file submitted: $QLOG"
+    # normal jobs
+    QLOG=$(qsub -t $i-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_FILE)
+    echo $QLOG > qsub.$i.log
+    echo "[OK] job file submitted: $QLOG"
+
+    # cheat jobs
+    QLOG=$(qsub -t $i-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_CHEAT_FILE)
+    echo $QLOG > qsub-cheat.$i.log
+    echo "[OK] job file submitted: $QLOG"
+done
