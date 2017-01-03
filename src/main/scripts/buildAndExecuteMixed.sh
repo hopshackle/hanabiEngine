@@ -86,13 +86,15 @@ for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
    let LAST_VAL=i+$MAX_JOB_SIZE-1;
    END_VAL=$(($LAST_VAL<$ARG_COUNT?$LAST_VAL:$ARG_COUNT))
 
+   echo "Creating job for $i to $END_VAL"
+
     # normal jobs
-    QLOG=$(qsub -t $i-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_FILE)
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_FILE)
     echo $QLOG > qsub.$i.log
     echo "[OK] job file submitted: $QLOG"
 
     # cheat jobs
-    QLOG=$(qsub -t $i-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_CHEAT_FILE)
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_CHEAT_FILE)
     echo $QLOG > qsub-cheat.$i.log
     echo "[OK] job file submitted: $QLOG"
 done
