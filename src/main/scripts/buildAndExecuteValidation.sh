@@ -71,5 +71,5 @@ cd $TASK_DIR
 
 # normal jobs
 QLOG=$(qsub $JOB_FILE)
-echo $QLOG > qsub.log
+echo $QLOG -t 1-$ARG_COUNT > qsub.log
 echo "[OK] job file submitted: $QLOG"

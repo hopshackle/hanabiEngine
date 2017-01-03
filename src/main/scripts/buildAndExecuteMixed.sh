@@ -78,10 +78,10 @@ cd $TASK_DIR
 
 # normal jobs
 QLOG=$(qsub $JOB_FILE)
-echo $QLOG > qsub.log
+echo $QLOG -t 1-$ARG_COUNT > qsub.log
 echo "[OK] job file submitted: $QLOG"
 
 # cheat jobs
 QLOG=$(qsub $JOB_CHEAT_FILE)
-echo $QLOG > qsub-cheat.log
+echo $QLOG -t 1-$ARG_COUNT > qsub-cheat.log
 echo "[OK] job file submitted: $QLOG"
