@@ -19,7 +19,7 @@ import java.util.UUID;
  * A basic runner for the game of Hanabi.
  */
 public class GameRunner {
-    private static final int RULE_STRIKES = 3; //how many times can a player return an illegal move before we give up?
+    private static final int RULE_STRIKES = 1; //how many times can a player return an illegal move before we give up?
     private static final int[] HAND_SIZE = {-1, -1, 5, 5, 4, 4};
     private final Logger logger = LoggerFactory.getLogger(GameRunner.class);
     private final String gameID;
@@ -172,28 +172,34 @@ public class GameRunner {
      * @return the result of the game
      */
     public GameStats playGame(Long seed) {
-        assert nPlayers == players.length;
-        init(seed);
-
         int strikes = 0;
-        while (!state.isGameOver()) {
-            try {
-                state.tick();
-                writeState(state);
-                nextMove();
-            } catch (RulesViolation rv) {
-                logger.warn("got rules violation when processing move", rv);
-                strikes++;
 
-                //If we're not being permissive, end the game.
-                if (strikes <= RULE_STRIKES) {
-                    logger.error("Maximum strikes reached, ending game");
-                    break;
+        try {
+            assert nPlayers == players.length;
+            init(seed);
+
+            while (!state.isGameOver()) {
+                try {
+                    state.tick();
+                    writeState(state);
+                    nextMove();
+                } catch (RulesViolation rv) {
+                    logger.warn("got rules violation when processing move", rv);
+                    strikes++;
+
+                    //If we're not being permissive, end the game.
+                    if (strikes <= RULE_STRIKES) {
+                        logger.error("Maximum strikes reached, ending game");
+                        break;
+                    }
                 }
             }
+            return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), strikes);
+        } catch (Exception ex) {
+            logger.error("the game went bang", ex);
+            return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), 1);
         }
 
-        return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), strikes);
     }
 
     //send messages as soon as they are available

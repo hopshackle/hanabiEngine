@@ -3,6 +3,7 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 
 import java.util.Arrays;
 
@@ -106,7 +107,13 @@ public class MCTSPredictor extends MCTS {
             return super.selectActionForRollout(state, agentID);
         }
 
-        return agents[agentID].doMove(agentID, state.getCopy());
+        try {
+            return agents[agentID].doMove(agentID, state.getCopy());
+        } catch (IllegalStateException ex) {
+            logger.error("agent could not make a move.", ex);
+            DebugUtils.printState(logger, state);
+            return super.selectActionForRollout(state, agentID);
+        }
     }
 
     @Override
