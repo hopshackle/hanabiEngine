@@ -60,7 +60,8 @@ echo "[OK] files in place"
 ##
 echo "generating arguments..."
 $JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS $GENERATOR_ARGS > $TASK_DIR/args.txt
-ARG_COUNT=$(wc --lines $TASK_DIR/args.txt)
+ARG_COUNT=($(wc --lines $TASK_DIR/args.txt))
+ARG_COUNT=${ARG_COUNT[0]}
 echo "[OK] generated $ARG_COUNT setups."
 
 ##
