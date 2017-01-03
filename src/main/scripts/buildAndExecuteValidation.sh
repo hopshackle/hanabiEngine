@@ -5,10 +5,11 @@ VERSION=0.1.0
 SUBJCET=pwillic
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
 JOB_FILE=validate.job
-GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateValidation
+GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateValidationGames
+GENERATOR_ARGS="outer 2"
 
 #params
-export FIREWORKS_NUM_SEEDS=200
+export FIREWORKS_NUM_SEEDS=100
 
 # check the repo is clean (local changes mean pull could fail)
 if [[ -n $(git status -s) ]]
@@ -58,7 +59,7 @@ echo "[OK] files in place"
 # Job creation phase: generate arguments
 ##
 echo "generating arguments..."
-$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
+$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS $GENERATOR_ARGS > $TASK_DIR/args.txt
 ARG_COUNT=$(wc --lines $TASK_DIR/args.txt)
 echo "[OK] generated $ARG_COUNT setups."
 
