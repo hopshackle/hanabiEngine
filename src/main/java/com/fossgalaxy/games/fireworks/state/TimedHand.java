@@ -23,32 +23,39 @@ public class TimedHand extends NegativeHand {
     }
 
     @Override
-    public void setCard(int slot, Card card) {
-        super.setCard(slot, card);
+    public void setHasCard(int slot, boolean value) {
+        super.setHasCard(slot, value);
         time[slot] = drawTime;
         drawTime++;
     }
 
     public int getOldestSlot() {
-        int oldest = 0;
+        int oldest = -1;
+        int oldestTime = Integer.MAX_VALUE;
+
         for (int i = 0; i < time.length; i++) {
-            if (hasCard(i) && time[i] < time[oldest]) {
+            if (hasCard(i) && time[i] < oldestTime) {
                 oldest = i;
+                oldestTime = time[i];
             }
         }
 
+        assert oldestTime != -1 : "oldest slot failed";
         return oldest;
     }
 
     public int getNewestSlot() {
-        int oldest = 0;
+        int newest = -1;
+        int newestTime = -1;
+
         for (int i = 0; i < time.length; i++) {
-            if (time[i] > time[oldest]) {
-                oldest = i;
+            if (hasCard(i) && time[i] > newestTime) {
+                newest = i;
+                newestTime = time[i];
             }
         }
 
-        return oldest;
+        return newest;
     }
 
     public int getAge(int i) {

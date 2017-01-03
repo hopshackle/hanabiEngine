@@ -24,6 +24,7 @@ public class TestTimedHand {
 
         for (int i = 0; i < 5; i++) {
             hand.setCard(i, new Card(i + 1, CardColour.BLUE));
+            hand.setHasCard(i, true);
         }
     }
 
@@ -32,6 +33,7 @@ public class TestTimedHand {
         assertEquals(0, hand.getOldestSlot());
 
         hand.setCard(0, new Card(2, CardColour.GREEN));
+        hand.setHasCard(0, true);
 
         assertEquals(1, hand.getOldestSlot());
     }
