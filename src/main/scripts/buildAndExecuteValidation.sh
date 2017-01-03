@@ -9,6 +9,7 @@ GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateValidationGames
 GENERATOR_ARGS="outer 2"
 
 #params
+export FIREWORKS_REPEAT_COUNT=1
 export FIREWORKS_NUM_SEEDS=100
 
 # check the repo is clean (local changes mean pull could fail)
