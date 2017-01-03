@@ -10,8 +10,8 @@ import com.fossgalaxy.games.fireworks.players.Player;
  */
 public final class SetupUtils {
 
-    private static final String[] DEFAULT_PAIRED = {"iggi", "internal", "outer", "legal_random", "cautious"};
-    private static final String[] DEFAULT_AGENTS = {"cautious", "outer", "legal_random", "mctsND", App.PREDICTOR_MCTSND};
+    private static final String[] DEFAULT_PAIRED = {"iggi", "internal", "outer", "legal_random", "cautious", "vandenbergh"};
+    private static final String[] DEFAULT_AGENTS = {"cautious", "iggi", "outer", "flatmc-legal_random", "vandenbergh", "flatmc-iggi",  "legal_random", "mctsND", App.PREDICTOR_MCTSND};
     private static final Integer DEFAULT_SEED_COUNT = 10;
     private static final Integer DEFAULT_RUN_COUNT = 2;
 

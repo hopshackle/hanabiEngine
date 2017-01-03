@@ -7,6 +7,7 @@ import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcs.MonteCarloSearch;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
+import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class AgentUtils {
         map.put("flatmc-legal_random", () -> new MonteCarloSearch(buildAgent("legal_random")));
         map.put("flatmc-inner", () -> new MonteCarloSearch(buildAgent("inner")));
         map.put("flatmc-iggi", () -> new MonteCarloSearch(buildAgent("iggi")));
+        map.put("vandenbergh", VanDenBerghFactory::buildAgent);
 
 
         //Non-depth limited mcts versions
