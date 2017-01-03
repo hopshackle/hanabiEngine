@@ -72,6 +72,6 @@ cd $TASK_DIR
 CONCURRENT_TASKS=$(($ARG_COUNT<150?$ARG_COUNT:150))
 
 # normal jobs
-QLOG=$(qsub $JOB_FILE)
-echo $QLOG -t 1-$ARG_COUNT -tc $CONCURRENT_TASKS > qsub.log
+QLOG=$(qsub -t 1-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_FILE)
+echo $QLOG > qsub.log
 echo "[OK] job file submitted: $QLOG"
