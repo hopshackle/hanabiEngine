@@ -88,7 +88,7 @@ public class HandUtils {
     }
 
     public static boolean isSafeBecauseValueLowerThanPlayed(GameState state, CardColour c, Integer value) {
-        return (c != null && value != null) && (state.getTableValue(c) > value);
+        return (c != null && value != null) && (state.getTableValue(c) >= value);
     }
 
     public static boolean isSafeBecauseValueLowerThanMinOnTable(GameState state, Integer value) {
