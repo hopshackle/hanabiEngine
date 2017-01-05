@@ -5,5 +5,5 @@ export GENERATOR_ARGS="inner 2"
 export FIREWORKS_REPEAT_COUNT=1
 export FIREWORKS_NUM_SEEDS=100
 
-./src/main/scripts/validation/buildAndExecuteValdiation.sh
+./src/main/scripts/validation/buildAndExecuteValidation.sh
 
