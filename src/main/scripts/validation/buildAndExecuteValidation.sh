@@ -21,7 +21,7 @@ git pull
 GIT_COMMIT=$(git rev-parse HEAD)
 
 # Create a folder to drop stuff into
-TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT
+TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT/$RESULT_DIR
 
 # Sanity check - don't permit the same run twice
 if [ -d "$TASK_DIR" ]; then
