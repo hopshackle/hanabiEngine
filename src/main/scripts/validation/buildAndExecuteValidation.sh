@@ -46,7 +46,7 @@ echo "[OK] project built"
 echo "copying files..."
 # drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
-cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
+cp src/main/scripts/validation/$JOB_FILE $TASK_DIR/$JOB_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
 mkdir -p $TASK_DIR/results/ # place to put our data :)
 echo "[OK] files in place"
@@ -68,7 +68,16 @@ cd $TASK_DIR
 
 CONCURRENT_TASKS=$(($ARG_COUNT<150?$ARG_COUNT:150))
 
-# normal jobs
-QLOG=$(qsub -t 1-$ARG_COUNT -tc $CONCURRENT_TASKS $JOB_FILE)
-echo $QLOG > qsub.log
-echo "[OK] job file submitted: $QLOG"
+# Run jobs in batches of MAX_JOB_SIZE
+for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
+ do
+   let LAST_VAL=i+$MAX_JOB_SIZE-1;
+   END_VAL=$(($LAST_VAL<$ARG_COUNT?$LAST_VAL:$ARG_COUNT))
+
+   echo "Creating job for $i to $END_VAL"
+
+    # normal jobs
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_FILE)
+    echo $QLOG > qsub.log
+    echo "[OK] job file submitted: $QLOG"
+done
