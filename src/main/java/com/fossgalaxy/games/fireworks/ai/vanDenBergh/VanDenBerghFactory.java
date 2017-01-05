@@ -52,7 +52,7 @@ public class VanDenBerghFactory {
             case NEXT_USEFUL_THEN_NEXT_USELESS_THEN_MOST_CARDS:
                 pra.addRule(new TellAnyoneAboutUsefulCard());
                 pra.addRule(new TellAnyoneAboutUselessCard());
-                pra.addRule(new TellMostInformation());
+                pra.addRule(new TellMostInformation(true));
                 break;
         }
         // Otherwise I discard a card
