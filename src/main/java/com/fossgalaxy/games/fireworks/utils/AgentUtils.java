@@ -40,6 +40,7 @@ public class AgentUtils {
         map.put("flatmc-legal_random", () -> new MonteCarloSearch(buildAgent("legal_random")));
         map.put("flatmc-inner", () -> new MonteCarloSearch(buildAgent("inner")));
         map.put("flatmc-iggi", () -> new MonteCarloSearch(buildAgent("iggi")));
+        map.put("flatmc-flawed", () -> new MonteCarloSearch(buildAgent("flawed")));
         map.put("vandenbergh", VanDenBerghFactory::buildAgent);
         map.put("flawed", IGGIFactory::buildFlawedPlayer);
 
