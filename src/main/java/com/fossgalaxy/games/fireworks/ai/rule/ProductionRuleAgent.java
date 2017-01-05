@@ -3,14 +3,15 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
-import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ProductionRuleAgent implements Agent {
+    private final Logger logger = LoggerFactory.getLogger(ProductionRuleAgent.class);
+
     private List<Rule> rules;
 
     public ProductionRuleAgent() {
@@ -26,13 +27,18 @@ public class ProductionRuleAgent implements Agent {
 
         for (Rule rule : rules) {
             if (rule.canFire(agentID, state)) {
-                return rule.execute(agentID, state);
+                Action selected = rule.execute(agentID, state);
+                if (selected == null) {
+                    logger.warn("rule "+rule+" reported it could fire, but then did not.");
+                    continue;
+                }
+
+                return selected;
             }
         }
 
         return doDefaultBehaviour(agentID, state);
     }
-
 
     //default rule based behaviour, discard random if legal, else play random
     public Action doDefaultBehaviour(int playerID, GameState state) {

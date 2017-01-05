@@ -59,7 +59,7 @@ public class TellMostInformation extends AbstractTellRule {
                 int totalAffected = 0;
                 for (int slot = 0; slot < state.getHandSize(); slot++) {
                     if (hand.hasCard(slot)) {
-                        if(!newInformation || hand.getKnownColour(slot) == null){
+                        if (!newInformation || hand.getKnownColour(slot) == null) {
                             if (hand.getCard(slot).colour == colour) {
                                 totalAffected++;
                             }
