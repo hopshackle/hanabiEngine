@@ -6,7 +6,7 @@ SUBJCET=pwillic
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
 JOB_FILE=validate.job
 GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateValidationGames
-
+MAX_JOB_SIZE=5000
 # check the repo is clean (local changes mean pull could fail)
 if [[ -n $(git status -s) ]]
 then
