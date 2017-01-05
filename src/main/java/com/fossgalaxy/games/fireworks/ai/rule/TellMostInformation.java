@@ -76,8 +76,4 @@ public class TellMostInformation extends AbstractTellRule {
         return bestAction;
     }
 
-    @Override
-    public boolean canFire(int playerID, GameState state) {
-        return state.getInfomation() > 0;
-    }
 }
