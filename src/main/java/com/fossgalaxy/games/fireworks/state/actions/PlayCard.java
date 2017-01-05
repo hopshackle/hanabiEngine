@@ -45,7 +45,6 @@ public class PlayCard implements Action {
             }
 
         } else {
-            //TODO agents don't know if they run out of cards
             // if this card wasn't valid, discard it and lose a life.
             game.addToDiscard(oldCard);
             game.setLives(game.getLives() - 1);

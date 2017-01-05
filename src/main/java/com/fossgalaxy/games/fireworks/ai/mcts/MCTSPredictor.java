@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 
@@ -34,7 +35,7 @@ public class MCTSPredictor extends MCTS {
         return super.doMove(agentID, state);
     }
 
-    protected Action doSuperMove(int agentID, GameState state){
+    protected Action doSuperMove(int agentID, GameState state) {
         return super.doMove(agentID, state);
     }
 
@@ -97,8 +98,8 @@ public class MCTSPredictor extends MCTS {
         if (agents[agentID] == null) {
             return super.selectActionForExpand(state, node, agentID);
         }
-
-        return agents[agentID].doMove(agentID, state.getCopy());
+        GameState fiddled = fiddleTheDeck(state, agentID);
+        return agents[agentID].doMove(agentID, fiddled);
     }
 
     @Override
@@ -108,12 +109,24 @@ public class MCTSPredictor extends MCTS {
         }
 
         try {
-            return agents[agentID].doMove(agentID, state.getCopy());
+            GameState fiddled = fiddleTheDeck(state, agentID);
+            return agents[agentID].doMove(agentID, fiddled);
         } catch (IllegalStateException ex) {
             logger.error("agent could not make a move.", ex);
             DebugUtils.printState(logger, state);
             return super.selectActionForRollout(state, agentID);
         }
+    }
+
+    private GameState fiddleTheDeck(GameState state, int agentID) {
+        GameState copy = state.getCopy();
+        Hand hand = copy.getHand(agentID);
+        for (int slot = 0; slot < hand.getSize(); slot++) {
+            if (hand.hasCard(slot)) {
+                copy.getDeck().add(hand.getCard(slot));
+            }
+        }
+        return copy;
     }
 
     @Override
