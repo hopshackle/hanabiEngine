@@ -55,6 +55,20 @@ public class IGGIFactory {
         return pra;
     }
 
+    public static Agent buildFlawedPlayer(){
+        ProductionRuleAgent pra = new ProductionRuleAgent();
+        pra.addRule(new PlaySafeCard());
+        pra.addRule(new PlayProbablySafeCard(0.25));
+
+        pra.addRule(new TellRandomly());
+
+        pra.addRule(new OsawaDiscard());
+        pra.addRule(new DiscardOldestFirst());
+        pra.addRule(new DiscardRandomly());
+
+        return pra;
+    }
+
     public static Agent buildPiersPlayer() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         // Its yolo time

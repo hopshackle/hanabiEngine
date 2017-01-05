@@ -41,6 +41,7 @@ public class AgentUtils {
         map.put("flatmc-inner", () -> new MonteCarloSearch(buildAgent("inner")));
         map.put("flatmc-iggi", () -> new MonteCarloSearch(buildAgent("iggi")));
         map.put("vandenbergh", VanDenBerghFactory::buildAgent);
+        map.put("flawed", IGGIFactory::buildFlawedPlayer);
 
 
         //Non-depth limited mcts versions
