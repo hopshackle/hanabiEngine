@@ -94,6 +94,8 @@ public class IGGIFactory {
         );
         pra.addRule(new OsawaDiscard());
         pra.addRule(new DiscardOldestFirst());
+        pra.addRule(new TellRandomly());
+        pra.addRule(new DiscardRandomly());
         return pra;
     }
 
