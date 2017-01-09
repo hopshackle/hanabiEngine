@@ -69,7 +69,7 @@ echo "[OK] files in place"
 #echo "generating arguments..."
 #$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
 
-cat ../../2017-01-05/c4fe1b91b18b2b82ed6110fe90bacfb48e5267bf/results/tasks/args.txt | grep "vandenbergh" > $TASK_DIR/args.txt
+cat /scratch/jwr518/hanabi/results/tasks/2017-01-05/c4fe1b91b18b2b82ed6110fe90bacfb48e5267bf/results/tasks/args.txt | grep "vandenbergh" > $TASK_DIR/args.txt
 
 ARG_COUNT=($(wc --lines $TASK_DIR/args.txt))
 ARG_COUNT=${ARG_COUNT[0]}
