@@ -77,7 +77,7 @@ for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
    echo "Creating job for $i to $END_VAL"
 
     # normal jobs
-    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_FILE)
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS -N $JOB_NAME $JOB_FILE)
     echo $QLOG > qsub.log
     echo "[OK] job file submitted: $QLOG"
 done
