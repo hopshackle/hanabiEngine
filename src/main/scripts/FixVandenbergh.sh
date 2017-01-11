@@ -1,12 +1,22 @@
 #! /bin/bash
+##
+# Make the damn thing work on the yarcc cluster
+#
+# Repeatable, well defined runs mode
+##
 set -e
 
 VERSION=0.1.0
-SUBJCET=pwillic
+SUBJECT=webpigeon
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
-JOB_FILE=validate.job
-GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateValidationGames
+JOB_FILE=mixed.job
+JOB_CHEAT_FILE=mixedCheat.job
+GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames
 MAX_JOB_SIZE=5000
+
+# params
+export FIREWORKS_NUM_SEEDS=200
+
 # check the repo is clean (local changes mean pull could fail)
 if [[ -n $(git status -s) ]]
 then
@@ -21,7 +31,7 @@ git pull
 GIT_COMMIT=$(git rev-parse HEAD)
 
 # Create a folder to drop stuff into
-TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT/$RESULT_DIR
+TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT
 
 # Sanity check - don't permit the same run twice
 if [ -d "$TASK_DIR" ]; then
@@ -46,16 +56,21 @@ echo "[OK] project built"
 echo "copying files..."
 # drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
-cp src/main/scripts/validation/$JOB_FILE $TASK_DIR/$JOB_FILE
+cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
+cp src/main/scripts/$JOB_CHEAT_FILE $TASK_DIR/$JOB_CHEAT_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
 mkdir -p $TASK_DIR/results/ # place to put our data :)
+mkdir -p $TASK_DIR/results-cheat/ # place to put our data :)
 echo "[OK] files in place"
 
 ##
 # Job creation phase: generate arguments
 ##
-echo "generating arguments..."
-$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS $GENERATOR_ARGS > $TASK_DIR/args.txt
+#echo "generating arguments..."
+#$JAVA_HOME/bin/java -cp $TASK_DIR/$JAR_FILE $GENERATOR_CLASS > $TASK_DIR/args.txt
+
+cat /scratch/jwr518/hanabi/results/tasks/2017-01-05/c4fe1b91b18b2b82ed6110fe90bacfb48e5267bf/args.txt | grep "vandenbergh" > $TASK_DIR/args.txt
+
 ARG_COUNT=($(wc --lines $TASK_DIR/args.txt))
 ARG_COUNT=${ARG_COUNT[0]}
 echo "[OK] generated $ARG_COUNT setups."
@@ -77,7 +92,12 @@ for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
    echo "Creating job for $i to $END_VAL"
 
     # normal jobs
-    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS -N $JOB_NAME $JOB_FILE)
-    echo $QLOG > qsub.log
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_FILE)
+    echo $QLOG > qsub.$i.log
+    echo "[OK] job file submitted: $QLOG"
+
+    # cheat jobs
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_CHEAT_FILE)
+    echo $QLOG > qsub-cheat.$i.log
     echo "[OK] job file submitted: $QLOG"
 done
