@@ -3,7 +3,6 @@
 #$ -l h_vmem=4G
 #$ -l h_rt=10:00:00
 #$ -q iggi-cluster
-#$ -N hanabi_run
 #$ -m e
 #$ -M jwr518@york.ac.uk
 #$ -o ./results-cheat/
