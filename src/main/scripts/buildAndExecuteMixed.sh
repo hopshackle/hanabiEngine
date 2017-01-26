@@ -13,6 +13,7 @@ JOB_FILE=mixed.job
 JOB_CHEAT_FILE=mixedCheat.job
 GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames
 MAX_JOB_SIZE=5000
+JOB_NAME="Hanabi_Run"
 
 # params
 export FIREWORKS_NUM_SEEDS=200
@@ -89,12 +90,15 @@ for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
    echo "Creating job for $i to $END_VAL"
 
     # normal jobs
-    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_FILE)
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS -N $JOB_NAME $JOB_FILE)
     echo $QLOG > qsub.$i.log
     echo "[OK] job file submitted: $QLOG"
 
     # cheat jobs
-    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS $JOB_CHEAT_FILE)
+    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS -N ${JOB_NAME}_Cheat $JOB_CHEAT_FILE)
     echo $QLOG > qsub-cheat.$i.log
     echo "[OK] job file submitted: $QLOG"
 done
+
+qsub -N Mail_Hanabi_Run -hold_j $JOB_NAME mail.job
+qsub -N Mail_Hanabi_Cheat -hold_j ${JOB_NAME}_Cheat mail.job
