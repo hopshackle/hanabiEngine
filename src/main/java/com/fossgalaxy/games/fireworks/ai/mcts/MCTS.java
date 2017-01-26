@@ -107,8 +107,15 @@ public class MCTS implements Agent {
             deck.shuffle();
 
             MCTSNode current = select(root, currentState, iterationObject);
-            int score = rollout(currentState, agentID);
+            int score = rollout(currentState, agentID, current);
             current.backup(score);
+        }
+
+        if (logger.isInfoEnabled()) {
+            for (MCTSNode level1 : root.getChildren()) {
+                logger.info("rollout {} moves: max: {}, min: {}, avg: {}, N: {} ", level1.getAction(), level1.rolloutMoves.getMax(), level1.rolloutMoves.getMin(), level1.rolloutMoves.getMean(), level1.rolloutMoves.getN());
+                logger.info("rollout {} scores: max: {}, min: {}, avg: {}, N: {} ", level1.getAction(), level1.rolloutScores.getMax(), level1.rolloutScores.getMin(), level1.rolloutScores.getMean(), level1.rolloutScores.getN());
+            }
         }
 
         if (logger.isTraceEnabled()) {
@@ -221,7 +228,7 @@ public class MCTS implements Agent {
         return listAction.get(0);
     }
 
-    protected int rollout(GameState state, final int agentID) {
+    protected int rollout(GameState state, final int agentID, MCTSNode current) {
 
         int playerID = agentID;
         int moves = 0;
@@ -233,6 +240,8 @@ public class MCTS implements Agent {
             playerID = (playerID + 1) % state.getPlayerCount();
             moves++;
         }
+
+        current.backupRollout(moves, state.getScore());
         return state.getScore();
     }
 
