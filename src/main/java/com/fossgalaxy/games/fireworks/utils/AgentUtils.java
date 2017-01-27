@@ -6,6 +6,7 @@ import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcs.MonteCarloSearch;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
+import com.fossgalaxy.games.fireworks.ai.mcts.NoisyPredictor;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
 
@@ -61,13 +62,31 @@ public class AgentUtils {
         return agentSupplier.get();
     }
 
+    /**
+     * Allow creation of other forms of predictors
+     *
+     * This allows the creation of noisey/learned models to be injected into the agent.
+     *
+     * @param name the name to generate the predictor from
+     * @return the new predictor
+     */
+    public static Agent buildPredictor(String name) {
+        if (name.startsWith("noisy")) {
+            String[] parts = name.split(":");
+            double th = Double.parseDouble(parts[1]);
+            return new NoisyPredictor(th, buildAgent(parts[2]));
+        }
+
+        return buildAgent(name);
+    }
+
     public static Agent[] buildPredictors(int myID, int size, String paired) {
         Agent[] agents = new Agent[size];
         for (int i = 0; i < size; i++) {
             if (i == myID) {
                 agents[i] = null;
             } else {
-                agents[i] = buildAgent(paired);
+                agents[i] = buildPredictor(paired);
             }
         }
 
