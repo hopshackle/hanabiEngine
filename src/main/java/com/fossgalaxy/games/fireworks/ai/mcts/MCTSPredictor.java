@@ -13,6 +13,7 @@ import java.util.Arrays;
  */
 public class MCTSPredictor extends MCTS {
     protected Agent[] agents;
+    protected int agentID;
 
     public MCTSPredictor(Agent[] others) {
         super();

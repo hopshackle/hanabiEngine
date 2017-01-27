@@ -2,6 +2,8 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.stats.BasicStats;
+import com.fossgalaxy.stats.StatsSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +35,9 @@ public class MCTSNode {
     private int visits;
     private int parentWasVisitedAndIWasLegal;
 
+    protected final StatsSummary rolloutScores;
+    protected final StatsSummary rolloutMoves;
+
     public MCTSNode(Collection<Action> allUnexpandedActions) {
         this(null, -1, null, allUnexpandedActions);
     }
@@ -51,6 +56,10 @@ public class MCTSNode {
         this.allUnexpandedActions = new ArrayList<>(allUnexpandedActions);
         this.random = new Random();
         this.depth = (parent == null) ? 0 : parent.depth + 1;
+
+        this.rolloutScores = new BasicStats();
+        this.rolloutMoves = new BasicStats();
+
         assert (parent != null && moveToState != null) || (parent == null && moveToState == null);
     }
 
@@ -74,7 +83,7 @@ public class MCTSNode {
     public void backup(double score) {
         MCTSNode current = this;
         while (current != null) {
-            current.score += score * Math.pow(.95, (current.getDepth() - 1));
+            current.score += score * Math.pow(0.95, current.getDepth()-1);
             current.visits++;
             current = current.parent;
         }
@@ -192,6 +201,20 @@ public class MCTSNode {
         logger.trace("\t {}\t {}\t {}\t {}", "action", "visits", "score", "avg");
         for (MCTSNode child : children) {
             logger.trace("\t{}\t{}\t{}\t{}", child.getAction(), child.visits, child.score, child.score / child.visits);
+        }
+    }
+
+    /**
+     * Keep track of stats for rollouts.
+     *
+     * @param moves The number of moves made for a given rollout
+     * @param score The total score achived at the end of the rollout
+     */
+    public void backupRollout(int moves, int score) {
+        rolloutMoves.add(moves);
+        rolloutScores.add(score);
+        if (parent != null) {
+            parent.backupRollout(moves, score);
         }
     }
 }
