@@ -7,8 +7,13 @@ import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcs.MonteCarloSearch;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
+import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
+import com.fossgalaxy.games.fireworks.ai.rule.Rule;
+import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -85,6 +90,15 @@ public class AgentUtils {
         }
 
         return agents;
+    }
+
+    public static Agent buildAgent(int[] rules){
+        ProductionRuleAgent pra = new ProductionRuleAgent();
+        ArrayList<Rule> actualRules = RuleSet.getRules();
+        for(int rule : rules){
+            pra.addRule(actualRules.get(rule));
+        }
+        return pra;
     }
 
 }

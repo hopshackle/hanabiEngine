@@ -4,10 +4,13 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
+import com.fossgalaxy.games.fireworks.ai.rule.Rule;
+import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -140,6 +143,25 @@ public class App {
         }
     }
 
+    public static Agent buildAgent(String name, int agentID, int[] model){
+        switch (name){
+            case PREDICTOR_MCTS:
+            case PREDICTOR_MCTSND:
+                Agent[] agents = new Agent[5];
+                for(int i = 0; i < agents.length; i++){
+                    if(i != agentID) {
+                        agents[i] = AgentUtils.buildAgent(model);
+                    }
+                }
+                if(name.contains("ND")){
+                    return new MCTSPredictor(agents, 50_000, 100, 100);
+                }
+                return new MCTSPredictor(agents);
+            default:
+                return AgentUtils.buildAgent(name);
+        }
+    }
+
 
     /**
      * Allows for creating MCTS specifically with some fields
@@ -191,4 +213,6 @@ public class App {
     public static Agent buildAgent(String name, double threshold) {
         return IGGI_RISKY.equals(name) ? IGGIFactory.buildRiskyPlayer(threshold) : AgentUtils.buildAgent(name);
     }
+
+
 }
