@@ -45,4 +45,9 @@ public class PlayProbablySafeCard extends AbstractRule {
     public boolean isPlayable(Card card, GameState state) {
         return state.getTableValue(card.colour) + 1 == card.value;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " : Threshold: " + threshold;
+    }
 }
