@@ -68,7 +68,7 @@ public class PredictorRunnerSingle {
                     if(i == agentUnderTestIndex){
                         continue;
                     }
-                    agents[i] = AgentUtils.buildAgent(agentPaired);
+                    agents[i] = App.buildAgent(agentPaired, i, predictorType, nPlayers);
                     agentStr[i] = agentPaired;
                 }
 
