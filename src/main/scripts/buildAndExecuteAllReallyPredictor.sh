@@ -16,7 +16,7 @@ MAX_JOB_SIZE=5000
 JOB_NAME="Hanabi_Run"
 
 # params
-export FIREWORKS_NUM_SEEDS=200
+export FIREWORKS_NUM_SEEDS=100
 
 # check the repo is clean (local changes mean pull could fail)
 if [[ -n $(git status -s) ]]
