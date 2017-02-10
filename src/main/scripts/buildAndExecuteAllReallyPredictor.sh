@@ -9,9 +9,8 @@ set -e
 VERSION=0.1.0
 SUBJECT=webpigeon
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
-JOB_FILE=mixed.job
-JOB_CHEAT_FILE=mixedCheat.job
-GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames
+JOB_FILE=predictor
+GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GeneratePurePredictorGames
 MAX_JOB_SIZE=5000
 JOB_NAME="Hanabi_Run"
 
@@ -58,7 +57,6 @@ echo "copying files..."
 # drop the stuff we need in our task directory
 cp target/$JAR_FILE $TASK_DIR/$JAR_FILE
 cp src/main/scripts/$JOB_FILE $TASK_DIR/$JOB_FILE
-cp src/main/scripts/$JOB_CHEAT_FILE $TASK_DIR/$JOB_CHEAT_FILE
 echo $GIT_COMMIT > $TASK_DIR/commit
 mkdir -p $TASK_DIR/results/ # place to put our data :)
 mkdir -p $TASK_DIR/results-cheat/ # place to put our data :)
@@ -93,12 +91,6 @@ for i in `seq 1 $MAX_JOB_SIZE $ARG_COUNT`;
     QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS -N $JOB_NAME $JOB_FILE)
     echo $QLOG > qsub.$i.log
     echo "[OK] job file submitted: $QLOG"
-
-    # cheat jobs
-    QLOG=$(qsub -t $i-$END_VAL -tc $CONCURRENT_TASKS -N ${JOB_NAME}_Cheat $JOB_CHEAT_FILE)
-    echo $QLOG > qsub-cheat.$i.log
-    echo "[OK] job file submitted: $QLOG"
 done
 
 qsub -N Mail_Hanabi_Run -hold_j $JOB_NAME mail.job
-qsub -N Mail_Hanabi_Cheat -hold_j ${JOB_NAME}_Cheat mail.job
