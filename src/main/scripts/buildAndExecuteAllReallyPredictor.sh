@@ -9,7 +9,7 @@ set -e
 VERSION=0.1.0
 SUBJECT=webpigeon
 JAR_FILE=fireworks-0.1-SNAPSHOT-jar-with-dependencies.jar
-JOB_FILE=predictor
+JOB_FILE=predictor.job
 GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GeneratePurePredictorGames
 MAX_JOB_SIZE=5000
 JOB_NAME="Hanabi_Run"
