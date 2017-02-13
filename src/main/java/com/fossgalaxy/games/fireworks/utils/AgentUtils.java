@@ -96,6 +96,7 @@ public class AgentUtils {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         ArrayList<Rule> actualRules = RuleSet.getRules();
         for(int rule : rules){
+            if(rule == -1) break;
             pra.addRule(actualRules.get(rule));
         }
         return pra;
