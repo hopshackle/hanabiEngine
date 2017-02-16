@@ -45,4 +45,15 @@ The game engine has been designed to make it possible to run on YARCC. In src/ma
 3. cat all of your ```*.o*``` files together to form your csv file
 4. copy results.csv to somewhere to analyise it.
 
+## framework parameters
+
+### Enviroment Variables
+The runner recognises the following enviroment variables:
+
+* ```FIREWORKS_AGENTS``` - a comma seperated list of agents to evaluate (see SetupUtils for default)
+* ```FIREWORKS_AGENTS_PAIRED``` - a comma seperated list of agents to evaluate against (see SetupUtils for default)
+* ```FIREWORKS_NUM_SEEDS``` - the number of seeds to generate when generating argument files (default is 10)
+* ```FIREWORKS_REPEAT_COUNT``` - the number of times to repeat a given seed (useful for non deterministic agents) (default is 2)
+* ```FIREWORKS_META_SEED``` - the seed used for the RNG which generates seeds for games (default is to use java default)
+
 [hanabi]: https://boardgamegeek.com/boardgame/98778/hanabi
