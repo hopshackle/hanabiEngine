@@ -21,6 +21,7 @@ public class MCTSNode {
     private static final double EXP_CONST = Math.sqrt(2);
     private static final int MAX_SCORE = 25;
     private static final double EPSILON = 1e-6;
+    private static final boolean DISCOUNT_ENABLED = false;
 
     private final Action moveToState;
     private final int agentId;
@@ -83,7 +84,11 @@ public class MCTSNode {
     public void backup(double score) {
         MCTSNode current = this;
         while (current != null) {
-            current.score += score * Math.pow(0.95, current.getDepth()-1);
+            if (DISCOUNT_ENABLED) {
+                current.score += score * Math.pow(0.95, current.getDepth()-1);
+            } else {
+                current.score += score;
+            }
             current.visits++;
             current = current.parent;
         }
