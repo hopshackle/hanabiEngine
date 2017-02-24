@@ -119,6 +119,21 @@ public class MCTSPredictor extends MCTS {
         }
     }
 
+
+    /**
+     * Method that gets the current game state and returns the cards present in an agent's hand to the deck.
+     *
+     * This is important when passing the state to an agent that uses cards in the deck to figure out what cards
+     * could be in its hand - in our state those cards are no longer in the deck (as they are bound to that agent's
+     * hand).
+     *
+     * This is useful step for attempting to make a fully observable game state into a partially observable one.
+     * This will work on a copy and will not alter the state passed in.
+     *
+     * @param state the game state to manipulate
+     * @param agentID the agentID to de-allocate
+     * @return the altered state.
+     */
     private GameState fiddleTheDeck(GameState state, int agentID) {
         GameState copy = state.getCopy();
         Hand hand = copy.getHand(agentID);
