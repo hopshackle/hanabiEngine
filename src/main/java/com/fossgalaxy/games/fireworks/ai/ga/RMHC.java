@@ -15,7 +15,6 @@ public class RMHC implements Agent {
 
 
         int evals = 0;
-        int bettarrr = 0;
 
         Individual currBest = new Individual(30).randomise();
         double bestScore = currBest.multiEval(state, agentID);
@@ -27,13 +26,10 @@ public class RMHC implements Agent {
             if (newGuyScore > bestScore) {
                 currBest = newGuy;
                 bestScore = newGuyScore;
-                bettarrr++;
             }
 
             evals++;
         }
-
-        System.out.println("BEST SCORE EVARRR: "+bestScore+" "+evals+" "+bettarrr);
 
         return currBest.getAction(0, agentID, state);
     }
