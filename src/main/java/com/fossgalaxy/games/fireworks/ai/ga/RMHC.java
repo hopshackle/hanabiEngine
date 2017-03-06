@@ -33,8 +33,6 @@ public class RMHC implements Agent {
             evals++;
         }
 
-        System.out.println("BEST SCORE EVARRR: "+bestScore+" "+evals+" "+bettarrr);
-
         return currBest.getAction(0, agentID, state);
     }
 
