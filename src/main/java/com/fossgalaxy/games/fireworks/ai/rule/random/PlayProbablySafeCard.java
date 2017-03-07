@@ -50,4 +50,8 @@ public class PlayProbablySafeCard extends AbstractRule {
     public String toString() {
         return super.toString() + " : Threshold: " + threshold;
     }
+
+    public double getThreshold() {
+        return threshold;
+    }
 }
