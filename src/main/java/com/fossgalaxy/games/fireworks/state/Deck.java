@@ -106,4 +106,18 @@ public class Deck implements Serializable {
         return new LinkedList<>(cards);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Deck)) return false;
+
+        Deck deck = (Deck) o;
+
+        return cards.equals(deck.cards);
+    }
+
+    @Override
+    public int hashCode() {
+        return cards.hashCode();
+    }
 }

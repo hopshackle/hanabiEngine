@@ -50,7 +50,7 @@ public class GameRunner {
      * @param expectedPlayers the number of players we expect to be playing.
      */
     public GameRunner(String gameID, int expectedPlayers) {
-        assert expectedPlayers > 2 : "too few players";
+        assert expectedPlayers >= 2 : "too few players";
         assert expectedPlayers < HAND_SIZE.length : "too many players";
 
         this.players = new Player[expectedPlayers];

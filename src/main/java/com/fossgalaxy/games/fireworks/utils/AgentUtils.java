@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.utils;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.RandomAgent;
+import com.fossgalaxy.games.fireworks.ai.ga.RMHC;
 import com.fossgalaxy.games.fireworks.ai.hat.HatGuessing;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcs.MonteCarloSearch;
@@ -49,6 +50,7 @@ public class AgentUtils {
         map.put("flatmc-flawed", () -> new MonteCarloSearch(buildAgent("flawed")));
         map.put("vandenbergh", VanDenBerghFactory::buildAgent);
         map.put("flawed", IGGIFactory::buildFlawedPlayer);
+        map.put("rmhc", RMHC::new);
 
 
         //Non-depth limited mcts versions

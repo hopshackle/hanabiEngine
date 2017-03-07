@@ -267,6 +267,7 @@ public class BasicState implements GameState {
         if (information != that.information) return false;
         if (lives != that.lives) return false;
         if (movesLeft != that.movesLeft) return false;
+
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(hands, that.hands)) return false;
         if (!deck.equals(that.deck)) return false;
