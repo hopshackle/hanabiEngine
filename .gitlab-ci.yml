@@ -85,7 +85,7 @@ package:jdk8:
   # Archive up the built documentation site.
   artifacts:
     paths:
-    - target/staging
+    - target/site
     expire_in: 1 week
   image: maven:3.3.9-jdk-8
 
