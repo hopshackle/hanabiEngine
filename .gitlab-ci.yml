@@ -86,6 +86,7 @@ package:jdk8:
   artifacts:
     paths:
     - target/site
+    - target/*.jar
     expire_in: 1 week
   image: maven:3.3.9-jdk-8
 
