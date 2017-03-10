@@ -85,7 +85,7 @@ public class MCTSNode {
         MCTSNode current = this;
         while (current != null) {
             if (DISCOUNT_ENABLED) {
-                current.score += score * Math.pow(0.95, current.getDepth()-1);
+                current.score += score * Math.pow(0.95, current.getDepth()-1.0);
             } else {
                 current.score += score;
             }

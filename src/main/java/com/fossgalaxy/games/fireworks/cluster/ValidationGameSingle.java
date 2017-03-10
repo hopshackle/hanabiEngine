@@ -27,7 +27,6 @@ public class ValidationGameSingle {
         int numPLayers = Integer.parseInt(args[1]);
         long seed = Long.parseLong(args[2]);
 
-        Random random = new Random(seed);
         String taskId = System.getenv("SGE_TASK_ID");
         PrintStream log = System.err;
 
