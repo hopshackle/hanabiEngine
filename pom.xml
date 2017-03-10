@@ -16,6 +16,12 @@
         <mainclass>com.fossgalaxy.games.fireworks.cluster.PredictorRunnerSingle</mainclass>
     </properties>
 
+    <scm>
+        <connection>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</connection>
+        <url>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</url>
+        <developerConnection>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</developerConnection>
+    </scm>
+
     <!-- Use FOSS Galaxy's parent POM to do most of the build setup for us -->
     <parent>
         <groupId>com.fossgalaxy.common</groupId>
