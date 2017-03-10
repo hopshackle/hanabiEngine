@@ -18,4 +18,8 @@ public abstract class AbstractTellRule extends AbstractRule {
         return action != null;
     }
 
+    @Override
+    public boolean couldFire(int playerID, GameState state) {
+        return state.getInfomation() != 0;
+    }
 }

@@ -11,6 +11,16 @@ public interface Rule {
         return returnedAction != null;
     }
 
+    /**
+     * Return true if it is possible this rule could fire, and return false if you can guarantee that it cannot fire.
+     * @param playerID The player id that is this turn
+     * @param state The state of the board
+     * @return wether we could fire for that player in this state
+     */
+    default boolean couldFire(int playerID, GameState state){
+        return true;
+    }
+
     Action execute(int playerID, GameState state);
 
 }

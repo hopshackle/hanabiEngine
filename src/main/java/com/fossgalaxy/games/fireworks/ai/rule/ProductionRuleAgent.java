@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductionRuleAgent implements Agent {
     private final Logger logger = LoggerFactory.getLogger(ProductionRuleAgent.class);
 
-    private List<Rule> rules;
+    protected List<Rule> rules;
 
     public ProductionRuleAgent() {
         this.rules = new ArrayList<>();
@@ -50,4 +50,7 @@ public class ProductionRuleAgent implements Agent {
         return "ProductionRuleAgent";
     }
 
+    public List<Rule> getRules() {
+        return rules;
+    }
 }

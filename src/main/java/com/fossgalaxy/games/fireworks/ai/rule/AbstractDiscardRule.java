@@ -19,4 +19,8 @@ public abstract class AbstractDiscardRule implements Rule {
         return action != null;
     }
 
+    @Override
+    public boolean couldFire(int playerID, GameState state) {
+        return state.getInfomation() != state.getStartingInfomation();
+    }
 }
