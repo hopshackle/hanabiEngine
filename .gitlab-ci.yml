@@ -85,7 +85,8 @@ package:jdk8:
   # Archive up the built documentation site.
   artifacts:
     paths:
-    - target/staging
+    - target/site
+    - target/*.jar
     expire_in: 1 week
   image: maven:3.3.9-jdk-8
 
@@ -103,7 +104,7 @@ pages:
   script:
     # Because Maven appends the artifactId automatically to the staging path if you did define a parent pom,
     # you might need to use `mv target/staging/YOUR_ARTIFACT_ID public` instead.
-    - mv target/staging public
+    - mv target/site public
   dependencies:
     - package:jdk8
   artifacts:
