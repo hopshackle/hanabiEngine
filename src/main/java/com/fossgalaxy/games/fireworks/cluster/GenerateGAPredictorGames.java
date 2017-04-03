@@ -22,10 +22,14 @@ public class GenerateGAPredictorGames {
         String[] agentsPaired = SetupUtils.getPairedNames();
         int numSeeds = SetupUtils.getSeedCount();
 
-        printMatchups(agentsPaired, numSeeds);
+        if (args.length != 1){
+            System.exit(1);
+        }
+
+        printMatchups(agentsPaired, numSeeds, args[0]);
     }
 
-    static void printMatchups(String[] agentsPaired, int numSeeds) {
+    static void printMatchups(String[] agentsPaired, int numSeeds, String modelLocation) {
 
         //allow generation of known seeds (useful for comparisons between pure and mixed games)
         Random r;
@@ -37,7 +41,7 @@ public class GenerateGAPredictorGames {
         }
 
         Map<String, String> models = new HashMap<>();
-        File modelFolder = new File("/home/webpigeon/Documents/phd/projects/hanabi-learning/results/6th_itr/repeats");
+        File modelFolder = new File("modelLocation");
         for (File file : modelFolder.listFiles()) {
             if (file.getName().endsWith(".mdl")) {
                 String agentName = file.getName().replace("-model.mdl", "");
@@ -56,6 +60,9 @@ public class GenerateGAPredictorGames {
 
                     System.out.println(String.format("%s %s %d %s %s", "predictorMCTSND", agentPaired, seed, "normal", agentPaired));
                     System.out.println(String.format("%s %s %d %s %s", "predictorMCTSND", agentPaired, seed, "normal", predictorType));
+
+                    //used as measure the seed difficulty.
+                    System.out.println(String.format("%s %s %d %s %s", agentPaired, agentPaired, seed, "normal", agentPaired));
                 }
         }
     }
