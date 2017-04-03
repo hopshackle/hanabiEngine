@@ -41,7 +41,7 @@ public class GenerateGAPredictorGames {
         }
 
         Map<String, String> models = new HashMap<>();
-        File modelFolder = new File("modelLocation");
+        File modelFolder = new File(modelLocation);
         for (File file : modelFolder.listFiles()) {
             if (file.getName().endsWith(".mdl")) {
                 String agentName = file.getName().replace("-model.mdl", "");
