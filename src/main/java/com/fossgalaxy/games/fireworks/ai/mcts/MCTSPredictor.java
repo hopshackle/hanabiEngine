@@ -100,7 +100,14 @@ public class MCTSPredictor extends MCTS {
             return super.selectActionForExpand(state, node, agentID);
         }
         GameState fiddled = fiddleTheDeck(state, agentID);
-        return agents[agentID].doMove(agentID, fiddled);
+
+        try {
+            return agents[agentID].doMove(agentID, fiddled);
+        } catch (IllegalStateException ex) {
+            logger.error("agent could not make a move.", ex);
+            DebugUtils.printState(logger, state);
+            return super.selectActionForExpand(state, node, agentID);
+        }
     }
 
     @Override
