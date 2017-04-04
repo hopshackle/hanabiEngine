@@ -63,6 +63,7 @@ public class GenerateGAPredictorGames {
 
                     //used as measure the seed difficulty.
                     System.out.println(String.format("%s %s %d %s %s", agentPaired, agentPaired, seed, "normal", agentPaired));
+                    System.out.println(String.format("%s %s %d %s %s", predictorType, predictorType, seed, "normal", agentPaired));
                 }
         }
     }

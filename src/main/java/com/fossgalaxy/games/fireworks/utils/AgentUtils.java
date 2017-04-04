@@ -67,6 +67,9 @@ public class AgentUtils {
     public static Agent buildAgent(String name) {
         Supplier<Agent> agentSupplier = agents.get(name);
         if (agentSupplier == null) {
+            if (name.startsWith("noisy") || name.startsWith("model")) {
+                return buildPredictor(name);
+            }
             throw new IllegalArgumentException("unknown agent type " + name);
         }
         return agentSupplier.get();

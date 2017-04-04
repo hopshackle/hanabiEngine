@@ -83,7 +83,7 @@ public class PredictorRunnerSingle {
                 }
 
                 String agentList = String.join(",", Arrays.asList(agentStr));
-                String csvLine = String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d,%s",
+                String csvLine = String.format("%s,\"%s\",\"%s\",%s,%s,%d,%d,%d,%d,%d,%d,%d,\"%s\"",
                         gameID,
                         agentUnderTest,
                         agentPaired,
