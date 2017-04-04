@@ -13,7 +13,7 @@ JOB_FILE=predictor.job
 GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGAPredictorGames
 MAX_JOB_SIZE=5000
 JOB_NAME="GA_RUN"
-MODEL_LOCATION="/scratch/jwr518/models"
+MODEL_LOCATION="/scratch/jwr518/models2"
 
 # params
 export FIREWORKS_NUM_SEEDS=100
