@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.fossgalaxy.games</groupId>
     <artifactId>fireworks</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <description>An implementation of the board game Hanabi</description>
@@ -15,6 +14,13 @@
         <fossgalaxy.repo.id>hanabi</fossgalaxy.repo.id>
         <mainclass>com.fossgalaxy.games.fireworks.cluster.PredictorRunnerSingle</mainclass>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</connection>
+        <url>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</url>
+        <developerConnection>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</developerConnection>
+      <tag>HEAD</tag>
+  </scm>
 
     <!-- Use FOSS Galaxy's parent POM to do most of the build setup for us -->
     <parent>

@@ -17,7 +17,7 @@ public class Individual {
     private static final int NUM_REPEATS = 5;
     private static final double MUTUATE_THEASHOLD = 0.5;
 
-    public int[] actions;
+    private int[] actions;
     private Random random;
 
     public Individual(int length) {

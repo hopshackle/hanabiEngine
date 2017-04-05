@@ -41,6 +41,9 @@ public class PredictorRunnerSingle {
         String taskId = System.getenv("SGE_TASK_ID");
         PrintStream log = System.err;
 
+        //perform a warmup game because jvms... mumble mumble...
+        doWarmup(5, 1, agentUnderTest, predictorType, agentPaired);
+
         for (int run = 0; run < repeats; run++) {
             for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
                 int agentUnderTestIndex = random.nextInt(nPlayers);
@@ -80,7 +83,7 @@ public class PredictorRunnerSingle {
                 }
 
                 String agentList = String.join(",", Arrays.asList(agentStr));
-                String csvLine = String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d,%s",
+                String csvLine = String.format("%s,\"%s\",\"%s\",%s,%s,%d,%d,%d,%d,%d,%d,%d,\"%s\"",
                         gameID,
                         agentUnderTest,
                         agentPaired,
@@ -102,6 +105,24 @@ public class PredictorRunnerSingle {
                 log.println(SEPERATOR);
             }
         }
+    }
+
+    public static void doWarmup(int nPlayers, int agentUnderTestIndex, String agentUnderTest, String predictorType, String agentPaired) {
+        Agent[] agents = new Agent[nPlayers];
+        String[] agentStr = new String[5];
+
+        //generate agent under test
+        agents[agentUnderTestIndex] = App.buildAgent(agentUnderTest, agentUnderTestIndex, predictorType, nPlayers);
+        agentStr[agentUnderTestIndex] = agentUnderTest;
+        for (int i = 0; i < nPlayers; i++) {
+            if(i == agentUnderTestIndex){
+                continue;
+            }
+            agents[i] = App.buildAgent(agentPaired, i, predictorType, nPlayers);
+            agentStr[i] = agentPaired;
+        }
+
+        GameUtils.runGame("WARMUP", 0l, SetupUtils.toPlayers(agentStr, agents));
     }
 
 }

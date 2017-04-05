@@ -12,6 +12,8 @@ import com.fossgalaxy.games.fireworks.ai.osawa.OsawaFactory;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.rule.Rule;
 import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
+import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
+import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
 import com.fossgalaxy.games.fireworks.annotations.Beta;
 
@@ -21,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Created by webpigeon on 01/12/16.
@@ -105,6 +108,9 @@ public class AgentUtils {
     public static Agent buildAgent(String name) {
         Supplier<Agent> agentSupplier = agents.get(name);
         if (agentSupplier == null) {
+            if (name.startsWith("noisy") || name.startsWith("model")) {
+                return buildPredictor(name);
+            }
             throw new IllegalArgumentException("unknown agent type " + name);
         }
         return agentSupplier.get();
@@ -123,6 +129,12 @@ public class AgentUtils {
             String[] parts = name.split(":");
             double th = Double.parseDouble(parts[1]);
             return new NoisyPredictor(th, buildAgent(parts[2]));
+        }
+
+        if (name.startsWith("model")) {
+            String[] parts = name.split(":");
+            Integer[] rules = Arrays.stream(parts[1].split(",")).map(Integer::parseInt).collect(Collectors.toList()).toArray(new Integer[0]);
+            return buildAgent(rules);
         }
 
         return buildAgent(name);
@@ -154,6 +166,20 @@ public class AgentUtils {
         return agents;
     }
 
+    public static Agent buildAgent(Integer[] rules){
+        ProductionRuleAgent pra = new ProductionRuleAgent();
+        ArrayList<Rule> actualRules = RuleSet.getRules();
+        for(int rule : rules){
+            if(rule == -1) break;
+            pra.addRule(actualRules.get(rule));
+        }
+
+        actualRules.add(new TellRandomly());
+        actualRules.add(new DiscardRandomly());
+
+        return pra;
+    }
+
     public static Agent buildAgent(int[] rules){
         ProductionRuleAgent pra = new ProductionRuleAgent();
         ArrayList<Rule> actualRules = RuleSet.getRules();
@@ -161,6 +187,10 @@ public class AgentUtils {
             if(rule == -1) break;
             pra.addRule(actualRules.get(rule));
         }
+
+        actualRules.add(new TellRandomly());
+        actualRules.add(new DiscardRandomly());
+
         return pra;
     }
 
