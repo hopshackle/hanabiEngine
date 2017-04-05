@@ -29,6 +29,8 @@ public class MCTS implements Agent {
     protected final Random random;
     protected final Logger logger = LoggerFactory.getLogger(MCTS.class);
 
+    private final boolean calcTree = true;
+
     /**
      * Create a default MCTS implementation.
      * <p>
@@ -109,6 +111,9 @@ public class MCTS implements Agent {
             MCTSNode current = select(root, currentState, iterationObject);
             int score = rollout(currentState, agentID, current);
             current.backup(score);
+            if(calcTree){
+                System.out.println(root.printD3());
+            }
         }
 
         if (logger.isInfoEnabled()) {

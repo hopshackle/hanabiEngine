@@ -13,11 +13,13 @@ import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.rule.Rule;
 import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
+import com.fossgalaxy.games.fireworks.annotations.Beta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -26,8 +28,39 @@ import java.util.function.Supplier;
 public class AgentUtils {
     private static final Map<String, Supplier<Agent>> agents = buildMap();
 
+    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
+    private static final Map<String, Function<String[], Agent>> functions = buildFunctions();
     private AgentUtils() {
 
+    }
+
+    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
+    private static Map<String, Function<String[], Agent>> buildFunctions(){
+        Map<String, Function<String[], Agent>> map = new HashMap<>();
+
+        // Wrapped the old supplier method to Functions that ignore arguments
+        buildMap().entrySet().forEach(x -> map.put(x.getKey(), i(x.getValue())));
+
+        // Add better way of things here
+
+        return map;
+    }
+
+
+    /**
+     * Register your customer creators here!
+     * @param key The key you want to use for our runners
+     * @param function The function needed to convert a String[] into the agent
+     */
+    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
+    public static void addAgentFunction(String key, Function<String[], Agent> function){
+        if(!functions.containsKey(key)){
+            functions.put(key, function);
+        }
+    }
+    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
+    private static Function<String[], Agent> i(Supplier<Agent> s){
+        return (x -> s.get());
     }
 
     private static Map<String, Supplier<Agent>> buildMap() {
@@ -59,6 +92,14 @@ public class AgentUtils {
         return map;
     }
 
+    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
+    public static Agent buildAgent(String name, String... args){
+        Function<String[], Agent> agentFunction = functions.get(name);
+        if(agentFunction == null){
+            throw new IllegalArgumentException("Unknown agent type: " + name);
+        }
+        return agentFunction.apply(args);
+    }
 
 
     public static Agent buildAgent(String name) {

@@ -209,6 +209,27 @@ public class MCTSNode {
         }
     }
 
+    public String printD3(){
+        StringBuffer buffer = new StringBuffer();
+        printD3Internal(buffer);
+        return buffer.toString();
+    }
+
+    private void printD3Internal(StringBuffer buffer){
+        buffer.append("{\"name\": \"\"");
+        if(!children.isEmpty()){
+            buffer.append(",\"children\":[");
+            for (int i = 0; i < children.size(); i++){
+                if(i != 0){
+                    buffer.append(",");
+                }
+                children.get(i).printD3Internal(buffer);
+            }
+            buffer.append("]");
+        }
+        buffer.append("}");
+    }
+
     /**
      * Keep track of stats for rollouts.
      *
