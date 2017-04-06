@@ -43,55 +43,6 @@ public class AgentUtils {
     private static Map<String, AgentFactory> buildFunctions(){
         Map<String, AgentFactory> map = new HashMap<>();
 
-
-
-
-
-
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forJavaClassPath()));
-
-        /*Set<Class<? extends AgentFactory>> sublclasses = reflections.getSubTypesOf(AgentFactory.class);
-        for (Class<? extends AgentFactory> factoryClass : sublclasses){
-            try {
-                AgentFactory factory = factoryClass.newInstance();
-                map.put(factory.getName(), factory);
-
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-
-        // Wrapped the old supplier method to Functions that ignore arguments
-        buildMap().entrySet().forEach(x -> map.put(x.getKey(), i(x.getValue())));
-*/
-
-        //map.put("ppmcts", AgentUtils::buildPredictor);
-
-
-      /*  Set<Method> methods = reflections.getMethodsAnnotatedWith(AgentConstructor.class);
-        for (Method method : methods) {
-            AgentConstructor ab = method.getAnnotation(AgentConstructor.class);
-            map.put(ab.value(), (s) -> {
-                        try {
-                return (Agent)method.invoke(null, s);
-            } catch (IllegalAccessException | InvocationTargetException ex) {
-
-                return null;
-                }
-            }
-            );
-        }
-
-        System.out.println("Methods: "+methods); */
-
-        // Add better way of things here
-
         return map;
     }
 
@@ -112,11 +63,8 @@ public class AgentUtils {
     public static void main(String[] args) {
         AgentFactory factory = functions.get("ppmcts");
 
-        //Agent agent = factory.build();
         Agent agent2 = factory.build(new String[]{"noise", "0.9", "legal_random"});
 
-
-        //System.out.println(agent);
         System.out.println(agent2);
 
         System.out.println(buildFunctions());
