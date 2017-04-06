@@ -16,12 +16,12 @@ import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
 import com.fossgalaxy.games.fireworks.annotations.Beta;
+import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -29,24 +29,97 @@ import java.util.stream.Collectors;
  * Created by webpigeon on 01/12/16.
  */
 public class AgentUtils {
+    public static final String PARAM_SEPERATOR = ":";
+
     private static final Map<String, Supplier<Agent>> agents = buildMap();
 
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    private static final Map<String, Function<String[], Agent>> functions = buildFunctions();
+    private static final Map<String, AgentFactory> functions = buildFunctions();
     private AgentUtils() {
 
     }
 
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    private static Map<String, Function<String[], Agent>> buildFunctions(){
-        Map<String, Function<String[], Agent>> map = new HashMap<>();
+    private static Map<String, AgentFactory> buildFunctions(){
+        Map<String, AgentFactory> map = new HashMap<>();
+
+
+
+
+
+
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.forJavaClassPath()));
+
+        /*Set<Class<? extends AgentFactory>> sublclasses = reflections.getSubTypesOf(AgentFactory.class);
+        for (Class<? extends AgentFactory> factoryClass : sublclasses){
+            try {
+                AgentFactory factory = factoryClass.newInstance();
+                map.put(factory.getName(), factory);
+
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
 
         // Wrapped the old supplier method to Functions that ignore arguments
         buildMap().entrySet().forEach(x -> map.put(x.getKey(), i(x.getValue())));
+*/
+
+        //map.put("ppmcts", AgentUtils::buildPredictor);
+
+
+      /*  Set<Method> methods = reflections.getMethodsAnnotatedWith(AgentConstructor.class);
+        for (Method method : methods) {
+            AgentConstructor ab = method.getAnnotation(AgentConstructor.class);
+            map.put(ab.value(), (s) -> {
+                        try {
+                return (Agent)method.invoke(null, s);
+            } catch (IllegalAccessException | InvocationTargetException ex) {
+
+                return null;
+                }
+            }
+            );
+        }
+
+        System.out.println("Methods: "+methods); */
 
         // Add better way of things here
 
         return map;
+    }
+
+    public static Agent build(String name, String[] args) {
+        AgentFactory agentFactory = functions.get(name);
+        if (agentFactory == null) {
+            throw new IllegalArgumentException("no agent named "+name+" known");
+        }
+
+        return agentFactory.build(args);
+    }
+
+    public static Agent build(String name, String arg) {
+        String[] args = arg.split(PARAM_SEPERATOR);
+        return build(name, args);
+    }
+
+    public static void main(String[] args) {
+        AgentFactory factory = functions.get("ppmcts");
+
+        //Agent agent = factory.build();
+        Agent agent2 = factory.build(new String[]{"noise", "0.9", "legal_random"});
+
+
+        //System.out.println(agent);
+        System.out.println(agent2);
+
+        System.out.println(buildFunctions());
     }
 
 
@@ -56,13 +129,13 @@ public class AgentUtils {
      * @param function The function needed to convert a String[] into the agent
      */
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    public static void addAgentFunction(String key, Function<String[], Agent> function){
+    public static void addAgentFunction(String key, AgentFactory function){
         if(!functions.containsKey(key)){
             functions.put(key, function);
         }
     }
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    private static Function<String[], Agent> i(Supplier<Agent> s){
+    private static AgentFactory i(Supplier<Agent> s){
         return (x -> s.get());
     }
 
@@ -97,11 +170,11 @@ public class AgentUtils {
 
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
     public static Agent buildAgent(String name, String... args){
-        Function<String[], Agent> agentFunction = functions.get(name);
+        AgentFactory agentFunction = functions.get(name);
         if(agentFunction == null){
             throw new IllegalArgumentException("Unknown agent type: " + name);
         }
-        return agentFunction.apply(args);
+        return agentFunction.build(args);
     }
 
 
@@ -121,10 +194,16 @@ public class AgentUtils {
      *
      * This allows the creation of noisey/learned models to be injected into the agent.
      *
-     * @param name the name to generate the predictor from
+     * @param args the name to generate the predictor from
      * @return the new predictor
      */
-    public static Agent buildPredictor(String name) {
+    public static Agent buildPredictor(String ... args) {
+        if (args.length != 1) {
+            throw new IllegalArgumentException("You must supply a model to use");
+        }
+
+        String name = args[1];
+
         if (name.startsWith("noisy")) {
             String[] parts = name.split(":");
             double th = Double.parseDouble(parts[1]);
