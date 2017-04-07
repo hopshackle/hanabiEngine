@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
+import com.fossgalaxy.games.fireworks.ai.mcts.NoisyPredictor;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBergh;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
@@ -54,6 +55,8 @@ public class AgentFinder {
         ProductionRuleAgent vandenbergh = (ProductionRuleAgent) finder.buildAgent("VanDenBergh", "0.6", "1.0", "NEXT_USEFUL_THEN_MOST_CARDS", "MOST_CERTAIN_IS_USELESS");
         System.out.println(vandenbergh);
 
+        NoisyPredictor predictor = (NoisyPredictor) finder.buildAgent("noisy", "0.9", "iggi");
+        System.out.println(predictor);
         finder.knownFactories.values().forEach(System.out::println);
     }
 
@@ -70,6 +73,7 @@ public class AgentFinder {
         converters.put(float.class, Float::parseFloat);
         converters.put(Boolean.class, Boolean::parseBoolean);
         converters.put(boolean.class, Boolean::parseBoolean);
+        converters.put(Agent.class, (x) -> buildAgent(x, new String[0]));
     }
 
     /**
@@ -251,6 +255,7 @@ public class AgentFinder {
                 if (params[i].isEnum()) {
                     final Class enumClass = params[i];
                     convertersInst[i] = (s) -> Enum.valueOf(enumClass, s);
+
                 } else {
                     convertersInst[i] = converters.get(params[i]);
                 }
