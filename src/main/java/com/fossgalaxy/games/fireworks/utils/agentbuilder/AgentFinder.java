@@ -3,7 +3,7 @@ package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
-import com.fossgalaxy.games.fireworks.annotations.Paramater;
+import com.fossgalaxy.games.fireworks.annotations.Parameter;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -163,11 +163,11 @@ public class AgentFinder {
 
                     boolean matched = false;
 
-                    Paramater[] paramaters = constructor.getAnnotationsByType(Paramater.class);
-                    for (Paramater paramater : paramaters) {
-                        if (paramater.id() == i) {
+                    Parameter[] parameters = constructor.getAnnotationsByType(Parameter.class);
+                    for (Parameter parameter : parameters) {
+                        if (parameter.id() == i) {
                             try {
-                                Method methodWithThatName = agentClazz.getMethod(paramater.func(), String.class);
+                                Method methodWithThatName = agentClazz.getMethod(parameter.func(), String.class);
                                 if (Modifier.isPublic(methodWithThatName.getModifiers()) && Modifier.isStatic(methodWithThatName.getModifiers())) {
 
                                     if (!methodWithThatName.getReturnType().isAssignableFrom(params[i])) {
