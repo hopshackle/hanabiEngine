@@ -17,6 +17,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
 import com.fossgalaxy.games.fireworks.annotations.Beta;
 import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
+import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFinder;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -31,12 +32,26 @@ import java.util.stream.Collectors;
 public class AgentUtils {
     public static final String PARAM_SEPERATOR = ":";
 
-    private static final Map<String, Supplier<Agent>> agents = buildMap();
 
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
     private static final Map<String, AgentFactory> functions = buildFunctions();
+
+    private static final AgentFinder finder = buildFinder();
+
     private AgentUtils() {
 
+    }
+
+
+    private static AgentFinder buildFinder() {
+        AgentFinder finder = new AgentFinder();
+
+        //add all rule based agent factory methods - it doesn't make sense to make classes for each of these...
+        for (Map.Entry<String, Supplier<Agent>> ruleBased : buildMap().entrySet()) {
+            finder.addFactory(ruleBased.getKey(), i(ruleBased.getValue()));
+        }
+
+        return finder;
     }
 
     @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
@@ -127,14 +142,7 @@ public class AgentUtils {
 
 
     public static Agent buildAgent(String name) {
-        Supplier<Agent> agentSupplier = agents.get(name);
-        if (agentSupplier == null) {
-            if (name.startsWith("noisy") || name.startsWith("model")) {
-                return buildPredictor(name);
-            }
-            throw new IllegalArgumentException("unknown agent type " + name);
-        }
-        return agentSupplier.get();
+        return finder.buildAgent(name);
     }
 
     /**
