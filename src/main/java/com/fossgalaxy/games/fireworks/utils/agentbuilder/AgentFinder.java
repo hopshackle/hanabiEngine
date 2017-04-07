@@ -53,6 +53,8 @@ public class AgentFinder {
 
         ProductionRuleAgent vandenbergh = (ProductionRuleAgent) finder.buildAgent("VanDenBergh", "0.6", "1.0", "NEXT_USEFUL_THEN_MOST_CARDS", "MOST_CERTAIN_IS_USELESS");
         System.out.println(vandenbergh);
+
+        finder.knownFactories.values().forEach(System.out::println);
     }
 
     /**

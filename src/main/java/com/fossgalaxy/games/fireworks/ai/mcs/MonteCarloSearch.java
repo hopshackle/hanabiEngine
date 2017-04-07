@@ -4,6 +4,7 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 /**
  * Flat MC search player
