@@ -178,16 +178,7 @@ public class AgentFinder {
                                     }
 
                                     matched = true;
-                                    convertersInst[i] = (s) -> {
-                                        try {
-                                            return methodWithThatName.invoke(null, s);
-                                        } catch (IllegalAccessException e) {
-                                            e.printStackTrace();
-                                        } catch (InvocationTargetException e) {
-                                            e.printStackTrace();
-                                        }
-                                        return null;
-                                    };
+                                    convertersInst[i] = (s) -> getConverter(methodWithThatName, s);
                                 }
                             } catch (NoSuchMethodException e) {
                                 e.printStackTrace();
@@ -211,6 +202,17 @@ public class AgentFinder {
         }
 
         return new ConstructorFactory(agentClazz, bestMatch, null);
+    }
+
+    private Object getConverter(Method methodWithThatName, String s) {
+        try {
+            return methodWithThatName.invoke(null, s);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Map<String, AgentFactory> getFactories() {
