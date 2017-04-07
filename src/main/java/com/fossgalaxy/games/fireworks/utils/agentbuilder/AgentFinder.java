@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
+import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBergh;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.annotations.Parameter;
 import org.reflections.Reflections;
@@ -11,11 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by webpigeon on 06/04/17.
@@ -95,14 +94,11 @@ public class AgentFinder {
     public static void main(String[] args) {
         AgentFinder finder = new AgentFinder();
 
-        //build a finder.
-        Map<String, AgentFactory> factoryMap = finder.getFactories();
-        System.out.println(factoryMap);
-
         //as a test build our modified MCTS agent
-        AgentFactory factory = factoryMap.get("MCTS");
-        MCTS rmhc = (MCTS) factory.build(new String[]{"50", "6", "10"});
+        MCTS rmhc = (MCTS) finder.buildAgent("mcts", "50", "6", "10");
         System.out.println(rmhc);
+        VanDenBergh van = (VanDenBergh) finder.buildAgent("vandenbergh", "0.6", "1.0", "NEXT_USEFUL_THEN_MOST_CARDS", "MOST_CERTAIN_IS_USELESS");
+        System.out.println(van);
     }
 
     /**
@@ -118,7 +114,8 @@ public class AgentFinder {
         }
 
         Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forJavaClassPath()));
+                .setUrls(ClasspathHelper.forJavaClassPath())
+        .setExpandSuperTypes(false));
 
         //find all subtypes of the agent class
         Set<Class<? extends Agent>> agentClazzes = reflections.getSubTypesOf(Agent.class);
@@ -131,9 +128,8 @@ public class AgentFinder {
             }
 
             try {
-                String name = agentClazz.getSimpleName();
                 AgentFactory factory = buildFactory(agentClazz);
-                knownFactories.put(name, factory);
+                knownFactories.put(factory.name(), factory);
             } catch (IllegalArgumentException ex) {
                 logger.error("Failed to create agent " + agentClazz, ex);
             }
@@ -152,47 +148,51 @@ public class AgentFinder {
             if (constructor.getParameterCount() == 0 && Modifier.isPublic(constructor.getModifiers())) {
                 bestMatch = constructor;
             } else {
-                AgentConstructor bulilder = constructor.getAnnotation(AgentConstructor.class);
-                if (bulilder == null) {
+                AgentConstructor builder = constructor.getAnnotation(AgentConstructor.class);
+                if (builder == null) {
                     continue;
                 }
+
+                String name = builder.value().equals("") ? agentClazz.getSimpleName() : builder.value();
+                bestMatch = constructor;
 
                 Class<?>[] params = constructor.getParameterTypes();
                 Function<String, ?>[] convertersInst = (Function[]) Array.newInstance(Function.class, params.length);
 
-                for (int i = 0; i < params.length; i++) {
-                    System.out.println(agentClazz + " " + i + " -> " + params[i]);
-
-
-                    boolean matched = false;
-
-                    Parameter[] parameters = constructor.getAnnotationsByType(Parameter.class);
-                    for (Parameter parameter : parameters) {
-                        if (parameter.id() == i) {
-                            try {
-                                Method methodWithThatName = agentClazz.getMethod(parameter.func(), String.class);
-                                if (Modifier.isPublic(methodWithThatName.getModifiers()) && Modifier.isStatic(methodWithThatName.getModifiers())) {
-
-                                    if (!methodWithThatName.getReturnType().isAssignableFrom(params[i])) {
-                                        throw new IllegalArgumentException("you said params " + i + " was a " + params[i] + " but the converter wants to give me a " + methodWithThatName.getReturnType());
-                                    }
-
-                                    matched = true;
-                                    convertersInst[i] = (s) -> getConverter(methodWithThatName, s);
-                                }
-                            } catch (NoSuchMethodException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                HashMap<Integer, Parameter> parameters = new HashMap<>();
+                for(Parameter p : constructor.getAnnotationsByType(Parameter.class)){
+                    if(!parameters.containsKey(p.id())){
+                        parameters.put(p.id(), p);
                     }
-
-                    if (!matched) {
-                        convertersInst[i] = converters.get(params[i]);
-                    }
-
                 }
 
-                return new ConstructorFactory(agentClazz, constructor, convertersInst);
+                for (int i = 0; i < params.length; i++) {
+                    System.out.println(agentClazz + " " + i + " -> " + params[i]);
+                    if(parameters.containsKey(i)){
+                        Parameter parameter = parameters.get(i);
+                        try {
+                            Method methodWithThatName = agentClazz.getMethod(parameter.func(), String.class);
+                            if (Modifier.isPublic(methodWithThatName.getModifiers()) && Modifier.isStatic(methodWithThatName.getModifiers())) {
+
+                                if (!methodWithThatName.getReturnType().isAssignableFrom(params[i])) {
+                                    throw new IllegalArgumentException("you said params " + i + " was a " + params[i] + " but the converter wants to give me a " + methodWithThatName.getReturnType());
+                                }
+                                convertersInst[i] = (s) -> getConverter(methodWithThatName, s);
+                            }
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        // Try to handle enums with a default
+                        if(params[i].isEnum()){
+                            final Class enumClass = params[i];
+                            convertersInst[i] = (s) -> Enum.valueOf(enumClass, s);
+                        }else {
+                            convertersInst[i] = converters.get(params[i]);
+                        }
+                    }
+                }
+                return new ConstructorFactory(agentClazz, constructor, convertersInst, name);
             }
 
         }

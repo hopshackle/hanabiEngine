@@ -16,4 +16,6 @@ public interface AgentFactory {
         return build(new String[0]);
     }
 
+    default String name(){ return ""; }
+
 }

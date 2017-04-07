@@ -15,11 +15,18 @@ public class ConstructorFactory implements AgentFactory {
     private final Class<? extends Agent> clazz;
     private final Constructor<?> constructor;
     private final Function<String, ?>[] converters;
+    private final String name;
+
 
     public ConstructorFactory(Class<? extends Agent> clazz, Constructor<?> constructor, Function<String, ?>[] converters) {
+        this(clazz, constructor, converters, clazz.getSimpleName());
+    }
+
+    public ConstructorFactory(Class<? extends Agent> clazz, Constructor<?> constructor, Function<String, ?>[] converters, String name) {
         this.clazz = clazz;
         this.constructor = constructor;
         this.converters = converters;
+        this.name = name;
     }
 
 
@@ -46,6 +53,10 @@ public class ConstructorFactory implements AgentFactory {
         return null;
     }
 
+    @Override
+    public String name() {
+        return name;
+    }
 
     public String toString() {
         return String.format("agent factory for: %s - %s, %s", clazz.getSimpleName(), constructor, Arrays.toString(converters));
