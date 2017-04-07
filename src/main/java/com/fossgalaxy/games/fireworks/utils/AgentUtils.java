@@ -32,10 +32,6 @@ import java.util.stream.Collectors;
 public class AgentUtils {
     public static final String PARAM_SEPERATOR = ":";
 
-
-    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    private static final Map<String, AgentFactory> functions = buildFunctions();
-
     private static final AgentFinder finder = buildFinder();
 
     private AgentUtils() {
@@ -47,57 +43,18 @@ public class AgentUtils {
         AgentFinder finder = new AgentFinder();
 
         //add all rule based agent factory methods - it doesn't make sense to make classes for each of these...
-        for (Map.Entry<String, Supplier<Agent>> ruleBased : buildMap().entrySet()) {
-            finder.addFactory(ruleBased.getKey(), i(ruleBased.getValue()));
-        }
+        //for (Map.Entry<String, Supplier<Agent>> ruleBased : buildMap().entrySet()) {
+        //    finder.addFactory(ruleBased.getKey(), i(ruleBased.getValue()));
+        //}
 
         return finder;
     }
 
-    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    private static Map<String, AgentFactory> buildFunctions(){
-        Map<String, AgentFactory> map = new HashMap<>();
-
-        return map;
-    }
-
-    public static Agent build(String name, String[] args) {
-        AgentFactory agentFactory = functions.get(name);
-        if (agentFactory == null) {
-            throw new IllegalArgumentException("no agent named "+name+" known");
-        }
-
-        return agentFactory.build(args);
-    }
-
-    public static Agent build(String name, String arg) {
-        String[] args = arg.split(PARAM_SEPERATOR);
-        return build(name, args);
-    }
-
     public static void main(String[] args) {
-        AgentFactory factory = functions.get("ppmcts");
-
-        Agent agent2 = factory.build(new String[]{"noise", "0.9", "legal_random"});
-
+        Agent agent2 = finder.buildAgent("pmcts", "noisy,0.9,iggi|noisy,0.9,legal_random|noisy,0.9,legal_random|noisy,0.9,legal_random|noisy,0.9,legal_random");
         System.out.println(agent2);
-
-        System.out.println(buildFunctions());
     }
 
-
-    /**
-     * Register your customer creators here!
-     * @param key The key you want to use for our runners
-     * @param function The function needed to convert a String[] into the agent
-     */
-    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
-    public static void addAgentFunction(String key, AgentFactory function){
-        if(!functions.containsKey(key)){
-            functions.put(key, function);
-        }
-    }
-    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
     private static AgentFactory i(Supplier<Agent> s){
         return (x -> s.get());
     }
@@ -131,13 +88,8 @@ public class AgentUtils {
         return map;
     }
 
-    @Beta(responsible="Piers", reason="Replacing old system of kludge methods with one stop shop")
     public static Agent buildAgent(String name, String... args){
-        AgentFactory agentFunction = functions.get(name);
-        if(agentFunction == null){
-            throw new IllegalArgumentException("Unknown agent type: " + name);
-        }
-        return agentFunction.build(args);
+        return finder.buildAgent(name, args);
     }
 
 
