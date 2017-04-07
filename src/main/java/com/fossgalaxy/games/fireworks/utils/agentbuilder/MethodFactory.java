@@ -1,0 +1,59 @@
+package com.fossgalaxy.games.fireworks.utils.agentbuilder;
+
+import com.fossgalaxy.games.fireworks.ai.Agent;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.function.Function;
+
+/**
+ * Created by piers on 07/04/17.
+ */
+public class MethodFactory implements AgentFactory{
+    private final Class<?> clazz;
+    private final Method method;
+    private final Function<String, ?>[] converters;
+    private final String name;
+
+    public MethodFactory(Class<?> clazz, Method method, Function<String, ?>[] converters) {
+        this(clazz, method, converters, clazz.getSimpleName());
+    }
+
+    public MethodFactory(Class<?> clazz, Method method, Function<String, ?>[] converters, String name) {
+        this.clazz = clazz;
+        this.method = method;
+        this.converters = converters;
+        this.name = name;
+    }
+
+    @Override
+    public Agent build(String[] args) {
+        Object[] params = new Object[0];
+        if(converters != null){
+            params = new Object[converters.length];
+            for(int i = 0; i < params.length; i++){
+                params[i] = converters[i].apply(args[i]);
+            }
+        }
+
+
+        try {
+            return (Agent) method.invoke(null, params);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    public String toString() {
+        return String.format("agent factory for: %s - %s, %s", clazz.getSimpleName(), method, Arrays.toString(converters));
+    }
+}

@@ -4,6 +4,7 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
 import com.fossgalaxy.games.fireworks.ai.rule.random.*;
 import com.fossgalaxy.games.fireworks.ai.rule.wrapper.IfRule;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 
 /**
  * Created by piers on 09/12/16.
@@ -22,6 +23,8 @@ public class VanDenBerghFactory {
                 DiscardRules.MOST_CERTAIN_IS_USELESS
         );
     }
+
+    @AgentBuilderStatic("VanDenBergh")
     public static Agent buildAgent(double wp, double wd, HintRules hintRule, DiscardRules discardRule) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
 
