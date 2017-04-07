@@ -11,6 +11,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.random.TellPlayableCard;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 
 /**
  * Factory for describing agents defined in Osawa's paper.
@@ -29,6 +30,7 @@ public class OsawaFactory {
      *
      * @return a Rule based agent which implements this strategy
      */
+    @AgentBuilderStatic("internal")
     public static Agent buildInternalState() {
         ProductionRuleAgent ruleAgent = new ProductionRuleAgent();
 
@@ -55,6 +57,7 @@ public class OsawaFactory {
      *
      * @return a Rule based agent which implements this strategy
      */
+    @AgentBuilderStatic("outer")
     public static Agent buildOuterState() {
         ProductionRuleAgent ruleAgent = new ProductionRuleAgent();
 
@@ -103,6 +106,7 @@ public class OsawaFactory {
         return ruleAgent;
     }
 
+    @AgentBuilderStatic("random")
     public static Agent buildRandom() {
         return new RandomAgent();
     }

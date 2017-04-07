@@ -11,6 +11,8 @@ import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.wrapper.IfRule;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
+import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 /**
@@ -30,6 +32,7 @@ public class IGGIFactory {
      *
      * @return an agent implementing the appropriate strategy
      */
+    @AgentBuilderStatic("cautious")
     public static Agent buildCautious() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new PlayIfCertain());
@@ -42,6 +45,7 @@ public class IGGIFactory {
         return pra;
     }
 
+    @AgentBuilderStatic("iggi")
     public static Agent buildIGGIPlayer() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new PlayIfCertain());
@@ -55,6 +59,7 @@ public class IGGIFactory {
         return pra;
     }
 
+    @AgentBuilderStatic("flawed")
     public static Agent buildFlawedPlayer(){
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new PlaySafeCard());
@@ -69,6 +74,7 @@ public class IGGIFactory {
         return pra;
     }
 
+    @AgentBuilderStatic("piers")
     public static Agent buildPiersPlayer() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         // Its yolo time
@@ -99,6 +105,7 @@ public class IGGIFactory {
         return pra;
     }
 
+    @AgentBuilderStatic("risky")
     public static Agent buildRiskyPlayer(double threshold) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new PlayIfCertain());
@@ -121,13 +128,14 @@ public class IGGIFactory {
         return pra;
     }
 
-
+    @AgentBuilderStatic("legal_random")
     public static Agent buildRandom() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         pra.addRule(new LegalRandom());
         return pra;
     }
 
+    @AgentBuilderStatic("cautiousMCTS")
     public static Agent buildCautiousMCTS() {
         Agent[] agents = AgentUtils.buildPredictors(-1, 5, "cautious");
         return new MCTSPredictor(agents);
