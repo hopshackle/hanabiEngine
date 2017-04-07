@@ -40,12 +40,15 @@ public class AgentFinder {
      * A default list of converters that we understand.
      */
     private void buildConverters() {
-        converters.put(Integer.class, Integer::parseInt);
-        converters.put(Double.class, Double::parseDouble);
         converters.put(String.class, Function.identity());
-        converters.put(Float.class, Float::parseFloat);
-        converters.put(Boolean.class, Boolean::parseBoolean);
+        converters.put(Integer.class, Integer::parseInt);
         converters.put(int.class, Integer::parseInt);
+        converters.put(Double.class, Double::parseDouble);
+        converters.put(double.class, Double::parseDouble);
+        converters.put(Float.class, Float::parseFloat);
+        converters.put(float.class, Float::parseFloat);
+        converters.put(Boolean.class, Boolean::parseBoolean);
+        converters.put(boolean.class, Boolean::parseBoolean);
     }
 
     /**
