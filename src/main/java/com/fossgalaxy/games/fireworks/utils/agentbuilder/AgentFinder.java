@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.mcs.MonteCarloSearch;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.NoisyPredictor;
 import com.fossgalaxy.games.fireworks.ai.rule.ProductionRuleAgent;
@@ -57,6 +58,9 @@ public class AgentFinder {
 
         NoisyPredictor predictor = (NoisyPredictor) finder.buildAgent("noisy", "0.9", "iggi");
         System.out.println(predictor);
+
+        MonteCarloSearch mcs = (MonteCarloSearch) finder.buildAgent("mcs", "iggi");
+        System.out.println(mcs);
         finder.knownFactories.values().forEach(System.out::println);
     }
 

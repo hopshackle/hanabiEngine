@@ -2,6 +2,8 @@ package com.fossgalaxy.games.fireworks.ai.mcs;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
+import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
@@ -18,6 +20,7 @@ public class MonteCarloSearch extends MCTSPredictor {
      *
      * @param policy The policy to use instead of Random rollouts
      */
+    @AgentConstructor("mcs")
     public MonteCarloSearch(Agent policy) {
         super(new Agent[]{policy, policy, policy, policy, policy});
     }
