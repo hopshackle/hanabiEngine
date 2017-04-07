@@ -29,7 +29,7 @@ public class MCTS implements Agent {
     protected final Random random;
     protected final Logger logger = LoggerFactory.getLogger(MCTS.class);
 
-    private final boolean calcTree = true;
+    private final boolean calcTree = false;
 
     /**
      * Create a default MCTS implementation.

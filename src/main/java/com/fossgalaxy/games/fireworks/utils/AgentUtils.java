@@ -121,10 +121,17 @@ public class AgentUtils {
      *
      * This allows the creation of noisey/learned models to be injected into the agent.
      *
-     * @param name the name to generate the predictor from
+     * @param args the name to generate the predictor from
      * @return the new predictor
      */
-    public static Agent buildPredictor(String name) {
+
+    public static Agent buildPredictor(String ... args) {
+        if (args.length != 1) {
+            throw new IllegalArgumentException("You must supply a model to use");
+        }
+
+        String name = args[0];
+
         if (name.startsWith("noisy")) {
             String[] parts = name.split(":");
             double th = Double.parseDouble(parts[1]);

@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class App {
 
-    public static final String PREDICTOR_MCTS = "predictorMCTS";
+    public static final String PREDICTOR_MCTS = "pmcts";
     public static final String IGGI_RISKY = "iggi_risky";
     public static final String MCTS = "mcts";
     public static final String PREDICTOR_MCTSND = "predictorMCTSND";
