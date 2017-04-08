@@ -15,14 +15,16 @@ import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
 import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardRandomly;
 import com.fossgalaxy.games.fireworks.ai.rule.random.TellRandomly;
 import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBerghFactory;
-import com.fossgalaxy.games.fireworks.annotations.Beta;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
+import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
 import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFinder;
-import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -30,14 +32,15 @@ import java.util.stream.Collectors;
  * Created by webpigeon on 01/12/16.
  */
 public class AgentUtils {
-    public static final String PARAM_SEPERATOR = ":";
+    public static final String PARAM_START = "[";
+    public static final String PARAM_END = "]";
+    public static final String PARAM_SEPARATOR = ":";
 
     private static final AgentFinder finder = buildFinder();
 
     private AgentUtils() {
 
     }
-
 
     private static AgentFinder buildFinder() {
         AgentFinder finder = new AgentFinder();
@@ -50,12 +53,35 @@ public class AgentUtils {
         return finder;
     }
 
-    public static void main(String[] args) {
-        Agent agent2 = finder.buildAgent("pmcts", "noisy,0.9,iggi|noisy,0.9,legal_random|noisy,0.9,legal_random|noisy,0.9,legal_random|noisy,0.9,legal_random");
-        System.out.println(agent2);
+    @AgentBuilderStatic("Funky")
+    public static Agent funkyAgent(Agent first, int second, Agent third, int fourth){
+        return new Agent() {
+            @Override
+            public Action doMove(int agentID, GameState state) {
+                return null;
+            }
+
+            @Override
+            public String toString() {
+                return first + ":" + second + ":" + third + ":" + fourth;
+            }
+        };
     }
 
-    private static AgentFactory i(Supplier<Agent> s){
+    public static void main(String[] args) {
+        //        Agent agent2 = finder.buildAgent("pmcts", "noisy,0.9,iggi|noisy,0.9,legal_random|noisy,0.9,legal_random|noisy,0.9,legal_random|noisy,0.9,legal_random");
+
+        Agent agent = buildAgent("VanDenBergh[0:1:NEXT_USEFUL_THEN_MOST_CARDS:MOST_CERTAIN_IS_USELESS]");
+        System.out.println(agent);
+
+        Agent agent2 = buildAgent("noisy[0.1:noisy[0.2:noisy[0.3:noisy[0.4:noisy[0.5:iggi]]]]]");
+        System.out.println(agent2);
+
+        Agent agent3 = buildAgent("Funky[iggi:1:Funky[noisy[0.1:iggi]:1:iggi:2]:2]");
+        System.out.println(agent3);
+    }
+
+    private static AgentFactory i(Supplier<Agent> s) {
         return (x -> s.get());
     }
 
@@ -81,31 +107,69 @@ public class AgentUtils {
         map.put("flawed", IGGIFactory::buildFlawedPlayer);
         map.put("rmhc", RMHC::new);
 
-
         //Non-depth limited mcts versions
         map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT));
 
         return map;
     }
 
-    public static Agent buildAgent(String name, String... args){
+    public static Agent buildAgent(String name, String... args) {
         return finder.buildAgent(name, args);
     }
 
+    //noisy[0.9:iggi]
 
+    // Need to split only args and ignore the brackets
     public static Agent buildAgent(String name) {
+        System.out.println(name);
+        if (name.contains(PARAM_START) && name.contains(PARAM_END)) {
+            String args = name.substring(name.indexOf(PARAM_START) + 1, name.lastIndexOf(PARAM_END));
+            String[] splitArgs = splitArgs(args);
+            String firstPart = name.substring(0, name.indexOf(PARAM_START));
+//            System.out.println("First: " + firstPart);
+//            System.out.println("Args: " + Arrays.toString(splitArgs));
+            return finder.buildAgent(firstPart, splitArgs);
+        }
         return finder.buildAgent(name);
+    }
+
+    private static String[] splitArgs(String args) {
+        int opens = 0;
+        ArrayList<String> partsFound = new ArrayList<>();
+
+        String currentParam = "";
+
+        for (int index = 0; index < args.length(); index++) {
+            char c = args.charAt(index);
+            // handle params open/close
+            if(c == PARAM_START.charAt(0)){
+                opens++;
+            }else if(c == PARAM_END.charAt(0)){
+                opens--;
+            }else if(c == PARAM_SEPARATOR.charAt(0)){
+                if(opens == 0){
+                    partsFound.add(currentParam);
+                    currentParam = "";
+                    continue;
+                }
+            }
+            currentParam += c;
+        }
+        if(!currentParam.equals("")){
+            partsFound.add(currentParam);
+        }
+        return partsFound.toArray(new String[partsFound.size()]);
     }
 
     /**
      * Allow creation of other forms of predictors
-     *
+     * <p>
      * This allows the creation of noisey/learned models to be injected into the agent.
      *
      * @param args the name to generate the predictor from
      * @return the new predictor
      */
-    public static Agent buildPredictor(String ... args) {
+    public static Agent buildPredictor(String... args) {
         if (args.length != 1) {
             throw new IllegalArgumentException("You must supply a model to use");
         }
@@ -153,11 +217,13 @@ public class AgentUtils {
         return agents;
     }
 
-    public static Agent buildAgent(Integer[] rules){
+    public static Agent buildAgent(Integer[] rules) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         ArrayList<Rule> actualRules = RuleSet.getRules();
-        for(int rule : rules){
-            if(rule == -1) break;
+        for (int rule : rules) {
+            if (rule == -1) {
+                break;
+            }
             pra.addRule(actualRules.get(rule));
         }
 
@@ -167,11 +233,13 @@ public class AgentUtils {
         return pra;
     }
 
-    public static Agent buildAgent(int[] rules){
+    public static Agent buildAgent(int[] rules) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         ArrayList<Rule> actualRules = RuleSet.getRules();
-        for(int rule : rules){
-            if(rule == -1) break;
+        for (int rule : rules) {
+            if (rule == -1) {
+                break;
+            }
             pra.addRule(actualRules.get(rule));
         }
 

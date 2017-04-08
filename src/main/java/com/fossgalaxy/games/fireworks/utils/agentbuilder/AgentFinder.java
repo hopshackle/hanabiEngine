@@ -9,6 +9,7 @@ import com.fossgalaxy.games.fireworks.ai.vanDenBergh.VanDenBergh;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.annotations.Parameter;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.SubTypesScanner;
@@ -77,7 +78,7 @@ public class AgentFinder {
         converters.put(float.class, Float::parseFloat);
         converters.put(Boolean.class, Boolean::parseBoolean);
         converters.put(boolean.class, Boolean::parseBoolean);
-        converters.put(Agent.class, (x) -> buildAgent(x, new String[0]));
+        converters.put(Agent.class, AgentUtils::buildAgent);
     }
 
     /**
