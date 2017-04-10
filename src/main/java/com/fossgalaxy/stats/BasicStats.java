@@ -20,6 +20,7 @@ public class BasicStats implements StatsSummary {
         this.sum = 0;
     }
 
+    @Override
     public void add(double number) {
         this.min = Math.min(number, min);
         this.max = Math.max(number, max);
