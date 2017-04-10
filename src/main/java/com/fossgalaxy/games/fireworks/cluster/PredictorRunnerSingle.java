@@ -3,7 +3,6 @@ package com.fossgalaxy.games.fireworks.cluster;
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.GameStats;
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
@@ -91,7 +90,7 @@ public class PredictorRunnerSingle {
                         agentList,
                         seed,
                         stats.nPlayers,
-                        stats.infomation,
+                        stats.information,
                         stats.lives,
                         stats.moves,
                         stats.score,

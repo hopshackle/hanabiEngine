@@ -9,10 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * @deprecated This class should be migrated away from
@@ -86,7 +84,7 @@ public class App2Csv {
 
             GameStats stats = runner.playGame(seed);
             ps.println("DEBUG,game is over");
-            System.out.println(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d", agentUnderTest, String.join(",", Arrays.asList(names)), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+            System.out.println(String.format("%s,%s,%d,%d,%d,%d,%d,%d,%d", agentUnderTest, String.join(",", Arrays.asList(names)), seed, stats.nPlayers, stats.information, stats.lives, stats.moves, stats.score, stats.disqal));
             return stats;
         } catch (IOException ex) {
             System.err.println("error: " + ex.toString());
@@ -183,7 +181,7 @@ public class App2Csv {
             }
 
             GameStats stats = runner.playGame(seed);
-            System.out.println(String.format("%s,%s,%s,%d,%d,%d,%d,%d,%d,%d", gameID, agentUnderTest, String.join(",", Arrays.asList(name)), seed, stats.nPlayers, stats.infomation, stats.lives, stats.moves, stats.score, stats.disqal));
+            System.out.println(String.format("%s,%s,%s,%d,%d,%d,%d,%d,%d,%d", gameID, agentUnderTest, String.join(",", Arrays.asList(name)), seed, stats.nPlayers, stats.information, stats.lives, stats.moves, stats.score, stats.disqal));
             return stats;
         } catch (Exception ex) {
             System.err.println("error: " + ex.toString());

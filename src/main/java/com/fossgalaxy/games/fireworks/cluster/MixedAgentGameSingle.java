@@ -87,7 +87,7 @@ public class MixedAgentGameSingle {
                         agentList,
                         seed,
                         stats.nPlayers,
-                        stats.infomation,
+                        stats.information,
                         stats.lives,
                         stats.moves,
                         stats.score,
