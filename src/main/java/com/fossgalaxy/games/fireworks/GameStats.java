@@ -31,7 +31,7 @@ public class GameStats {
     /**
      * The number of information tokens remaining at the end of the game
      */
-    public final int infomation;
+    public final int information;
 
     /**
      * The number of illegal (cheating) moves made during this game.
@@ -46,7 +46,7 @@ public class GameStats {
         this.score = score;
         this.lives = lives;
         this.moves = moves;
-        this.infomation = information;
+        this.information = information;
         this.disqal = disqual;
     }
 

@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
-import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.GameStats;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
@@ -9,7 +8,6 @@ import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Created by newowner on 21/12/2016.
@@ -59,7 +57,7 @@ public class ValidationGameSingle {
                     agentList,
                     seed,
                     stats.nPlayers,
-                    stats.infomation,
+                    stats.information,
                     stats.lives,
                     stats.moves,
                     stats.score,

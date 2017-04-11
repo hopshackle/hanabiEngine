@@ -169,12 +169,12 @@ public class AgentUtils {
      * @param args the name to generate the predictor from
      * @return the new predictor
      */
-    public static Agent buildPredictor(String... args) {
+    public static Agent buildPredictor(String ... args) {
         if (args.length != 1) {
             throw new IllegalArgumentException("You must supply a model to use");
         }
 
-        String name = args[1];
+        String name = args[0];
 
         if (name.startsWith("noisy")) {
             String[] parts = name.split(":");
