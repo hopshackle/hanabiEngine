@@ -35,7 +35,7 @@ public class CardInfoValue extends GameEvent {
     }
 
     @Override
-    public void apply(GameState state) {
+    public void apply(GameState state, int myPlayerID) {
         Hand playerHand = state.getHand(playerId);
         playerHand.setKnownValue(value, slots);
         state.setInformation(state.getInfomation() - 1);

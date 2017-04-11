@@ -18,7 +18,7 @@ public class AgentPlayer implements Player {
     private final String name;
     private final Agent policy;
 
-    private GameState state;
+    protected GameState state;
     private int playerID;
 
     /**
@@ -46,7 +46,7 @@ public class AgentPlayer implements Player {
         assert state != null : "You didn't call setID before I got a message!";
         assert msg != null : "You passed me a null message";
 
-        msg.apply(state);
+        msg.apply(state, playerID);
         state.addEvent(msg);
     }
 

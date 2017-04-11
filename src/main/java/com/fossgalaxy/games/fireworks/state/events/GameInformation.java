@@ -17,7 +17,7 @@ public class GameInformation extends GameEvent {
     }
 
     @Override
-    public void apply(GameState state) {
+    public void apply(GameState state, int myPlayerID) {
         state.setInformation(infoTokens);
         state.setLives(lives);
         state.getDeck().init();

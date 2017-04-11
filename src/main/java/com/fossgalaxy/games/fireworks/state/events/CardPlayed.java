@@ -21,7 +21,7 @@ public class CardPlayed extends GameEvent {
     }
 
     @Override
-    public void apply(GameState state) {
+    public void apply(GameState state, int myPlayerID) {
 
         Card oldCard = new Card(value, colour);
 
@@ -44,6 +44,12 @@ public class CardPlayed extends GameEvent {
                 }
             }
         }
+
+        //if this was us, we think it could still be in the deck.
+        if (myPlayerID == playerId) {
+            state.getDeck().remove(oldCard);
+        }
+
         state.setCardAt(playerId, slotId, null);
 
     }

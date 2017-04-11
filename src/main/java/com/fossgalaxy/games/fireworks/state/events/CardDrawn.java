@@ -20,7 +20,7 @@ public class CardDrawn extends GameEvent {
     }
 
     @Override
-    public void apply(GameState state) {
+    public void apply(GameState state, int myPlayerID) {
         Card card = new Card(cardValue, colour);
 
         state.setCardAt(playerId, slotId, card);

@@ -64,7 +64,7 @@ public class HumanView extends GameRunner {
     @Override
     protected void writeState(GameState state) {
         // Put it in the view!
-        gameView.setState(state);
+        gameView.setState(state, -1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

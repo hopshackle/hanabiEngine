@@ -21,10 +21,17 @@ public class CardDiscarded extends GameEvent {
     }
 
     @Override
-    public void apply(GameState state) {
-        state.addToDiscard(new Card(value, colour));
+    public void apply(GameState state, int myPlayerId) {
+        Card card = new Card(value, colour);
+
+        state.addToDiscard(card);
         state.setCardAt(playerId, slotId, null);
         state.setInformation(state.getInfomation() + 1);
+
+        //if this was my card, I think it is still in the deck, time to delete it
+        if (myPlayerId == playerId) {
+            state.getDeck().remove(card);
+        }
     }
 
     @Override

@@ -32,7 +32,8 @@ public class CardReceived extends GameEvent {
 
 
     @Override
-    public void apply(GameState state) {
+    public void apply(GameState state, int myPlayerID) {
+        assert myPlayerID==this.playerId;
         state.getHand(playerId).setHasCard(slotId, received);
     }
 
