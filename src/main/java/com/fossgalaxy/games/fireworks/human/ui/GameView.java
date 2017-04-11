@@ -40,9 +40,18 @@ public class GameView extends JComponent {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        graphics.setColor(Color.CYAN);
-        graphics.fillRect(0, 0, getWidth()/2, getHeight());
 
+        //Mat Areas
+        if (state != null) {
+            final int cellWidth = cardWidth() + MARGIN;
+            final int cellHeight = cellWidth * 3/2 + MARGIN;
+
+            graphics.setColor(Color.CYAN);
+            graphics.fillRect(0, 0, cellWidth*5, cellHeight*5);
+
+            graphics.setColor(Color.CYAN);
+            graphics.fillRect(0, cellHeight*6, cellWidth*12, cellHeight*3 );
+        }
 
         if (state != null) {
             synchronized (_state) {
@@ -78,8 +87,10 @@ public class GameView extends JComponent {
                     drawCard(graphics, state.getPlayerCount() + 1, colour.ordinal(), Integer.toString(state.getTableValue(colour)), getColor(colour));
                 }
 
-                drawCard(graphics, state.getPlayerCount() + 1, 8, Integer.toString(Math.max(0, state.getDeck().getCardsLeft()-state.getHand(myPlayerID).getSize())), Color.BLACK);
-                drawCard(graphics, state.getPlayerCount() + 1, 9, Integer.toString(state.getDiscards().size()), Color.WHITE);
+                if (myPlayerID != -1) {
+                    drawCard(graphics, state.getPlayerCount() + 1, 8, Integer.toString(Math.max(0, state.getDeck().getCardsLeft() - state.getHand(myPlayerID).getSize())), Color.BLACK);
+                    drawCard(graphics, state.getPlayerCount() + 1, 9, Integer.toString(state.getDiscards().size()), Color.WHITE);
+                }
 
                 for (int i=0; i<state.getInfomation(); i++) {
                     drawInfo(graphics, state.getPlayerCount()+2, i, Color.BLUE, Color.BLACK);
