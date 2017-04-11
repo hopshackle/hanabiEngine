@@ -2,17 +2,14 @@ package com.fossgalaxy.games.fireworks.human;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
-import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
-import com.fossgalaxy.games.fireworks.utils.GameUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
 

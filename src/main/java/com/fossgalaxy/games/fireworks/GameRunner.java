@@ -121,7 +121,7 @@ public class GameRunner {
 
 
     //TODO find a better way of doing this logging.
-    private void writeState(GameState state) {
+    protected void writeState(GameState state) {
         DebugUtils.printState(logger, state);
     }
 
