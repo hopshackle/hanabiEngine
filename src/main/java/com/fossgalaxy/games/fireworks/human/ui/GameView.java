@@ -15,15 +15,19 @@ public class GameView extends JComponent {
     private final int width, height;
     private final Object _state = new Object();
     private GameState state;
+
     public GameView(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
     @Override
-    public void paintComponents(Graphics graphics) {
-        super.paintComponents(graphics);
-        if(state != null) {
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+
+        graphics.setColor(Color.CYAN);
+        graphics.fillRect(0, 0, width/2, height);
+        if (state != null) {
             synchronized (_state) {
                 int width = cardWidth();
                 for (int i = 0; i < getNumCards(); i++) {
@@ -41,11 +45,11 @@ public class GameView extends JComponent {
         }
     }
 
-    private Color getColor(CardColour colour){
-        if(colour == null){
+    private Color getColor(CardColour colour) {
+        if (colour == null) {
             return Color.BLACK;
         }
-        switch(colour){
+        switch (colour) {
             case BLUE:
                 return Color.BLUE;
             case RED:
@@ -73,12 +77,14 @@ public class GameView extends JComponent {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(height, width);
+        return new Dimension(width, height);
     }
 
     public void setState(GameState state) {
         synchronized (_state) {
+            System.out.println("State being set");
             this.state = state;
         }
+        this.repaint();
     }
 }

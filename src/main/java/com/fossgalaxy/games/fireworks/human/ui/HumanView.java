@@ -5,7 +5,6 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
-import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import javax.swing.*;
@@ -15,9 +14,10 @@ import java.util.UUID;
 /**
  * Created by piers on 11/04/17.
  */
-public class HumanView extends GameRunner{
+public class HumanView extends GameRunner {
 
     private GameView gameView;
+
     public HumanView(UUID id, int playersCount) {
         super(id, playersCount);
         gameView = new GameView(800, 600);
@@ -26,18 +26,6 @@ public class HumanView extends GameRunner{
     public HumanView(String gameID, int expectedPlayers) {
         super(gameID, expectedPlayers);
         gameView = new GameView(800, 600);
-    }
-
-    @Override
-    protected void writeState(GameState state) {
-        // Put it in the view!
-        gameView.setState(state);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        super.writeState(state);
     }
 
     public static void main(String[] args) {
@@ -63,9 +51,25 @@ public class HumanView extends GameRunner{
             view.addPlayer(player);
         }
 
-        view.playGame(seed);
+        Thread thread = new Thread(() -> view.playGame(seed));
+
+        thread.start();
+
+        frame.add(view.gameView);
 
         frame.pack();
         frame.setVisible(true);
+    }
+
+    @Override
+    protected void writeState(GameState state) {
+        // Put it in the view!
+        gameView.setState(state);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.writeState(state);
     }
 }
