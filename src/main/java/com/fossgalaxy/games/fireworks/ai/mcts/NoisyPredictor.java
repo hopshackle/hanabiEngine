@@ -2,6 +2,8 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
+import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
+import com.fossgalaxy.games.fireworks.annotations.Parameter;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
@@ -18,6 +20,7 @@ public class NoisyPredictor implements Agent {
     private Agent policy;
     private Random random;
 
+    @AgentConstructor("noisy")
     public NoisyPredictor(double threshold, Agent policy) {
         this.threshold = threshold;
         this.policy = policy;
@@ -38,5 +41,14 @@ public class NoisyPredictor implements Agent {
     @Override
     public void receiveID(int agentID) {
         policy.receiveID(agentID);
+    }
+
+    @Override
+    public String toString() {
+        return "NoisyPredictor{" +
+                "threshold=" + threshold +
+                ", policy=" + policy +
+                ", random=" + random +
+                '}';
     }
 }

@@ -19,8 +19,8 @@
         <connection>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</connection>
         <url>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</url>
         <developerConnection>scm:git:git@git.fossgalaxy.com:iggi/hanabi.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <!-- Use FOSS Galaxy's parent POM to do most of the build setup for us -->
     <parent>
@@ -122,6 +122,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
     </dependencies>
 </project>
