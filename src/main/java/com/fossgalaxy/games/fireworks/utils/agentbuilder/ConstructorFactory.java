@@ -1,0 +1,65 @@
+package com.fossgalaxy.games.fireworks.utils.agentbuilder;
+
+import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.function.Function;
+
+/**
+ * Created by webpigeon on 06/04/17.
+ */
+public class ConstructorFactory implements AgentFactory {
+    private final Class<? extends Agent> clazz;
+    private final Constructor<?> constructor;
+    private final Function<String, ?>[] converters;
+    private final String name;
+
+
+    public ConstructorFactory(Class<? extends Agent> clazz, Constructor<?> constructor, Function<String, ?>[] converters) {
+        this(clazz, constructor, converters, clazz.getSimpleName());
+    }
+
+    public ConstructorFactory(Class<? extends Agent> clazz, Constructor<?> constructor, Function<String, ?>[] converters, String name) {
+        this.clazz = clazz;
+        this.constructor = constructor;
+        this.converters = converters;
+        this.name = name;
+    }
+
+
+    @Override
+    public Agent build(String... args) {
+
+        Object[] params = new Object[0];
+        if (converters != null) {
+            params = new Object[converters.length];
+            for (int i = 0; i < params.length; i++) {
+                params[i] = converters[i].apply(args[i]);
+            }
+        }
+
+        try {
+            return (Agent)constructor.newInstance(params);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    public String toString() {
+        return String.format("agent factory for: %s - %s, %s", clazz.getSimpleName(), constructor, Arrays.toString(converters));
+    }
+
+}

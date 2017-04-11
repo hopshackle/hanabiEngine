@@ -1,9 +1,12 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
+import com.fossgalaxy.games.fireworks.annotations.Parameter;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 
 import java.util.Arrays;
@@ -15,6 +18,10 @@ public class MCTSPredictor extends MCTS {
     protected Agent[] agents;
     protected int agentID;
 
+    //usage: if pmcts=2 then iggi|iggi|null|iggi|iggi
+    //usage: if pmcts=2 && model=1,2,3,4,5,5 then 1,2,3,4,5,6|1,2,3,4,5,6|null|1,2,3,4,5,6|1,2,3,4,5,6
+    @AgentConstructor("pmcts")
+    @Parameter(id=0, func="parseAgents")
     public MCTSPredictor(Agent[] others) {
         super();
         this.agents = others;
@@ -34,6 +41,20 @@ public class MCTSPredictor extends MCTS {
     public Action doMove(int agentID, GameState state) {
         agents[agentID] = null;
         return super.doMove(agentID, state);
+    }
+
+    public static Agent[] parseAgents(String agentsStr) {
+        String[] agentStr = agentsStr.split("\\|");
+
+        Agent[] predictors = new Agent[agentStr.length];
+        for (int i=0; i<5; i++) {
+            String[] mirrorArgs = agentStr[i].split(",");
+            String[] mirrorArgsArgs = Arrays.copyOfRange(mirrorArgs, 1, mirrorArgs.length);
+
+            predictors[i] = AgentUtils.buildAgent(mirrorArgs[0], mirrorArgsArgs);
+        }
+
+        return predictors;
     }
 
     protected Action doSuperMove(int agentID, GameState state) {

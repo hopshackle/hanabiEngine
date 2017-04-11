@@ -3,6 +3,8 @@ package com.fossgalaxy.games.fireworks.ai.mcts;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
+import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -52,11 +54,17 @@ public class MCTS implements Agent {
      * @param rolloutDepth
      * @param treeDepthMul
      */
+    @AgentConstructor("mcts")
     public MCTS(int roundLength, int rolloutDepth, int treeDepthMul) {
         this.roundLength = roundLength;
         this.rolloutDepth = rolloutDepth;
         this.treeDepthMul = treeDepthMul;
         this.random = new Random();
+    }
+
+    @AgentBuilderStatic("mctsND")
+    public static MCTS buildMCTSND() {
+        return new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT);
     }
 
     @Override
