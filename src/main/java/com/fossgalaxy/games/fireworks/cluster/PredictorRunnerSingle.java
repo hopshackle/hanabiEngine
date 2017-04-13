@@ -134,7 +134,7 @@ public class PredictorRunnerSingle {
 
         //generate agent under test
         String realAgentUnderTest = agentUnderTest;
-        if ("pmcts".equals(agentUnderTest)) {
+        if ("pmcts".equalsIgnoreCase(agentUnderTest) || "pmctsND".equalsIgnoreCase(agentUnderTest)) {
             StringBuilder builder = new StringBuilder();
             builder.append(agentUnderTest);
             builder.append(AgentUtils.PARAM_START);

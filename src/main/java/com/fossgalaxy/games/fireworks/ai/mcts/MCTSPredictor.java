@@ -1,5 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
+import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
@@ -21,7 +22,7 @@ public class MCTSPredictor extends MCTS {
 
     //usage: if pmcts=2 then iggi|iggi|null|iggi|iggi
     //usage: if pmcts=2 && model=1,2,3,4,5,5 then 1,2,3,4,5,6|1,2,3,4,5,6|null|1,2,3,4,5,6|1,2,3,4,5,6
-    @AgentConstructor("pmcts")
+    @AgentConstructor(App.PREDICTOR_MCTS)
     @Parameter(id=0, func="parseAgents")
     public MCTSPredictor(Agent[] others) {
         super();
@@ -38,7 +39,7 @@ public class MCTSPredictor extends MCTS {
         this.agents = agents;
     }
 
-    @AgentBuilderStatic("pmctsND")
+    @AgentBuilderStatic(App.PREDICTOR_MCTSND)
     @Parameter(id=0, func="parseAgents")
     public static MCTSPredictor buildPMCTSND(Agent[] agents) {
         return new MCTSPredictor(agents, MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT);

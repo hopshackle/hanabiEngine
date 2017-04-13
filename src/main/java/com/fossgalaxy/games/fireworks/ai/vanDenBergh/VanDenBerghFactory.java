@@ -15,6 +15,7 @@ public class VanDenBerghFactory {
 
     }
 
+    @AgentBuilderStatic("vdb-paper")
     public static Agent buildAgent() {
         return buildAgent(
                 0.6,
