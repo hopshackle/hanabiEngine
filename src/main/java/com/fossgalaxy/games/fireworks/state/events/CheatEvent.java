@@ -21,7 +21,7 @@ public class CheatEvent extends GameEvent {
     }
 
     @Override
-    public void apply(GameState state) {
+    public void apply(GameState state, int myPlayerID) {
         Hand hand = state.getHand(playerID);
         Hand serverHand = this.hand;
 

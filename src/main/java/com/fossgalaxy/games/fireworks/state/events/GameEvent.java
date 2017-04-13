@@ -11,13 +11,11 @@ public abstract class GameEvent implements Serializable {
         this.id = id;
     }
 
-    public void apply(GameState state, int myPlayerID) {
-        apply(state);
-    }
+    public abstract void apply(GameState state, int myPlayerID);
 
     @Deprecated
     public void apply(GameState state){
-
+        apply(state, -1);
     }
 
     public MessageType getEvent() {

@@ -26,7 +26,7 @@ public class TestCardDiscarded {
         Card card = state.getHand(0).getCard(0);
         CardDiscarded cardDiscarded = new CardDiscarded(0, 0, card.colour, card.value);
 
-        cardDiscarded.apply(state);
+        cardDiscarded.apply(state, 0);
 
         assertEquals(null, state.getHand(0).getCard(0));
         assertEquals(8, state.getInfomation());

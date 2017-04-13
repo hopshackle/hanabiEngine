@@ -37,7 +37,7 @@ public class TestCardReceived {
         GameState state = mock(GameState.class);
         when(state.getHand(playerID)).thenReturn(hand);
 
-        instance.apply(state);
+        instance.apply(state, playerID);
 
         verify(hand).setHasCard(slotID, present);
     }
@@ -54,7 +54,7 @@ public class TestCardReceived {
         GameState state = mock(GameState.class);
         when(state.getHand(playerID)).thenReturn(hand);
 
-        instance.apply(state);
+        instance.apply(state, playerID);
 
         verify(hand).setHasCard(slotID, present);
     }
