@@ -121,13 +121,10 @@ public class AgentUtils {
 
     // Need to split only args and ignore the brackets
     public static Agent buildAgent(String name) {
-        System.out.println(name);
         if (name.contains(PARAM_START) && name.contains(PARAM_END)) {
             String args = name.substring(name.indexOf(PARAM_START) + 1, name.lastIndexOf(PARAM_END));
             String[] splitArgs = splitArgs(args);
             String firstPart = name.substring(0, name.indexOf(PARAM_START));
-//            System.out.println("First: " + firstPart);
-//            System.out.println("Args: " + Arrays.toString(splitArgs));
             return finder.buildAgent(firstPart, splitArgs);
         }
         return finder.buildAgent(name);
@@ -233,6 +230,7 @@ public class AgentUtils {
         return pra;
     }
 
+    @AgentBuilderStatic("model")
     public static Agent buildAgent(int[] rules) {
         ProductionRuleAgent pra = new ProductionRuleAgent();
         ArrayList<Rule> actualRules = RuleSet.getRules();

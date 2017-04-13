@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Created by webpigeon on 06/04/17.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.CONSTRUCTOR)
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD})
 public @interface Parameter {
     int id();
     String func() default "";

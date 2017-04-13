@@ -78,7 +78,17 @@ public class AgentFinder {
         converters.put(float.class, Float::parseFloat);
         converters.put(Boolean.class, Boolean::parseBoolean);
         converters.put(boolean.class, Boolean::parseBoolean);
+        converters.put(int[].class, AgentFinder::parseIntArray);
         converters.put(Agent.class, AgentUtils::buildAgent);
+    }
+
+    public static int[] parseIntArray(String data) {
+        String[] args = data.split(",");
+        int[] argInt = new int[args.length];
+        for (int i=0; i<args.length; i++) {
+            argInt[i] = Integer.parseInt(args[i]);
+        }
+        return argInt;
     }
 
     /**
@@ -116,7 +126,7 @@ public class AgentFinder {
 
         AgentFactory factory = knownFactories.get(name);
         if (factory == null) {
-            throw new IllegalArgumentException("Unknown factory type");
+            throw new IllegalArgumentException("Unknown factory type: "+name);
         }
 
         return factory.build(args);
@@ -240,7 +250,6 @@ public class AgentFinder {
     private Function<String, ?>[] getConverters(Class<?> agentClazz, Class<?>[] params, HashMap<Integer, Parameter> parameters) {
         Function<String, ?>[] convertersInst = (Function[]) Array.newInstance(Function.class, params.length);
         for (int i = 0; i < params.length; i++) {
-            System.out.println(agentClazz + " " + i + " -> " + params[i]);
             if (parameters.containsKey(i)) {
                 Parameter parameter = parameters.get(i);
                 try {

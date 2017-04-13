@@ -1,6 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.annotations.Parameter;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -37,6 +38,12 @@ public class MCTSPredictor extends MCTS {
         this.agents = agents;
     }
 
+    @AgentBuilderStatic("pmctsND")
+    @Parameter(id=0, func="parseAgents")
+    public static MCTSPredictor buildPMCTSND(Agent[] agents) {
+        return new MCTSPredictor(agents, MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT);
+    }
+
     @Override
     public Action doMove(int agentID, GameState state) {
         agents[agentID] = null;
@@ -47,11 +54,8 @@ public class MCTSPredictor extends MCTS {
         String[] agentStr = agentsStr.split("\\|");
 
         Agent[] predictors = new Agent[agentStr.length];
-        for (int i=0; i<5; i++) {
-            String[] mirrorArgs = agentStr[i].split(",");
-            String[] mirrorArgsArgs = Arrays.copyOfRange(mirrorArgs, 1, mirrorArgs.length);
-
-            predictors[i] = AgentUtils.buildAgent(mirrorArgs[0], mirrorArgsArgs);
+        for (int i=0; i<agentStr.length; i++) {
+            predictors[i] = AgentUtils.buildAgent(agentStr[i]);
         }
 
         return predictors;

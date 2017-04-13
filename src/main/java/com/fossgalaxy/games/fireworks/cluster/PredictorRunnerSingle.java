@@ -3,6 +3,8 @@ package com.fossgalaxy.games.fireworks.cluster;
 import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.GameStats;
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
@@ -64,13 +66,15 @@ public class PredictorRunnerSingle {
                 String[] agentStr = new String[5];
 
                 //generate agent under test
-                agents[agentUnderTestIndex] = App.buildAgent(agentUnderTest, agentUnderTestIndex, predictorType, nPlayers);
+                String realAgentUnderTest = generatePredictorString(agentUnderTest, nPlayers, predictorType);
+
+                agents[agentUnderTestIndex] = AgentUtils.buildAgent(realAgentUnderTest);
                 agentStr[agentUnderTestIndex] = agentUnderTest;
                 for (int i = 0; i < nPlayers; i++) {
                     if(i == agentUnderTestIndex){
                         continue;
                     }
-                    agents[i] = App.buildAgent(agentPaired, i, predictorType, nPlayers);
+                    agents[i] = AgentUtils.buildAgent(agentPaired);
                     agentStr[i] = agentPaired;
                 }
 
@@ -106,18 +110,51 @@ public class PredictorRunnerSingle {
         }
     }
 
+    public static String generatePredictorString(String agentUnderTest, int nPlayers, String model) {
+        if ("pmcts".equals(agentUnderTest)) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(agentUnderTest);
+            builder.append(AgentUtils.PARAM_START);
+            for (int i=0; i<nPlayers; i++) {
+                if(i != 0) {
+                    builder.append("|");
+                }
+                builder.append(model);
+            }
+            builder.append(AgentUtils.PARAM_END);
+            return builder.toString();
+        }
+        return agentUnderTest;
+    }
+
     public static void doWarmup(int nPlayers, int agentUnderTestIndex, String agentUnderTest, String predictorType, String agentPaired) {
+
         Agent[] agents = new Agent[nPlayers];
         String[] agentStr = new String[5];
 
         //generate agent under test
-        agents[agentUnderTestIndex] = App.buildAgent(agentUnderTest, agentUnderTestIndex, predictorType, nPlayers);
+        String realAgentUnderTest = agentUnderTest;
+        if ("pmcts".equals(agentUnderTest)) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(agentUnderTest);
+            builder.append(AgentUtils.PARAM_START);
+            for (int i=0; i<nPlayers; i++) {
+                if(i != 0) {
+                    builder.append("|");
+                }
+                builder.append(predictorType);
+            }
+            builder.append(AgentUtils.PARAM_END);
+            realAgentUnderTest = builder.toString();
+        }
+
+        agents[agentUnderTestIndex] = AgentUtils.buildAgent(realAgentUnderTest);
         agentStr[agentUnderTestIndex] = agentUnderTest;
         for (int i = 0; i < nPlayers; i++) {
             if(i == agentUnderTestIndex){
                 continue;
             }
-            agents[i] = App.buildAgent(agentPaired, i, predictorType, nPlayers);
+            agents[i] = AgentUtils.buildAgent(agentPaired);
             agentStr[i] = agentPaired;
         }
 

@@ -61,7 +61,10 @@ public class MixedAgentGameSingle {
                 String[] agentStr = new String[5];
 
                 //generate agent under test
-                agents[agentUnderTestIndex] = App.buildAgent(agentUnderTest, agentUnderTestIndex, agentPaired, nPlayers);
+                String realAgentUnderTest = PredictorRunnerSingle.generatePredictorString(agentUnderTest, nPlayers, agentPaired);
+
+                //generate agent under test
+                agents[agentUnderTestIndex] = AgentUtils.buildAgent(realAgentUnderTest);
                 agentStr[agentUnderTestIndex] = agentUnderTest;
                 for (int i = 0; i < nPlayers; i++) {
                     if(i == agentUnderTestIndex){
@@ -79,7 +82,7 @@ public class MixedAgentGameSingle {
                 }
 
                 String agentList = String.join(",", Arrays.asList(agentStr));
-                String csvLine = String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d",
+                String csvLine = String.format("%s,\"%s\",\"%s\",%s,%s,%d,%d,%d,%d,%d,%d,%d",
                         gameID,
                         agentUnderTest,
                         agentPaired,

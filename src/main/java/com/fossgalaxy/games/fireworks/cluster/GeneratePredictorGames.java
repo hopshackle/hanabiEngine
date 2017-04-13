@@ -1,6 +1,9 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
+import com.fossgalaxy.games.fireworks.App;
+import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
+import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
 
 import java.util.Random;
 
@@ -35,8 +38,8 @@ public class GeneratePredictorGames {
             long seed = r.nextLong();
                 for (String agentPaired : agentsPaired) {
                     for (double x=0; x<1; x+=0.1) {
-                        String predictorType = "noisy:"+x+":"+agentPaired;
-                        System.out.println(String.format("%s %s %d %s %s", "predictorMCTSND", agentPaired, seed, "normal", predictorType));
+                        String predictorType = String.format("%s%s%f%s%s%s", "noisy", AgentUtils.PARAM_START, x, AgentUtils.PARAM_SEPARATOR, agentPaired, AgentUtils.PARAM_END );
+                        System.out.println(String.format("%s %s %d %s %s", App.PREDICTOR_MCTSND, agentPaired, seed, "normal", predictorType));
                     }
                 }
         }
