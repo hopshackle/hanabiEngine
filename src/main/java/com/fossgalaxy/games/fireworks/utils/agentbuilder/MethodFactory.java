@@ -31,6 +31,10 @@ public class MethodFactory implements AgentFactory{
     public Agent build(String[] args) {
         Object[] params = new Object[0];
         if(converters != null){
+            if (converters.length != args.length) {
+                throw new IllegalArgumentException("incorrect argument count to build class:"+clazz+", given: "+Arrays.toString(args));
+            }
+
             params = new Object[converters.length];
             for(int i = 0; i < params.length; i++){
                 params[i] = converters[i].apply(args[i]);

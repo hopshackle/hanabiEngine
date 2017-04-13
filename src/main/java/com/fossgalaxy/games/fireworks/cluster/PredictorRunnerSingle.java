@@ -111,7 +111,7 @@ public class PredictorRunnerSingle {
     }
 
     public static String generatePredictorString(String agentUnderTest, int nPlayers, String model) {
-        if ("pmcts".equals(agentUnderTest)) {
+        if ("pmcts".equals(agentUnderTest) || "pmctsND".equals(agentUnderTest)) {
             StringBuilder builder = new StringBuilder();
             builder.append(agentUnderTest);
             builder.append(AgentUtils.PARAM_START);

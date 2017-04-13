@@ -20,7 +20,7 @@ public class MonteCarloSearch extends MCTSPredictor {
      *
      * @param policy The policy to use instead of Random rollouts
      */
-    @AgentConstructor("mcs")
+    @AgentConstructor("flatmc")
     public MonteCarloSearch(Agent policy) {
         super(new Agent[]{policy, policy, policy, policy, policy});
     }
