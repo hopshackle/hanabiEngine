@@ -20,12 +20,12 @@ public class HumanView extends GameRunner {
 
     public HumanView(UUID id, int playersCount) {
         super(id, playersCount);
-        gameView = new GameView(800, 600);
+        gameView = new BasicGameView(800, 600);
     }
 
     public HumanView(String gameID, int expectedPlayers) {
         super(gameID, expectedPlayers);
-        gameView = new GameView(800, 600);
+        gameView = new BasicGameView(800, 600);
     }
 
     public static void main(String[] args) {

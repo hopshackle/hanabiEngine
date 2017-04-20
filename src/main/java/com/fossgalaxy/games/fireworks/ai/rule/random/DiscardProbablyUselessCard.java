@@ -14,14 +14,14 @@ import java.util.Map;
 /**
  * Created by piers on 12/12/16.
  * <p>
- * Card is useless if it cannot be played at all.
+ * CardComponent is useless if it cannot be played at all.
  * <p>
  * Probability that it is useless.
  * <p>
  * Can be useless because of a number of reasons
- * Card.value <= table[Card.colour]
- * Card.value <= min(table)
- * Card.value > max(possible(Card.colour))
+ * CardComponent.value <= table[CardComponent.colour]
+ * CardComponent.value <= min(table)
+ * CardComponent.value > max(possible(CardComponent.colour))
  */
 public class DiscardProbablyUselessCard extends AbstractDiscardRule {
 

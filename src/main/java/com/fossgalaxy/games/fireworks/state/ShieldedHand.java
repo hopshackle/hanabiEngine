@@ -14,7 +14,7 @@ public class ShieldedHand implements Hand {
 
     @Override
     public void init() {
-        throw new UnsupportedOperationException("Card views do not require init");
+        throw new UnsupportedOperationException("CardComponent views do not require init");
     }
 
     @Override

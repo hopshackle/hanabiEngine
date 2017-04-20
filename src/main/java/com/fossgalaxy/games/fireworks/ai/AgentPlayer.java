@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class AgentPlayer implements Player {
     private final String name;
-    private final Agent policy;
+    protected final Agent policy;
 
     protected GameState state;
     private int playerID;

@@ -13,4 +13,8 @@ public interface Player {
 
     String getName();
 
+    default void onGameOver() {
+
+    }
+
 }

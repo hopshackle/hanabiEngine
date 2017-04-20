@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.human.ui;
 
 import com.fossgalaxy.games.fireworks.GameRunner;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
+import com.fossgalaxy.games.fireworks.human.ui.pretty.HumanUIAgent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 /**
@@ -27,7 +28,7 @@ public class HumanGame {
                     models+= "|"+pairedWith;
                 }
 
-                runner.addPlayer(new UIPlayer("uiPlayer", AgentUtils.buildAgent(pairedAgent, models)));
+                runner.addPlayer(new UIPlayer("uiPlayer", new HumanUIAgent(), true));
             }
         }
 

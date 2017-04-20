@@ -110,6 +110,25 @@ public class PredictorRunnerSingle {
         }
     }
 
+    public static String makeCSVLine(String gameID, String agentUnderTest, String agentPaired, String gameType, String[] agentStr, long seed, GameStats stats, String predictorType) {
+        String agentList = String.join(",", Arrays.asList(agentStr));
+        return String.format("%s,\"%s\",\"%s\",%s,%s,%d,%d,%d,%d,%d,%d,%d,\"%s\"",
+                gameID,
+                agentUnderTest,
+                agentPaired,
+                gameType,
+                agentList,
+                seed,
+                stats.nPlayers,
+                stats.information,
+                stats.lives,
+                stats.moves,
+                stats.score,
+                stats.disqal,
+                predictorType
+        );
+    }
+
     public static String generatePredictorString(String agentUnderTest, int nPlayers, String model) {
         if ("pmcts".equals(agentUnderTest) || "pmctsND".equals(agentUnderTest)) {
             StringBuilder builder = new StringBuilder();

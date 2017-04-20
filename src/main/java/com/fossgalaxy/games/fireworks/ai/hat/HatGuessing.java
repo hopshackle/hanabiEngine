@@ -71,7 +71,7 @@ public class HatGuessing implements Agent {
             return lastToldAction.recommended;
         }
 
-        // 5. Discard card c 1 (Oldest Card)
+        // 5. Discard card c 1 (Oldest CardComponent)
         if (discardOldest.canFire(agentID, state)) {
             return discardOldest.execute(agentID, state);
         }
