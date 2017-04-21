@@ -27,6 +27,9 @@ public class PrettyGameView extends GameView {
     private final HumanUIAgent player;
     private final Map<Integer, CardHinter> hinters;
 
+    private JComponent myHand;
+
+
     public PrettyGameView(GameState state, int playerID, HumanUIAgent player) {
         super();
 
@@ -55,7 +58,7 @@ public class PrettyGameView extends GameView {
 
         handBox.add(Box.createVerticalStrut(50));
 
-        JComponent myHand = buildHand(state.getHand(playerID), playerID);
+        myHand = buildHand(state.getHand(playerID), playerID);
         myHand.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), myHand.getBorder()));
         handBox.add(myHand);
 
@@ -195,5 +198,19 @@ public class PrettyGameView extends GameView {
     public void setState(GameState state, int id) {
         //this.state = state;
         //this.playerID = id;
+    }
+
+    Border borderMyTurn = BorderFactory.createLineBorder(Color.RED, 10);
+    Border borderNotActive = BorderFactory.createLineBorder(Color.BLACK, 10);
+
+    @Override
+    public void setPlayerMoveRequest(boolean playerMoveRequest) {
+        super.setPlayerMoveRequest(playerMoveRequest);
+
+        if (playerMoveRequest) {
+            myHand.setBorder(borderMyTurn);
+        } else {
+            myHand.setBorder(borderNotActive);
+        }
     }
 }

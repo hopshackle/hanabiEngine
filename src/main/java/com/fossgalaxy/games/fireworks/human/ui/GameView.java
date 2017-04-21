@@ -20,6 +20,8 @@ public abstract class GameView extends JComponent {
     public static final Color TANGO_CHOC = new Color(193, 125, 17);
     public static final Color TANGO_GREEN = new Color(115, 210, 22);
 
+    protected boolean waitingForMove = false;
+
     public static Color getColor(CardColour colour) {
         if (colour == null) {
             return Color.BLACK;
@@ -38,5 +40,9 @@ public abstract class GameView extends JComponent {
             default:
                 return Color.BLACK;
         }
+    }
+
+    public void setPlayerMoveRequest(boolean playerMoveRequest) {
+        this.waitingForMove = playerMoveRequest;
     }
 }

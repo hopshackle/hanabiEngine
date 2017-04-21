@@ -40,6 +40,14 @@ public class UIPlayer extends AgentPlayer {
 
 
     @Override
+    public Action getAction() {
+        view.setPlayerMoveRequest(true);
+        Action action = super.getAction();
+        view.setPlayerMoveRequest(false);
+        return action;
+    }
+
+    @Override
     public void setID(int id, int nPlayers) {
         super.setID(id, nPlayers);
 
@@ -81,6 +89,9 @@ public class UIPlayer extends AgentPlayer {
 
     @Override
     public void onGameOver() {
+        JOptionPane.showMessageDialog(view, "The game is over, you scored "+state.getScore());
+        weKnowTheGameIsOver = true;
+
         if (frame != null) {
             frame.dispose();
         }
