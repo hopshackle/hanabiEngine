@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.human.ui;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
+import com.fossgalaxy.games.fireworks.human.ui.pretty.HeuristicGameView;
 import com.fossgalaxy.games.fireworks.human.ui.pretty.HumanUIAgent;
 import com.fossgalaxy.games.fireworks.human.ui.pretty.PrettyGameView;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
@@ -52,7 +53,7 @@ public class UIPlayer extends AgentPlayer {
         super.setID(id, nPlayers);
 
         if (interactive) {
-            this.view = new PrettyGameView(state, id, (HumanUIAgent)policy);
+            this.view = new HeuristicGameView(state, id, (HumanUIAgent)policy);
         } else {
             this.view = new BasicGameView(800, 600);
         }

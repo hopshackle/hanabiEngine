@@ -17,6 +17,9 @@ public class IndicatorPanel extends JComponent {
     private final int slot;
     private final boolean isColour;
 
+    private List<Integer> possibleValues;
+    private List<CardColour> possibleColours;
+
     public IndicatorPanel(Hand hand, int slot, boolean isColour) {
         this.setPreferredSize(new Dimension(15, 90));
         this.hand = hand;
@@ -37,7 +40,11 @@ public class IndicatorPanel extends JComponent {
         int height = getHeight()/5;
 
         if (isColour) {
-            List<CardColour> possibleColours = Arrays.asList(hand.getPossibleColours(slot));
+            List<CardColour> myPossibleColours = possibleColours;
+            if (myPossibleColours == null) {
+                myPossibleColours = Arrays.asList(hand.getPossibleColours(slot));
+            }
+
             CardColour[] legalColours = CardColour.values();
             for (int i = 0; i < legalColours.length; i++) {
                 int y = i * height;
@@ -45,7 +52,7 @@ public class IndicatorPanel extends JComponent {
                 g.setColor(Color.BLACK);
                 g.fillRect(0, y, getWidth(), height);
 
-                if (possibleColours.contains(legalColours[i])) {
+                if (myPossibleColours.contains(legalColours[i])) {
                     g.setColor(GameView.getColor(legalColours[i]));
                     g.fillRect(0, y, getWidth(), height);
                 }
@@ -53,10 +60,19 @@ public class IndicatorPanel extends JComponent {
                 g.drawRect(0, y, getWidth(), height);
             }
         } else {
-            int[] possible = hand.getPossibleValues(slot);
             boolean[] possibleB = new boolean[5];
-            for (int possVal : possible) {
-                possibleB[possVal-1] = true;
+
+            if (possibleValues == null) {
+                //if no list override is set, use possible values from the hand
+                int[] possible = hand.getPossibleValues(slot);
+                for (int possVal : possible) {
+                    possibleB[possVal - 1] = true;
+                }
+            } else {
+                //if a list override is set, use that instead
+                for (int i=1; i<=5; i++) {
+                    possibleB[i - 1] = possibleValues.contains(i);
+                }
             }
 
             for (int i = 0; i < possibleB.length; i++) {
@@ -81,5 +97,15 @@ public class IndicatorPanel extends JComponent {
         }
 
 
+    }
+
+    public void setPossibleValues(List<Integer> possibleValues) {
+        this.possibleValues = possibleValues;
+        repaint();
+    }
+
+    public void setPossibleColours(List<CardColour> possibleColours) {
+        this.possibleColours = possibleColours;
+        repaint();
     }
 }
