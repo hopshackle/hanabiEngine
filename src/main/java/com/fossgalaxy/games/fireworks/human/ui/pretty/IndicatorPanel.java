@@ -36,6 +36,9 @@ public class IndicatorPanel extends JComponent {
             for (int i = 0; i < legalColours.length; i++) {
                 int y = i * height;
 
+                g.setColor(Color.BLACK);
+                g.fillRect(0, y, getWidth(), height);
+
                 if (possibleColours.contains(legalColours[i])) {
                     g.setColor(GameView.getColor(legalColours[i]));
                     g.fillRect(0, y, getWidth(), height);
@@ -56,9 +59,14 @@ public class IndicatorPanel extends JComponent {
                 g.setColor(Color.BLACK);
                 g.fillRect(0, y, getWidth(), height);
 
+                FontMetrics metrics = g.getFontMetrics();
+
                 if (possibleB[i]) {
+                    int h = metrics.getHeight();
+                    int w = metrics.stringWidth(Integer.toString(i+1));
+
                     g.setColor(Color.WHITE);
-                    g.drawString(Integer.toString(i+1), 0, y);
+                    g.drawString(Integer.toString(i+1), w, y+h);
                 }
 
                 g.setColor(Color.BLACK);
