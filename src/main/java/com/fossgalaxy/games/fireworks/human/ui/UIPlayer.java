@@ -89,8 +89,11 @@ public class UIPlayer extends AgentPlayer {
 
     @Override
     public void onGameOver() {
-        JOptionPane.showMessageDialog(view, "The game is over, you scored "+state.getScore());
-        weKnowTheGameIsOver = true;
+
+        if (!weKnowTheGameIsOver) {
+            JOptionPane.showMessageDialog(view, "The game is over, you scored " + state.getScore());
+            weKnowTheGameIsOver = true;
+        }
 
         if (frame != null) {
             frame.dispose();
