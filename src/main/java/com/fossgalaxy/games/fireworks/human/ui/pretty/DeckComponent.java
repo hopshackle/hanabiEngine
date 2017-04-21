@@ -26,7 +26,10 @@ public class DeckComponent extends JComponent {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        CardComponent.drawCard(g2, GameView.TANGO_DARK, Integer.toString(state.getDeck().getCardsLeft()), 0, 0, getWidth(), getHeight(), false);
+        int handSize = state.getHandSize();
+        int cardsRemaining = Math.max(0, state.getDeck().getCardsLeft() - handSize);
+
+        CardComponent.drawCard(g2, GameView.TANGO_DARK, Integer.toString(cardsRemaining), 0, 0, getWidth(), getHeight(), false);
     }
 
     public void setHover(boolean hover) {

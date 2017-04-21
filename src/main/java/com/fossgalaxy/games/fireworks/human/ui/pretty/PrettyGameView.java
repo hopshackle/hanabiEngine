@@ -200,8 +200,8 @@ public class PrettyGameView extends GameView {
         //this.playerID = id;
     }
 
-    Border borderMyTurn = BorderFactory.createLineBorder(Color.RED, 10);
-    Border borderNotActive = BorderFactory.createLineBorder(Color.BLACK, 10);
+    Border borderMyTurn = BorderFactory.createLineBorder(Color.RED, 5);
+    Border borderNotActive = BorderFactory.createLineBorder(Color.BLACK, 1);
 
     @Override
     public void setPlayerMoveRequest(boolean playerMoveRequest) {
