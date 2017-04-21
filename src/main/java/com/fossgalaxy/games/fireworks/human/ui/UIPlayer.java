@@ -6,7 +6,10 @@ import com.fossgalaxy.games.fireworks.human.ui.pretty.HeuristicGameView;
 import com.fossgalaxy.games.fireworks.human.ui.pretty.HumanUIAgent;
 import com.fossgalaxy.games.fireworks.human.ui.pretty.PrettyGameView;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.state.events.MessageType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,10 +76,13 @@ public class UIPlayer extends AgentPlayer {
         super.sendMessage(msg);
 
         if (view != null) {
-            try {
-                Thread.sleep(100l);
-            } catch (InterruptedException ex) {
-                //ten more mins, i'm sleepy.
+
+            if (msg.getEvent().equals(MessageType.CARD_INFO_COLOUR)) {
+                CardInfoColour colourTold = (CardInfoColour)msg;
+                view.animateTell(colourTold);
+            } else if (msg.getEvent().equals(MessageType.CARD_INFO_VALUE)) {
+                CardInfoValue colourValue = (CardInfoValue)msg;
+                view.animateTell(colourValue);
             }
 
             view.repaint();

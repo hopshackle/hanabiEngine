@@ -8,13 +8,14 @@ import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,15 +26,19 @@ public class PrettyGameView extends GameView {
     private final GameState state;
     private final int playerID;
     private final HumanUIAgent player;
-    private final Map<Integer, CardHinter> hinters;
 
-    private JComponent myHand;
+    private final int MOVE_HINT_TIME = 1500;
+
+    protected final Map<Integer, CardHinter> hinters;
+    protected final Map<Integer, JComponent> playerHands;
 
 
     public PrettyGameView(GameState state, int playerID, HumanUIAgent player) {
         super();
 
         this.hinters = new HashMap<>();
+        this.playerHands = new HashMap<>();
+
         this.state = state;
         this.playerID = playerID;
         this.player = player;
@@ -42,24 +47,29 @@ public class PrettyGameView extends GameView {
         buildUI();
     }
 
-    private Border hanabiBorder(String title) {
+    protected Border hanabiBorder(String title) {
         return BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title), BorderFactory.createEmptyBorder(5,5,5,5));
     }
 
-    private void buildUI() {
+    protected void buildUI() {
         Box box = Box.createHorizontalBox();
 
         Box handBox = Box.createVerticalBox();
         for (int i=0; i<state.getPlayerCount(); i++) {
             if (i != playerID) {
-                handBox.add(buildHand(state.getHand(i), i));
+                JComponent hand = buildHand(state.getHand(i), i);
+                hand.setBorder(hanabiBorder("player "+i));
+                handBox.add(hand);
+                playerHands.put(i, hand);
             }
         }
 
         handBox.add(Box.createVerticalStrut(50));
 
-        myHand = buildHand(state.getHand(playerID), playerID);
-        myHand.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), myHand.getBorder()));
+        JComponent myHand = buildHand(state.getHand(playerID), playerID);
+        playerHands.put(playerID, myHand);
+
+        myHand.setBorder(hanabiBorder("your hand"));
         handBox.add(myHand);
 
         box.add(handBox);
@@ -86,7 +96,7 @@ public class PrettyGameView extends GameView {
         add(box);
     }
 
-    private JComponent buildHand(Hand hand, int player) {
+    protected JComponent buildHand(Hand hand, int player) {
         JComponent handView = Box.createHorizontalBox();
         handView.setBorder(hanabiBorder("player "+(player+1) ));
 
@@ -200,17 +210,63 @@ public class PrettyGameView extends GameView {
         //this.playerID = id;
     }
 
-    Border borderMyTurn = BorderFactory.createLineBorder(Color.RED, 5);
-    Border borderNotActive = BorderFactory.createLineBorder(Color.BLACK, 1);
-
     @Override
     public void setPlayerMoveRequest(boolean playerMoveRequest) {
         super.setPlayerMoveRequest(playerMoveRequest);
+        setTurnHint(playerID, playerMoveRequest);
+    }
 
-        if (playerMoveRequest) {
-            myHand.setBorder(borderMyTurn);
+    private final Color TURN_HINT_BACKGROUND = new Color(252, 233, 79, 100);
+    public void setTurnHint(int playerID, boolean active) {
+        JComponent handBox = playerHands.get(playerID);
+
+        if (active) {
+            handBox.setOpaque(true);
+            handBox.setBackground(TURN_HINT_BACKGROUND);
         } else {
-            myHand.setBorder(borderNotActive);
+            handBox.setOpaque(false);
         }
+
+    }
+
+    @Override
+    public void animateTell(CardInfoValue valueTold) {
+        super.animateTell(valueTold);
+
+        CardHinter hinter = hinters.get(valueTold.getPlayerId());
+        hinter.hoverValue2(valueTold.getValue());
+        setTurnHint(valueTold.getPerformer(), true);
+        repaint();
+
+        try {
+            Thread.sleep(MOVE_HINT_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        setTurnHint(valueTold.getPerformer(), false);
+        hinter.clearHover();
+        repaint();
+    }
+
+    @Override
+    public void animateTell(CardInfoColour colourTold) {
+        super.animateTell(colourTold);
+
+        CardHinter hinter = hinters.get(colourTold.getPlayerId());
+        hinter.hoverColour2(colourTold.getColour());
+        setTurnHint(colourTold.getPerformer(), true);
+        repaint();
+
+
+        try {
+            Thread.sleep(MOVE_HINT_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        setTurnHint(colourTold.getPerformer(), false);
+        hinter.clearHover();
+        repaint();
     }
 }

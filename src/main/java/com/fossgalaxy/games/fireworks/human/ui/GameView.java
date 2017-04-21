@@ -2,6 +2,10 @@ package com.fossgalaxy.games.fireworks.human.ui;
 
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.actions.*;
+import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,5 +48,13 @@ public abstract class GameView extends JComponent {
 
     public void setPlayerMoveRequest(boolean playerMoveRequest) {
         this.waitingForMove = playerMoveRequest;
+    }
+
+    //animation/feedback hooks
+
+    public void animateTell(CardInfoValue valueTold) {
+    }
+
+    public void animateTell(CardInfoColour colourTold) {
     }
 }

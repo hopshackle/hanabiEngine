@@ -34,10 +34,13 @@ public class CardHinter {
             return;
         }
 
-        CardColour colour = hoverCard.colour;
+        hoverColour2(hoverCard.colour);
+    }
+
+    public void hoverValue2(Integer value) {
         for (int i=0; i<hand.getSize(); i++) {
             Card card = hand.getCard(i);
-            if (card != null && colour.equals(card.colour)) {
+            if (card != null && value.equals(card.value)) {
                 cardComponents[i].setHover(true);
             } else {
                 cardComponents[i].setHover(false);
@@ -51,15 +54,7 @@ public class CardHinter {
             return;
         }
 
-        Integer value = hoverCard.value;
-        for (int i=0; i<hand.getSize(); i++) {
-            Card card = hand.getCard(i);
-            if (card != null && value.equals(card.value)) {
-                cardComponents[i].setHover(true);
-            } else {
-                cardComponents[i].setHover(false);
-            }
-        }
+        hoverValue2(hoverCard.value);
     }
 
     public void clearHover() {
@@ -101,5 +96,16 @@ public class CardHinter {
 
     public void resetHintColours(int slot) {
         colourIndicators[slot].setPossibleColours(null);
+    }
+
+    public void hoverColour2(CardColour colour) {
+        for (int i=0; i<hand.getSize(); i++) {
+            Card card = hand.getCard(i);
+            if (card != null && colour.equals(card.colour)) {
+                cardComponents[i].setHover(true);
+            } else {
+                cardComponents[i].setHover(false);
+            }
+        }
     }
 }
