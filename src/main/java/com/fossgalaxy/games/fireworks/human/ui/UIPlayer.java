@@ -20,6 +20,7 @@ public class UIPlayer extends AgentPlayer {
     private GameView view;
     private JFrame frame;
 
+    private boolean weKnowTheGameIsOver = false;
     private boolean interactive = false;
 
     /**
@@ -63,7 +64,18 @@ public class UIPlayer extends AgentPlayer {
         super.sendMessage(msg);
 
         if (view != null) {
+            try {
+                Thread.sleep(100l);
+            } catch (InterruptedException ex) {
+                //ten more mins, i'm sleepy.
+            }
+
             view.repaint();
+
+            if (state.isGameOver() && !weKnowTheGameIsOver) {
+                JOptionPane.showMessageDialog(view, "The game is over, you scored "+state.getScore());
+                weKnowTheGameIsOver = true;
+            }
         }
     }
 

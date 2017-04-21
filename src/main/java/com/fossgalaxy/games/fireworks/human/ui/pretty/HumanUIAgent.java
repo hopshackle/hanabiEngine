@@ -20,7 +20,6 @@ public class HumanUIAgent implements Agent {
     public void setMove(Action action) {
         actionList.clear();
         actionList.add(action);
-        System.out.println("move is now: "+action);
     }
 
     @Override

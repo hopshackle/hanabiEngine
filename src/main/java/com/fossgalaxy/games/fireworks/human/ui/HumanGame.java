@@ -16,7 +16,7 @@ public class HumanGame {
         int human = 0;
 
         String pairedAgent = "pmcts";
-        String pairedWith = "iggi";
+        String pairedWith = "piers";
         GameRunner runner = new GameRunner("human-"+System.currentTimeMillis(), nPlayers);
 
         for (int i=0; i<nPlayers; i++) {

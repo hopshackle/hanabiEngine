@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.human.ui.pretty;
 
 import com.fossgalaxy.games.fireworks.GameStats;
 import com.fossgalaxy.games.fireworks.human.ui.GameView;
+import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
@@ -14,9 +15,12 @@ import java.awt.*;
 public class TableCard extends JComponent {
     private GameState state;
     private CardColour cardColour;
+    private Stroke outline = new BasicStroke(5);
 
     public TableCard(GameState state, CardColour colour){
-        this.setPreferredSize(new Dimension(60, 90));
+        this.setPreferredSize(new Dimension(90, 135));
+        this.setMinimumSize(getPreferredSize());
+        this.setMaximumSize(getPreferredSize());
         this.state = state;
         this.cardColour = colour;
     }
@@ -24,18 +28,24 @@ public class TableCard extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setStroke(outline);
 
-        g.setColor(GameView.getColor(cardColour));
-        g.fillRect(0, 0, getWidth(), getHeight());
+        Color javaColour = GameView.getColor(cardColour);
+        String cardVal = Integer.toString(state.getTableValue(cardColour));
 
-        g.setColor(GameView.getColor(cardColour).darker().darker());
-        g.drawRect(0, 0, getWidth(), getHeight());
+        g.setColor(javaColour);
+        g.fillRoundRect(10, 10, getWidth()-20, getHeight()-20, 20, 20);
+
+        g.setColor(javaColour.darker().darker());
+        g.drawRoundRect(10, 10, getWidth()-20, getHeight()-20, 20, 20);
 
         //draw the numbers
         FontMetrics metrics = g.getFontMetrics();
-        int h = metrics.getHeight();
+        int w = metrics.stringWidth(cardVal)/2;
 
         g.setColor(Color.WHITE);
-        g.drawString(Integer.toString(state.getTableValue(cardColour)), 5, h);
+        g.drawString(cardVal, getWidth()/2 - w, getHeight()/2);
     }
+
 }

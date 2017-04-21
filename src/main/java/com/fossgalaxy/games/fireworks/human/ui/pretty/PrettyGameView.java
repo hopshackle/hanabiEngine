@@ -61,6 +61,8 @@ public class PrettyGameView extends GameView {
 
         box.add(handBox);
 
+        Box middleBox = Box.createVerticalBox();
+
         Box table = Box.createVerticalBox();
         table.setBorder(hanabiBorder("table"));
         for (CardColour colour : CardColour.values()) {
@@ -68,11 +70,14 @@ public class PrettyGameView extends GameView {
             table.add(new TableCard(state, colour));
             table.add(Box.createVerticalStrut(5));
         }
-        box.add(table);
+        middleBox.add(table);
+        middleBox.add(new DeckComponent(state));
+        box.add(middleBox);
 
         Box right = Box.createVerticalBox();
         right.add(new InfoComponent(state));
         right.add(new LifeComponent(state));
+        right.add(new DiscardComponent(state));
         box.add(right);
 
         add(box);
@@ -107,7 +112,7 @@ public class PrettyGameView extends GameView {
                 buttons.add(playBtn);
 
                 JButton discardBtn = new JButton("Discard");
-                discardBtn.addActionListener(e -> forceMove(new DiscardCard(slot)));
+                discardBtn.addActionListener(e -> validateDiscard(new DiscardCard(slot)));
                 discardBtn.setToolTipText("Discard this card");
                 buttons.add(discardBtn);
             } else {
@@ -164,17 +169,22 @@ public class PrettyGameView extends GameView {
         player.setMove(action);
     }
 
+    public void validateDiscard(com.fossgalaxy.games.fireworks.state.actions.Action action) {
+        if (state.getInfomation() != state.getStartingInfomation()) {
+            player.setMove(action);
+        } else {
+            JOptionPane.showMessageDialog(this, "You cannot discard with full information");
+        }
+    }
+
     public void validateTell(com.fossgalaxy.games.fireworks.state.actions.Action action) {
         if (action.isLegal(playerID, state)) {
             player.setMove(action);
         } else {
-            JOptionPane.showMessageDialog(this, "that move is not legal");
+            JOptionPane.showMessageDialog(this, "You have no information tokens");
         }
     }
 
-    public JComponent buildCard(Hand hand, int slot) {
-        return new CardComponent(hand, slot);
-    }
 
     public JComponent buildIndicators(Hand hand, int slot, boolean isColour) {
         return new IndicatorPanel(hand, slot, isColour);

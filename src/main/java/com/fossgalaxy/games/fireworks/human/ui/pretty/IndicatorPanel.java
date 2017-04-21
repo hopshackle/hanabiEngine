@@ -22,6 +22,12 @@ public class IndicatorPanel extends JComponent {
         this.hand = hand;
         this.slot = slot;
         this.isColour = isColour;
+
+        if (isColour) {
+            setToolTipText("colours this player thinks this card could be");
+        } else {
+            setToolTipText("values this player thinks this card could be");
+        }
     }
 
     @Override
