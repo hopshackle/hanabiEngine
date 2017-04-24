@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class PrettyGameView extends GameView {
     private final GameState state;
-    private final int playerID;
+    protected final int playerID;
     private final HumanUIAgent player;
 
     private final int MOVE_HINT_TIME = 1500;

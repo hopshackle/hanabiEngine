@@ -22,14 +22,11 @@ import java.util.Map;
  */
 public class HeuristicGameView extends PrettyGameView {
     private final GameState state;
-    private final int playerID;
-
 
     public HeuristicGameView(GameState state, int playerID, HumanUIAgent player) {
         super(state, playerID, player);
 
         this.state = state;
-        this.playerID = playerID;
     }
 
     protected JComponent buildHand(Hand hand, int player) {
