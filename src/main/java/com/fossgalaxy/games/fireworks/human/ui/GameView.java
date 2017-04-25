@@ -10,6 +10,8 @@ import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by webpigeon on 20/04/17.
@@ -25,6 +27,24 @@ public abstract class GameView extends JComponent {
     public static final Color TANGO_GREEN = new Color(115, 210, 22);
 
     protected boolean waitingForMove = false;
+
+    public static final Map<Color, Color> textColors = new HashMap<>();
+
+    static{
+        textColors.put(Color.WHITE, Color.BLACK);
+        textColors.put(Color.BLACK, Color.WHITE);
+        textColors.put(Color.YELLOW, Color.BLACK);
+        textColors.put(Color.RED, Color.BLACK);
+        textColors.put(Color.BLUE, Color.WHITE);
+        textColors.put(Color.GREEN, Color.BLACK);
+        textColors.put(TANGO_DARK, Color.WHITE);
+        textColors.put(TANGO_BLUE, Color.WHITE);
+        textColors.put(TANGO_RED, Color.WHITE);
+        textColors.put(TANGO_GREY, Color.BLACK);
+        textColors.put(TANGO_CHOC, Color.WHITE);
+        textColors.put(TANGO_GREEN, Color.BLACK);
+
+    }
 
     public static Color getColor(CardColour colour) {
         if (colour == null) {
