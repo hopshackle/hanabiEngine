@@ -92,11 +92,11 @@ public class PrettyGameView extends GameView {
 
         Box right = Box.createVerticalBox();
         JComponent informationComponent = new InfoComponent(state);
-//        informationComponent.setBorder(hanabiBorder("Information Tokens"));
+        informationComponent.setBorder(hanabiBorder("Information Tokens"));
         right.add(informationComponent);
 
         JComponent lifeComponent = new LifeComponent(state);
-//        lifeComponent.setBorder(hanabiBorder("Life Tokens"));
+        lifeComponent.setBorder(hanabiBorder("Life Tokens"));
         right.add(lifeComponent);
 
         JComponent discardComponent = new DiscardComponent(state);
