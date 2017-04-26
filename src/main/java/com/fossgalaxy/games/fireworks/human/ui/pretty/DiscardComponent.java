@@ -26,10 +26,19 @@ public class DiscardComponent extends JComponent {
 
         int cardPos = 0;
         int cardRow = 0;
+        int yOffset = 15;
 
         Collection<Card> discards = state.getDiscards();
         for (Card card : discards) {
-            CardComponent.drawCard(g2, card, cardPos*60, cardRow*90, 60, 90, false);
+            CardComponent.drawCard(
+                    g2,
+                    card,
+                    cardPos*60,
+                    (cardRow*90) + yOffset,
+                    60,
+                    90,
+                    false
+            );
             cardPos++;
 
             if (cardPos == 5) {
