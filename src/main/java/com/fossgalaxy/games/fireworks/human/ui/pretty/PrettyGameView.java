@@ -27,6 +27,8 @@ public class PrettyGameView extends GameView {
     protected final int playerID;
     private final HumanUIAgent player;
 
+    private final boolean TALL_MODE = false;
+
     private final int MOVE_HINT_TIME = 1500;
 
     protected final Map<Integer, CardHinter> hinters;
@@ -52,6 +54,7 @@ public class PrettyGameView extends GameView {
     }
 
     protected void buildUI() {
+        this.setLayout(new BorderLayout());
         Box box = Box.createHorizontalBox();
 
         Box handBox = Box.createVerticalBox();
@@ -87,11 +90,18 @@ public class PrettyGameView extends GameView {
         middleBox.add(new DeckComponent(state));
         box.add(middleBox);
 
-        Box right = Box.createVerticalBox();
-        right.add(new InfoComponent(state));
-        right.add(new LifeComponent(state));
-        right.add(new DiscardComponent(state));
-        box.add(right);
+        if (TALL_MODE) {
+            Box topBox = Box.createHorizontalBox();
+            topBox.add(new InfoComponent(state));
+            topBox.add(new LifeComponent(state));
+            add(topBox, BorderLayout.NORTH);
+        } else {
+            Box right = Box.createVerticalBox();
+            right.add(new InfoComponent(state));
+            right.add(new LifeComponent(state));
+            right.add(new DiscardComponent(state));
+            box.add(right);
+        }
 
         add(box);
     }

@@ -14,7 +14,7 @@ public class InfoComponent extends JComponent {
     protected final Stroke outline = new BasicStroke(2);
 
     public InfoComponent(GameState state) {
-        this.setPreferredSize(new Dimension(35*8, 35));
+        this.setPreferredSize(new Dimension(35*8, 45));
         this.state = state;
     }
 
