@@ -29,6 +29,8 @@ public class InfoComponent extends JComponent {
         int tokenWidth = getWidth() / (radius + pad);
         int currCol = 0;
         int currRow = 0;
+        int yOffset = 20;
+        int xOffset = 7;
 
         Graphics2D g2 = (Graphics2D)g;
         g2.translate(10, 10);
@@ -38,11 +40,21 @@ public class InfoComponent extends JComponent {
                 g2.setColor(GameView.TANGO_BLUE);
 
                 if (info > 0) {
-                    g2.fillOval(currCol * radius + (pad * currCol), currRow * radius + (pad * currRow), radius, radius);
+                    g2.fillOval(
+                            currCol * radius + (pad * currCol) + xOffset,
+                            currRow * radius + (pad * currRow) + yOffset,
+                            radius,
+                            radius
+                    );
                 }
 
                 g2.setColor(GameView.TANGO_BLUE.darker().darker());
-                g2.drawOval(currCol * radius + (pad * i), currRow * radius + (pad * currRow), radius, radius);
+                g2.drawOval(
+                        currCol * radius + (pad * i) + xOffset,
+                        currRow * radius + (pad * currRow) + yOffset,
+                        radius,
+                        radius
+                );
                 info--;
             currCol++;
 

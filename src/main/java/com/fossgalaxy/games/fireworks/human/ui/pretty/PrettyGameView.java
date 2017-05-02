@@ -61,7 +61,7 @@ public class PrettyGameView extends GameView {
         for (int i=0; i<state.getPlayerCount(); i++) {
             if (i != playerID) {
                 JComponent hand = buildHand(state.getHand(i), i);
-                hand.setBorder(hanabiBorder("player "+i));
+                hand.setBorder(hanabiBorder("Player "+i));
                 handBox.add(hand);
                 playerHands.put(i, hand);
             }
@@ -72,7 +72,7 @@ public class PrettyGameView extends GameView {
         JComponent myHand = buildHand(state.getHand(playerID), playerID);
         playerHands.put(playerID, myHand);
 
-        myHand.setBorder(hanabiBorder("your hand"));
+        myHand.setBorder(hanabiBorder("Your hand (Player " + playerID + ")"));
         handBox.add(myHand);
 
         box.add(handBox);
@@ -80,7 +80,7 @@ public class PrettyGameView extends GameView {
         Box middleBox = Box.createVerticalBox();
 
         Box table = Box.createVerticalBox();
-        table.setBorder(hanabiBorder("table"));
+        table.setBorder(hanabiBorder("Table"));
         for (CardColour colour : CardColour.values()) {
             table.add(Box.createVerticalStrut(5));
             table.add(new TableCard(state, colour));
@@ -92,14 +92,31 @@ public class PrettyGameView extends GameView {
 
         if (TALL_MODE) {
             Box topBox = Box.createHorizontalBox();
-            topBox.add(new InfoComponent(state));
-            topBox.add(new LifeComponent(state));
+
+            JComponent informationComponent = new InfoComponent(state);
+            informationComponent.setBorder(hanabiBorder("Information Tokens"));
+            topBox.add(informationComponent);
+
+            JComponent lifeComponent = new LifeComponent(state);
+            lifeComponent.setBorder(hanabiBorder("Life Tokens"));
+            topBox.add(lifeComponent);
+
             add(topBox, BorderLayout.NORTH);
         } else {
             Box right = Box.createVerticalBox();
-            right.add(new InfoComponent(state));
-            right.add(new LifeComponent(state));
-            right.add(new DiscardComponent(state));
+
+            JComponent informationComponent = new InfoComponent(state);
+            informationComponent.setBorder(hanabiBorder("Information Tokens"));
+            right.add(informationComponent);
+
+            JComponent lifeComponent = new LifeComponent(state);
+            lifeComponent.setBorder(hanabiBorder("Life Tokens"));
+            right.add(lifeComponent);
+
+            JComponent discardComponent = new DiscardComponent(state);
+            discardComponent.setBorder(hanabiBorder("Discard Pile"));
+            right.add(discardComponent);
+
             box.add(right);
         }
 
