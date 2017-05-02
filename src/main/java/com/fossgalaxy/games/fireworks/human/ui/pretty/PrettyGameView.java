@@ -105,17 +105,20 @@ public class PrettyGameView extends GameView {
         } else {
             Box right = Box.createVerticalBox();
 
-            JComponent informationComponent = new InfoComponent(state);
-            informationComponent.setBorder(hanabiBorder("Information Tokens"));
-            right.add(informationComponent);
+            JPanel infoPanel = new JPanel(new BorderLayout());
+            infoPanel.setBorder(hanabiBorder("Information Tokens"));
+            infoPanel.add(new InfoComponent(state));
+            right.add(infoPanel);
 
-            JComponent lifeComponent = new LifeComponent(state);
-            lifeComponent.setBorder(hanabiBorder("Life Tokens"));
-            right.add(lifeComponent);
+            JPanel lifePanel = new JPanel(new BorderLayout());
+            lifePanel.setBorder(hanabiBorder("Life Tokens"));
+            lifePanel.add(new LifeComponent(state));
+            right.add(lifePanel);
 
-            JComponent discardComponent = new DiscardComponent(state);
-            discardComponent.setBorder(hanabiBorder("Discard Pile"));
-            right.add(discardComponent);
+            JPanel discardPanel = new JPanel(new BorderLayout());
+            discardPanel.add(new DiscardComponent(state));
+            discardPanel.setBorder(hanabiBorder("Discard Pile"));
+            right.add(discardPanel);
 
             box.add(right);
         }

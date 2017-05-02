@@ -11,6 +11,7 @@ import java.awt.*;
  * Created by webpigeon on 21/04/17.
  */
 public class LifeComponent extends InfoComponent {
+    protected final Color borderColour = GameView.TANGO_DARK.darker().darker();
 
     public LifeComponent(GameState state) {
         super(state);
@@ -29,17 +30,17 @@ public class LifeComponent extends InfoComponent {
         int currCol = 0;
         int currRow = 0;
 
-        int yOffset = 20;
-        int xOffset = 7;
+        int yOffset = 0;
+        int xOffset = 0;
 
         Graphics2D g2 = (Graphics2D)g;
         g2.translate(10, 10);
         g2.setStroke(outline);
 
         for (int i=0; i<state.getStartingLives(); i++) {
-            g2.setColor(GameView.TANGO_DARK);
 
             if (info > 0) {
+                g2.setColor(GameView.TANGO_DARK);
                 g2.fillOval(
                         currCol * radius + (pad * currCol) + xOffset,
                         currRow * radius + (pad * currRow) + yOffset,
@@ -48,9 +49,9 @@ public class LifeComponent extends InfoComponent {
                 );
             }
 
-            g2.setColor(GameView.TANGO_DARK.darker().darker());
+            g2.setColor(borderColour);
             g2.drawOval(
-                    currCol * radius + (pad * i) + xOffset,
+                    currCol * radius + (pad * currCol) + xOffset,
                     currRow * radius + (pad * currRow) + yOffset,
                     radius,
                     radius

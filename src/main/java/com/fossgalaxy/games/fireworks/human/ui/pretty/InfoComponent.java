@@ -12,9 +12,11 @@ import java.awt.*;
 public class InfoComponent extends JComponent {
     protected final GameState state;
     protected final Stroke outline = new BasicStroke(2);
+    protected final Color outlineColor = GameView.TANGO_BLUE.darker().darker();
 
     public InfoComponent(GameState state) {
         this.setPreferredSize(new Dimension(35*8, 45));
+        this.setBackground(Color.RED);
         this.state = state;
     }
 
@@ -26,32 +28,33 @@ public class InfoComponent extends JComponent {
         int radius = 30;
         int info = state.getInfomation();
 
-        int tokenWidth = getWidth() / (radius + pad);
+        int tokenWidth = getWidth() / (radius + pad*2);
         int currCol = 0;
         int currRow = 0;
-        int yOffset = 20;
-        int xOffset = 7;
+        int yOffset = 0;
+        int xOffset = 5;
+
 
         Graphics2D g2 = (Graphics2D)g;
         g2.translate(10, 10);
         g2.setStroke(outline);
 
         for (int i=0; i<state.getStartingInfomation(); i++) {
-                g2.setColor(GameView.TANGO_BLUE);
 
                 if (info > 0) {
+                    g2.setColor(GameView.TANGO_BLUE);
                     g2.fillOval(
                             currCol * radius + (pad * currCol) + xOffset,
-                            currRow * radius + (pad * currRow) + yOffset,
+                            currRow * radius + (pad*2 * currRow) + yOffset,
                             radius,
                             radius
                     );
                 }
 
-                g2.setColor(GameView.TANGO_BLUE.darker().darker());
+                g2.setColor(outlineColor);
                 g2.drawOval(
-                        currCol * radius + (pad * i) + xOffset,
-                        currRow * radius + (pad * currRow) + yOffset,
+                        currCol * radius + (pad * currCol) + xOffset,
+                        currRow * radius + (pad*2 * currRow) + yOffset,
                         radius,
                         radius
                 );
