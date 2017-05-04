@@ -27,6 +27,8 @@ public class PrettyGameView extends GameView {
     protected final int playerID;
     private final HumanUIAgent player;
 
+    private final boolean TALL_MODE = false;
+
     private final int MOVE_HINT_TIME = 1500;
 
     protected final Map<Integer, CardHinter> hinters;
@@ -51,6 +53,7 @@ public class PrettyGameView extends GameView {
     }
 
     protected void buildUI() {
+        this.setLayout(new BorderLayout());
         Box box = Box.createHorizontalBox();
 
         Box handBox = Box.createVerticalBox();
@@ -86,20 +89,38 @@ public class PrettyGameView extends GameView {
         middleBox.add(new DeckComponent(state));
         box.add(middleBox);
 
-        Box right = Box.createVerticalBox();
-        JComponent informationComponent = new InfoComponent(state);
-        informationComponent.setBorder(hanabiBorder("Information Tokens"));
-        right.add(informationComponent);
+        if (TALL_MODE) {
+            Box topBox = Box.createHorizontalBox();
 
-        JComponent lifeComponent = new LifeComponent(state);
-        lifeComponent.setBorder(hanabiBorder("Life Tokens"));
-        right.add(lifeComponent);
+            JComponent informationComponent = new InfoComponent(state);
+            informationComponent.setBorder(hanabiBorder("Information Tokens"));
+            topBox.add(informationComponent);
 
-        JComponent discardComponent = new DiscardComponent(state);
-        discardComponent.setBorder(hanabiBorder("Discard Pile"));
+            JComponent lifeComponent = new LifeComponent(state);
+            lifeComponent.setBorder(hanabiBorder("Life Tokens"));
+            topBox.add(lifeComponent);
 
-        right.add(discardComponent);
-        box.add(right);
+            add(topBox, BorderLayout.NORTH);
+        } else {
+            Box right = Box.createVerticalBox();
+
+            JPanel infoPanel = new JPanel(new BorderLayout());
+            infoPanel.setBorder(hanabiBorder("Information Tokens"));
+            infoPanel.add(new InfoComponent(state));
+            right.add(infoPanel);
+
+            JPanel lifePanel = new JPanel(new BorderLayout());
+            lifePanel.setBorder(hanabiBorder("Life Tokens"));
+            lifePanel.add(new LifeComponent(state));
+            right.add(lifePanel);
+
+            JPanel discardPanel = new JPanel(new BorderLayout());
+            discardPanel.add(new DiscardComponent(state));
+            discardPanel.setBorder(hanabiBorder("Discard Pile"));
+            right.add(discardPanel);
+
+            box.add(right);
+        }
 
         add(box);
     }

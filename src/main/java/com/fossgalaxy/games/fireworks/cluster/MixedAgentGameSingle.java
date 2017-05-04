@@ -40,6 +40,9 @@ public class MixedAgentGameSingle {
         String taskId = System.getenv("SGE_TASK_ID");
         PrintStream log = System.err;
 
+        //perform a warmup game because jvms... mumble mumble...
+        PredictorRunnerSingle.doWarmup(5, 1, agentUnderTest, agentPaired, agentPaired);
+
         for (int run = 0; run < repeats; run++) {
             for (int nPlayers = 2; nPlayers <= 5; nPlayers++) {
                 int agentUnderTestIndex = random.nextInt(nPlayers);
