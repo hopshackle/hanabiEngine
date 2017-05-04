@@ -14,13 +14,11 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
  * finish telling something, otherwise first instance that we can
  * tell something
  */
-public class TellAnyoneAboutUsefulCardImproved extends AbstractTellRule{
+public class CompleteTellUsefulCard extends AbstractTellRule{
 
 
     @Override
     public Action execute(int playerID, GameState state) {
-
-        Action bestAction = null;
 
 
         for (int i = 0; i < state.getPlayerCount(); i++) {
@@ -52,15 +50,9 @@ public class TellAnyoneAboutUsefulCardImproved extends AbstractTellRule{
                         return new TellColour(nextPlayer, card.colour);
                     }
                 }
-                if(bestAction == null) {
-                    if (hand.getKnownValue(slot) == null) {
-                        bestAction = new TellValue(nextPlayer, card.value);
-                    } else if (hand.getKnownColour(slot) == null) {
-                        bestAction = new TellColour(nextPlayer, card.colour);
-                    }
-                }
+
             }
         }
-        return bestAction;
+        return null;
     }
 }
