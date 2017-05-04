@@ -32,10 +32,6 @@ public class PrettyGameView extends GameView {
     protected final Map<Integer, CardHinter> hinters;
     protected final Map<Integer, JComponent> playerHands;
 
-
-
-
-
     public PrettyGameView(GameState state, int playerID, HumanUIAgent player) {
         super();
 
