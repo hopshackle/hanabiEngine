@@ -96,6 +96,22 @@ public class HandUtils {
     }
 
     /**
+     * Will return the index of a card that matches the rule
+     * @param value The value we are looking for
+     * @return index of the card or -1 if there isn't one
+     */
+    public static int hasUnidentifiedCard(Hand hand, int value){
+        for(int slot = 0; slot < hand.getSize(); slot++){
+            if(hand.hasCard(slot)) {
+                if (hand.getKnownValue(slot) == null && hand.getCard(slot).value == value) {
+                    return slot;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Returns true if a given card is safe to discard. Works on what the player knows, not what they have
      *
      * @param state  The game state

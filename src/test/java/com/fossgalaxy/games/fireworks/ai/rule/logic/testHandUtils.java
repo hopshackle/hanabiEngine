@@ -1,8 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule.logic;
 
-import com.fossgalaxy.games.fireworks.state.BasicState;
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
+import com.fossgalaxy.games.fireworks.state.*;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -150,5 +148,34 @@ public class testHandUtils {
     public void testIsSafeBecauseValueLowerThanPlayed(Integer[] scores, CardColour testColour, Integer testValue, boolean expected) {
         setTableValues(scores);
         assertEquals(expected, HandUtils.isSafeBecauseValueLowerThanPlayed(state, testColour, testValue));
+    }
+
+    public Object[] parametersForTestHasUnidentifiedCard(){
+        return $(
+            $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 1, 0),
+            $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 2, 1),
+            $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 3, 2),
+            $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 4, 3),
+            $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 5, 4),
+            $(v(1, 1, 3, 4, 5), v(1, null, null, null, null), 1, 1)
+            );
+    }
+
+    @Test
+    @Parameters(method = "parametersForTestHasUnidentifiedCard")
+    public void testHasUnidentifiedCard(Integer[] handValues, Integer[] knownValues, int value, int expected){
+        Hand hand = new TimedHand(handValues.length);
+
+        for(int slot = 0; slot < hand.getSize(); slot++){
+            hand.setCard(slot, new Card(handValues[slot], RED));
+            hand.setHasCard(slot, true);
+            if(knownValues[slot] != null){
+                hand.setKnownValue(knownValues[slot], new Integer[]{slot});
+            }
+        }
+
+        assertEquals(expected, HandUtils.hasUnidentifiedCard(hand, value));
+
+
     }
 }
