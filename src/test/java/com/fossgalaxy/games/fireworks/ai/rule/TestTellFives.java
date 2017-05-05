@@ -35,4 +35,11 @@ public class TestTellFives {
         assertEquals(5, tellValue.value);
         assertEquals(1, tellValue.player);
     }
+
+    @Test
+    public void testWillNotTellAnIdentifiedFive(){
+        state.getHand(1).setCard(0, new Card(5, CardColour.BLUE));
+        state.getHand(1).setKnownValue(5, new Integer[]{0});
+        assertEquals(false, instance.canFire(0, state));
+    }
 }
