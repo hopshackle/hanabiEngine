@@ -41,14 +41,14 @@ public class TellIllInformed extends AbstractTellRule {
             }
 
             Card card = hand.getCard(playerID);
-            if (!TryToUnBlock.isNonBlocking(state, card.colour, card.value)) {
+            if (!TryToUnBlock.isUsableCard(state, card.colour, card.value)) {
                 continue;
             }
 
             CardColour knownColour = hand.getKnownColour(slot);
             Integer knownValue = hand.getKnownValue(slot);
             if (knownColour != null && knownValue != null) {
-                return null;
+                continue;
             }
 
             if (knownValue == null) {

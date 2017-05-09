@@ -143,19 +143,19 @@ public class TryToUnBlock implements Rule {
         return true;
     }
 
-    public static boolean isNonBlocking(GameState state, CardColour colour, Integer value) {
+    public static boolean isUsableCard(GameState state, CardColour colour, Integer value) {
         if ( state.getInfomation() != state.getStartingInfomation() && HandUtils.isSafeToDiscard(state, colour, value) ) {
-            return false;
+            return true;
         }
 
         // Return false if this card is either playable or discardable
         if (colour != null && value != null) {
             int tableValue = state.getTableValue(colour);
             if (tableValue+1 == value) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 }
