@@ -62,14 +62,31 @@ public class IGGIFactory {
     @AgentBuilderStatic("iggi2")
     public static Agent buildIGGI2Player() {
         ProductionRuleAgent pra = new ProductionRuleAgent();
+
+        // Its yolo time
+        pra.addRule(
+                new IfRule(
+                        (id, state) -> state.getLives() > 1 && !state.getDeck().hasCardsLeft(),
+                        new PlayProbablySafeCard(0.0)
+                )
+        );
+
         pra.addRule(new PlayIfCertain());
         pra.addRule(new PlaySafeCard());
 
+        pra.addRule(
+                new IfRule(
+                        (id, state) -> state.getLives() > 1,
+                        new PlayProbablySafeCard(.6)
+                )
+        );
+
+
         pra.addRule(new OsawaDiscard());
 
-        pra.addRule(new CompleteTellUsefulCard());
         pra.addRule(new TellAnyoneAboutOldestUsefulCard());
-        pra.addRule(new TellFives());
+        pra.addRule(new CompleteTellUsefulCard());
+        //pra.addRule(new TellFives());
 
         pra.addRule(new DiscardOldestNoInfoFirst());
         pra.addRule(new DiscardOldestFirst());
