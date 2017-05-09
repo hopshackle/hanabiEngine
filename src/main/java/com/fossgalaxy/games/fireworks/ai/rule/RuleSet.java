@@ -49,6 +49,15 @@ public class RuleSet {
         rules.add(new PlayProbablySafeCard(.8));
         rules.add(new PlayProbablySafeCard(.9));
 
+        // new extra funtime rules
+        rules.add(new TellIllInformed());
+        rules.add(new TellFives());
+        rules.add(new CompleteTellUsefulCard());
+        rules.add(new DiscardRandomly());
+        rules.add(new DiscardOldestNoInfoFirst());
+
+        rules.add(new TryToUnBlock());
+
         return rules;
     }
 }
