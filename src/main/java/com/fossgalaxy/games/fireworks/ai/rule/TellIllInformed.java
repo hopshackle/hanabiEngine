@@ -40,7 +40,7 @@ public class TellIllInformed extends AbstractTellRule {
                 continue;
             }
 
-            Card card = hand.getCard(playerID);
+            Card card = hand.getCard(slot);
             if (!TryToUnBlock.isUsableCard(state, card.colour, card.value)) {
                 continue;
             }
