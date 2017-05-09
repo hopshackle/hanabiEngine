@@ -6,6 +6,7 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
+import org.slf4j.MDC;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -35,10 +36,17 @@ public class MixedAgentGameSingle {
         long seed = Long.parseLong(args[2]);
         String gameType = args.length > 3 ? args[3] : GAME_NORMAL;
 
+
         Random random = new Random(seed);
 
         String taskId = System.getenv("SGE_TASK_ID");
         PrintStream log = System.err;
+
+        MDC.put("seed", Long.toString(seed));
+        MDC.put("agentUnderTest",agentUnderTest);
+        MDC.put("agentPaired", agentPaired);
+        MDC.put("gameType", gameType);
+        MDC.put("taskId", taskId);
 
         //perform a warmup game because jvms... mumble mumble...
         PredictorRunnerSingle.doWarmup(5, 1, agentUnderTest, agentPaired, agentPaired);
