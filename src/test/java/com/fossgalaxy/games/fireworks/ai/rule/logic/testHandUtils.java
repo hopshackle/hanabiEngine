@@ -157,7 +157,9 @@ public class testHandUtils {
             $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 3, 2),
             $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 4, 3),
             $(v(1, 2, 3, 4, 5), v(null, null, null, null, null), 5, 4),
-            $(v(1, 1, 3, 4, 5), v(1, null, null, null, null), 1, 1)
+            $(v(1, 1, 3, 4, 5), v(1, null, null, null, null), 1, 1),
+            $(v(1, 1, 3, 4, 5), v(1, null, null, null, null), 2, -1)
+
             );
     }
 

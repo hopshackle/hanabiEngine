@@ -15,6 +15,7 @@ public class TellFives extends AbstractTellRule {
     public Action execute(int playerID, GameState state) {
         for(int i = 0; i < state.getPlayerCount(); i++){
             int lookingAt = (playerID + i) % state.getPlayerCount();
+            if(lookingAt == playerID) continue;
 
             // Does this player have any un-identified 5
             Hand hand = state.getHand(lookingAt);
