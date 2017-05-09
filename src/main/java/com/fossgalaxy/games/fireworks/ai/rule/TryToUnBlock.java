@@ -96,7 +96,7 @@ public class TryToUnBlock implements Rule {
                 return new DiscardCard(slot);
             }
 
-            if (hand.getKnownValue(slot) == 5) {
+            if (hand.getKnownValue(slot) != null && hand.getKnownValue(slot) == 5) {
                 if (hand.getKnownColour(slot) != null) {
                     if (state.getTableValue(hand.getKnownColour(slot)) == 4) {
                         return new PlayCard(slot);
