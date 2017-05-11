@@ -1,0 +1,88 @@
+package com.fossgalaxy.games.fireworks.ai.rule.finesse;
+
+import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
+import com.fossgalaxy.games.fireworks.state.Card;
+import com.fossgalaxy.games.fireworks.state.GameState;
+import com.fossgalaxy.games.fireworks.state.Hand;
+import com.fossgalaxy.games.fireworks.state.TimedHand;
+import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
+import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+
+import java.util.LinkedList;
+
+/**
+ * Created by webpigeon on 11/05/17.
+ *
+ * Figure out if we are being indicated to play a card via a fineese action by the player before
+ *
+ */
+public class PlayFinesse extends AbstractRule {
+
+    @Override
+    public Action execute(int playerID, GameState state) {
+        LinkedList<GameEvent> eventHistory = state.getHistory();
+        GameEvent lastEvent = eventHistory.getLast();
+
+        int playerTold = -1;
+        Integer[] playerSlots = null;
+        if (lastEvent instanceof CardInfoValue) {
+            CardInfoValue infoValue = (CardInfoValue) lastEvent;
+            playerTold = infoValue.getPlayerId();
+            playerSlots = infoValue.getSlots();
+        } else if (lastEvent instanceof CardInfoColour) {
+            CardInfoColour infoColour = (CardInfoColour) lastEvent;
+            playerTold = infoColour.getPlayerId();
+            playerSlots = infoColour.getSlots();
+        } else {
+            return null;
+        }
+
+        // this was not a finesse tell
+        if (playerTold == playerID && playerTold != selectPlayer(playerID, state)) {
+            return null;
+        }
+
+        // is one of the cards indicated 1 card away from being playable
+        Hand playerHand = state.getHand(playerTold);
+        for (int slot : playerSlots) {
+            Card card = playerHand.getCard(slot);
+
+            //find out if someone is trying to finesse this card
+            int currValue = state.getTableValue(card.colour);
+            if (currValue +2 != card.value) {
+                continue;
+            }
+
+            //get the newest card (or fail or timed hands are not permitted)
+            int newestCard = getNewestCard(state, playerID);
+            if (newestCard == -1) {
+                return null;
+            }
+
+            //it was a finesse, move, we execute the play.
+            return new PlayCard(getNewestCard(state, playerID));
+        }
+
+        return null;
+    }
+
+    /**
+     * This method will return -1 if someone doesn't want us to know what order our cards were delt in.
+     *
+     * @param state
+     * @param playerID
+     * @return
+     */
+    public static int getNewestCard(GameState state, int playerID) {
+        try {
+            TimedHand hand = (TimedHand) state.getHand(playerID);
+            return hand.getNewestSlot();
+        } catch (ClassCastException ex) {
+            return -1;
+        }
+    }
+
+}

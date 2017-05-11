@@ -35,7 +35,7 @@ public class PlaySafeCard extends AbstractRule {
         return new PlayCard(playableSlots.get(0));
     }
 
-    public boolean isPlayable(Card card, GameState state) {
+    public static boolean isPlayable(Card card, GameState state) {
         return state.getTableValue(card.colour) + 1 == card.value;
     }
 

@@ -66,4 +66,5 @@ public interface GameState extends Serializable {
     void addEvent(GameEvent event);
 
     LinkedList<GameEvent> getHistory();
+
 }
