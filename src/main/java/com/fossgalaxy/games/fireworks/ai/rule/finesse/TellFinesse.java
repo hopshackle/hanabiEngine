@@ -51,7 +51,7 @@ public class TellFinesse extends AbstractTellRule {
             cardColours.put(finesseCard.colour, currColour+1);
 
             int currValue = cardValues.getOrDefault(finesseCard.value, 0);
-            cardColours.put(finesseCard.colour, currValue+1);
+            cardValues.put(finesseCard.value, currValue+1);
         }
 
 

@@ -24,10 +24,9 @@ public class TellAboutOnes extends AbstractTellRule {
                 continue;
             }
 
-            if (hand.getKnownValue(slot) == null) {
-                return new TellValue(nextPlayer, 1);
-            } else if (hand.getKnownColour(slot) == null) {
-                return new TellColour(nextPlayer, card.colour);
+            Action toDo = tellMissing(hand, playerID, slot);
+            if (toDo != null) {
+                return toDo;
             }
         }
 

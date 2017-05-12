@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
-import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
@@ -32,7 +31,7 @@ public class PlayUniquePossibleCard extends AbstractRule {
 
             if (event.getEvent() == MessageType.CARD_INFO_COLOUR) {
                 CardInfoColour colourEvent = (CardInfoColour)event;
-                if (colourEvent.getPlayerId() == playerID && colourEvent.getSlots().length == 1) {
+                if (colourEvent.wasToldTo(playerID) && colourEvent.getSlots().length == 1) {
                     int slot = colourEvent.getSlots()[0];
                     if (!invalidated[slot]) {
                         int nextValue = state.getTableValue(colourEvent.getColour());
@@ -45,7 +44,7 @@ public class PlayUniquePossibleCard extends AbstractRule {
 
             if (event.getEvent() == MessageType.CARD_INFO_VALUE) {
                 CardInfoValue colourEvent = (CardInfoValue) event;
-                if (colourEvent.getPlayerId() == playerID && colourEvent.getSlots().length == 1) {
+                if (colourEvent.wasToldTo(playerID) && colourEvent.getSlots().length == 1) {
                     for (CardColour colour : CardColour.values()) {
                         int onTable = state.getTableValue(colour);
                         if (onTable == colourEvent.getValue()-1) {

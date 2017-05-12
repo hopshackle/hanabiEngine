@@ -7,39 +7,26 @@ import com.fossgalaxy.games.fireworks.state.Hand;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class CardInfoColour extends GameEvent {
-    private final static String CARD_FORMAT = "player %d has %s cards, in slot(s) %s.";
+public class CardInfoColour extends CardInfo {
+    private static final String CARD_FORMAT = "player %d has %s cards, in slot(s) %s.";
 
-    private final int performer;
-    private final int playerId;
     private final CardColour colour;
-    private final Integer[] slots;
 
     public CardInfoColour(int performer, int playerId, CardColour colour, Collection<Integer> slotsList) {
-        super(MessageType.CARD_INFO_COLOUR);
-        this.performer = performer;
-        this.playerId = playerId;
+        super(MessageType.CARD_INFO_COLOUR, playerId, performer, slotsList);
         this.colour = colour;
-
-        Integer[] slots = new Integer[slotsList.size()];
-        slotsList.toArray(slots);
-
-        this.slots = slots;
     }
 
     public CardInfoColour(int performer, int playerId, CardColour colour, Integer... slots) {
-        super(MessageType.CARD_INFO_COLOUR);
-        this.performer = performer;
-        this.playerId = playerId;
+        super(MessageType.CARD_INFO_COLOUR, playerId, performer, slots);
         this.colour = colour;
-        this.slots = slots;
     }
 
     @Override
     public void apply(GameState state, int myPlayerID) {
         assert state.getInfomation() > 0 : "got told information with no information left?!";
 
-        Hand playerHand = state.getHand(playerId);
+        Hand playerHand = state.getHand(playerTold);
         playerHand.setKnownColour(colour, slots);
         state.setInformation(state.getInfomation() - 1);
 
@@ -48,15 +35,7 @@ public class CardInfoColour extends GameEvent {
 
     @Override
     public String toString() {
-        return String.format(CARD_FORMAT, playerId, colour, Arrays.toString(slots));
-    }
-
-    public int getPerformer() {
-        return performer;
-    }
-
-    public int getPlayerId() {
-        return playerId;
+        return String.format(CARD_FORMAT, playerTold, colour, Arrays.toString(slots));
     }
 
     public CardColour getColour() {

@@ -7,8 +7,7 @@ import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.TimedHand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
-import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
-import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
+import com.fossgalaxy.games.fireworks.state.events.CardInfo;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
 import java.util.LinkedList;
@@ -26,24 +25,20 @@ public class PlayFinesse extends AbstractRule {
         LinkedList<GameEvent> eventHistory = state.getHistory();
         GameEvent lastEvent = eventHistory.getLast();
 
-        int playerTold = -1;
-        Integer[] playerSlots = null;
-        if (lastEvent instanceof CardInfoValue) {
-            CardInfoValue infoValue = (CardInfoValue) lastEvent;
-            playerTold = infoValue.getPlayerId();
-            playerSlots = infoValue.getSlots();
-        } else if (lastEvent instanceof CardInfoColour) {
-            CardInfoColour infoColour = (CardInfoColour) lastEvent;
-            playerTold = infoColour.getPlayerId();
-            playerSlots = infoColour.getSlots();
-        } else {
+        if (! (lastEvent instanceof CardInfo) ) {
             return null;
         }
 
+        CardInfo infoValue = (CardInfo) lastEvent;
+        int playerTold = infoValue.getPlayerTold();
+        Integer[] playerSlots = infoValue.getSlots();
+
         // this was not a finesse tell
-        if (playerTold == playerID && playerTold != selectPlayer(playerID, state)) {
+        if (infoValue.wasToldTo(selectPlayer(playerID, state))) {
             return null;
         }
+
+
 
         // is one of the cards indicated 1 card away from being playable
         Hand playerHand = state.getHand(playerTold);
@@ -62,7 +57,7 @@ public class PlayFinesse extends AbstractRule {
                 return null;
             }
 
-            //it was a finesse, move, we execute the play.
+            //it was a finesse move, we execute the play.
             return new PlayCard(getNewestCard(state, playerID));
         }
 

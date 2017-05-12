@@ -5,7 +5,7 @@ import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
 public class CardPlayed extends GameEvent {
-    private final static String CARD_FORMAT = "player %d played slot %s, it was a %s %d.";
+    private static final String CARD_FORMAT = "player %d played slot %s, it was a %s %d.";
 
     private final int playerId;
     private final int slotId;

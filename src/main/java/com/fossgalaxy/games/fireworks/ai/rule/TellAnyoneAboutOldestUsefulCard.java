@@ -45,11 +45,8 @@ public class TellAnyoneAboutOldestUsefulCard extends AbstractTellRule {
                     continue;
                 }
 
-                if (hand.getKnownValue(slot) == null) {
-                    bestAction = new TellValue(nextPlayer, card.value);
-                } else if (hand.getKnownColour(slot) == null) {
-                    bestAction = new TellColour(nextPlayer, card.colour);
-                }
+
+                bestAction = tellMissing(hand, playerID, slot);
             }
 
             if (bestAction != null) {

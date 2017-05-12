@@ -4,10 +4,7 @@ import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
-import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
-import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
-import com.fossgalaxy.games.fireworks.state.events.GameEvent;
-import com.fossgalaxy.games.fireworks.state.events.MessageType;
+import com.fossgalaxy.games.fireworks.state.events.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -39,27 +36,16 @@ public class PlayFinesseTold extends AbstractRule {
             return null;
         }
 
-        int toldPlayer = -1;
-        Integer[] slots = null;
+        CardInfo info = (CardInfo)second;
+        int toldPlayer = info.getPlayerTold();
+        Integer[] slots = info.getSlots();
 
-            if (second.getEvent() == MessageType.CARD_INFO_VALUE) {
-                //second action told me a value
-                CardInfoValue value = (CardInfoValue)second;
-                toldPlayer = value.getPlayerId();
-                slots = value.getSlots();
-            } else if (second.getEvent() == MessageType.CARD_INFO_COLOUR) {
-                //second action told me a colour
-                CardInfoColour colour = (CardInfoColour)second;
-                toldPlayer = colour.getPlayerId();
-                slots = colour.getSlots();
-            }
+        //was not told uniquely about my cards
+        if (toldPlayer != playerID || !info.isUnique()) {
+            return null;
+        }
 
-            //was not told uniquely about my cards
-            if (toldPlayer != playerID || slots == null || slots.length != 1) {
-                return null;
-            }
-
-            //guess I play it then.
-            return new PlayCard(slots[0]);
+        //guess I play it then.
+        return new PlayCard(slots[0]);
     }
 }
