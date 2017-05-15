@@ -92,6 +92,10 @@ public class TryToUnBlock implements Rule {
         Hand hand = state.getHand(playerID);
 
         for (int slot = 0; slot < hand.getSize(); slot++) {
+            if (!hand.hasCard(slot)) {
+                continue;
+            }
+
             if (HandUtils.isSafeToDiscard(state, hand.getKnownColour(slot), hand.getKnownValue(slot))) {
                 return new DiscardCard(slot);
             }

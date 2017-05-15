@@ -17,6 +17,10 @@ public class DiscardUnidentifiedCard extends AbstractDiscardRule {
         Hand hand = state.getHand(playerID);
 
         for(int slot = 0; slot < hand.getSize(); slot++){
+            if (!hand.hasCard(slot)) {
+                continue;
+            }
+
             if(hand.getKnownColour(slot) == null && hand.getKnownValue(slot) == null){
                 return new DiscardCard(slot);
             }
