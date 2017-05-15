@@ -40,7 +40,7 @@ public class App {
         System.out.println("Start");
 
         for (int run = 0; run < 100; run++) {
-            GameStats stats = playMixed("pmcts[iggi2|iggi2|iggi2|iggi2|iggi2]", "iggi2");
+            GameStats stats = playMixed("HatGuessing", "iggi");
             sum += stats.score;
             games++;
         }
