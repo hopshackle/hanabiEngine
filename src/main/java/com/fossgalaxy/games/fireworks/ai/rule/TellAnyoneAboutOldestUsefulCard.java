@@ -46,7 +46,7 @@ public class TellAnyoneAboutOldestUsefulCard extends AbstractTellRule {
                 }
 
 
-                bestAction = tellMissing(hand, playerID, slot);
+                bestAction = tellMissing(hand, nextPlayer, slot);
             }
 
             if (bestAction != null) {
