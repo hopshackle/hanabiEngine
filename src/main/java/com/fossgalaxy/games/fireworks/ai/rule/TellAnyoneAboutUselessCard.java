@@ -27,8 +27,7 @@ public class TellAnyoneAboutUselessCard extends AbstractTellRule {
                     continue;
                 }
                 if (HandUtils.isSafeToDiscard(state, nextPlayer, slot)) {
-                    Card card = hand.getCard(slot);
-                    return (hand.getKnownValue(slot) == null) ? new TellValue(nextPlayer, card.value) : new TellColour(nextPlayer, card.colour);
+                    return tellMissingPrioritiseValue(hand, nextPlayer, slot);
                 }
             }
         }

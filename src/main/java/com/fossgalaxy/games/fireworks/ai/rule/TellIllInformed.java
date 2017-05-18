@@ -51,11 +51,7 @@ public class TellIllInformed extends AbstractTellRule {
                 continue;
             }
 
-            if (knownValue == null) {
-                return new TellValue(playerID, card.value);
-            } else {
-                return new TellColour(playerID, card.colour);
-            }
+            return tellMissingPrioritiseValue(hand, playerID, slot);
         }
 
         return null;
