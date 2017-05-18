@@ -4,8 +4,6 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Tell the next player something about their ones if they don't know already.
@@ -24,7 +22,7 @@ public class TellAboutOnes extends AbstractTellRule {
                 continue;
             }
 
-            Action toDo = tellMissing(hand, playerID, slot);
+            Action toDo = tellMissingPrioritiseValue(hand, nextPlayer, slot);
             if (toDo != null) {
                 return toDo;
             }

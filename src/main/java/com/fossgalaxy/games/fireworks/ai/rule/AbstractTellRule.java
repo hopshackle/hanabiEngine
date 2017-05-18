@@ -22,12 +22,23 @@ public abstract class AbstractTellRule extends AbstractRule {
         return action != null;
     }
 
-    public Action tellMissing(Hand hand, int playerID, int slot) {
-        Card card = hand.getCard(playerID);
+    public Action tellMissingPrioritiseColour(Hand hand, int playerID, int slot) {
+        Card card = hand.getCard(slot);
         if (hand.getKnownColour(slot) == null) {
             return new TellColour(playerID, card.colour);
-        } else if (hand.getKnownValue(playerID) == null) {
+        } else if (hand.getKnownValue(slot) == null) {
             return new TellValue(playerID, card.value);
+        }
+
+        return null;
+    }
+
+    public Action tellMissingPrioritiseValue(Hand hand, int playerID, int slot){
+        Card card = hand.getCard(slot);
+        if(hand.getKnownValue(slot) == null){
+            return new TellValue(playerID, card.value);
+        }else if(hand.getKnownColour(slot) == null){
+            return new TellColour(playerID, card.colour);
         }
 
         return null;

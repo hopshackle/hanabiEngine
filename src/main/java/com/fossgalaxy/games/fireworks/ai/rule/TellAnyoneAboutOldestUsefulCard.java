@@ -2,11 +2,8 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.TimedHand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Tell any other player about a card in their hand if it is useful in this situation.
@@ -46,7 +43,7 @@ public class TellAnyoneAboutOldestUsefulCard extends AbstractTellRule {
                 }
 
 
-                bestAction = tellMissing(hand, nextPlayer, slot);
+                bestAction = tellMissingPrioritiseColour(hand, nextPlayer, slot);
             }
 
             if (bestAction != null) {

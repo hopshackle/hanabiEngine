@@ -3,10 +3,14 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
+import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.actions.TellColour;
+import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by webpigeon on 26/10/16.
@@ -43,9 +47,18 @@ public class TestTellAboutOnes {
         state.getHand(1).setCard(0, new Card(1, CardColour.RED));
         state.getHand(1).setCard(1, new Card(1, CardColour.RED));
 
-        boolean result = instance.canFire(0, state);
-
-        assertEquals(result, true);
+        assertTrue(instance.canFire(0, state));
+        Action action = instance.execute(0, state);
+        if(action instanceof TellValue){
+            TellValue tellValue = (TellValue) action;
+            assertEquals(1, tellValue.player);
+            assertEquals(1, tellValue.value);
+        }
+        else if(action instanceof TellColour){
+            TellColour tellColour = (TellColour) action;
+            assertEquals(1, tellColour.player);
+            assertEquals(CardColour.RED, tellColour.colour);
+        }
     }
 
     /**
