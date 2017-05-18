@@ -8,10 +8,12 @@ import com.fossgalaxy.games.fireworks.annotations.Parameter;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by WebPigeon on 09/08/2016.
@@ -100,7 +102,8 @@ public class MCTSPredictor extends MCTS {
             int agent = current.getAgent();
             Action action = current.getAction();
             if (action != null) {
-                action.apply(agent, state);
+                List<GameEvent> events = action.apply(agent, state);
+                events.forEach(state::addEvent);
                 state.tick();
             }
 

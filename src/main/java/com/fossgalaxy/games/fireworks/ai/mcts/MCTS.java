@@ -10,6 +10,7 @@ import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,7 +171,8 @@ public class MCTS implements Agent {
 
             Action action = current.getAction();
             if (action != null) {
-                action.apply(agent, state);
+                List<GameEvent> events = action.apply(agent, state);
+                events.forEach(state::addEvent);
                 state.tick();
             }
 
@@ -248,7 +250,8 @@ public class MCTS implements Agent {
 
         while (!state.isGameOver() && moves < rolloutDepth) {
             Action action = selectActionForRollout(state, playerID);
-            action.apply(playerID, state);
+            List<GameEvent> events = action.apply(playerID, state);
+            events.forEach(state::addEvent);
             state.tick();
             playerID = (playerID + 1) % state.getPlayerCount();
             moves++;
