@@ -36,7 +36,7 @@ public class AgentUtils {
     public static final String PARAM_END = "]";
     public static final String PARAM_SEPARATOR = ":";
 
-    private static final AgentFinder finder = buildFinder();
+    public static final AgentFinder finder = buildFinder();
 
     private AgentUtils() {
 
