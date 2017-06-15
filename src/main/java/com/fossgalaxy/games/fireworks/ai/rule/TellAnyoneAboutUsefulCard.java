@@ -36,10 +36,9 @@ public class TellAnyoneAboutUsefulCard extends AbstractTellRule {
                     continue;
                 }
 
-                if (hand.getKnownValue(slot) == null) {
-                    return new TellValue(nextPlayer, card.value);
-                } else if (hand.getKnownColour(slot) == null) {
-                    return new TellColour(nextPlayer, card.colour);
+                Action tellAction = tellMissingPrioritiseValue(hand, nextPlayer, slot);
+                if (tellAction != null) {
+                    return tellAction;
                 }
             }
         }

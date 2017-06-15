@@ -44,7 +44,7 @@ Then do the first of these which is possible:
  *
  * How complex? Is Player 2 able to play if it relies on Player 1 playing a card that they know about?
  */
-public class TryToUnBlock implements Rule {
+public class TryToUnBlock extends AbstractRule {
 
     @Override
     public Action execute(int playerID, GameState state) {

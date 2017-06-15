@@ -4,8 +4,6 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Tell the next player about an unknown card.
@@ -23,14 +21,10 @@ public class TellUnknown extends AbstractTellRule {
                 continue;
             }
 
-            if (otherHand.getKnownColour(slot) == null) {
-                return new TellColour(nextAgent, card.colour);
+            Action expectedAction = tellMissingPrioritiseColour(otherHand, nextAgent, slot);
+            if (expectedAction != null) {
+                return expectedAction;
             }
-
-            if (otherHand.getKnownValue(slot) == null) {
-                return new TellValue(nextAgent, card.value);
-            }
-
         }
 
         return null;
