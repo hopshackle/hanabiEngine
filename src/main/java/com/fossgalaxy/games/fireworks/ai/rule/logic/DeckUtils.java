@@ -1,9 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.rule.logic;
 
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
-import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
+import com.fossgalaxy.games.fireworks.state.*;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -13,6 +10,16 @@ public class DeckUtils {
 
     private DeckUtils() {
 
+    }
+
+    public static void updateHand(int agentID, GameState state, Map<Integer, Card> chosenCards) {
+        Deck deck = state.getDeck();
+        Hand myHand = state.getHand(agentID);
+        for (int slot = 0; slot < myHand.getSize(); slot++) {
+            Card hand = chosenCards.get(slot);
+            myHand.bindCard(slot, hand);
+            deck.remove(hand);
+        }
     }
 
     public static Map<Integer, List<Card>> bindCard(int player, Hand hand, List<Card> deck) {
