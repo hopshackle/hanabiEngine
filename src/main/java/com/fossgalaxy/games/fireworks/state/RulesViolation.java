@@ -2,6 +2,9 @@ package com.fossgalaxy.games.fireworks.state;
 
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
+/**
+ * Exception that is triggered when a player does something bad.
+ */
 public class RulesViolation extends RuntimeException {
     private final Action action;
 
