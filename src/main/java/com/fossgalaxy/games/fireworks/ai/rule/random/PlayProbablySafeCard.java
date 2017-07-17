@@ -54,4 +54,9 @@ public class PlayProbablySafeCard extends AbstractRule {
     public double getThreshold() {
         return threshold;
     }
+
+    @Override
+    public String fancyName() {
+        return super.fancyName() + " : " + threshold;
+    }
 }

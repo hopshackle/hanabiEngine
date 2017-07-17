@@ -3,6 +3,9 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 @FunctionalInterface
 public interface Rule {
 
@@ -22,5 +25,9 @@ public interface Rule {
     }
 
     Action execute(int playerID, GameState state);
+
+    default String fancyName(){
+        return String.join(" ", (this.getClass().getSimpleName().split("(?=\\p{Upper})")));
+    }
 
 }

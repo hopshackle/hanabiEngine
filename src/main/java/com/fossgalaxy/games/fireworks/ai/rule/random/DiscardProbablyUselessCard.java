@@ -55,4 +55,9 @@ public class DiscardProbablyUselessCard extends AbstractDiscardRule {
     private boolean isUseless(Card card, GameState state) {
         return HandUtils.isSafeToDiscard(state, card.colour, card.value);
     }
+
+    @Override
+    public String fancyName() {
+        return super.fancyName() + " : " + threshold;
+    }
 }

@@ -57,6 +57,7 @@ public class RuleSet {
         rules.add(new DiscardOldestNoInfoFirst());
 
         rules.add(new TryToUnBlock());
+        rules.add(new TellMostInformation(true));
 
         return rules;
     }

@@ -76,4 +76,8 @@ public class TellMostInformation extends AbstractTellRule {
         return bestAction;
     }
 
+    @Override
+    public String fancyName() {
+        return super.fancyName() + ((newInformation) ? " that is new" : " in total");
+    }
 }
