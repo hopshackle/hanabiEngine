@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
  */
 public class MCTSNode {
 
-    private static final double EXP_CONST = Math.sqrt(2);
+    public static double EXP_CONST = Math.sqrt(2);
+
     private static final int MAX_SCORE = 25;
     private static final double EPSILON = 1e-6;
     private static final boolean DISCOUNT_ENABLED = false;

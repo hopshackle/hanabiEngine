@@ -3,12 +3,15 @@ package com.fossgalaxy.games.fireworks;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTSNode;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
 import com.fossgalaxy.games.fireworks.ai.rule.Rule;
 import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
+import com.fossgalaxy.stats.BasicStats;
+import com.fossgalaxy.stats.StatsSummary;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -39,17 +42,56 @@ public class App {
         int games = 0;
         System.out.println("Start");
 
-        for (int run = 0; run < 100; run++) {
-            GameStats stats = playMixed("HatGuessing", "iggi");
-            sum += stats.score;
-            games++;
+        Random r = new Random();
+
+        long[] seeds = new long[100];
+
+        double[] p = new double[]{
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1.0,
+            2.0,
+            3.0,
+            4.0,
+            5.0
+        };
+
+        StatsSummary[] ss = new StatsSummary[p.length];
+        for (int i=0; i<ss.length; i++) {
+            ss[i] = new BasicStats();
         }
 
-        if (games == 0) {
-            return;
+        for (int i=0; i<seeds.length; i++) {
+            seeds[i] = r.nextLong();
         }
 
-        System.out.println("avg: " + sum / games);
+
+        for (int i=0; i<10; i++) {
+
+            MCTSNode.EXP_CONST = p[i];
+
+            for (int run = 0; run < 100; run++) {
+                GameStats stats = playMixed("mctsND", "iggi", seeds[i]);
+                sum += stats.score;
+                games++;
+                ss[i].add(stats.score);
+
+            }
+
+            if (games == 0) {
+                return;
+            }
+
+            System.out.println("exp: "+p[i]+"avg: " + sum / games);
+            System.out.println("exp: "+p[i]+" stats: "+ss[i]);
+        }
     }
 
     /**
@@ -79,8 +121,8 @@ public class App {
      * @param agent          The agent to make all the others
      * @return GameStats for the game
      */
-    public static GameStats playMixed(String agentUnderTest, String agent) {
-        Random r = new Random();
+    public static GameStats playMixed(String agentUnderTest, String agent, long seed) {
+        Random r = new Random(seed);
         int whereToPlace = r.nextInt(5);
 
         String[] names = new String[5];
@@ -93,7 +135,7 @@ public class App {
             players[i] = buildAgent(names[i], i, agent, names.length);
         }
 
-        GameStats stats = GameUtils.runGame("", null, SetupUtils.toPlayers(names, players));
+        GameStats stats = GameUtils.runGame("", seed, SetupUtils.toPlayers(names, players));
         System.out.println("the agents scored: " + stats);
         return stats;
     }
