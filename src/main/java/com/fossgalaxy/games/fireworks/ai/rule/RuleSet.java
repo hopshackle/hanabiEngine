@@ -53,11 +53,14 @@ public class RuleSet {
         rules.add(new TellIllInformed());
         rules.add(new TellFives());
         rules.add(new CompleteTellUsefulCard());
-        rules.add(new DiscardRandomly());
         rules.add(new DiscardOldestNoInfoFirst());
 
         rules.add(new TryToUnBlock());
         rules.add(new TellMostInformation(true));
+
+        for(double threshold = 0.1; threshold <= 0.9; threshold+= 0.1){
+            rules.add(new DiscardProbablyUselessCard(threshold));
+        }
 
         return rules;
     }
