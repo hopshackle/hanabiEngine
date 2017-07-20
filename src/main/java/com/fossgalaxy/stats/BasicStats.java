@@ -52,4 +52,8 @@ public class BasicStats implements StatsSummary {
     public double getMean() {
         return sum/n;
     }
+
+    public String toString() {
+        return String.format("min: %f, max: %f, avg: %f, rng: %f ", getMin(), getMax(), getMean(), getRange());
+    }
 }
