@@ -5,8 +5,16 @@ import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.random.*;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
+import org.reflections.ReflectionUtils;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by piers on 27/01/17.
@@ -62,6 +70,35 @@ public class RuleSet {
             rules.add(new DiscardProbablyUselessCard(threshold));
         }
 
+        rules.add(new TellAnyoneAboutOldestUsefulCard());
+        rules.add(new DiscardHighest());
+        rules.add(new TellToSave());
+        rules.add(new DiscardUnidentifiedCard());
         return rules;
+    }
+
+    /**
+     *
+     */
+    public static void checkRuleSet(){
+
+
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forJavaClassPath())
+                .setScanners(new SubTypesScanner())
+                .setExpandSuperTypes(false)
+        );
+        Set<Class> rulesInRuleSet = getRules().stream().map(Object::getClass).collect(Collectors.toSet());
+
+        Set<Class<? extends Rule>> rulesInClasspath = reflections.getSubTypesOf(Rule.class).stream()
+                .filter(x -> !Modifier.isAbstract(x.getModifiers()))
+                .collect(Collectors.toSet());
+
+        rulesInClasspath.removeAll(rulesInRuleSet);
+        rulesInClasspath.forEach(System.out::println);
+    }
+
+    public static void main(String[] args) {
+        checkRuleSet();
     }
 }
