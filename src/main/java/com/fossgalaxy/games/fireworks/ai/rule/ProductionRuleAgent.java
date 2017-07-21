@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An agent capable of applying a set of @link{Rule} rules.
+ */
 public class ProductionRuleAgent implements Agent {
     private final Logger logger = LoggerFactory.getLogger(ProductionRuleAgent.class);
 

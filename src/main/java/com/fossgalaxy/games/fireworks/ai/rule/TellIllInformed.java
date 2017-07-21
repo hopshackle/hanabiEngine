@@ -9,6 +9,8 @@ import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
+ * Tell a player that does't know about a useful card that a card can be played.
+ *
  * Created by webpigeon on 09/05/17.
  */
 public class TellIllInformed extends AbstractTellRule {

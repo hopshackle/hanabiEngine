@@ -1,5 +1,7 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
+import com.fossgalaxy.games.fireworks.ai.rule.TellToSave;
+import com.fossgalaxy.games.fireworks.ai.rule.TellToSavePartialOnly;
 import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
@@ -16,16 +18,16 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class TestTellToSave {
+public class TestTellToSavePartially {
 
     private BasicState state;
-    private TellToSave instance;
+    private TellToSavePartialOnly instance;
 
     @Before
     public void setup() {
         state = new BasicState(2);
         state.init();
-        instance = new TellToSave();
+        instance = new TellToSavePartialOnly();
     }
 
     @Test
@@ -137,7 +139,7 @@ public class TestTellToSave {
 
         state.getHand(1).setKnownValue(4, new Integer[]{0});
 
-        assertEquals(true, instance.canFire(0, state));
+        assertEquals(false, instance.canFire(0, state));
     }
 
     @Test
@@ -155,6 +157,6 @@ public class TestTellToSave {
 
         state.getHand(1).setKnownColour(CardColour.BLUE, new Integer[]{0, 1, 2, 3, 4});
 
-        assertEquals(true, instance.canFire(0, state));
+        assertEquals(false, instance.canFire(0, state));
     }
 }

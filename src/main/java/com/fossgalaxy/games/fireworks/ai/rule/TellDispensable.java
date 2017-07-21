@@ -10,6 +10,8 @@ import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
+ * Tell an agent about a card that can be safely chucked away.
+ *
  * Created by piers on 01/12/16.
  */
 public class TellDispensable extends AbstractTellRule {

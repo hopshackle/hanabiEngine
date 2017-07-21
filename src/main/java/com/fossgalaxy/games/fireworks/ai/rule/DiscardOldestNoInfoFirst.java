@@ -8,6 +8,8 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 
 /**
+ * Discard the oldest (first drawn) card in my hand, but only if I know nothing about.
+ *
  * Created by webpigeon on 18/10/16.
  */
 public class DiscardOldestNoInfoFirst extends AbstractDiscardRule {

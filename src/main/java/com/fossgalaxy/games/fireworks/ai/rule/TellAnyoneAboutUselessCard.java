@@ -9,6 +9,8 @@ import com.fossgalaxy.games.fireworks.state.actions.TellColour;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
+ * Tell a player about a card in their hand we know is not needed.
+ *
  * Created by piers on 12/12/16.
  */
 public class TellAnyoneAboutUselessCard extends AbstractTellRule {

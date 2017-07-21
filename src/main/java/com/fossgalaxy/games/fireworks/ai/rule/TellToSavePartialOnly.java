@@ -12,9 +12,10 @@ import java.util.Collection;
  * Tell a player about a card that is useful and unique even if it is not immediately playable.
  *
  * This rule is designed to stop another agent throwing away a card that is critical to a perfect score without them
- * knowing what it is.
+ * knowing what it is. This variant will only consider cards that are completely unknown - it will not complete
+ * information about a card.
  */
-public class TellToSave extends AbstractTellRule {
+public class TellToSavePartialOnly extends AbstractTellRule {
     private static int[] COPIES = {0, 3, 2, 2, 2, 1};
 
     @Override
@@ -34,6 +35,12 @@ public class TellToSave extends AbstractTellRule {
 //                    System.out.println("Card is useless: " + card);
                     continue;
                 }
+
+                //skip cards that we know anything about
+                if (hand.getKnownColour(slot) != null || hand.getKnownValue(slot) != null) {
+                    continue;
+                }
+
                 long duplicatesDiscarded = discards.stream().filter((x) -> x.equals(card)).count();
                 if (duplicatesDiscarded == COPIES[card.value] - 1) {
                     // Save it
