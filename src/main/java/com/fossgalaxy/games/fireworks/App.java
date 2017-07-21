@@ -47,6 +47,7 @@ public class App {
         long[] seeds = new long[100];
 
         double[] p = new double[]{
+            0.0,
             0.1,
             0.2,
             0.3,
@@ -60,7 +61,9 @@ public class App {
             2.0,
             3.0,
             4.0,
-            5.0
+            5.0,
+            6.0,
+            7.0
         };
 
         StatsSummary[] ss = new StatsSummary[p.length];
@@ -73,11 +76,11 @@ public class App {
         }
 
 
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<p.length; i++) {
 
             MCTSNode.EXP_CONST = p[i];
 
-            for (int run = 0; run < 100; run++) {
+            for (int run = 0; run < seeds.length; run++) {
                 GameStats stats = playMixed("mctsND", "iggi", seeds[i]);
                 sum += stats.score;
                 games++;
@@ -91,6 +94,9 @@ public class App {
 
             System.out.println("exp: "+p[i]+"avg: " + sum / games);
             System.out.println("exp: "+p[i]+" stats: "+ss[i]);
+
+            StatsSummary ssi = ss[i];
+            System.out.println(String.format("csv,%f,%f,%f,%f,%f",p[i],ssi.getMin(), ssi.getMax(), ssi.getMean(), ssi.getRange()));
         }
     }
 
