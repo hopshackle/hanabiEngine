@@ -16,7 +16,6 @@ import java.util.Collection;
  * information about a card.
  */
 public class TellToSavePartialOnly extends AbstractTellRule {
-    private static int[] COPIES = {0, 3, 2, 2, 2, 1};
 
     @Override
     public Action execute(int playerID, GameState state) {
@@ -42,7 +41,7 @@ public class TellToSavePartialOnly extends AbstractTellRule {
                 }
 
                 long duplicatesDiscarded = discards.stream().filter((x) -> x.equals(card)).count();
-                if (duplicatesDiscarded == COPIES[card.value] - 1) {
+                if (duplicatesDiscarded == TellToSave.COPIES[card.value] - 1) {
                     // Save it
 //                    System.out.println("Last of its kind: " + card);
                     Action action = tellMissingPrioritiseValue(hand, nextPlayerID, slot);
