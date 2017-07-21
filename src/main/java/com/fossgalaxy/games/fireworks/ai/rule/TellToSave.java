@@ -15,7 +15,7 @@ import java.util.Collection;
  * knowing what it is.
  */
 public class TellToSave extends AbstractTellRule {
-    private static int[] COPIES = {0, 3, 2, 2, 2, 1};
+    private static final int[] COPIES = {0, 3, 2, 2, 2, 1};
 
     @Override
     public Action execute(int playerID, GameState state) {
