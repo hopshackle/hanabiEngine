@@ -24,7 +24,7 @@ public class TestTimedHand {
 
         for (int i = 0; i < 5; i++) {
             hand.setCard(i, new Card(i + 1, CardColour.BLUE));
-//            hand.setHasCard(i, true);
+            //hand.setHasCard(i, true);
         }
     }
 
@@ -33,7 +33,11 @@ public class TestTimedHand {
         assertEquals(0, hand.getOldestSlot());
 
         hand.setCard(0, new Card(2, CardColour.GREEN));
+<<<<<<< HEAD
 //        hand.setHasCard(0, true);
+=======
+        //hand.setHasCard(0, true);
+>>>>>>> remove incorrect usages of SetHasCard
 
         assertEquals(1, hand.getOldestSlot());
     }

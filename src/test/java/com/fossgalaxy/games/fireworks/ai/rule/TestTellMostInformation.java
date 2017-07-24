@@ -26,11 +26,11 @@ public class TestTellMostInformation {
         this.state.init();
         this.instance = new TellMostInformation();
 
-        for(int player = 0;player < state.getPlayerCount(); player++){
+        /*for(int player = 0;player < state.getPlayerCount(); player++){
             for(int slot = 0; slot < state.getHandSize(); slot++){
                 state.getHand(player).setHasCard(slot, true);
             }
-        }
+        }*/
     }
 
     @Test

@@ -22,6 +22,12 @@ public class TimedHand extends NegativeHand {
         this.time = new int[size];
     }
 
+    /**
+     * gaurentees that the when a card is set using this method, the card ordering is updated.
+     *
+     * @param slot the slot to update
+     * @param card the card now residing in this slot
+     */
     @Override
     public void setCard(int slot, Card card) {
         super.setCard(slot, card);

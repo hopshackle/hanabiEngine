@@ -64,7 +64,8 @@ public interface Hand extends Serializable {
      * This should be called when a {@link com.fossgalaxy.games.fireworks.state.events.CardDrawn} event occurs in order
      * to update this hand with the correct information.
      * <p>
-     * It will also reset all known information from the perspective of the owner.
+     * It will also reset all known information from the perspective of the owner. If the card is non-null it will also
+     * setHasCard correctly.
      *
      * @param slot the slot to update
      * @param card the card now residing in this slot
@@ -161,6 +162,9 @@ public interface Hand extends Serializable {
 
     /**
      * Sets whether the hand has a card in this slot.
+     *
+     * This is useful for the own player's hand (card we don't know about but need to know we have).
+     *
      * @param slot The slot to set
      * @param value The presence or not of a card
      */

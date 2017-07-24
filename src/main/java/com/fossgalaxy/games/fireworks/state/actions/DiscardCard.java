@@ -42,11 +42,11 @@ public class DiscardCard implements Action {
         if (game.getDeck().hasCardsLeft()) {
             Card newCard = game.drawFromDeck();
             game.setCardAt(playerID, slot, newCard);
-            game.getHand(playerID).setHasCard(slot, true);
+            //game.getHand(playerID).setHasCard(slot, true);
             events.add(new CardDrawn(playerID, slot, newCard.colour, newCard.value));
         } else {
             game.setCardAt(playerID, slot, null);
-            game.getHand(playerID).setHasCard(slot, false);
+            //game.getHand(playerID).setHasCard(slot, false);
         }
 
         return events;
