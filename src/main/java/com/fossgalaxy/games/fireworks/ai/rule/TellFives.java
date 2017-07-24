@@ -7,6 +7,8 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
+ * Tell a player about a 5 that they don't know about.
+ *
  * Created by piers on 05/05/17.
  */
 public class TellFives extends AbstractTellRule {

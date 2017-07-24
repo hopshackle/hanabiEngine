@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Play a card if all possible cards that can be in that slot are "safe" to play.
+ *
  * Created by webpigeon on 12/10/16.
  */
 public class PlaySafeCard extends AbstractRule {

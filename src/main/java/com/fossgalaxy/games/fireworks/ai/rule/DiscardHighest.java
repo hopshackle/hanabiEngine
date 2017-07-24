@@ -6,6 +6,10 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 
 /**
+ * Find the highest card in my hand I know about and discard it.
+ *
+ * If I don't know the value of any of my cards, do nothing.
+ *
  * Created by webpigeon on 09/05/17.
  */
 public class DiscardHighest extends AbstractDiscardRule {

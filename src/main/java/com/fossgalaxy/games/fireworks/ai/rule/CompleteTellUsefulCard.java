@@ -14,7 +14,7 @@ import com.fossgalaxy.games.fireworks.state.actions.TellValue;
  * finish telling something, otherwise first instance that we can
  * tell something
  */
-public class CompleteTellUsefulCard extends AbstractTellRule{
+public class CompleteTellUsefulCard extends AbstractTellRule {
 
 
     @Override

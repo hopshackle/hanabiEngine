@@ -6,6 +6,8 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
 
 /**
+ * Chuck away the card in my hand that has the lowest value, prioritizing the card in my hand in the lowest slot.
+ *
  * Created by piers on 04/05/17.
  *
  * CliveJ @ BoardGameGeek.com

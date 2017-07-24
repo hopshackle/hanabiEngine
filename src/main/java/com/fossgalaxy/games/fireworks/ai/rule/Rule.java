@@ -6,6 +6,10 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * Base class for
+ *
+ */
 @FunctionalInterface
 public interface Rule {
 
