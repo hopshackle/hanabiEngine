@@ -74,9 +74,15 @@ public class RuleSet {
         rules.add(new TryToUnBlock());
         rules.add(new TellMostInformation(true));
 
-        for(double threshold = 0.1; threshold <= 0.9; threshold+= 0.1){
-            rules.add(new DiscardProbablyUselessCard(threshold));
-        }
+        rules.add(new DiscardProbablyUselessCard(.1));
+        rules.add(new DiscardProbablyUselessCard(.2));
+        rules.add(new DiscardProbablyUselessCard(.3));
+        rules.add(new DiscardProbablyUselessCard(.4));
+        rules.add(new DiscardProbablyUselessCard(.5));
+        rules.add(new DiscardProbablyUselessCard(.6));
+        rules.add(new DiscardProbablyUselessCard(.7));
+        rules.add(new DiscardProbablyUselessCard(.8));
+        rules.add(new DiscardProbablyUselessCard(.9));
 
         //new and missing rules
         rules.add(new TellAnyoneAboutOldestUsefulCard());
