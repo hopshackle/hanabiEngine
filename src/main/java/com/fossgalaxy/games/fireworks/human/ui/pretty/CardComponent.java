@@ -4,6 +4,7 @@ import com.fossgalaxy.games.fireworks.human.ui.GameView;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.Hand;
+import com.fossgalaxy.games.fireworks.state.TimedHand;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,9 +58,15 @@ public class CardComponent extends JComponent {
         //draw the numbers
         FontMetrics metrics = g.getFontMetrics();
         int w = metrics.stringWidth(cardVal)/2;
+        int h = metrics.getHeight() / 2;
 
         g.setColor(GameView.textColors.get(javaColour));
         g.drawString(cardVal, getWidth()/2 - w, getHeight()/2);
+
+        if (hand instanceof TimedHand) {
+            TimedHand th = (TimedHand)hand;
+            g.drawString(Integer.toString(th.getAge(slot)), 13 + w, 17 + h);
+        }
     }
 
     public void setHover(boolean hover) {
