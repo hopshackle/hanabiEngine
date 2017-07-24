@@ -25,7 +25,6 @@ public class TimedHand extends NegativeHand {
     @Override
     public void setCard(int slot, Card card) {
         super.setCard(slot, card);
-        //System.out.println("llama llama ding dong "+slot+" "+card);
         if (card != null) {
             this.time[slot] = drawTime;
             drawTime++;
