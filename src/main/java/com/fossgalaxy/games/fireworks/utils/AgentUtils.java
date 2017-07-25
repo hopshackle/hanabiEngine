@@ -21,10 +21,7 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
 import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFinder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -132,9 +129,9 @@ public class AgentUtils {
 
     private static String[] splitArgs(String args) {
         int opens = 0;
-        ArrayList<String> partsFound = new ArrayList<>();
+        List<String> partsFound = new ArrayList<>();
 
-        String currentParam = "";
+        StringBuilder currentParamBuilder = new StringBuilder();
 
         for (int index = 0; index < args.length(); index++) {
             char c = args.charAt(index);
@@ -145,15 +142,15 @@ public class AgentUtils {
                 opens--;
             }else if(c == PARAM_SEPARATOR.charAt(0)){
                 if(opens == 0){
-                    partsFound.add(currentParam);
-                    currentParam = "";
+                    partsFound.add(currentParamBuilder.toString());
+                    currentParamBuilder.setLength(0);
                     continue;
                 }
             }
-            currentParam += c;
+            currentParamBuilder.append(Character.toString(c));
         }
-        if(!currentParam.equals("")){
-            partsFound.add(currentParam);
+        if(!(currentParamBuilder.length() == 0)){
+            partsFound.add(currentParamBuilder.toString());
         }
         return partsFound.toArray(new String[partsFound.size()]);
     }

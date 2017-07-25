@@ -224,7 +224,7 @@ public class AgentFinder {
                     continue;
                 }
 
-                String name = builder.value().equals("") ? agentClazz.getSimpleName() : builder.value();
+                String name = "".equals(builder.value()) ? agentClazz.getSimpleName() : builder.value();
                 bestMatch = constructor;
 
                 HashMap<Integer, Parameter> parameters = new HashMap<>();
