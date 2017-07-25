@@ -1,12 +1,9 @@
 package com.fossgalaxy.games.fireworks.ai.rule;
 
 import com.fossgalaxy.games.fireworks.ai.rule.logic.HandUtils;
-import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Tell a player about a card in their hand we know is not needed.

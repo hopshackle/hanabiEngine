@@ -1,7 +1,6 @@
 package com.fossgalaxy.games.fireworks.state.events;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by webpigeon on 11/05/17.

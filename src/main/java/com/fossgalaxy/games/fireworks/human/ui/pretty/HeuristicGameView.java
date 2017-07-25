@@ -1,19 +1,16 @@
 package com.fossgalaxy.games.fireworks.human.ui.pretty;
 
-import com.fossgalaxy.games.fireworks.human.ui.GameView;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
-import com.fossgalaxy.games.fireworks.state.actions.*;
-import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
+import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
+import com.fossgalaxy.games.fireworks.state.actions.TellColour;
+import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A version of the pretty game view that points out extra information.

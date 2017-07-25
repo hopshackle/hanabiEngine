@@ -1,7 +1,6 @@
 package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

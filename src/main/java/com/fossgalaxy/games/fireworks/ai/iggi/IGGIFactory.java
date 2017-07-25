@@ -12,7 +12,6 @@ import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.wrapper.IfRule;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
-import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 
 /**

@@ -4,7 +4,6 @@ import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.AgentPlayer;
 import com.fossgalaxy.games.fireworks.human.ui.pretty.HeuristicGameView;
 import com.fossgalaxy.games.fireworks.human.ui.pretty.HumanUIAgent;
-import com.fossgalaxy.games.fireworks.human.ui.pretty.PrettyGameView;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
@@ -12,10 +11,6 @@ import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.state.events.MessageType;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * Created by webpigeon on 11/04/17.

@@ -5,15 +5,12 @@ import com.fossgalaxy.games.fireworks.ai.iggi.IGGIFactory;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSNode;
 import com.fossgalaxy.games.fireworks.ai.mcts.MCTSPredictor;
-import com.fossgalaxy.games.fireworks.ai.rule.Rule;
-import com.fossgalaxy.games.fireworks.ai.rule.RuleSet;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 import com.fossgalaxy.stats.BasicStats;
 import com.fossgalaxy.stats.StatsSummary;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**

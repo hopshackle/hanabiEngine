@@ -4,7 +4,9 @@ import com.fossgalaxy.games.fireworks.ai.rule.AbstractRule;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
-import com.fossgalaxy.games.fireworks.state.events.*;
+import com.fossgalaxy.games.fireworks.state.events.CardInfo;
+import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.state.events.MessageType;
 
 import java.util.Arrays;
 import java.util.LinkedList;

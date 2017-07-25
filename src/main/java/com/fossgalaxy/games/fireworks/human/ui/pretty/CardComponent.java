@@ -8,8 +8,6 @@ import com.fossgalaxy.games.fireworks.state.TimedHand;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D;
 
 /**
  * Created by webpigeon on 20/04/17.

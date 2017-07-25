@@ -3,8 +3,6 @@ package com.fossgalaxy.games.fireworks.human.ui.pretty;
 import com.fossgalaxy.games.fireworks.human.ui.GameView;
 import com.fossgalaxy.games.fireworks.state.GameState;
 
-import javax.sound.midi.MidiDevice;
-import javax.swing.*;
 import java.awt.*;
 
 /**

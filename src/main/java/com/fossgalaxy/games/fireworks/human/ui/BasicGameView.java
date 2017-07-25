@@ -1,12 +1,10 @@
 package com.fossgalaxy.games.fireworks.human.ui;
 
-import com.fossgalaxy.games.fireworks.graphing.Graphing;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
