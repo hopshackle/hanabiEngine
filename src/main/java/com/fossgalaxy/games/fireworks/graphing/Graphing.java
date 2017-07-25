@@ -16,7 +16,7 @@ public class Graphing {
     public static void main(String[] args) {
 
         FirstMoveGameRunner runner = new FirstMoveGameRunner("0", 3);
-        Player flatmc = new AgentPlayer("flatmc-iggi", AgentUtils.buildAgent("flatmc-iggi"));
+        //Player flatmc = new AgentPlayer("flatmc-iggi", AgentUtils.buildAgent("flatmc-iggi"));
         Player mcts = new AgentPlayer("mctsND", AgentUtils.buildAgent("mcts"));
         Player iggi = new AgentPlayer("iggi", AgentUtils.buildAgent("iggi"));
         Player iggi2 = new AgentPlayer("iggi", AgentUtils.buildAgent("iggi"));

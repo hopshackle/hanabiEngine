@@ -211,12 +211,12 @@ public class MCTSNode {
     }
 
     public String printD3(){
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         printD3Internal(buffer);
         return buffer.toString();
     }
 
-    private void printD3Internal(StringBuffer buffer){
+    private void printD3Internal(StringBuilder buffer){
         buffer.append("{\"name\": \"\"");
         if(!children.isEmpty()){
             buffer.append(",\"children\":[");

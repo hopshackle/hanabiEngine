@@ -49,7 +49,7 @@ public class MockApp {
         JComponent box = new JPanel(new GridLayout(5, 1));
 
         for (int i=0; i<5; i++) {
-            box.add(new JLabel(""+(i+1)));
+            box.add(new JLabel(""+ Integer.toString(i+1)));
         }
 
         return box;
