@@ -1,6 +1,8 @@
 package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,6 +13,7 @@ import java.util.function.Function;
  * Created by piers on 07/04/17.
  */
 public class MethodFactory implements AgentFactory{
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodFactory.class);
     private final Class<?> clazz;
     private final Method method;
     private final Function<String, ?>[] converters;
@@ -44,10 +47,8 @@ public class MethodFactory implements AgentFactory{
 
         try {
             return (Agent) method.invoke(null, params);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            LOGGER.error("error building from method: {}", e);
         }
         return null;
     }

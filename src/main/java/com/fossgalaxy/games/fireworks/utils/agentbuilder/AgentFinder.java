@@ -282,10 +282,8 @@ public class AgentFinder {
     private Object getConverter(Method methodWithThatName, String s) {
         try {
             return methodWithThatName.invoke(null, s);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            logger.error("error invoking method {}", e);
         }
         return null;
     }

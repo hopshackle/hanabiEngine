@@ -1,6 +1,8 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,6 +15,7 @@ import java.util.Scanner;
  * Generate matchups between an agent and other agents.
  */
 public class GenerateGAPredictorGames {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateGAPredictorGames.class);
 
     private GenerateGAPredictorGames() {
 
@@ -78,7 +81,7 @@ public class GenerateGAPredictorGames {
                 fileBody = fileBody.concat(scanner.nextLine());
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("error reading file, ", e);
         }
         return fileBody.replace(";",",");
     }

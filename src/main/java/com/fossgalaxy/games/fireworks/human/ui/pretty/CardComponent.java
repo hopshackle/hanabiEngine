@@ -60,7 +60,7 @@ public class CardComponent extends JComponent {
         int w = metrics.stringWidth(cardVal)/2;
         int h = metrics.getHeight() / 2;
 
-        g.setColor(GameView.textColors.get(javaColour));
+        g.setColor(GameView.getTextColour(javaColour));
         g.drawString(cardVal, getWidth()/2 - w, getHeight()/2);
 
         if (hand instanceof TimedHand) {

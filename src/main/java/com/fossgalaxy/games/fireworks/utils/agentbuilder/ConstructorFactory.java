@@ -2,6 +2,8 @@ package com.fossgalaxy.games.fireworks.utils.agentbuilder;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.agentbuilder.AgentFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +14,8 @@ import java.util.function.Function;
  * Created by webpigeon on 06/04/17.
  */
 public class ConstructorFactory implements AgentFactory {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConstructorFactory.class);
+
     private final Class<? extends Agent> clazz;
     private final Constructor<?> constructor;
     private final Function<String, ?>[] converters;
@@ -47,12 +51,8 @@ public class ConstructorFactory implements AgentFactory {
 
         try {
             return (Agent)constructor.newInstance(params);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            LOGGER.error("error building from constructor {}", e);
         }
         return null;
     }

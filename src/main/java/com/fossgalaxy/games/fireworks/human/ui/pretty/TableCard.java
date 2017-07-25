@@ -42,7 +42,7 @@ public class TableCard extends JComponent {
         FontMetrics metrics = g.getFontMetrics();
         int w = metrics.stringWidth(cardVal) / 2;
 
-        g.setColor(GameView.textColors.get(javaColour));
+        g.setColor(GameView.getTextColour(javaColour));
         g.drawString(cardVal, getWidth() / 2 - w, getHeight() / 2);
     }
 
