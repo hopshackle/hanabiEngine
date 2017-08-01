@@ -58,9 +58,13 @@ public class MCTSFixedDet extends MCTSExpConst {
      * @param iterationBudget the total number of iterations to use
      * @param determinsations the number of worlds to explore
      */
-    @AgentConstructor("fixedMcts")
     public MCTSFixedDet(int iterationBudget, int determinsations) {
         this(iterationBudget, determinsations, MCTSNode.DEFAULT_EXP_CONST);
+    }
+
+    @AgentBuilderStatic("fixedMcts")
+    public static MCTSFixedDet buildMCTSDefaults(int iterationBudget, int determinsations) {
+        return new MCTSFixedDet(iterationBudget, determinsations, MCTSNode.DEFAULT_EXP_CONST);
     }
 
     @AgentBuilderStatic("fixedMctsDefaults")

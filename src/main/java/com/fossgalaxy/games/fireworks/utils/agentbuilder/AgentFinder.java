@@ -60,8 +60,8 @@ public class AgentFinder {
         NoisyPredictor predictor = (NoisyPredictor) finder.buildAgent("noisy", "0.9", "iggi");
         System.out.println(predictor);
 
-        MonteCarloSearch mcs = (MonteCarloSearch) finder.buildAgent("mcs", "iggi");
-        System.out.println(mcs);
+        /*MonteCarloSearch mcs = (MonteCarloSearch) finder.buildAgent("mcs", "iggi");
+        System.out.println(mcs);*/
         finder.knownFactories.values().forEach(System.out::println);
     }
 
