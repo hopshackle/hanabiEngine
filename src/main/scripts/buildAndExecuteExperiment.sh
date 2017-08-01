@@ -79,7 +79,7 @@ cat >$TASK_DIR/experiment.job <<END
 export MALLOC_ARENA_MAX=4
 export FIREWORKS_RUN_COUNT=1
 vmArgs="-Xmx1024m -XX:ParallelGCThreads=1"
-args=$(awk NR==\$SGE_TASK_ID args.txt)
+args=\$(awk NR==\$SGE_TASK_ID args.txt)
 java $vmArgs -cp $JAR_FILE $RUNNER_CLASS \$args
 
 END
