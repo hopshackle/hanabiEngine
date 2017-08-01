@@ -41,6 +41,10 @@ public class App {
 
         Random r = new Random();
 
+        String[] agents = new String[] {
+            "iggi", "piers", "flawed", "outer", "vdb-paper", "legal_random"
+        };
+
         long[] seeds = new long[100];
 
         double[] p = new double[]{
@@ -63,37 +67,40 @@ public class App {
             7.0
         };
 
-        StatsSummary[] ss = new StatsSummary[p.length];
-        for (int i=0; i<ss.length; i++) {
-            ss[i] = new BasicStats();
+        StatsSummary[][] ss = new StatsSummary[agents.length][p.length];
+        for (int j=0; j<agents.length; j++) {
+            for (int i = 0; i < ss.length; i++) {
+                ss[j][i] = new BasicStats();
+            }
         }
 
         for (int i=0; i<seeds.length; i++) {
             seeds[i] = r.nextLong();
         }
 
+        for (int agent=0; agent<agents.length; agent++) {
+            for (int i = 0; i < p.length; i++) {
 
-        for (int i=0; i<p.length; i++) {
+                MCTSNode.EXP_CONST = p[i];
 
-            MCTSNode.EXP_CONST = p[i];
+                for (int run = 0; run < seeds.length; run++) {
+                    GameStats stats = playMixed("mctsND", agents[agent], seeds[i]);
+                    sum += stats.score;
+                    games++;
+                    ss[agent][i].add(stats.score);
+                    System.out.println(String.format("line,%f,%s,%d,%d,%d,%d,%d", p[i], agents[agent], seeds[i], stats.score, stats.lives, stats.moves, stats.disqal));
+                }
 
-            for (int run = 0; run < seeds.length; run++) {
-                GameStats stats = playMixed("mctsND", "iggi", seeds[i]);
-                sum += stats.score;
-                games++;
-                ss[i].add(stats.score);
+                if (games == 0) {
+                    return;
+                }
 
+                System.out.println("exp: " + p[i] + "avg: " + sum / games);
+                System.out.println("exp: " + p[i] + " stats: " + ss[i]);
+
+                StatsSummary ssi = ss[agent][i];
+                System.out.println(String.format("summary,%f,%s,%f,%f,%f,%f", p[i], agents[agent], ssi.getMin(), ssi.getMax(), ssi.getMean(), ssi.getRange()));
             }
-
-            if (games == 0) {
-                return;
-            }
-
-            System.out.println("exp: "+p[i]+"avg: " + sum / games);
-            System.out.println("exp: "+p[i]+" stats: "+ss[i]);
-
-            StatsSummary ssi = ss[i];
-            System.out.println(String.format("csv,%f,%f,%f,%f,%f",p[i],ssi.getMin(), ssi.getMax(), ssi.getMean(), ssi.getRange()));
         }
     }
 
