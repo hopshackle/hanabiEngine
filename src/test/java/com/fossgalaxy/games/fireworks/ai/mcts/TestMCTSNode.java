@@ -18,7 +18,7 @@ public class TestMCTSNode {
 
     @Test
     public void testRootNodeIsRoot() {
-        MCTSNode node = new MCTSNode(Collections.emptyList());
+        MCTSNode node = new MCTSNode(MCTSNode.DEFAULT_EXP_CONST, Collections.emptyList());
 
         assertEquals(0, node.getDepth());
         assertEquals(true, node.isLeaf());
@@ -51,7 +51,7 @@ public class TestMCTSNode {
         List<Action> possibleActions = new ArrayList<>();
         possibleActions.add(testAction);
 
-        MCTSNode root = new MCTSNode(possibleActions);
+        MCTSNode root = new MCTSNode(MCTSNode.DEFAULT_EXP_CONST, possibleActions);
         assertEquals(true, root.isLeaf());
         assertEquals(false, root.containsChild(testAction));
 

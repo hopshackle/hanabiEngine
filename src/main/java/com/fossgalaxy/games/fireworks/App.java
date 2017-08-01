@@ -47,7 +47,21 @@ public class App {
 
         long[] seeds = new long[100];
 
-        double[] p = new double[]{
+
+        //values from the IS-MCTS paper
+        double[] p = new double[] {
+                0,
+                0.25,
+                0.5,
+                0.75,
+                1,
+                1.25,
+                1.5,
+                1.75,
+                2
+        };
+
+        /*double[] p = new double[]{
             0.0,
             0.1,
             0.2,
@@ -65,7 +79,7 @@ public class App {
             5.0,
             6.0,
             7.0
-        };
+        };*/
 
         StatsSummary[][] ss = new StatsSummary[agents.length][p.length];
         for (int j=0; j<agents.length; j++) {
@@ -81,10 +95,8 @@ public class App {
         for (int agent=0; agent<agents.length; agent++) {
             for (int i = 0; i < p.length; i++) {
 
-                MCTSNode.EXP_CONST = p[i];
-
                 for (int run = 0; run < seeds.length; run++) {
-                    GameStats stats = playMixed("mctsND", agents[agent], seeds[i]);
+                    GameStats stats = playMixed("mctsExpConstND["+p[i]+"]", agents[agent], seeds[i]);
                     sum += stats.score;
                     games++;
                     ss[agent][i].add(stats.score);

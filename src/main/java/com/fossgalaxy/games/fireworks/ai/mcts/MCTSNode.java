@@ -18,12 +18,13 @@ import java.util.stream.Collectors;
  */
 public class MCTSNode {
 
-    public static double EXP_CONST = Math.sqrt(2);
+    public static final double DEFAULT_EXP_CONST = Math.sqrt(2);
 
     private static final int MAX_SCORE = 25;
     private static final double EPSILON = 1e-6;
     private static final boolean DISCOUNT_ENABLED = false;
 
+    private final double expConst;
     private final Action moveToState;
     private final int agentId;
     private final MCTSNode parent;
@@ -41,14 +42,27 @@ public class MCTSNode {
     protected final StatsSummary rolloutMoves;
 
     public MCTSNode(Collection<Action> allUnexpandedActions) {
-        this(null, -1, null, allUnexpandedActions);
+        this(null, -1, null, DEFAULT_EXP_CONST, allUnexpandedActions);
+    }
+
+    public MCTSNode(double expConst, Collection<Action> allUnexpandedActions) {
+        this(null, -1, null, expConst, allUnexpandedActions);
     }
 
     public MCTSNode(int agentID, Action moveToState, Collection<Action> allUnexpandedActions) {
-        this(null, agentID, moveToState, allUnexpandedActions);
+        this(null, agentID, moveToState, DEFAULT_EXP_CONST, allUnexpandedActions);
+    }
+
+    public MCTSNode(int agentID, Action moveToState, double expConst, Collection<Action> allUnexpandedActions) {
+        this(null, agentID, moveToState, expConst, allUnexpandedActions);
     }
 
     public MCTSNode(MCTSNode parent, int agentId, Action moveToState, Collection<Action> allUnexpandedActions) {
+        this(parent, agentId, moveToState, DEFAULT_EXP_CONST, allUnexpandedActions);
+    }
+
+    public MCTSNode(MCTSNode parent, int agentId, Action moveToState, double expConst, Collection<Action> allUnexpandedActions) {
+        this.expConst = expConst;
         this.parent = parent;
         this.agentId = agentId;
         this.moveToState = moveToState;
@@ -75,7 +89,7 @@ public class MCTSNode {
             return 0;
         }
 
-        return ((score / MAX_SCORE) / visits) + (EXP_CONST * Math.sqrt(Math.log(parentWasVisitedAndIWasLegal) / visits));
+        return ((score / MAX_SCORE) / visits) + (expConst * Math.sqrt(Math.log(parentWasVisitedAndIWasLegal) / visits));
     }
 
     public List<MCTSNode> getChildren() {
