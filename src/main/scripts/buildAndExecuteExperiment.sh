@@ -18,12 +18,19 @@ RUNNER_CLASS=com.fossgalaxy.games.fireworks.cluster.MixedAgentGameSingle
 MAX_JOB_SIZE=5000
 JOB_NAME="Hanabi_Run"
 
-if [ $# = 1 ]; then
+# check the user provided task to run
+if [ $# -ge 1 ]; then
     EXPERIMENT=$1
     echo "using $1 as generator..."
 else
     echo "MISSING GENERATOR ARG, PLEASE PROVIDE"
     exit 1;
+fi
+
+# they may have provided a runner, but might not have...
+if [ $# -ge 2 ]; then
+    RUNNER_CLASS="com.fossgalaxy.games.fireworks.cluster."$2
+    echo "using $RUNNER_CLASS as runner..."
 fi
 
 GENERATOR_CLASS=$BASE_GENERATOR_PACKAGE.$EXPERIMENT
