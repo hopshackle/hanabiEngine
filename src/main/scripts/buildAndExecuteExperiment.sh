@@ -22,8 +22,15 @@ JOB_NAME="Hanabi_Run"
 if [ $# -ge 1 ]; then
     EXPERIMENT=$1
     echo "using $1 as generator..."
+
+    # check the requested generator actually exists
+    GEN_FULL_PACKAGE=$BASE_GENERATOR_PACKAGE.$EXPERIMENT
+    if [ ! -f "src/main/java/"${GEN_FULL_PACKAGE//./\/}".java" ]; then
+        echo "[!] Generator file couldn't be found, did you typo?"
+        exit 1;
+    fi
 else
-    echo "MISSING GENERATOR ARG, PLEASE PROVIDE"
+    echo "[!] MISSING GENERATOR ARG, PLEASE PROVIDE"
     exit 1;
 fi
 
@@ -31,6 +38,12 @@ fi
 if [ $# -ge 2 ]; then
     RUNNER_CLASS="com.fossgalaxy.games.fireworks.cluster."$2
     echo "using $RUNNER_CLASS as runner..."
+
+    # check the requested runner actually exists
+    if [ ! -f "src/main/java/"${RUNNER_CLASS//./\/}".java" ]; then
+        echo "[!] Runner file couldn't be found, did you typo?"
+        exit 1;
+    fi
 fi
 
 GENERATOR_CLASS=$BASE_GENERATOR_PACKAGE.$EXPERIMENT
