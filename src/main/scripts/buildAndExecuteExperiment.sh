@@ -12,10 +12,22 @@ VERSION=1.0.0
 SUBJECT=webpigeon
 
 JAR_FILE=fireworks-0.2.2-SNAPSHOT-jar-with-dependencies.jar
-GENERATOR_CLASS=com.fossgalaxy.games.fireworks.cluster.GenerateGames
+BASE_GENERATOR_PACKAGE=com.fossgalaxy.games.fireworks.cluster
+BASIC_GENERATOR=GenerateGames
 RUNNER_CLASS=com.fossgalaxy.games.fireworks.cluster.MixedAgentGameSingle
 MAX_JOB_SIZE=5000
 JOB_NAME="Hanabi_Run"
+
+if [ $# = 1 ]; then
+    EXPERIMENT=$1
+    echo "using $1 as generator..."
+else
+    echo "MISSING GENERATOR ARG, PLEASE PROVIDE"
+    exit 1;
+fi
+
+GENERATOR_CLASS=$BASE_GENERATOR_PACKAGE.$EXPERIMENT
+
 
 # params for generator
 export FIREWORKS_NUM_SEEDS=200
@@ -34,7 +46,7 @@ git pull
 GIT_COMMIT=$(git rev-parse HEAD)
 
 # Create a folder to drop stuff into
-TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT
+TASK_DIR=`pwd`/results/tasks/`date -I`/$GIT_COMMIT/$EXPERIMENT
 
 # Sanity check - don't permit the same run twice
 if [ -d "$TASK_DIR" ]; then
