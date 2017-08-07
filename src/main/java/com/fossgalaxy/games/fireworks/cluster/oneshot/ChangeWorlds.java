@@ -34,7 +34,7 @@ public class ChangeWorlds {
         for (int seedID = 0; seedID < numSeeds; seedID++) {
             long seed = r.nextLong();
 
-            for (int worlds=0; worlds<100; worlds += 10) {
+            for (int worlds=100; worlds<10_000; worlds += 500) {
                     String agentUnderTest = String.format("fixedMcts[%d:%d]", ITR_BUDGET, worlds);
 
                     for (String agentPaired : agentsPaired) {

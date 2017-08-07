@@ -12,22 +12,18 @@ import java.util.Random;
 public class ChangeExpConst {
     private static final double[] EXP_VALUES = {
             0.00,
+            0.05,
+            0.10,
+            0.15,
+            0.20,
             0.25,
+            0.30,
+            0.35,
+            0.40,
+            0.45,
             0.50,
             0.75,
-            1.00,
-            1.25,
-            Math.sqrt(2), //Default value (comparison)
-            1.50,
-            1.75,
-            2.00,
-            2.25,
-            2.50,
-            2.75,
-            3.00,
-            3.25,
-            3.50,
-            4.00
+            1.00
     };
 
     public static void main(String[] args) {
