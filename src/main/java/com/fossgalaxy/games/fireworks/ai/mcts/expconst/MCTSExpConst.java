@@ -1,7 +1,9 @@
-package com.fossgalaxy.games.fireworks.ai.mcts;
+package com.fossgalaxy.games.fireworks.ai.mcts.expconst;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
+import com.fossgalaxy.games.fireworks.ai.mcts.IterationObject;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTSNode;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
@@ -112,13 +114,6 @@ public class MCTSExpConst implements Agent {
             current.backup(score);
             if(calcTree){
                 System.out.println(root.printD3());
-            }
-        }
-
-        if (logger.isInfoEnabled()) {
-            for (MCTSNode level1 : root.getChildren()) {
-                logger.info("rollout {} moves: max: {}, min: {}, avg: {}, N: {} ", level1.getAction(), level1.rolloutMoves.getMax(), level1.rolloutMoves.getMin(), level1.rolloutMoves.getMean(), level1.rolloutMoves.getN());
-                logger.info("rollout {} scores: max: {}, min: {}, avg: {}, N: {} ", level1.getAction(), level1.rolloutScores.getMax(), level1.rolloutScores.getMin(), level1.rolloutScores.getMean(), level1.rolloutScores.getN());
             }
         }
 

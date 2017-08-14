@@ -79,7 +79,7 @@ public class MCTSNode {
         assert (parent != null && moveToState != null) || (parent == null && moveToState == null);
     }
 
-    protected void addChild(MCTSNode node) {
+    public void addChild(MCTSNode node) {
         allUnexpandedActions.remove(node.getAction());
         children.add(node);
     }

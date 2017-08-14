@@ -1,7 +1,8 @@
-package com.fossgalaxy.games.fireworks.ai.mcts;
+package com.fossgalaxy.games.fireworks.ai.mcts.expconst;
 
-import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
+import com.fossgalaxy.games.fireworks.ai.mcts.IterationObject;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTSNode;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
@@ -10,8 +11,6 @@ import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.events.GameEvent;
-import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,6 @@ public class MCTSFixedDet extends MCTSExpConst {
 
     protected final int iterationBudget;
     protected final int determinsations;
-    protected final double expConst;
 
     protected final Random random;
     protected final Logger logger = LoggerFactory.getLogger(MCTSFixedDet.class);
@@ -47,7 +45,6 @@ public class MCTSFixedDet extends MCTSExpConst {
         super(expConst);
         this.iterationBudget = iterationBudget;
         this.determinsations = determinsations;
-        this.expConst = expConst;
 
         this.random = new Random();
     }
