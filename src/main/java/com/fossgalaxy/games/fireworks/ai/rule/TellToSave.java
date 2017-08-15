@@ -29,6 +29,8 @@ public class TellToSave extends AbstractTellRule {
             // Find unique card in hand
             for (int slot = 0; slot < hand.getSize(); slot++) {
                 Card card = hand.getCard(slot);
+                if (card == null) continue;
+
 //                System.out.println("Player: " + nextPlayerID + " Has Card: " + card);
                 if (HandUtils.isSafeToDiscard(state, card.colour, card.value)) {
 //                    System.out.println("Card is useless: " + card);
