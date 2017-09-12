@@ -20,6 +20,12 @@ import java.util.Map;
 public class TellFinesse extends AbstractTellRule {
 
     @Override
+    public boolean canFire(int playerID, GameState state) {
+        if(state.getPlayerCount() == 2) return false;
+        return super.canFire(playerID, state);
+    }
+
+    @Override
     public Action execute(int playerID, GameState state) {
         // if this is a 2 player game, we can't do this move.
         if (state.getPlayerCount() == 2) {

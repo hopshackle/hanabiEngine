@@ -21,6 +21,12 @@ import java.util.LinkedList;
 public class PlayFinesse extends AbstractRule {
 
     @Override
+    public boolean canFire(int playerID, GameState state) {
+        if(state.getPlayerCount() == 2) return false;
+        return super.canFire(playerID, state);
+    }
+
+    @Override
     public Action execute(int playerID, GameState state) {
         LinkedList<GameEvent> eventHistory = state.getHistory();
         GameEvent lastEvent = eventHistory.getLast();
@@ -43,6 +49,7 @@ public class PlayFinesse extends AbstractRule {
         // is one of the cards indicated 1 card away from being playable
         Hand playerHand = state.getHand(playerTold);
         for (int slot : playerSlots) {
+            if(!playerHand.hasCard(slot)) continue;
             Card card = playerHand.getCard(slot);
 
             //find out if someone is trying to finesse this card

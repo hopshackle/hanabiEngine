@@ -21,6 +21,12 @@ public class PlayFinesseTold extends AbstractRule {
     private static final List<MessageType> TELL = Arrays.asList(MessageType.CARD_INFO_COLOUR, MessageType.CARD_INFO_VALUE);
 
     @Override
+    public boolean canFire(int playerID, GameState state) {
+        if(state.getPlayerCount() == 2) return false;
+        return super.canFire(playerID, state);
+    }
+
+    @Override
     public Action execute(int playerID, GameState state) {
 
         LinkedList<GameEvent> history = state.getHistory();
