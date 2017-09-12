@@ -185,7 +185,7 @@ public class BasicState implements GameState {
      *
      * This should not be called directly, instead init should deal with this for us.
      */
-    private void dealHands() {
+    public void dealHands() {
         for (int hand = 0; hand < hands.length; hand++) {
             deal(hand);
         }

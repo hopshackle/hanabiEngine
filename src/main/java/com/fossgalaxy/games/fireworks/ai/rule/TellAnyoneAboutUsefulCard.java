@@ -4,8 +4,6 @@ import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.TellColour;
-import com.fossgalaxy.games.fireworks.state.actions.TellValue;
 
 /**
  * Tell any other player about a card in their hand if it is useful in this situation.

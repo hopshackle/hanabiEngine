@@ -28,11 +28,11 @@ public class TestTellAnyoneAboutUselessCard {
         this.state.setInformation(7);
         this.instance = new TellAnyoneAboutUselessCard();
 
-        for (int player = 0; player < state.getPlayerCount(); player++) {
+        /*for (int player = 0; player < state.getPlayerCount(); player++) {
             for (int slot = 0; slot < state.getHandSize(); slot++) {
                 state.getHand(player).setHasCard(slot, true);
             }
-        }
+        }*/
     }
 
     @Test

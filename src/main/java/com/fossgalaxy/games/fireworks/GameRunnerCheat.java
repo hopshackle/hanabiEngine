@@ -4,9 +4,6 @@ import com.fossgalaxy.games.fireworks.state.events.CardDrawn;
 import com.fossgalaxy.games.fireworks.state.events.CheatEvent;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 
-import java.io.PrintStream;
-import java.util.UUID;
-
 /**
  * Game runner that allows the agents to know what cards are in their hands.
  */

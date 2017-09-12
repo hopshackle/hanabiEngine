@@ -1,19 +1,16 @@
-package com.fossgalaxy.games.fireworks.cluster;
+package com.fossgalaxy.games.fireworks.cluster.oneshot;
 
-import com.fossgalaxy.games.fireworks.App;
-import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
 
 /**
- * Generate matchups between an agent and other agents.
+ * Experiment to see how the exploration constant changes MCTS performance with a fixed budget.
+ *
+ * Created by webpigeon on 01/08/17.
  */
-public class GeneratePredictorGames {
-
-    private GeneratePredictorGames() {
-
-    }
+public class ChangeWorlds {
+    private static final int ITR_BUDGET = 10_000;
 
     public static void main(String[] args) {
         String[] agentsPaired = SetupUtils.getPairedNames();
@@ -33,15 +30,17 @@ public class GeneratePredictorGames {
             r = new Random();
         }
 
+
         for (int seedID = 0; seedID < numSeeds; seedID++) {
             long seed = r.nextLong();
-                for (String agentPaired : agentsPaired) {
-                    for (double x=0; x<1; x+=0.1) {
-                        String predictorType = String.format("%s%s%f%s%s%s", "noisy", AgentUtils.PARAM_START, x, AgentUtils.PARAM_SEPARATOR, agentPaired, AgentUtils.PARAM_END );
-                        System.out.println(String.format("%s %s %d %s %s", App.PREDICTOR_MCTSND, agentPaired, seed, "normal", predictorType));
+
+            for (int worlds=100; worlds<10_000; worlds += 500) {
+                    String agentUnderTest = String.format("fixedMcts[%d:%d]", ITR_BUDGET, worlds);
+
+                    for (String agentPaired : agentsPaired) {
+                        System.out.println(String.format("%s %s %d", agentUnderTest, agentPaired, seed));
                     }
                 }
+            }
         }
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.cluster;
 
-import com.fossgalaxy.games.fireworks.App;
 import com.fossgalaxy.games.fireworks.GameStats;
 import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
@@ -8,9 +7,9 @@ import com.fossgalaxy.games.fireworks.utils.GameUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 import org.slf4j.MDC;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Random;
-import java.io.PrintStream;
 
 /**
  * A runner capable of playing the games for every legal hand size

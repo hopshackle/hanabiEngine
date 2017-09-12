@@ -60,8 +60,8 @@ public class AgentFinder {
         NoisyPredictor predictor = (NoisyPredictor) finder.buildAgent("noisy", "0.9", "iggi");
         System.out.println(predictor);
 
-        MonteCarloSearch mcs = (MonteCarloSearch) finder.buildAgent("mcs", "iggi");
-        System.out.println(mcs);
+        /*MonteCarloSearch mcs = (MonteCarloSearch) finder.buildAgent("mcs", "iggi");
+        System.out.println(mcs);*/
         finder.knownFactories.values().forEach(System.out::println);
     }
 
@@ -224,7 +224,7 @@ public class AgentFinder {
                     continue;
                 }
 
-                String name = builder.value().equals("") ? agentClazz.getSimpleName() : builder.value();
+                String name = "".equals(builder.value()) ? agentClazz.getSimpleName() : builder.value();
                 bestMatch = constructor;
 
                 HashMap<Integer, Parameter> parameters = new HashMap<>();
@@ -282,10 +282,8 @@ public class AgentFinder {
     private Object getConverter(Method methodWithThatName, String s) {
         try {
             return methodWithThatName.invoke(null, s);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            logger.error("error invoking method {}", e);
         }
         return null;
     }

@@ -1,19 +1,30 @@
-package com.fossgalaxy.games.fireworks.cluster;
+package com.fossgalaxy.games.fireworks.cluster.oneshot;
 
-import com.fossgalaxy.games.fireworks.App;
-import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
 
 import java.util.Random;
 
 /**
- * Generate matchups between an agent and other agents.
+ * Experiment to see how the number of worlds changes how MCTS behaves
+ *
+ * Created by webpigeon on 01/08/17.
  */
-public class GeneratePredictorGames {
-
-    private GeneratePredictorGames() {
-
-    }
+public class ChangeExpConst {
+    private static final double[] EXP_VALUES = {
+            0.00,
+            0.05,
+            0.10,
+            0.15,
+            0.20,
+            0.25,
+            0.30,
+            0.35,
+            0.40,
+            0.45,
+            0.50,
+            0.75,
+            1.00
+    };
 
     public static void main(String[] args) {
         String[] agentsPaired = SetupUtils.getPairedNames();
@@ -33,15 +44,17 @@ public class GeneratePredictorGames {
             r = new Random();
         }
 
+
         for (int seedID = 0; seedID < numSeeds; seedID++) {
             long seed = r.nextLong();
-                for (String agentPaired : agentsPaired) {
-                    for (double x=0; x<1; x+=0.1) {
-                        String predictorType = String.format("%s%s%f%s%s%s", "noisy", AgentUtils.PARAM_START, x, AgentUtils.PARAM_SEPARATOR, agentPaired, AgentUtils.PARAM_END );
-                        System.out.println(String.format("%s %s %d %s %s", App.PREDICTOR_MCTSND, agentPaired, seed, "normal", predictorType));
+
+            for (int i=0; i<EXP_VALUES.length; i++) {
+                    String agentUnderTest = String.format("mctsExpConstND[%f]", EXP_VALUES[i]);
+
+                    for (String agentPaired : agentsPaired) {
+                        System.out.println(String.format("%s %s %d", agentUnderTest, agentPaired, seed));
                     }
                 }
+            }
         }
-    }
-
 }

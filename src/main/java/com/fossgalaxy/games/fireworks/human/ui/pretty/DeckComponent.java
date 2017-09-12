@@ -1,10 +1,7 @@
 package com.fossgalaxy.games.fireworks.human.ui.pretty;
 
 import com.fossgalaxy.games.fireworks.human.ui.GameView;
-import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
 
 import javax.swing.*;
 import java.awt.*;

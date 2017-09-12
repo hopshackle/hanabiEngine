@@ -170,7 +170,7 @@ public class testHandUtils {
 
         for(int slot = 0; slot < hand.getSize(); slot++){
             hand.setCard(slot, new Card(handValues[slot], RED));
-            hand.setHasCard(slot, true);
+            //hand.setHasCard(slot, true);
             if(knownValues[slot] != null){
                 hand.setKnownValue(knownValues[slot], new Integer[]{slot});
             }

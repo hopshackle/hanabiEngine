@@ -23,10 +23,14 @@ public class HumanGame {
             if( i != human) {
                 runner.addPlayer(new AgentPlayer(pairedWith, AgentUtils.buildAgent(pairedWith)));
             } else {
-                String models = pairedWith;
+
+                StringBuilder sb = new StringBuilder();
+                sb.append(pairedWith);
                 for (int j=1; j<nPlayers; j++) {
-                    models+= "|"+pairedWith;
+                    sb.append("|");
+                    sb.append(pairedWith);
                 }
+                String models = sb.toString();
 
                 runner.addPlayer(new UIPlayer("uiPlayer", new HumanUIAgent(), true));
             }

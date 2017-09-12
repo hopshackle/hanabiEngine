@@ -2,14 +2,11 @@ package com.fossgalaxy.games.fireworks.human.ui;
 
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.actions.*;
-import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoColour;
 import com.fossgalaxy.games.fireworks.state.events.CardInfoValue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +25,7 @@ public abstract class GameView extends JComponent {
 
     protected boolean waitingForMove = false;
 
-    public static final Map<Color, Color> textColors = new HashMap<>();
+    protected static final Map<Color, Color> textColors = new HashMap<>();
 
     static{
         textColors.put(Color.WHITE, Color.BLACK);
@@ -44,6 +41,10 @@ public abstract class GameView extends JComponent {
         textColors.put(TANGO_CHOC, Color.WHITE);
         textColors.put(TANGO_GREEN, Color.BLACK);
 
+    }
+
+    public static Color getTextColour(Color background) {
+        return textColors.getOrDefault(background, TANGO_DARK);
     }
 
     public static Color getColor(CardColour colour) {

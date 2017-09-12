@@ -1,12 +1,10 @@
 package com.fossgalaxy.games.fireworks.human.ui;
 
-import com.fossgalaxy.games.fireworks.graphing.Graphing;
 import com.fossgalaxy.games.fireworks.state.Card;
 import com.fossgalaxy.games.fireworks.state.CardColour;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,7 +16,7 @@ import java.util.Map;
 public class BasicGameView extends GameView {
 
     public static final int MARGIN = 15;
-    private final Object _state = new Object();
+    private transient final Object _state = new Object();
     private final Map<Color, Color> textColors = new HashMap<>();
 
     private GameState state;
@@ -59,8 +57,8 @@ public class BasicGameView extends GameView {
                     Hand hand = state.getHand(playerID);
 
                     for (int slot = 0; slot < hand.getSize(); slot++) {
-                        Color color = Color.BLACK;
-                        String number = "?";
+                        Color color;
+                        String number;
 
                         if (playerID == myPlayerID) {
                             Integer thoughtVal = hand.getKnownValue(slot);

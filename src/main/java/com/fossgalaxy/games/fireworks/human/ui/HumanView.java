@@ -6,6 +6,8 @@ import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.games.fireworks.utils.SetupUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.util.Random;
@@ -15,6 +17,7 @@ import java.util.UUID;
  * Created by piers on 11/04/17.
  */
 public class HumanView extends GameRunner {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HumanView.class);
 
     private GameView gameView;
 
@@ -68,7 +71,7 @@ public class HumanView extends GameRunner {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error("interrupted, ", e);
         }
         super.writeState(state);
     }

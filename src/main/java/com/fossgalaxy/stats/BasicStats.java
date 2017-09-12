@@ -1,9 +1,5 @@
 package com.fossgalaxy.stats;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-
 /**
  * Created by webpigeon on 26/01/17.
  */
