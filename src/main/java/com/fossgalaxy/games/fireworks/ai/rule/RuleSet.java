@@ -2,6 +2,9 @@ package com.fossgalaxy.games.fireworks.ai.rule;
 
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
 import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
+import com.fossgalaxy.games.fireworks.ai.rule.finesse.PlayFinesse;
+import com.fossgalaxy.games.fireworks.ai.rule.finesse.PlayFinesseTold;
+import com.fossgalaxy.games.fireworks.ai.rule.finesse.TellFinesse;
 import com.fossgalaxy.games.fireworks.ai.rule.random.*;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.DiscardIfCertain;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.PlayIfCertain;
@@ -89,6 +92,14 @@ public class RuleSet {
         rules.add(new TellToSave());
         rules.add(new TellToSavePartialOnly());
         rules.add(new DiscardUnidentifiedCard());
+
+        // Finesse
+        rules.add(new PlayFinesse());
+        rules.add(new PlayFinesseTold());
+        rules.add(new TellFinesse());
+
+        // New rules
+        rules.add(new PlayUniquePossibleCard());
 
         return rules;
     }
