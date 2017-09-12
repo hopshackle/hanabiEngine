@@ -50,13 +50,13 @@ public class GameRunner {
      * @param expectedPlayers the number of players we expect to be playing.
      */
     public GameRunner(String gameID, int expectedPlayers) {
-        assert expectedPlayers >= 2 : "too few players";
-        assert expectedPlayers < HAND_SIZE.length : "too many players";
+        this(gameID, new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers));
+    }
 
-        this.players = new Player[expectedPlayers];
-        this.state = new BasicState(HAND_SIZE[expectedPlayers], expectedPlayers);
+    public GameRunner(String gameID, GameState state){
+        this.players = new Player[state.getPlayerCount()];
+        this.state = Objects.requireNonNull(state);
         this.nPlayers = 0;
-
         this.nextPlayer = 0;
         this.moves = 0;
         this.gameID = gameID;
