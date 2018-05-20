@@ -105,7 +105,7 @@ public class AgentUtils {
         map.put("rmhc", RMHC::new);
 
         //Non-depth limited mcts versions
-        map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT));
+        map.put("mctsND", () -> new MCTS(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT, MCTS.DEFAULT_TIME_LIMIT));
 
         return map;
     }

@@ -1,6 +1,5 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
-import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
@@ -20,22 +19,7 @@ import java.util.*;
 /**
  * Created by WebPigeon on 09/08/2016.
  */
-public class MCTS implements Agent {
-    public static final int DEFAULT_ITERATIONS = 50_000;
-    public static final int DEFAULT_ROLLOUT_DEPTH = 18;
-    public static final int DEFAULT_TREE_DEPTH_MUL = 1;
-    public static final int DEFAULT_TIME_LIMIT = 1000;
-    public static final int NO_LIMIT = 100;
-
- //   protected final int roundLength;
-    protected final int rolloutDepth;
-    protected final int treeDepthMul;
-    protected final int timeLimit;
-    public final double C;
-    protected final Random random;
-    protected final Logger logger = LoggerFactory.getLogger(MCTS.class);
-
-    protected final boolean calcTree = false;
+public class MCTSBugFix extends MCTS {
 
     /**
      * Create a default MCTS implementation.
@@ -43,12 +27,12 @@ public class MCTS implements Agent {
      * This creates an MCTS agent that has a default roll-out length of 50_000 iterations, a depth of 18 and a tree
      * multiplier of 1.
      */
-    public MCTS() {
-        this(MCTSNode.DEFAULT_EXP_CONST, DEFAULT_ROLLOUT_DEPTH, DEFAULT_TREE_DEPTH_MUL, DEFAULT_TIME_LIMIT);
+    public MCTSBugFix() {
+        super();
     }
 
-    public MCTS(double expConst) {
-        this(expConst, DEFAULT_ROLLOUT_DEPTH, DEFAULT_TREE_DEPTH_MUL, DEFAULT_TIME_LIMIT);
+    public MCTSBugFix(double expConst) {
+        super(expConst);
     }
 
     /**
@@ -59,19 +43,9 @@ public class MCTS implements Agent {
      * @param treeDepthMul
      * @param timeLimit in ms
      */
-    @AgentConstructor("mcts")
-    public MCTS(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit) {
-//        this.roundLength = roundLength;
-        this.rolloutDepth = rolloutDepth;
-        this.treeDepthMul = treeDepthMul;
-        this.timeLimit = timeLimit;
-        this.C = explorationC;
-        this.random = new Random();
-    }
-
-    @AgentBuilderStatic("mctsND")
-    public static MCTS buildMCTSND() {
-        return new MCTS(MCTSNode.DEFAULT_EXP_CONST, MCTS.NO_LIMIT, MCTS.NO_LIMIT, DEFAULT_TIME_LIMIT);
+    @AgentConstructor("mctsBF")
+    public MCTSBugFix(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit) {
+        super(explorationC, rolloutDepth, treeDepthMul, timeLimit);
     }
 
     @Override
@@ -124,7 +98,7 @@ public class MCTS implements Agent {
             deck.shuffle();
 
             MCTSNode current = select(root, currentState, iterationObject);
-            int score = rollout(currentState, agentID, current);
+            int score = rollout(currentState, (current.getAgent() + 1) % state.getPlayerCount(), current);
             current.backup(score);
             if(calcTree){
                 System.out.println(root.printD3());
@@ -157,13 +131,16 @@ public class MCTS implements Agent {
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
         int treeDepth = calculateTreeDepthLimit(state);
-        while (!state.isGameOver() && current.getDepth() < treeDepth) {
+        boolean expandedNode = false;
+
+        while (!state.isGameOver() && current.getDepth() < treeDepth || !expandedNode) {
             MCTSNode next;
             if (current.fullyExpanded(state)) {
                 next = current.getUCTNode(state);
             } else {
                 next = expand(current, state);
-                return next;
+                expandedNode = true;
+                //            return next;
             }
             if (next == null) {
                 //XXX if all follow on states explored so far are null, we are now a leaf node

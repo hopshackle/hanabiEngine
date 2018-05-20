@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A version of the MCTS agent that replaces the random rollout with policy based rollouts.
  */
-public class MCTSPolicy extends MCTS {
+public class MCTSPolicy extends MCTSBugFix {
     private final Logger LOG = LoggerFactory.getLogger(MCTSPolicy.class);
     private final Agent rolloutPolicy;
 
@@ -20,14 +20,14 @@ public class MCTSPolicy extends MCTS {
     }
 
     @AgentConstructor("mctsPolicy")
-    public MCTSPolicy(int roundLength, int rolloutDepth, int treeDepthMul, Agent rollout) {
-        super(roundLength, rolloutDepth, treeDepthMul);
+    public MCTSPolicy(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit, Agent rollout) {
+        super(explorationC, rolloutDepth, treeDepthMul, timeLimit);
         this.rolloutPolicy = rollout;
     }
 
     @AgentBuilderStatic("mctsPolicyND")
     public static MCTSPolicy buildPolicyND(Agent rolloutPolicy) {
-        return new MCTSPolicy(MCTS.DEFAULT_ITERATIONS, MCTS.NO_LIMIT, MCTS.NO_LIMIT, rolloutPolicy);
+        return new MCTSPolicy(MCTSNode.DEFAULT_EXP_CONST, MCTS.NO_LIMIT, MCTS.NO_LIMIT, DEFAULT_TIME_LIMIT, rolloutPolicy);
     }
 
     /**

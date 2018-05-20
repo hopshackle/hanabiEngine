@@ -236,8 +236,8 @@ public class App {
      * @param treeDepth    The tree depth to use for MCTS
      * @return The Agent
      */
-    public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth) {
-        return MCTS.equals(name) ? new MCTS(roundLength, rolloutDepth, treeDepth) : AgentUtils.buildAgent(name);
+    public static Agent buildAgent(String name, int roundLength, int rolloutDepth, int treeDepth, int timeLimit) {
+        return MCTS.equals(name) ? new MCTS(roundLength, rolloutDepth, treeDepth, timeLimit) : AgentUtils.buildAgent(name);
     }
 
     /**
@@ -262,7 +262,7 @@ public class App {
                 agents[i] = null;
             }
             //TODO is this ever paired with MCTS? if not this should be AgentUtils.buildAgent(agentID, size, paired)
-            agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
+  //          agents[i] = buildAgent(paired, roundLength, rolloutDepth, treeDepth);
         }
         return new MCTSPredictor(agents);
     }

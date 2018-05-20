@@ -10,7 +10,11 @@ import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
+import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
+import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.state.events.MessageType;
+import com.fossgalaxy.games.fireworks.state.hands.HandDeterminiser;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,22 +24,9 @@ import java.util.*;
 /**
  * Created by WebPigeon on 09/08/2016.
  */
-public class MCTS implements Agent {
-    public static final int DEFAULT_ITERATIONS = 50_000;
-    public static final int DEFAULT_ROLLOUT_DEPTH = 18;
-    public static final int DEFAULT_TREE_DEPTH_MUL = 1;
-    public static final int DEFAULT_TIME_LIMIT = 1000;
-    public static final int NO_LIMIT = 100;
+public class MCTSInfoSet extends MCTS {
 
- //   protected final int roundLength;
-    protected final int rolloutDepth;
-    protected final int treeDepthMul;
-    protected final int timeLimit;
-    public final double C;
-    protected final Random random;
-    protected final Logger logger = LoggerFactory.getLogger(MCTS.class);
-
-    protected final boolean calcTree = false;
+    private HandDeterminiser handDeterminiser;
 
     /**
      * Create a default MCTS implementation.
@@ -43,11 +34,11 @@ public class MCTS implements Agent {
      * This creates an MCTS agent that has a default roll-out length of 50_000 iterations, a depth of 18 and a tree
      * multiplier of 1.
      */
-    public MCTS() {
+    public MCTSInfoSet() {
         this(MCTSNode.DEFAULT_EXP_CONST, DEFAULT_ROLLOUT_DEPTH, DEFAULT_TREE_DEPTH_MUL, DEFAULT_TIME_LIMIT);
     }
 
-    public MCTS(double expConst) {
+    public MCTSInfoSet(double expConst) {
         this(expConst, DEFAULT_ROLLOUT_DEPTH, DEFAULT_TREE_DEPTH_MUL, DEFAULT_TIME_LIMIT);
     }
 
@@ -57,22 +48,14 @@ public class MCTS implements Agent {
      * @param explorationC
      * @param rolloutDepth
      * @param treeDepthMul
-     * @param timeLimit in ms
+     * @param timeLimit    in ms
      */
-    @AgentConstructor("mcts")
-    public MCTS(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit) {
+    @AgentConstructor("mctsIS")
+    public MCTSInfoSet(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit) {
 //        this.roundLength = roundLength;
-        this.rolloutDepth = rolloutDepth;
-        this.treeDepthMul = treeDepthMul;
-        this.timeLimit = timeLimit;
-        this.C = explorationC;
-        this.random = new Random();
+        super(explorationC, rolloutDepth, treeDepthMul, timeLimit);
     }
 
-    @AgentBuilderStatic("mctsND")
-    public static MCTS buildMCTSND() {
-        return new MCTS(MCTSNode.DEFAULT_EXP_CONST, MCTS.NO_LIMIT, MCTS.NO_LIMIT, DEFAULT_TIME_LIMIT);
-    }
 
     @Override
     public Action doMove(int agentID, GameState state) {
@@ -84,8 +67,6 @@ public class MCTS implements Agent {
         );
 
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
-        List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
-
 
         if (logger.isTraceEnabled()) {
             logger.trace("Possible bindings: ");
@@ -107,26 +88,19 @@ public class MCTS implements Agent {
         }
 
 //        for (int round = 0; round < roundLength; round++) {
-        while(System.currentTimeMillis() < finishTime){
+        while (System.currentTimeMillis() < finishTime) {
             //find a leaf node
             GameState currentState = state.getCopy();
             IterationObject iterationObject = new IterationObject(agentID);
 
-            Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
-
-            Deck deck = currentState.getDeck();
-            Hand myHand = currentState.getHand(agentID);
-            for (int slot = 0; slot < myHand.getSize(); slot++) {
-                Card hand = myHandCards.get(slot);
-                myHand.bindCard(slot, hand);
-                deck.remove(hand);
-            }
-            deck.shuffle();
+            handDeterminiser = new HandDeterminiser(currentState, agentID);
 
             MCTSNode current = select(root, currentState, iterationObject);
-            int score = rollout(currentState, agentID, current);
+            // reset to known hand values before rollout
+            handDeterminiser.reset((current.getAgent() + 1) % currentState.getPlayerCount(), currentState);
+            int score = rollout(currentState, current);
             current.backup(score);
-            if(calcTree){
+            if (calcTree) {
                 System.out.println(root.printD3());
             }
         }
@@ -137,7 +111,7 @@ public class MCTS implements Agent {
                 logger.info("rollout {} scores: max: {}, min: {}, avg: {}, N: {} ", level1.getAction(), level1.rolloutScores.getMax(), level1.rolloutScores.getMin(), level1.rolloutScores.getMean(), level1.rolloutScores.getN());
             }
         }
-/*
+
         if (logger.isTraceEnabled()) {
             logger.trace("next player's moves considerations: ");
             for (MCTSNode level1 : root.getChildren()) {
@@ -145,7 +119,7 @@ public class MCTS implements Agent {
                 level1.printChildren();
             }
         }
-*/
+
         Action chosenOne = root.getBestNode().getAction();
         if (logger.isTraceEnabled()) {
             logger.trace("Move Chosen by {} was {}", agentID, chosenOne);
@@ -157,29 +131,38 @@ public class MCTS implements Agent {
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
         int treeDepth = calculateTreeDepthLimit(state);
-        while (!state.isGameOver() && current.getDepth() < treeDepth) {
+        boolean expandedNode = false;
+
+        while (!state.isGameOver() && current.getDepth() < treeDepth && !expandedNode) {
             MCTSNode next;
+            // determinise hand before decision is made
+            int agentAboutToAct = (current.getAgent() + 1) % state.getPlayerCount();
+            handDeterminiser.determiniseHandFor(agentAboutToAct, state);
             if (current.fullyExpanded(state)) {
                 next = current.getUCTNode(state);
             } else {
                 next = expand(current, state);
-                return next;
+                expandedNode = true;
+    //            return next;
             }
             if (next == null) {
                 //XXX if all follow on states explored so far are null, we are now a leaf node
                 return current;
             }
+
             current = next;
 
-            int agent = current.getAgent();
+            int agent = current.getAgent(); // this is the acting agent
             int lives = state.getLives();
             int score = state.getScore();
 
+            // we then apply the action to state, and re-determinise the hand for the next agent
             Action action = current.getAction();
             if (action != null) {
                 List<GameEvent> events = action.apply(agent, state);
                 events.forEach(state::addEvent);
                 state.tick();
+                handDeterminiser.recordAction(action);
             }
 
             if (iterationObject.isMyGo(agent)) {
@@ -194,7 +177,7 @@ public class MCTS implements Agent {
         return current;
     }
 
-    protected int calculateTreeDepthLimit(GameState state){
+    protected int calculateTreeDepthLimit(GameState state) {
         return (state.getPlayerCount() * treeDepthMul) + 1;
     }
 
@@ -249,9 +232,10 @@ public class MCTS implements Agent {
         return listAction.get(0);
     }
 
-    protected int rollout(GameState state, final int agentID, MCTSNode current) {
+    protected int rollout(GameState state, MCTSNode current) {
 
-        int playerID = agentID;
+        int playerID = (current.getAgent() + 1) % state.getPlayerCount();
+        // we rollout from current, which records the agent who acted to reach it
         int moves = 0;
 
         while (!state.isGameOver() && moves < rolloutDepth) {

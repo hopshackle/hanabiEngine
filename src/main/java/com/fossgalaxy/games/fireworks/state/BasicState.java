@@ -425,7 +425,7 @@ public class BasicState implements GameState {
         }
 
         //check that the deck is empty, and all players have had last go
-        if (!deck.hasCardsLeft() && movesLeft == 0) {
+        if (!deck.hasCardsLeft() && movesLeft <= 0) {
             return true;
         }
 

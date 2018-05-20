@@ -37,7 +37,7 @@ public class MCTSPredictor extends MCTS {
     }
 
     public MCTSPredictor(Agent[] agents, int roundLength, int rolloutDepth, int treeDepthMul) {
-        super(roundLength, rolloutDepth, treeDepthMul);
+        super(roundLength, rolloutDepth, treeDepthMul, DEFAULT_TIME_LIMIT);
         this.agents = agents;
     }
 

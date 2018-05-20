@@ -11,6 +11,7 @@ import com.fossgalaxy.games.fireworks.utils.DebugUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
@@ -194,6 +195,7 @@ public class GameRunner {
                     }
                 }
             }
+            Arrays.stream(players).forEach(Player::onGameOver);
             return new GameStats(gameID, players.length, state.getScore(), state.getLives(), moves, state.getInfomation(), strikes);
         } catch (Exception ex) {
             logger.error("the game went bang", ex);
