@@ -52,10 +52,16 @@ public class BasicStats implements StatsSummary {
         return sum/n;
     }
 
+    @Override
     public double getStdDev() {
         double top = sumSq - (n * getMean() * getMean());
         top /= n-1;
         return Math.sqrt(top);
+    }
+
+    @Override
+    public double getStdErr() {
+        return getStdDev() / Math.sqrt(n);
     }
 
 

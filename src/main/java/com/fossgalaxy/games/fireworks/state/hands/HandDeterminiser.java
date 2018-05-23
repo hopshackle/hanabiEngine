@@ -22,6 +22,10 @@ public class HandDeterminiser {
             handRecord.add(new ArrayList<>());
         }
         // we then do our one-off determinisation of the root players cards
+        for (int i = 0; i < state.getHandSize(); i++)
+            if (state.getHand(rootID).getCard(i) != null) {
+                state.getDeck().add(state.getCardAt(rootID, i));
+            }
         bindNewCards(rootID, state);
     }
 
@@ -32,9 +36,8 @@ public class HandDeterminiser {
         // record cards currently in hand for agent, so we can go back to these after their turn
         List<Card> handDetail = new ArrayList<>(state.getHandSize());
         handRecord.set(agentID, handDetail);
-        Hand currentHand = state.getHand(agentID);
         for (int slot = 0; slot < state.getHandSize(); slot++) {
-            handDetail.add(currentHand.getCard(slot));
+            handDetail.add(myHand.getCard(slot));
         }
 
         // reset the hand of the previous agent (if not root) to known values where possible
@@ -65,29 +68,52 @@ public class HandDeterminiser {
             if (!previousCards.isEmpty()) {
                 for (int slot = 0; slot < previousHand.getSize(); slot++) {
                     if (slot == slotLastUsed) {
-                        // in this case we keep the current card, as the old one has been played or discarded
-                        continue;
+                        // do not add this card to deck, as it was played or discarded!
+                        // instead we add back to deck the current card (and will pick a new one)
+                        // we put back the current card because there is a chance that it was
+                        // one of the known cards in hand before we re-determinised
+                        deck.add(state.getCardAt(previousAgent, slot));
+                    } else {
+                        deck.add(previousHand.getCard(slot)); // add hand back to deck
                     }
-                    previousHand.bindCard(slot, previousCards.get(slot));   // re-bind card
-                    deck.add(previousCards.get(slot));  // and remove it from the deck
+                }
+                for (int slot = 0; slot < previousHand.getSize(); slot++) {
+                    if (slot == slotLastUsed) {
+                        // wait until all known cards have been rebound
+                    } else {
+                        previousHand.bindCard(slot, previousCards.get(slot));   // re-bind card
+                        deck.remove(previousCards.get(slot));  // and remove it from the deck
+                    }
+                }
+                if (slotLastUsed > -1) {
+                    // since we hav no information on the card drawn, we just re-draw from the shuffled deck
+                    deck.shuffle();
+                    Card topCard = deck.getTopCard();
+                    previousHand.bindCard(slotLastUsed, topCard);
                 }
             }
         }
     }
 
+    /*
+    Cards in previous hand have already been added back into deck before this method is called
+     */
     private void bindNewCards(int agentID, GameState state) {
         Hand myHand = state.getHand(agentID);
         Deck deck = state.getDeck();
         List<Card> toChooseFrom = state.getDeck().toList();
-            IntStream.range(0, myHand.getSize()).mapToObj(myHand::getCard).filter(Objects::nonNull).forEach(toChooseFrom::add);
 
-        Map<Integer, List<Card>> possibleCards = DeckUtils.bindBlindCard(agentID, state.getHand(agentID), toChooseFrom);
-        List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
-        Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
-        for (int slot = 0; slot < myHand.getSize(); slot++) {
-            Card hand = myHandCards.get(slot);
-            myHand.bindCard(slot, hand);
-            deck.remove(hand);
+        if (toChooseFrom.isEmpty()) {
+            throw new AssertionError("no cards ");
+        } else {
+            Map<Integer, List<Card>> possibleCards = DeckUtils.bindBlindCard(agentID, state.getHand(agentID), toChooseFrom);
+            List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
+            Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
+            for (int slot = 0; slot < myHand.getSize(); slot++) {
+                Card hand = myHandCards.get(slot);
+                myHand.bindCard(slot, hand);
+                deck.remove(hand);
+            }
         }
     }
 
@@ -101,6 +127,7 @@ public class HandDeterminiser {
         if (handRecord.get(agent).size() <= slot) return null;
         return handRecord.get(agent).get(slot);
     }
+
     public int getSlotLastUsed() {
         return slotLastUsed;
     }

@@ -9,6 +9,8 @@ public interface StatsSummary {
     double getMin();
     double getRange();
     double getMean();
+    double getStdErr();
+    double getStdDev();
 
     void add(double score);
 

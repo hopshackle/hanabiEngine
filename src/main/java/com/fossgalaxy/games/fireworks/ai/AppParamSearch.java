@@ -91,9 +91,10 @@ public class AppParamSearch {
         }
 
         //print out the stats
-        System.out.println(String.format("%s: Avg: %f, min: %f, max: %f",
+        System.out.println(String.format("%s: Avg: %.2f, std err %.2f min: %.1f, max: %.1f",
                 agentDescriptor,
                 statsSummary.getMean(),
+                statsSummary.getStdErr(),
                 statsSummary.getMin(),
                 statsSummary.getMax()));
     }
