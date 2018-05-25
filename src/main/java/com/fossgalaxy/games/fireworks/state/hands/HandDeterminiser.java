@@ -67,14 +67,16 @@ public class HandDeterminiser {
             List<Card> previousCards = handRecord.get(previousAgent);
             if (!previousCards.isEmpty()) {
                 for (int slot = 0; slot < previousHand.getSize(); slot++) {
-                    if (slot == slotLastUsed) {
-                        // do not add this card to deck, as it was played or discarded!
-                        // instead we add back to deck the current card (and will pick a new one)
-                        // we put back the current card because there is a chance that it was
-                        // one of the known cards in hand before we re-determinised
-                        deck.add(state.getCardAt(previousAgent, slot));
-                    } else {
-                        deck.add(previousHand.getCard(slot)); // add hand back to deck
+                    if (state.getCardAt(previousAgent, slot) != null) {
+                        if (slot == slotLastUsed) {
+                            // do not add this card to deck, as it was played or discarded!
+                            // instead we add back to deck the current card (and will pick a new one)
+                            // we put back the current card because there is a chance that it was
+                            // one of the known cards in hand before we re-determinised
+                            deck.add(state.getCardAt(previousAgent, slot));
+                        } else {
+                            deck.add(previousHand.getCard(slot)); // add hand back to deck
+                        }
                     }
                 }
                 for (int slot = 0; slot < previousHand.getSize(); slot++) {
@@ -85,7 +87,7 @@ public class HandDeterminiser {
                         deck.remove(previousCards.get(slot));  // and remove it from the deck
                     }
                 }
-                if (slotLastUsed > -1) {
+                if (slotLastUsed > -1 && deck.hasCardsLeft()) {
                     // since we hav no information on the card drawn, we just re-draw from the shuffled deck
                     deck.shuffle();
                     Card topCard = deck.getTopCard();
@@ -110,7 +112,7 @@ public class HandDeterminiser {
             List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
             Map<Integer, Card> myHandCards = DeckUtils.bindCards(bindOrder, possibleCards);
             for (int slot = 0; slot < myHand.getSize(); slot++) {
-                Card hand = myHandCards.get(slot);
+                Card hand = myHandCards.getOrDefault(slot, null);
                 myHand.bindCard(slot, hand);
                 deck.remove(hand);
             }

@@ -109,10 +109,13 @@ public class DeckUtils {
             for (Card card : removed) {
                 possible.remove(card);
             }
+            if (possible.isEmpty())
+                continue;
 
             Card selected = possible.get(r.nextInt(possible.size()));
             hand.put(slot, selected);
             removed.add(selected);
+
         }
 
         return hand;
