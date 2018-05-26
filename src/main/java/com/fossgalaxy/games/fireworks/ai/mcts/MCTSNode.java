@@ -7,10 +7,7 @@ import com.fossgalaxy.stats.StatsSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -20,23 +17,23 @@ public class MCTSNode {
 
     public static final double DEFAULT_EXP_CONST = Math.sqrt(2);
 
-    private static final int MAX_SCORE = 25;
-    private static final double EPSILON = 1e-6;
-    private static final boolean DISCOUNT_ENABLED = false;
+    protected static final int MAX_SCORE = 25;
+    protected static final double EPSILON = 1e-6;
+    protected static final boolean DISCOUNT_ENABLED = false;
 
-    private final double expConst;
-    private final Action moveToState;
-    private final int agentId;
-    private final MCTSNode parent;
-    private final List<MCTSNode> children;
-    private final Collection<Action> allUnexpandedActions;
-    private final Random random;
-    private final int depth;
-    private final Logger logger = LoggerFactory.getLogger(MCTSNode.class);
+    protected final double expConst;
+    protected final Action moveToState;
+    protected final int agentId;
+    protected final MCTSNode parent;
+    protected final List<MCTSNode> children;
+    protected final Collection<Action> allUnexpandedActions;
+    protected final Random random;
+    protected final int depth;
+    protected final Logger logger = LoggerFactory.getLogger(MCTSNode.class);
 
-    private double score;
-    private int visits;
-    private int parentWasVisitedAndIWasLegal;
+    protected double score;
+    protected int visits;
+    protected Map<Action, Integer> parentWasVisitedAndIWasLegal = new HashMap<>();
 
     protected final StatsSummary rolloutScores;
     protected final StatsSummary rolloutMoves;
@@ -89,7 +86,8 @@ public class MCTSNode {
             return 0;
         }
 
-        return ((score / MAX_SCORE) / visits) + (expConst * Math.sqrt(Math.log(parentWasVisitedAndIWasLegal) / visits));
+        int parentalVisits = parent.parentWasVisitedAndIWasLegal.get(this.moveToState);
+        return ((score / MAX_SCORE) / visits) + (expConst * Math.sqrt(Math.log(parentalVisits) / visits));
     }
 
     public List<MCTSNode> getChildren() {
@@ -123,7 +121,7 @@ public class MCTSNode {
             if (!moveToMake.isLegal(child.agentId, state)) {
                 continue;
             }
-            child.parentWasVisitedAndIWasLegal++;
+            incrementParentVisit(moveToMake);
             double childScore = child.getUCTValue() + (random.nextDouble() * EPSILON);
 
             if (childScore > bestScore) {
@@ -132,7 +130,20 @@ public class MCTSNode {
             }
         }
 
+        for (Action unexpandedAction : getLegalUnexpandedMoves(state, (getAgent() + 1) % state.getPlayerCount())) {
+            incrementParentVisit(unexpandedAction);
+            // we still need to increment the count for this, even though it is not yet expanded
+        }
+
         return bestChild;
+    }
+
+    protected void incrementParentVisit(Action a) {
+        if (!parentWasVisitedAndIWasLegal.containsKey(a)) {
+            parentWasVisitedAndIWasLegal.put(a, 1);
+        } else {
+            parentWasVisitedAndIWasLegal.put(a, parentWasVisitedAndIWasLegal.get(a) + 1);
+        }
     }
 
     public int getAgent() {
@@ -207,7 +218,7 @@ public class MCTSNode {
         return true;
     }
 
-    public Collection<Action> getLegalMoves(GameState state, int nextId) {
+    public Collection<Action> getLegalUnexpandedMoves(GameState state, int nextId) {
         return allUnexpandedActions.stream().filter(action -> action.isLegal(nextId, state)).collect(Collectors.toList());
     }
 

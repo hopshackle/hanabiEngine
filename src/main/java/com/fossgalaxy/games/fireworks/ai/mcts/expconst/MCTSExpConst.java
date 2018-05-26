@@ -186,7 +186,7 @@ public class MCTSExpConst implements Agent {
      * @return the next action to be added to the tree from this state.
      */
     protected Action selectActionForExpand(GameState state, MCTSNode node, int agentID) {
-        Collection<Action> legalActions = node.getLegalMoves(state, agentID);
+        Collection<Action> legalActions = node.getLegalUnexpandedMoves(state, agentID);
         if (legalActions.isEmpty()) {
             return null;
         }

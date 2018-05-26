@@ -1,23 +1,14 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
-import com.fossgalaxy.games.fireworks.ai.Agent;
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
-import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.state.Card;
-import com.fossgalaxy.games.fireworks.state.Deck;
 import com.fossgalaxy.games.fireworks.state.GameState;
-import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
-import com.fossgalaxy.games.fireworks.state.actions.DiscardCard;
-import com.fossgalaxy.games.fireworks.state.actions.PlayCard;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
-import com.fossgalaxy.games.fireworks.state.events.MessageType;
 import com.fossgalaxy.games.fireworks.state.hands.HandDeterminiser;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -26,7 +17,7 @@ import java.util.*;
  */
 public class MCTSInfoSet extends MCTS {
 
-    private HandDeterminiser handDeterminiser;
+    protected HandDeterminiser handDeterminiser;
 
     /**
      * Create a default MCTS implementation.
@@ -56,16 +47,11 @@ public class MCTSInfoSet extends MCTS {
         super(explorationC, rolloutDepth, treeDepthMul, timeLimit);
     }
 
-
     @Override
     public Action doMove(int agentID, GameState state) {
         long finishTime = System.currentTimeMillis() + timeLimit;
-        MCTSNode root = new MCTSNode(
-                (agentID + state.getPlayerCount() - 1) % state.getPlayerCount(),
-                null, C,
-                Utils.generateAllActions(agentID, state.getPlayerCount())
-        );
 
+        MCTSNode root = createNode(null, (agentID - 1 + state.getPlayerCount()) % state.getPlayerCount(), null, state);
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
 
         if (logger.isTraceEnabled()) {
@@ -143,7 +129,7 @@ public class MCTSInfoSet extends MCTS {
             } else {
                 next = expand(current, state);
                 expandedNode = true;
-    //            return next;
+                //            return next;
             }
             if (next == null) {
                 //XXX if all follow on states explored so far are null, we are now a leaf node
@@ -177,87 +163,11 @@ public class MCTSInfoSet extends MCTS {
         return current;
     }
 
-    protected int calculateTreeDepthLimit(GameState state) {
-        return (state.getPlayerCount() * treeDepthMul) + 1;
-    }
-
-    /**
-     * Select a new action for the expansion node.
-     *
-     * @param state   the game state to travel from
-     * @param agentID the AgentID to use for action selection
-     * @param node    the Node to use for expansion
-     * @return the next action to be added to the tree from this state.
-     */
-    protected Action selectActionForExpand(GameState state, MCTSNode node, int agentID) {
-        Collection<Action> legalActions = node.getLegalMoves(state, agentID);
-        if (legalActions.isEmpty()) {
-            return null;
-        }
-
-        Iterator<Action> actionItr = legalActions.iterator();
-
-        int selected = random.nextInt(legalActions.size());
-        Action curr = actionItr.next();
-        for (int i = 0; i < selected; i++) {
-            curr = actionItr.next();
-        }
-
-        return curr;
-    }
-
-    protected MCTSNode expand(MCTSNode parent, GameState state) {
-        int nextAgentID = (parent.getAgent() + 1) % state.getPlayerCount();
-        Action action = selectActionForExpand(state, parent, nextAgentID);
-        // It is possible it wasn't allowed
-        if (action == null) {
-            return parent;
-        }
-        if (parent.containsChild(action)) {
-            // return the correct node instead
-            return parent.getChild(action);
-        }
-        //XXX we may expand a node which we already visited? :S
-        MCTSNode child = new MCTSNode(parent, nextAgentID, action, C, Utils.generateAllActions(nextAgentID, state.getPlayerCount()));
-        parent.addChild(child);
-        return child;
-    }
-
-    protected Action selectActionForRollout(GameState state, int playerID) {
-        Collection<Action> legalActions = Utils.generateActions(playerID, state);
-
-        List<Action> listAction = new ArrayList<>(legalActions);
-        Collections.shuffle(listAction);
-
-        return listAction.get(0);
-    }
-
-    protected int rollout(GameState state, MCTSNode current) {
-
-        int playerID = (current.getAgent() + 1) % state.getPlayerCount();
-        // we rollout from current, which records the agent who acted to reach it
-        int moves = 0;
-
-        while (!state.isGameOver() && moves < rolloutDepth) {
-            Action action = selectActionForRollout(state, playerID);
-            List<GameEvent> events = action.apply(playerID, state);
-            events.forEach(state::addEvent);
-            state.tick();
-            playerID = (playerID + 1) % state.getPlayerCount();
-            moves++;
-        }
-
-        current.backupRollout(moves, state.getScore());
-        return state.getScore();
-    }
 
     @Override
     public String toString() {
-        return "MCTS";
+        return "MCTSInfoSet";
     }
 
-    private void printCard(Map.Entry<Integer, List<Card>> entry) {
-        logger.trace("{} : {}", entry.getKey(), entry.getValue());
-    }
 
 }

@@ -1,7 +1,6 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.Agent;
-import com.fossgalaxy.games.fireworks.annotations.AgentBuilderStatic;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
@@ -11,23 +10,18 @@ import org.slf4j.LoggerFactory;
 /**
  * A version of the MCTS agent that replaces the random rollout with policy based rollouts.
  */
-public class MCTSPolicy extends MCTS {
-    private final Logger LOG = LoggerFactory.getLogger(MCTSPolicy.class);
+public class MCTSRuleInfoSetPolicy extends MCTSRuleInfoSet {
+    private final Logger LOG = LoggerFactory.getLogger(MCTSRuleInfoSetPolicy.class);
     private final Agent rolloutPolicy;
 
-    public MCTSPolicy(Agent rolloutPolicy) {
+    public MCTSRuleInfoSetPolicy(Agent rolloutPolicy) {
         this.rolloutPolicy = rolloutPolicy;
     }
 
-    @AgentConstructor("mctsPolicy")
-    public MCTSPolicy(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit, Agent rollout) {
+    @AgentConstructor("mctsRuleISPolicy")
+    public MCTSRuleInfoSetPolicy(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit, Agent rollout) {
         super(explorationC, rolloutDepth, treeDepthMul, timeLimit);
         this.rolloutPolicy = rollout;
-    }
-
-    @AgentBuilderStatic("mctsPolicyND")
-    public static MCTSPolicy buildPolicyND(Agent rolloutPolicy) {
-        return new MCTSPolicy(MCTSNode.DEFAULT_EXP_CONST, MCTS.NO_LIMIT, MCTS.NO_LIMIT, DEFAULT_TIME_LIMIT, rolloutPolicy);
     }
 
     /**

@@ -27,7 +27,7 @@ public class MCTS implements Agent {
     public static final int DEFAULT_TIME_LIMIT = 1000;
     public static final int NO_LIMIT = 100;
 
- //   protected final int roundLength;
+    //   protected final int roundLength;
     protected final int rolloutDepth;
     protected final int treeDepthMul;
     protected final int timeLimit;
@@ -57,7 +57,7 @@ public class MCTS implements Agent {
      * @param explorationC
      * @param rolloutDepth
      * @param treeDepthMul
-     * @param timeLimit in ms
+     * @param timeLimit    in ms
      */
     @AgentConstructor("mcts")
     public MCTS(double explorationC, int rolloutDepth, int treeDepthMul, int timeLimit) {
@@ -74,15 +74,21 @@ public class MCTS implements Agent {
         return new MCTS(MCTSNode.DEFAULT_EXP_CONST, MCTS.NO_LIMIT, MCTS.NO_LIMIT, DEFAULT_TIME_LIMIT);
     }
 
+    protected MCTSNode createNode(MCTSNode parent, int previousAgentID, Action moveTo, GameState state) {
+        MCTSNode root = new MCTSNode(
+                parent,
+                previousAgentID,
+                moveTo, C,
+                Utils.generateAllActions((previousAgentID + 1) % state.getPlayerCount(), state.getPlayerCount())
+        );
+        return root;
+    }
+
     @Override
     public Action doMove(int agentID, GameState state) {
         long finishTime = System.currentTimeMillis() + timeLimit;
-        MCTSNode root = new MCTSNode(
-                (agentID + state.getPlayerCount() - 1) % state.getPlayerCount(),
-                null, C,
-                Utils.generateAllActions(agentID, state.getPlayerCount())
-        );
 
+        MCTSNode root = createNode(null, (agentID - 1 + state.getPlayerCount()) % state.getPlayerCount(), null, state);
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
         List<Integer> bindOrder = DeckUtils.bindOrder(possibleCards);
 
@@ -107,7 +113,7 @@ public class MCTS implements Agent {
         }
 
 //        for (int round = 0; round < roundLength; round++) {
-        while(System.currentTimeMillis() < finishTime){
+        while (System.currentTimeMillis() < finishTime) {
             //find a leaf node
             GameState currentState = state.getCopy();
             IterationObject iterationObject = new IterationObject(agentID);
@@ -124,9 +130,9 @@ public class MCTS implements Agent {
             deck.shuffle();
 
             MCTSNode current = select(root, currentState, iterationObject);
-            int score = rollout(currentState, agentID, current);
+            int score = rollout(currentState, current);
             current.backup(score);
-            if(calcTree){
+            if (calcTree) {
                 System.out.println(root.printD3());
             }
         }
@@ -157,13 +163,16 @@ public class MCTS implements Agent {
     protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
         MCTSNode current = root;
         int treeDepth = calculateTreeDepthLimit(state);
-        while (!state.isGameOver() && current.getDepth() < treeDepth) {
+        boolean expandedNode = false;
+
+        while (!state.isGameOver() && current.getDepth() < treeDepth && !expandedNode) {
             MCTSNode next;
             if (current.fullyExpanded(state)) {
                 next = current.getUCTNode(state);
             } else {
                 next = expand(current, state);
-                return next;
+                expandedNode = true;
+                //            return next;
             }
             if (next == null) {
                 //XXX if all follow on states explored so far are null, we are now a leaf node
@@ -194,7 +203,7 @@ public class MCTS implements Agent {
         return current;
     }
 
-    protected int calculateTreeDepthLimit(GameState state){
+    protected int calculateTreeDepthLimit(GameState state) {
         return (state.getPlayerCount() * treeDepthMul) + 1;
     }
 
@@ -207,7 +216,7 @@ public class MCTS implements Agent {
      * @return the next action to be added to the tree from this state.
      */
     protected Action selectActionForExpand(GameState state, MCTSNode node, int agentID) {
-        Collection<Action> legalActions = node.getLegalMoves(state, agentID);
+        Collection<Action> legalActions = node.getLegalUnexpandedMoves(state, agentID);
         if (legalActions.isEmpty()) {
             return null;
         }
@@ -235,7 +244,7 @@ public class MCTS implements Agent {
             return parent.getChild(action);
         }
         //XXX we may expand a node which we already visited? :S
-        MCTSNode child = new MCTSNode(parent, nextAgentID, action, C, Utils.generateAllActions(nextAgentID, state.getPlayerCount()));
+        MCTSNode child = createNode(parent, nextAgentID, action, state);
         parent.addChild(child);
         return child;
     }
@@ -249,9 +258,10 @@ public class MCTS implements Agent {
         return listAction.get(0);
     }
 
-    protected int rollout(GameState state, final int agentID, MCTSNode current) {
+    protected int rollout(GameState state, MCTSNode current) {
 
-        int playerID = agentID;
+        int playerID = (current.getAgent() + 1) % state.getPlayerCount();
+        // we rollout from current, which records the agent who acted to reach it
         int moves = 0;
 
         while (!state.isGameOver() && moves < rolloutDepth) {
@@ -272,7 +282,7 @@ public class MCTS implements Agent {
         return "MCTS";
     }
 
-    private void printCard(Map.Entry<Integer, List<Card>> entry) {
+    protected void printCard(Map.Entry<Integer, List<Card>> entry) {
         logger.trace("{} : {}", entry.getKey(), entry.getValue());
     }
 
