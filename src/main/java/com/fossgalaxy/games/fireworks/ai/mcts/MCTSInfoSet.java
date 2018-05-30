@@ -51,6 +51,10 @@ public class MCTSInfoSet extends MCTS {
     public Action doMove(int agentID, GameState state) {
         long finishTime = System.currentTimeMillis() + timeLimit;
 
+        if (stateGatherer != null) {
+            stateGatherer.storeData(state, agentID);
+        }
+
         MCTSNode root = createNode(null, (agentID - 1 + state.getPlayerCount()) % state.getPlayerCount(), null, state);
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
 
@@ -111,6 +115,12 @@ public class MCTSInfoSet extends MCTS {
             logger.trace("Move Chosen by {} was {}", agentID, chosenOne);
             root.printChildren();
         }
+        /*
+        if (this instanceof MCTSInfoSetPolicy) {
+            Action rolloutAction = ((MCTSInfoSetPolicy) this).selectActionForRollout(state, agentID);
+            System.out.println(String.format("Player %d: MCTS choice is %s, with rollout %s", agentID, chosenOne.toString(), rolloutAction.toString()));
+        }
+        */
         return chosenOne;
     }
 
@@ -144,6 +154,7 @@ public class MCTSInfoSet extends MCTS {
 
             // we then apply the action to state, and re-determinise the hand for the next agent
             Action action = current.getAction();
+            logger.trace("MCTSIS: Selected action " + action + " for player " + agent);
             if (action != null) {
                 List<GameEvent> events = action.apply(agent, state);
                 events.forEach(state::addEvent);

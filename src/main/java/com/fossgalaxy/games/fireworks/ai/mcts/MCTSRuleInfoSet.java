@@ -1,8 +1,11 @@
 package com.fossgalaxy.games.fireworks.ai.mcts;
 
 import com.fossgalaxy.games.fireworks.ai.iggi.Utils;
+import com.fossgalaxy.games.fireworks.ai.osawa.rules.OsawaDiscard;
+import com.fossgalaxy.games.fireworks.ai.osawa.rules.TellPlayableCardOuter;
 import com.fossgalaxy.games.fireworks.ai.rule.logic.DeckUtils;
 import com.fossgalaxy.games.fireworks.ai.rule.*;
+import com.fossgalaxy.games.fireworks.ai.rule.random.DiscardProbablyUselessCard;
 import com.fossgalaxy.games.fireworks.ai.rule.random.PlayProbablySafeCard;
 import com.fossgalaxy.games.fireworks.ai.rule.simple.*;
 import com.fossgalaxy.games.fireworks.annotations.AgentConstructor;
@@ -23,13 +26,17 @@ public class MCTSRuleInfoSet extends MCTSInfoSet {
     private List<Rule> allRules = new ArrayList<>();
 
     {
-        allRules.add(new DiscardOldestFirst());
+        allRules.add(new OsawaDiscard());
         allRules.add(new DiscardHighest());
         allRules.add(new TellAboutOnes());
-        allRules.add(new TellMostInformation());
+        allRules.add(new TellMostInformation(true));
         allRules.add(new TellAnyoneAboutUsefulCard());
+        allRules.add(new TellDispensable());
+        allRules.add(new TellPlayableCardOuter());
         allRules.add(new PlaySafeCard());
         allRules.add(new PlayProbablySafeCard(0.75));
+        allRules.add(new DiscardProbablyUselessCard(0.75));
+        allRules.add(new DiscardOldestFirst());
     }
 
     /**

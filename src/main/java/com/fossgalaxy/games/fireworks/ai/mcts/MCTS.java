@@ -12,6 +12,8 @@ import com.fossgalaxy.games.fireworks.state.Hand;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
+import com.fossgalaxy.games.fireworks.utils.HasGameOverProcessing;
+import com.fossgalaxy.games.fireworks.utils.StateGatherer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,7 @@ import java.util.*;
 /**
  * Created by WebPigeon on 09/08/2016.
  */
-public class MCTS implements Agent {
+public class MCTS implements Agent, HasGameOverProcessing {
     public static final int DEFAULT_ITERATIONS = 50_000;
     public static final int DEFAULT_ROLLOUT_DEPTH = 18;
     public static final int DEFAULT_TREE_DEPTH_MUL = 1;
@@ -34,7 +36,7 @@ public class MCTS implements Agent {
     public final double C;
     protected final Random random;
     protected final Logger logger = LoggerFactory.getLogger(MCTS.class);
-
+    protected StateGatherer stateGatherer;
     protected final boolean calcTree = false;
 
     /**
@@ -84,9 +86,21 @@ public class MCTS implements Agent {
         return root;
     }
 
+    public void gatherStateData(boolean flag) {
+        if (flag) {
+            stateGatherer = new StateGatherer();
+        } else {
+            stateGatherer = null;
+        }
+    }
+
     @Override
     public Action doMove(int agentID, GameState state) {
         long finishTime = System.currentTimeMillis() + timeLimit;
+
+        if (stateGatherer != null) {
+            stateGatherer.storeData(state, agentID);
+        }
 
         MCTSNode root = createNode(null, (agentID - 1 + state.getPlayerCount()) % state.getPlayerCount(), null, state);
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
@@ -185,6 +199,7 @@ public class MCTS implements Agent {
             int score = state.getScore();
 
             Action action = current.getAction();
+            logger.trace("Selected action " + action + " for player " + agent);
             if (action != null) {
                 List<GameEvent> events = action.apply(agent, state);
                 events.forEach(state::addEvent);
@@ -228,7 +243,8 @@ public class MCTS implements Agent {
         for (int i = 0; i < selected; i++) {
             curr = actionItr.next();
         }
-
+        logger.trace("Selected action " + curr + " for expansion from node:");
+        // node.printChildren();
         return curr;
     }
 
@@ -272,9 +288,13 @@ public class MCTS implements Agent {
             playerID = (playerID + 1) % state.getPlayerCount();
             moves++;
         }
-
+        logger.trace(String.format("Terminating rollout after %d moves with score of %d", moves, state.getScore()));
         current.backupRollout(moves, state.getScore());
         return state.getScore();
+    }
+
+    protected void storeTuple(GameState state, int playerID) {
+
     }
 
     @Override
@@ -286,4 +306,9 @@ public class MCTS implements Agent {
         logger.trace("{} : {}", entry.getKey(), entry.getValue());
     }
 
+    @Override
+    public void onGameOver(double finalScore) {
+        if (stateGatherer != null)
+            stateGatherer.onGameOver(finalScore);
+    }
 }

@@ -143,6 +143,9 @@ public class NegativeHand extends BasicHand {
 
         Set<CardColour> possibleColour = possibleColours.get(slot);
         Set<Integer> possibleValue = possibleValues.get(slot);
+        if (possibleColour == null | possibleValue == null || card == null) {
+            int stop = 1;
+        }
         return possibleColour.contains(card.colour) && possibleValue.contains(card.value);
     }
 

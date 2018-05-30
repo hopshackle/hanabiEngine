@@ -5,6 +5,8 @@ import com.fossgalaxy.games.fireworks.state.BasicState;
 import com.fossgalaxy.games.fireworks.state.GameState;
 import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
+import com.fossgalaxy.games.fireworks.ai.mcts.*;
+import com.fossgalaxy.games.fireworks.utils.HasGameOverProcessing;
 
 import java.util.Objects;
 
@@ -70,4 +72,9 @@ public class AgentPlayer implements Player {
         return String.format("{name: %s, policy: %s}", name, policy);
     }
 
+    @Override
+    public void onGameOver() {
+        if (policy instanceof HasGameOverProcessing)
+            ((HasGameOverProcessing) policy).onGameOver(state.getScore());
+    }
 }

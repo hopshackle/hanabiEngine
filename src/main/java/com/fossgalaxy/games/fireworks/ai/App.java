@@ -2,6 +2,7 @@ package com.fossgalaxy.games.fireworks.ai;
 
 import com.fossgalaxy.games.fireworks.GameRunner;
 import com.fossgalaxy.games.fireworks.GameStats;
+import com.fossgalaxy.games.fireworks.ai.mcts.MCTS;
 import com.fossgalaxy.games.fireworks.players.Player;
 import com.fossgalaxy.games.fireworks.utils.AgentUtils;
 import com.fossgalaxy.stats.BasicStats;
@@ -26,15 +27,14 @@ public class App
     private static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss 'on' dd-LLL");
     public static void main( String[] args )
     {
-        String policy = (args.length == 0) ? "outer" : args[0];
+        String policy = (args.length < 1) ? "outer" : args[0];
+        int numPlayers = (args.length < 2) ? 4 : Integer.valueOf(args[1]);
+        int numGames = (args.length < 3) ? 1 : Integer.valueOf(args[2]);
 
-        runGamesAndLogResults(policy);
+        runGamesAndLogResults(policy, numPlayers, numGames);
     }
 
-    private static void runGamesAndLogResults(String agentDescriptor) {
-
-        int numPlayers = 4;
-        int numGames = 100;
+    private static void runGamesAndLogResults(String agentDescriptor, int numPlayers, int numGames) {
 
         System.out.println("Starting run for " + agentDescriptor + " at " + dateFormat.format(ZonedDateTime.now(ZoneId.of("UTC"))));
 
@@ -48,7 +48,9 @@ public class App
             //add your agents to the game
             for (int j=0; j<numPlayers; j++) {
                 // the player class keeps track of our state for us...
-                Player player = new AgentPlayer(agentDescriptor, AgentUtils.buildAgent(agentDescriptor));
+                Agent a = AgentUtils.buildAgent(agentDescriptor);
+                Player player = new AgentPlayer(agentDescriptor, a);
+                if (a instanceof MCTS) ((MCTS) a).gatherStateData(true);
                 runner.addPlayer(player);
             }
 
