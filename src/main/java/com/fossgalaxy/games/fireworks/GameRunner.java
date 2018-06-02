@@ -182,7 +182,7 @@ public class GameRunner {
             while (!state.isGameOver()) {
                 try {
                     state.tick();
-                    writeState(state);
+                    if (logger.isDebugEnabled()) writeState(state);
                     nextMove();
                 } catch (RulesViolation rv) {
                     logger.warn("got rules violation when processing move", rv);
