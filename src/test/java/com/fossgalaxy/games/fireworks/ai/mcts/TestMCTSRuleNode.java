@@ -45,7 +45,7 @@ public class TestMCTSRuleNode {
     @Test
     public void testSimpleInitialisation() {
         assertFalse(root.fullyExpanded(state, 0));
-        List<Action> legalMoves = root.getAllLegalMoves(state, 0).collect(Collectors.toList());
+        List<Action> legalMoves = root.getAllLegalMoves(state, 0);
         assertEquals(legalMoves.size(), 2);
         assertTrue(legalMoves.get(0).equals(new DiscardCard(0)));
         assertTrue(legalMoves.get(1).equals(new TellValue(1, 1)));
@@ -58,7 +58,7 @@ public class TestMCTSRuleNode {
         MCTSRuleNode newChild = new MCTSRuleNode(root, 0, new DiscardCard(0), allRules);
         root.addChild(newChild);
         newChild.backup(1.0);
-        List<Action> legalMoves = root.getAllLegalMoves(state, 0).collect(Collectors.toList());
+        List<Action> legalMoves = root.getAllLegalMoves(state, 0);
         assertEquals(legalMoves.size(), 2);
         assertTrue(legalMoves.get(0).equals(new DiscardCard(0)));
         assertTrue(legalMoves.get(1).equals(new TellValue(1, 1)));
@@ -69,7 +69,7 @@ public class TestMCTSRuleNode {
         newChild = new MCTSRuleNode(root, 0, new TellValue(1, 1), allRules);
         root.addChild(newChild);
         newChild.backup(2.0);
-        legalMoves = root.getAllLegalMoves(state, 0).collect(Collectors.toList());
+        legalMoves = root.getAllLegalMoves(state, 0);
         assertEquals(legalMoves.size(), 2);
         assertEquals(root.getLegalUnexpandedMoves(state, 0).size(), 0);
         assertTrue(root.getUCTNode(state).equals(newChild));
@@ -86,7 +86,7 @@ public class TestMCTSRuleNode {
         root.addChild(newChild);
         newChild.backup(1.0);
 
-        List<Action> legalMoves = root.getAllLegalMoves(state, 0).collect(Collectors.toList());
+        List<Action> legalMoves = root.getAllLegalMoves(state, 0);
         assertEquals(legalMoves.size(), 2);
         assertTrue(legalMoves.get(0).equals(new DiscardCard(0)));
         assertTrue(legalMoves.get(1).equals(new TellValue(1, 1)));
@@ -103,7 +103,7 @@ public class TestMCTSRuleNode {
         // this now enables two new moves - Discard 1 (as the highest known card)
         // Play 1 (as certainly valid)
 
-        List<Action> legalMoves = root.getAllLegalMoves(state, 0).collect(Collectors.toList());
+        List<Action> legalMoves = root.getAllLegalMoves(state, 0);
         assertEquals(legalMoves.size(), 4);
         assertTrue(legalMoves.get(0).equals(new DiscardCard(2)));       // this is now the oldest card
         assertTrue(legalMoves.get(1).equals(new DiscardCard(1)));
