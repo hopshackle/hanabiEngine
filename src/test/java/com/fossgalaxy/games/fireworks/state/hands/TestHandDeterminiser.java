@@ -142,7 +142,7 @@ public class TestHandDeterminiser {
         assertTrue(state.getCardAt(2, 3).colour == CardColour.GREEN);
         assertEquals(state.getCardAt(2, 3).value.intValue(), 5);
 
-        hd.recordAction(new TellValue(0, state.getCardAt(0, 0).value));
+        hd.recordAction(new TellValue(0, state.getCardAt(0, 0).value), 2, state);
 
         hd.determiniseHandFor(3, state);
 
@@ -175,8 +175,8 @@ public class TestHandDeterminiser {
 
         Action playCard = new PlayCard(2);
         Card cardPlayed = state.getCardAt(1, 2);
+        hd.recordAction(playCard, 1, state);
         playCard.apply(1, state);
-        hd.recordAction(playCard);
         Card drawnCard = state.getCardAt(1, 2);
         assertFalse(drawnCard == startingCards[2]);
 
@@ -213,8 +213,8 @@ public class TestHandDeterminiser {
         state.setInformation(7);
 
         Action discardCard = new DiscardCard(2);
+        hd.recordAction(discardCard, 1, state);
         discardCard.apply(1, state);
-        hd.recordAction(discardCard);
         Card drawnCard = state.getCardAt(1, 2);
         assertFalse(drawnCard == startingCards[2]);
 
@@ -257,8 +257,9 @@ public class TestHandDeterminiser {
 
         Card discardedCard = state.getCardAt(1, 2);
         Action discardCard = new DiscardCard(2);
+        hd.recordAction(discardCard, 1, state);
         discardCard.apply(1, state);
-        hd.recordAction(discardCard);
+
         Card drawnCard = state.getCardAt(1, 2);
         assertFalse(drawnCard == discardedCard);
 
@@ -287,6 +288,58 @@ public class TestHandDeterminiser {
         for (Card key : cardCountBefore.keySet()) {
             assertEquals(cardCountBefore.get(key), cardCountAfter.get(key));
         }
+    }
 
+    @Test
+    public void ifDeterminisedCardIsPlayedAndThatCardIsElsewhereInOriginalHandThenWeRedrawThatSlotToo() {
+        Card problemCard = new Card(6, CardColour.RED);
+        state.setCardAt(1, 3, problemCard);
+            // we know this is unique, and over-writes a random other card
+        assertEquals(state.getDeck().toList().size(), 34);
+
+        hd = new HandDeterminiser(state, 0);
+        assertEquals(state.getDeck().toList().size(), 34);
+        Card[] startingCards = new Card[4];
+        for (int i = 0; i < 4; i++) {
+            startingCards[i] = state.getCardAt(1, i);
+        }
+
+        hd.determiniseHandFor(1, state);
+        state.setInformation(7);
+        // we now hack the determinisation, so that RED 6 is actually in slot 2
+        for (int slot = 0; slot < 4; slot++) {
+            if (slot == 2) continue;
+            if (state.getCardAt(1, slot).equals(problemCard)) {
+                state.setCardAt(1, slot, state.getCardAt(1, 2));
+                state.setCardAt(1, 2, problemCard);
+            }
+        }
+        if (!state.getCardAt(1, 2).equals(problemCard)) {
+            state.getDeck().add(state.getCardAt(1, 2));
+            state.setCardAt(1, 2, problemCard);
+            state.getDeck().remove(problemCard);
+        }
+
+        assertEquals(state.getDeck().toList().size(), 34);
+
+        Action discardCard = new DiscardCard(2);
+        hd.recordAction(discardCard, 1, state);
+        discardCard.apply(1, state);
+        Card drawnCard = state.getCardAt(1, 2);
+        assertFalse(drawnCard == problemCard);
+
+        assertEquals(state.getDeck().toList().size(), 33); // 1 card discarded
+        hd.determiniseHandFor(2, state);
+
+        assertEquals(state.getDeck().toList().size(), 33); // 1 card discarded, still
+
+        for (int i = 0; i < 4; i++) {
+            if (i == 2 || i == 3) {
+                assertFalse(state.getCardAt(1, i) == startingCards[i]);
+            } else {
+                assertTrue(state.getCardAt(1, i) == startingCards[i]);
+            }
+        }
     }
 }
+

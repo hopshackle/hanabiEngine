@@ -50,7 +50,6 @@ public class App
                 // the player class keeps track of our state for us...
                 Agent a = AgentUtils.buildAgent(agentDescriptor);
                 Player player = new AgentPlayer(agentDescriptor, a);
-                if (a instanceof MCTS) ((MCTS) a).gatherStateData(true);
                 runner.addPlayer(player);
             }
 

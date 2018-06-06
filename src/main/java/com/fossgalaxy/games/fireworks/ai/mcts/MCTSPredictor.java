@@ -69,7 +69,7 @@ public class MCTSPredictor extends MCTS {
     }
 
     @Override
-    protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
+    protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject, int movesLeft) {
         MCTSNode current = root;
         int treeDepth = calculateTreeDepthLimit(state);
 

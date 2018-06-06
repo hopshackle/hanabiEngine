@@ -266,7 +266,7 @@ public class MCTSNode {
         rolloutMoves.add(moves);
         rolloutScores.add(score);
         if (parent != null) {
-            parent.backupRollout(moves, score);
+            parent.backupRollout(moves + 1, score);
         }
     }
 }

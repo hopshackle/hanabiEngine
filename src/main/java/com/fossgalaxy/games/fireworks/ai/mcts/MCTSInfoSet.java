@@ -9,6 +9,7 @@ import com.fossgalaxy.games.fireworks.state.actions.Action;
 import com.fossgalaxy.games.fireworks.state.events.GameEvent;
 import com.fossgalaxy.games.fireworks.state.hands.HandDeterminiser;
 import com.fossgalaxy.games.fireworks.utils.DebugUtils;
+import com.fossgalaxy.games.fireworks.utils.StateGatherer;
 
 import java.util.*;
 
@@ -51,13 +52,18 @@ public class MCTSInfoSet extends MCTS {
     public Action doMove(int agentID, GameState state) {
         long finishTime = System.currentTimeMillis() + timeLimit;
 
-        if (stateGatherer != null) {
-            stateGatherer.storeData(state, agentID);
+        int movesLeft = StateGatherer.movesLeft(state, agentID);
+        if (movesLeft != state.getPlayerCount()) {
+            // we are in the endGame, but this is not recorded within state
+        } else {
+            movesLeft = Integer.MAX_VALUE;
         }
-
         MCTSNode root = createNode(null, (agentID - 1 + state.getPlayerCount()) % state.getPlayerCount(), null, state);
         Map<Integer, List<Card>> possibleCards = DeckUtils.bindCard(agentID, state.getHand(agentID), state.getDeck().toList());
 
+        if (stateGatherer != null) {
+            stateGatherer.storeData(root, state, agentID);
+        }
         if (logger.isTraceEnabled()) {
             logger.trace("Possible bindings: ");
             possibleCards.forEach((slot, cards) -> logger.trace("\t {} {}", slot, DebugUtils.getHistStr(DebugUtils.histogram(cards))));
@@ -85,10 +91,10 @@ public class MCTSInfoSet extends MCTS {
 
             handDeterminiser = new HandDeterminiser(currentState, agentID);
 
-            MCTSNode current = select(root, currentState, iterationObject);
+            MCTSNode current = select(root, currentState, iterationObject, movesLeft);
             // reset to known hand values before rollout
             handDeterminiser.reset((current.getAgent() + 1) % currentState.getPlayerCount(), currentState);
-            int score = rollout(currentState, current);
+            int score = rollout(currentState, current, movesLeft - current.getDepth());
             current.backup(score);
             if (calcTree) {
                 System.out.println(root.printD3());
@@ -124,13 +130,15 @@ public class MCTSInfoSet extends MCTS {
         return chosenOne;
     }
 
-    protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject) {
+    @Override
+    protected MCTSNode select(MCTSNode root, GameState state, IterationObject iterationObject, int movesLeft) {
         MCTSNode current = root;
         int treeDepth = calculateTreeDepthLimit(state);
         boolean expandedNode = false;
 
-        while (!state.isGameOver() && current.getDepth() < treeDepth && !expandedNode) {
+        while (!state.isGameOver() && current.getDepth() < treeDepth && !expandedNode && movesLeft > 0) {
             MCTSNode next;
+            movesLeft--;
             // determinise hand before decision is made
             int agentAboutToAct = (current.getAgent() + 1) % state.getPlayerCount();
             handDeterminiser.determiniseHandFor(agentAboutToAct, state);
@@ -156,10 +164,10 @@ public class MCTSInfoSet extends MCTS {
             Action action = current.getAction();
             logger.trace("MCTSIS: Selected action " + action + " for player " + agent);
             if (action != null) {
+                state.tick();
+                handDeterminiser.recordAction(action, agent, state);
                 List<GameEvent> events = action.apply(agent, state);
                 events.forEach(state::addEvent);
-                state.tick();
-                handDeterminiser.recordAction(action);
             }
 
             if (iterationObject.isMyGo(agent)) {
