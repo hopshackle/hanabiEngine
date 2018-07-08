@@ -44,7 +44,7 @@ public class TellFinesse extends AbstractTellRule {
         }
 
 
-        //finnesse time
+        //finesse time
         int finessePlayer = selectPlayer(nextPlayer, state);
         Hand finesseHand = state.getHand(finessePlayer);
         Map<CardColour, Integer> cardColours = new EnumMap<>(CardColour.class);
@@ -52,17 +52,19 @@ public class TellFinesse extends AbstractTellRule {
 
         for (int slot=0; slot<finesseHand.getSize(); slot++) {
             Card finesseCard = finesseHand.getCard(slot);
-            int currColour = cardColours.getOrDefault(finesseCard.colour, 0);
-            cardColours.put(finesseCard.colour, currColour+1);
+            if (finesseCard != null) {
+                int currColour = cardColours.getOrDefault(finesseCard.colour, 0);
+                cardColours.put(finesseCard.colour, currColour + 1);
 
-            int currValue = cardValues.getOrDefault(finesseCard.value, 0);
-            cardValues.put(finesseCard.value, currValue+1);
+                int currValue = cardValues.getOrDefault(finesseCard.value, 0);
+                cardValues.put(finesseCard.value, currValue + 1);
+            }
         }
 
 
         for (int slot=0; slot<finesseHand.getSize(); slot++) {
             Card finesseCard = finesseHand.getCard(slot);
-            if (finesseCard.value.equals(newestCard.value+1) && finesseCard.colour.equals(newestCard.colour)) {
+            if (finesseCard != null && finesseCard.value.equals(newestCard.value+1) && finesseCard.colour.equals(newestCard.colour)) {
 
                 //step 1 - prioritise unknown information
                 if (cardColours.get(finesseCard.colour) == 1 && cardValues.get(finesseCard.value) == 1) {

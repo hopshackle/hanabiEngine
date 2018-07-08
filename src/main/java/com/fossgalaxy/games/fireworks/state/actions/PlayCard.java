@@ -87,7 +87,6 @@ public class PlayCard implements Action {
         PlayCard playCard = (PlayCard) o;
 
         return slot == playCard.slot;
-
     }
 
     @Override
